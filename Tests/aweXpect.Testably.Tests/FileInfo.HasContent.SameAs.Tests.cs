@@ -44,6 +44,33 @@ public sealed partial class FileInfo
 				}
 
 				[Fact]
+				public async Task WhenExpectedFileDoesNotExist_ShouldFail()
+				{
+					MockFileSystem fileSystem = new();
+					string path = "foo.txt";
+					string expectedPath = "bar.txt";
+					string fullExpectedPath = fileSystem.Path.GetFullPath(expectedPath);
+					// ReSharper disable once MethodHasAsyncOverload
+					fileSystem.File.WriteAllText(path, "baz");
+					IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+					async Task Act()
+					{
+						await That(fileInfo).HasContent().SameAs(expectedPath);
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage($"""
+						              Expected that fileInfo
+						              has the same content as file '{fullExpectedPath}',
+						              but it did not contain any file at '{fullExpectedPath}'
+
+						              File content:
+						              baz
+						              """);
+				}
+
+				[Fact]
 				public async Task WhenContentMatches_ShouldSucceed()
 				{
 					MockFileSystem fileSystem = new();

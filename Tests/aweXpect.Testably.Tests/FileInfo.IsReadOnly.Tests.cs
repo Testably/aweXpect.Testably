@@ -32,6 +32,25 @@ public sealed partial class FileInfo
 			}
 
 			[Fact]
+			public async Task WhenFileDoesNotExist_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+				async Task Act()
+				{
+					await That(fileInfo).IsReadOnly();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that fileInfo
+					             is read-only,
+					             but it did not exist
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenFileIsReadOnly_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();

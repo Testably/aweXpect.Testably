@@ -31,6 +31,25 @@ public sealed partial class DirectoryInfo
 			}
 
 			[Fact]
+			public async Task WhenDirectoryDoesNotExist_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				IDirectoryInfo dirInfo = fileSystem.DirectoryInfo.New("missing");
+
+				async Task Act()
+				{
+					await That(dirInfo).IsEmpty();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that dirInfo
+					             is empty,
+					             but it did not exist
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenDirectoryIsEmpty_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
