@@ -200,13 +200,18 @@ public sealed class Timer
 			[Fact]
 			public async Task WhenNeverQuantifier_AndExecutedOnce_ShouldFailWithDidNotExecuteWording()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.DisableAutoAdvance());
 				using ITimerMock sut = (ITimerMock)timeSystem.Timer.New(
 					_ => { },
 					null,
-					TimeSpan.Zero,
+					TimeSpan.FromSeconds(1),
 					Timeout.InfiniteTimeSpan);
-				sut.Wait(1, 5000);
+				// Synchronization barrier: ensure the timer thread has started and
+				// subscribed to its first due-time before advancing the mock clock.
+				await That(sut).Executed().Never().Within(TimeSpan.FromMilliseconds(200));
+				timeSystem.TimeProvider.AdvanceBy(TimeSpan.FromSeconds(2));
+				await That(sut).Executed().AtLeast(1.Times()).Within(TimeSpan.FromSeconds(10));
+				await That(sut.ExecutionCount).IsEqualTo(1L);
 
 				async Task Act()
 				{
@@ -225,13 +230,18 @@ public sealed class Timer
 			[Fact]
 			public async Task WhenExecutedOnce_AndExpectingExactlyTwice_ShouldRenderOnce()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.DisableAutoAdvance());
 				using ITimerMock sut = (ITimerMock)timeSystem.Timer.New(
 					_ => { },
 					null,
-					TimeSpan.Zero,
+					TimeSpan.FromSeconds(1),
 					Timeout.InfiniteTimeSpan);
-				sut.Wait(1, 5000);
+				// Synchronization barrier: ensure the timer thread has started and
+				// subscribed to its first due-time before advancing the mock clock.
+				await That(sut).Executed().Never().Within(TimeSpan.FromMilliseconds(200));
+				timeSystem.TimeProvider.AdvanceBy(TimeSpan.FromSeconds(2));
+				await That(sut).Executed().AtLeast(1.Times()).Within(TimeSpan.FromSeconds(10));
+				await That(sut.ExecutionCount).IsEqualTo(1L);
 
 				async Task Act()
 				{
@@ -250,23 +260,18 @@ public sealed class Timer
 			[Fact]
 			public async Task WhenExecutedTwice_AndExpectingExactlyThrice_ShouldRenderTwice()
 			{
-				MockTimeSystem timeSystem = new();
-				ITimerMock? timer = null;
-				int callbacks = 0;
-				timer = (ITimerMock)timeSystem.Timer.New(
-					_ =>
-					{
-						if (Interlocked.Increment(ref callbacks) >= 2)
-						{
-							// ReSharper disable once AccessToModifiedClosure
-							timer?.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
-						}
-					},
+				MockTimeSystem timeSystem = new(o => o.DisableAutoAdvance());
+				using ITimerMock sut = (ITimerMock)timeSystem.Timer.New(
+					_ => { },
 					null,
-					TimeSpan.Zero,
-					TimeSpan.FromMilliseconds(5));
-				using ITimerMock sut = timer;
-				sut.Wait(2, 5000);
+					TimeSpan.FromSeconds(1),
+					TimeSpan.FromSeconds(1));
+				// Synchronization barrier: ensure the timer thread has started and
+				// subscribed to its first due-time before advancing the mock clock.
+				await That(sut).Executed().Never().Within(TimeSpan.FromMilliseconds(200));
+				timeSystem.TimeProvider.AdvanceBy(TimeSpan.FromMilliseconds(2500));
+				await That(sut).Executed().AtLeast(2.Times()).Within(TimeSpan.FromSeconds(10));
+				await That(sut.ExecutionCount).IsEqualTo(2L);
 
 				async Task Act()
 				{
@@ -285,23 +290,18 @@ public sealed class Timer
 			[Fact]
 			public async Task WhenExecutedThreeTimes_AndExpectingMore_ShouldRenderTimes()
 			{
-				MockTimeSystem timeSystem = new();
-				ITimerMock? timer = null;
-				int callbacks = 0;
-				timer = (ITimerMock)timeSystem.Timer.New(
-					_ =>
-					{
-						if (Interlocked.Increment(ref callbacks) >= 3)
-						{
-							// ReSharper disable once AccessToModifiedClosure
-							timer?.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
-						}
-					},
+				MockTimeSystem timeSystem = new(o => o.DisableAutoAdvance());
+				using ITimerMock sut = (ITimerMock)timeSystem.Timer.New(
+					_ => { },
 					null,
-					TimeSpan.Zero,
-					TimeSpan.FromMilliseconds(5));
-				using ITimerMock sut = timer;
-				sut.Wait(3, 5000);
+					TimeSpan.FromSeconds(1),
+					TimeSpan.FromSeconds(1));
+				// Synchronization barrier: ensure the timer thread has started and
+				// subscribed to its first due-time before advancing the mock clock.
+				await That(sut).Executed().Never().Within(TimeSpan.FromMilliseconds(200));
+				timeSystem.TimeProvider.AdvanceBy(TimeSpan.FromMilliseconds(3500));
+				await That(sut).Executed().AtLeast(3.Times()).Within(TimeSpan.FromSeconds(10));
+				await That(sut.ExecutionCount).IsEqualTo(3L);
 
 				async Task Act()
 				{
