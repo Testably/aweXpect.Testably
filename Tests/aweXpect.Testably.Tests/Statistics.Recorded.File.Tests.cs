@@ -1345,6 +1345,744 @@ public sealed partial class Statistics
 				}
 			}
 
+			public sealed class OpenTests
+			{
+				[Fact]
+				public async Task Open_WithAccessFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.Open(access: a => a == FileAccess.Read).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.Open with access matching a => a == FileAccess.Read exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task Open_WithModeFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.Open(mode: m => m == FileMode.Open).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.Open with mode matching m => m == FileMode.Open exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task Open_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.Open(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.Open with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task Open_WithShareFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.Open(share: s => s == FileShare.None).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.Open with share matching s => s == FileShare.None exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class OpenReadTests
+			{
+				[Fact]
+				public async Task OpenRead_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.OpenRead(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.OpenRead with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class OpenTextTests
+			{
+				[Fact]
+				public async Task OpenText_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.OpenText(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.OpenText with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class OpenWriteTests
+			{
+				[Fact]
+				public async Task OpenWrite_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.OpenWrite(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.OpenWrite with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class ReadAllBytesTests
+			{
+				[Fact]
+				public async Task ReadAllBytes_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.ReadAllBytes(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.ReadAllBytes with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class ReadAllLinesTests
+			{
+				[Fact]
+				public async Task ReadAllLines_WithEncodingFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.ReadAllLines(encoding: e => e == Encoding.UTF8).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.ReadAllLines with encoding matching e => e == Encoding.UTF8 exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task ReadAllLines_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.ReadAllLines(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.ReadAllLines with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class ReadAllTextTests
+			{
+				[Fact]
+				public async Task ReadAllText_WithEncodingFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.ReadAllText(encoding: e => e == Encoding.UTF8).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.ReadAllText with encoding matching e => e == Encoding.UTF8 exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task ReadAllText_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.ReadAllText(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.ReadAllText with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class ReadLinesTests
+			{
+				[Fact]
+				public async Task ReadLines_WithEncodingFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.ReadLines(encoding: e => e == Encoding.UTF8).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.ReadLines with encoding matching e => e == Encoding.UTF8 exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task ReadLines_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.ReadLines(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.ReadLines with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class ReplaceTests
+			{
+				[Fact]
+				public async Task Replace_WithDestinationBackupFileNameFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.Replace(destinationBackupFileName: p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.Replace with destinationBackupFileName matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task Replace_WithDestinationFileNameFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.Replace(destinationFileName: p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.Replace with destinationFileName matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task Replace_WithIgnoreMetadataErrorsFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.Replace(ignoreMetadataErrors: b => b).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.Replace with ignoreMetadataErrors matching b => b exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task Replace_WithSourceFileNameFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.Replace(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.Replace with sourceFileName matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class SetAttributesTests
+			{
+				[Fact]
+				public async Task SetAttributes_WithFileAttributesFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetAttributes(fileAttributes: a => a == FileAttributes.ReadOnly).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetAttributes with fileAttributes matching a => a == FileAttributes.ReadOnly exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task SetAttributes_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetAttributes(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetAttributes with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class SetCreationTimeTests
+			{
+				[Fact]
+				public async Task SetCreationTime_WithCreationTimeFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetCreationTime(creationTime: t => t.Year == 2000).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetCreationTime with creationTime matching t => t.Year == 2000 exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task SetCreationTime_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetCreationTime(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetCreationTime with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class SetCreationTimeUtcTests
+			{
+				[Fact]
+				public async Task SetCreationTimeUtc_WithCreationTimeUtcFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetCreationTimeUtc(creationTimeUtc: t => t.Year == 2000).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetCreationTimeUtc with creationTimeUtc matching t => t.Year == 2000 exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task SetCreationTimeUtc_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetCreationTimeUtc(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetCreationTimeUtc with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class SetLastAccessTimeTests
+			{
+				[Fact]
+				public async Task SetLastAccessTime_WithLastAccessTimeFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetLastAccessTime(lastAccessTime: t => t.Year == 2000).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetLastAccessTime with lastAccessTime matching t => t.Year == 2000 exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task SetLastAccessTime_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetLastAccessTime(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetLastAccessTime with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class SetLastAccessTimeUtcTests
+			{
+				[Fact]
+				public async Task SetLastAccessTimeUtc_WithLastAccessTimeUtcFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetLastAccessTimeUtc(lastAccessTimeUtc: t => t.Year == 2000).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetLastAccessTimeUtc with lastAccessTimeUtc matching t => t.Year == 2000 exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task SetLastAccessTimeUtc_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetLastAccessTimeUtc(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetLastAccessTimeUtc with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class SetLastWriteTimeTests
+			{
+				[Fact]
+				public async Task SetLastWriteTime_WithLastWriteTimeFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetLastWriteTime(lastWriteTime: t => t.Year == 2000).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetLastWriteTime with lastWriteTime matching t => t.Year == 2000 exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task SetLastWriteTime_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetLastWriteTime(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetLastWriteTime with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class SetLastWriteTimeUtcTests
+			{
+				[Fact]
+				public async Task SetLastWriteTimeUtc_WithLastWriteTimeUtcFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetLastWriteTimeUtc(lastWriteTimeUtc: t => t.Year == 2000).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetLastWriteTimeUtc with lastWriteTimeUtc matching t => t.Year == 2000 exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task SetLastWriteTimeUtc_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.SetLastWriteTimeUtc(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.SetLastWriteTimeUtc with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class WriteAllBytesTests
+			{
+				[Fact]
+				public async Task WriteAllBytes_WithBytesFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.WriteAllBytes(bytes: _ => true).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.WriteAllBytes with bytes matching _ => true exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task WriteAllBytes_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.WriteAllBytes(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.WriteAllBytes with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
+			public sealed class WriteAllLinesTests
+			{
+				[Fact]
+				public async Task WriteAllLines_WithEncodingFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.WriteAllLines(encoding: e => e == Encoding.UTF8).Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.WriteAllLines with encoding matching e => e == Encoding.UTF8 exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+
+				[Fact]
+				public async Task WriteAllLines_WithPathFilter_NoMatch_ShouldFailWithMessage()
+				{
+					MockFileSystem fileSystem = new();
+
+					async Task Act()
+					{
+						await That(fileSystem.Statistics).Recorded()
+							.File.WriteAllLines(p => p == "foo.txt").Once();
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that fileSystem.Statistics
+						             recorded a call to File.WriteAllLines with path matching p => p == "foo.txt" exactly once,
+						             but it was recorded 0 times
+						             """);
+				}
+			}
+
 #if NET8_0_OR_GREATER
 			public sealed class AppendAllLinesAsyncTests
 			{
