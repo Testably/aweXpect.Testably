@@ -57,6 +57,47 @@ public sealed partial class FileInfo
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task HasName_AndWhoseParentHasName_WhenParentNameDiffers_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.Initialize().WithSubdirectory("logs").Initialized(d => d
+					.WithFile("today.log"));
+				IFileInfo fileInfo = fileSystem.FileInfo.New("logs/today.log");
+
+				async Task Act()
+				{
+					await That(fileInfo).HasName("today.log").And.WhoseParent.HasName("wrong");
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that fileInfo
+					             has name equal to "today.log" whose parent has name equal to "wrong",
+					             but it was "logs" which differs at index 0:
+					                ↓ (actual)
+					               "logs"
+					               "wrong"
+					                ↑ (expected)
+					             """);
+			}
+
+			[Fact]
+			public async Task OnRootFile_ShouldThrow()
+			{
+				MockFileSystem fileSystem = new();
+				IFileInfo fileInfo = fileSystem.FileInfo.New(
+					fileSystem.Path.GetPathRoot(fileSystem.Directory.GetCurrentDirectory())!);
+
+				async Task Act()
+				{
+					await That(fileInfo).WhoseParent.IsNotEmpty();
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Cannot assert on the parent directory of the file because it has none.");
+			}
 		}
 	}
 }

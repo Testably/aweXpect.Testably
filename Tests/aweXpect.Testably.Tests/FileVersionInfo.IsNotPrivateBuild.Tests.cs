@@ -66,6 +66,28 @@ public sealed partial class FileVersionInfo
 					             but it was
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenNegated_AndInfoIsNotPrivateBuild_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.WithFileVersionInfo("*.dll", v => v.SetIsPrivateBuild(false));
+				// ReSharper disable once MethodHasAsyncOverload
+				fileSystem.File.WriteAllText("Acme.dll", "");
+				IFileVersionInfo info = fileSystem.FileVersionInfo.GetVersionInfo("Acme.dll");
+
+				async Task Act()
+				{
+					await That(info).DoesNotComplyWith(it => it.IsNotPrivateBuild());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that info
+					             is private build,
+					             but it was not
+					             """);
+			}
 		}
 	}
 }
