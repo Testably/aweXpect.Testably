@@ -52,6 +52,8 @@ public sealed partial class ChangeDescriptionTests
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("unexpected");
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The unexpected change type must include at least one flag.*").AsWildcard();
 			}
 
 			[Fact]
@@ -97,6 +99,45 @@ public sealed partial class ChangeDescriptionTests
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("expected");
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The expected change type must include at least one flag.*").AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				ChangeDescription? change = null;
+
+				async Task Act()
+				{
+					await That(change!).HasChangeType(WatcherChangeTypes.Created);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that change
+					             has change type Created,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedPartiallyOverlapsActual_ShouldFail()
+			{
+				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
+
+				async Task Act()
+				{
+					await That(change)
+						.HasChangeType(WatcherChangeTypes.Created | WatcherChangeTypes.Deleted);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that change
+					             has change type Created, Deleted,
+					             but it was Created
+					             """);
 			}
 		}
 	}

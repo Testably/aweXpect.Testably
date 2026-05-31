@@ -19,7 +19,15 @@ public sealed partial class ChangeDescriptionTests
 				}
 
 				await That(Act).ThrowsException()
-					.WithMessage("*has name equal to \"bar.txt\"*").AsWildcard();
+					.WithMessage("""
+					             Expected that change
+					             has name equal to "bar.txt",
+					             but it was "foo.txt" which differs at index 0:
+					                ↓ (actual)
+					               "foo.txt"
+					               "bar.txt"
+					                ↑ (expected)
+					             """);
 			}
 
 			[Fact]
@@ -33,6 +41,24 @@ public sealed partial class ChangeDescriptionTests
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				ChangeDescription? change = null;
+
+				async Task Act()
+				{
+					await That(change!).HasName("foo.txt");
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that change
+					             has name equal to "foo.txt",
+					             but it was <null>
+					             """);
 			}
 		}
 	}

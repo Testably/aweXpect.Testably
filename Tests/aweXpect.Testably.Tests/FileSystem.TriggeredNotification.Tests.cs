@@ -211,6 +211,24 @@ public sealed partial class FileSystem
 			}
 
 			[Fact]
+			public async Task WhichTwice_WhenChangeDoesNotMatch_ShouldJoinFiltersWithAnd()
+			{
+				MockFileSystem sut = new();
+				sut.File.WriteAllText("foo.txt", "x");
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification()
+						.Which(c => c.HasName("foo.txt"))
+						.Which(c => c.HasChangeType(WatcherChangeTypes.Deleted))
+						.Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("*which has name equal to \"foo.txt\" and has change type Deleted*").AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhichWithInnerExpectation_WhenChangeMatches_ShouldSucceed()
 			{
 				MockFileSystem sut = new();

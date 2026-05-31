@@ -52,6 +52,8 @@ public sealed partial class ChangeDescriptionTests
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("unexpected");
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The unexpected file system type must include at least one flag.*").AsWildcard();
 			}
 
 			[Fact]
@@ -66,6 +68,8 @@ public sealed partial class ChangeDescriptionTests
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("expected");
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The expected file system type must include at least one flag.*").AsWildcard();
 			}
 
 			[Fact]
@@ -97,6 +101,43 @@ public sealed partial class ChangeDescriptionTests
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				ChangeDescription? change = null;
+
+				async Task Act()
+				{
+					await That(change!).HasFileSystemType(FileSystemTypes.File);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that change
+					             has file system type File,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedPartiallyOverlapsActual_ShouldFail()
+			{
+				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
+
+				async Task Act()
+				{
+					await That(change)
+						.HasFileSystemType(FileSystemTypes.File | FileSystemTypes.Directory);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that change
+					             has file system type DirectoryOrFile,
+					             but it was File
+					             """);
 			}
 		}
 	}

@@ -34,7 +34,11 @@ public sealed partial class ChangeDescriptionTests
 				}
 
 				await That(Act).ThrowsException()
-					.WithMessage("*does not have notify filters*").AsWildcard();
+					.WithMessage($"""
+					              Expected that change
+					              does not have notify filters {present},
+					              but it did
+					              """);
 			}
 
 			[Fact]
@@ -49,6 +53,8 @@ public sealed partial class ChangeDescriptionTests
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("unexpected");
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The unexpected notify filters must include at least one flag.*").AsWildcard();
 			}
 
 			[Fact]
@@ -77,6 +83,8 @@ public sealed partial class ChangeDescriptionTests
 
 				await That(Act).Throws<ArgumentException>()
 					.WithParamName("expected");
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The expected notify filters must include at least one flag.*").AsWildcard();
 			}
 
 			[Fact]
@@ -84,13 +92,52 @@ public sealed partial class ChangeDescriptionTests
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
 
+				NotifyFilters actual = change.NotifyFilters;
+
 				async Task Act()
 				{
 					await That(change).HasNotifyFilters(NotifyFilters.Security);
 				}
 
 				await That(Act).ThrowsException()
-					.WithMessage("*has notify filters Security*").AsWildcard();
+					.WithMessage($"""
+					              Expected that change
+					              has notify filters Security,
+					              but it was {actual}
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				ChangeDescription? change = null;
+
+				async Task Act()
+				{
+					await That(change!).HasNotifyFilters(NotifyFilters.FileName);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that change
+					             has notify filters FileName,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedPartiallyOverlapsActual_ShouldFail()
+			{
+				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
+				NotifyFilters present = change.NotifyFilters;
+
+				async Task Act()
+				{
+					await That(change).HasNotifyFilters(present | NotifyFilters.Security);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("*has notify filters*Security*but it was*").AsWildcard();
 			}
 		}
 	}
