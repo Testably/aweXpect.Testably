@@ -97,6 +97,46 @@ public sealed partial class FileSystem
 				}
 
 				[Fact]
+				public async Task WhenNegated_WhenCreationTimeMatches_ShouldFail()
+				{
+					MockFileSystem sut = new();
+					DateTime expectedTime = CurrentTime().ToLocalTime();
+					string path = "foo.txt";
+					sut.File.WriteAllText(path, "");
+					sut.File.SetCreationTime(path, expectedTime);
+
+					async Task Act()
+					{
+						await That(sut).DoesNotComplyWith(it => it.HasFile(path).WithCreationTime(expectedTime));
+					}
+
+					await That(Act).ThrowsException()
+						.WithMessage($"""
+						              Expected that sut
+						              does not have file '{path}' with creation time not equal to {Formatter.Format(expectedTime)},
+						              but it did and it was {Formatter.Format(expectedTime)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenCreationTimeDiffers_ShouldSucceed()
+				{
+					MockFileSystem sut = new();
+					DateTime expectedTime = CurrentTime().ToLocalTime();
+					DateTime actualTime = expectedTime.AddSeconds(1);
+					string path = "foo.txt";
+					sut.File.WriteAllText(path, "");
+					sut.File.SetCreationTime(path, actualTime);
+
+					async Task Act()
+					{
+						await That(sut).DoesNotComplyWith(it => it.HasFile(path).WithCreationTime(expectedTime));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenCreationTimeIsUnspecified_ShouldSucceed()
 				{
 					MockFileSystem sut = new();

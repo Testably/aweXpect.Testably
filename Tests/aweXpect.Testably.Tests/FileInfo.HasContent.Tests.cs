@@ -113,6 +113,26 @@ public sealed partial class FileInfo
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenFileDoesNotExist_ShouldFail()
+			{
+				byte[] expected = Encoding.UTF8.GetBytes("bar");
+				MockFileSystem fileSystem = new();
+				IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+				async Task Act()
+				{
+					await That(fileInfo).HasContent(expected);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that fileInfo
+					             has content equal to expected,
+					             but it did not exist
+					             """);
+			}
 		}
 
 		public sealed class AsWildcardTests
