@@ -198,6 +198,126 @@ public sealed class Timer
 			}
 
 			[Fact]
+			public async Task WhenNeverQuantifier_AndExecutedOnce_ShouldFailWithDidNotExecuteWording()
+			{
+				MockTimeSystem timeSystem = new();
+				using ITimerMock sut = (ITimerMock)timeSystem.Timer.New(
+					_ => { },
+					null,
+					TimeSpan.Zero,
+					Timeout.InfiniteTimeSpan);
+				sut.Wait(1, 5000);
+
+				async Task Act()
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					await That(sut).Executed().Never().Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+						Expected that sut
+						did not execute within 0:00.100,
+						but it was executed once
+						""");
+			}
+
+			[Fact]
+			public async Task WhenExecutedOnce_AndExpectingExactlyTwice_ShouldRenderOnce()
+			{
+				MockTimeSystem timeSystem = new();
+				using ITimerMock sut = (ITimerMock)timeSystem.Timer.New(
+					_ => { },
+					null,
+					TimeSpan.Zero,
+					Timeout.InfiniteTimeSpan);
+				sut.Wait(1, 5000);
+
+				async Task Act()
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					await That(sut).Executed().Exactly(2.Times()).Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+						Expected that sut
+						executed exactly twice within 0:00.100,
+						but it was executed once
+						""");
+			}
+
+			[Fact]
+			public async Task WhenExecutedTwice_AndExpectingExactlyThrice_ShouldRenderTwice()
+			{
+				MockTimeSystem timeSystem = new();
+				ITimerMock? timer = null;
+				int callbacks = 0;
+				timer = (ITimerMock)timeSystem.Timer.New(
+					_ =>
+					{
+						if (Interlocked.Increment(ref callbacks) >= 2)
+						{
+							// ReSharper disable once AccessToModifiedClosure
+							timer?.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+						}
+					},
+					null,
+					TimeSpan.Zero,
+					TimeSpan.FromMilliseconds(5));
+				using ITimerMock sut = timer;
+				sut.Wait(2, 5000);
+
+				async Task Act()
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					await That(sut).Executed().Exactly(3.Times()).Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+						Expected that sut
+						executed exactly 3 times within 0:00.100,
+						but it was executed twice
+						""");
+			}
+
+			[Fact]
+			public async Task WhenExecutedThreeTimes_AndExpectingMore_ShouldRenderTimes()
+			{
+				MockTimeSystem timeSystem = new();
+				ITimerMock? timer = null;
+				int callbacks = 0;
+				timer = (ITimerMock)timeSystem.Timer.New(
+					_ =>
+					{
+						if (Interlocked.Increment(ref callbacks) >= 3)
+						{
+							// ReSharper disable once AccessToModifiedClosure
+							timer?.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+						}
+					},
+					null,
+					TimeSpan.Zero,
+					TimeSpan.FromMilliseconds(5));
+				using ITimerMock sut = timer;
+				sut.Wait(3, 5000);
+
+				async Task Act()
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					await That(sut).Executed().Exactly(4.Times()).Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+						Expected that sut
+						executed exactly 4 times within 0:00.100,
+						but it was executed 3 times
+						""");
+			}
+
+			[Fact]
 			public async Task WithoutQuantifier_WhenExecutedAtLeastOnce_ShouldSucceed()
 			{
 				MockTimeSystem timeSystem = new();
