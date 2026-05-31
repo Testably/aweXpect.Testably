@@ -407,6 +407,79 @@ public sealed partial class FileSystemWatcher
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WithExactlyOnce_WhenTriggeredThreeTimes_ShouldFailWithCountInMessage()
+			{
+				MockFileSystem fs = new();
+				fs.InitializeIn("/x");
+				using IFileSystemWatcher sut = fs.FileSystemWatcher.New("/x");
+				sut.EnableRaisingEvents = true;
+				using IAwaitableCallback<WatcherChangeDescription> reg = fs.Watcher.OnTriggered(
+					_ => { },
+					c => c.FileSystemWatcher == sut && c.ChangeType == WatcherChangeTypes.Created);
+				fs.File.WriteAllText("a.txt", "x");
+				fs.File.WriteAllText("b.txt", "x");
+				fs.File.WriteAllText("c.txt", "x");
+				WatcherChangeDescription[] created = reg.Wait(3, TimeSpan.FromSeconds(30));
+
+				async Task Act()
+				{
+					await That(sut).Triggered(c => c.ChangeType == WatcherChangeTypes.Created)
+						.Exactly(1.Times())
+						.Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage($$"""
+					               Expected that sut
+					               triggered an event matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
+					               but it was triggered 3 times in [
+					                 {{created[0]}},
+					                 {{created[1]}},
+					                 {{created[2]}}
+					               ]
+					               """);
+			}
+
+			[Fact]
+			public async Task WithZeroTimeout_WhenNoEvent_ShouldFailWithTimeoutMessage()
+			{
+				MockFileSystem fs = new();
+				fs.InitializeIn("/x");
+				using IFileSystemWatcher sut = fs.FileSystemWatcher.New("/x");
+				sut.EnableRaisingEvents = true;
+
+				async Task Act()
+				{
+					await That(sut).Triggered().Within(TimeSpan.Zero);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that sut
+					             triggered an event at least once within 0:00,
+					             but it was not triggered
+					             """);
+			}
+
+			[Fact]
+			public async Task WithNegativeTimeout_ShouldThrowArgumentOutOfRangeException()
+			{
+				MockFileSystem fs = new();
+				fs.InitializeIn("/x");
+				using IFileSystemWatcher sut = fs.FileSystemWatcher.New("/x");
+				sut.EnableRaisingEvents = true;
+
+				async Task Act()
+				{
+					await That(sut).Triggered().Within(TimeSpan.FromMilliseconds(-1));
+				}
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("timeout").And
+					.WithMessage("The timeout must not be negative.*").AsWildcard();
+			}
 		}
 	}
 }

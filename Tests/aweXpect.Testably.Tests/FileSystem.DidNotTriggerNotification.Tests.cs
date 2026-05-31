@@ -142,6 +142,25 @@ public sealed partial class FileSystem
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenEventArrivesAsynchronouslyWithinTimeout_ShouldFail()
+			{
+				MockFileSystem sut = new();
+				_ = Task.Run(async () =>
+				{
+					await Task.Delay(20);
+					sut.File.WriteAllText("foo.txt", "x");
+				});
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification().Within(TimeSpan.FromSeconds(30));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("*did not trigger a notification*but it was triggered*").AsWildcard();
+			}
 		}
 	}
 }
