@@ -50,6 +50,29 @@ public sealed partial class FileInfo
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenNegatedAndLastAccessTimeMatches_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				DateTime expected = CurrentTime().ToUniversalTime();
+				string path = "foo.txt";
+				fileSystem.File.WriteAllText(path, "");
+				fileSystem.File.SetLastAccessTimeUtc(path, expected);
+				IFileInfo fileInfo = fileSystem.FileInfo.New(path);
+
+				async Task Act()
+				{
+					await That(fileInfo).DoesNotComplyWith(f => f.HasLastAccessTime(expected));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that fileInfo
+					              does not have last access time equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(expected)}
+					              """);
+			}
 		}
 	}
 }

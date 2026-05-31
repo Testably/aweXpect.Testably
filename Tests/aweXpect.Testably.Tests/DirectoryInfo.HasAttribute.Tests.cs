@@ -61,6 +61,7 @@ public sealed partial class DirectoryInfo
 				}
 
 				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The expected file attributes must include at least one flag.*").AsWildcard().And
 					.WithParamName("expected");
 			}
 		}

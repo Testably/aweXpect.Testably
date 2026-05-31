@@ -75,6 +75,7 @@ public sealed partial class DirectoryInfo
 				}
 
 				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The unexpected file attributes must include at least one flag.*").AsWildcard().And
 					.WithParamName("unexpected");
 			}
 		}

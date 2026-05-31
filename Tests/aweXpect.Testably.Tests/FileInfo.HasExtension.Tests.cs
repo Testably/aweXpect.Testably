@@ -49,6 +49,27 @@ public sealed partial class FileInfo
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenNegatedAndExtensionMatches_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				// ReSharper disable once MethodHasAsyncOverload
+				fileSystem.File.WriteAllText("foo.txt", "");
+				IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+				async Task Act()
+				{
+					await That(fileInfo).DoesNotComplyWith(f => f.HasExtension(".txt"));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that fileInfo
+					             does not have extension not equal to ".txt",
+					             but it did
+					             """);
+			}
 		}
 	}
 }
