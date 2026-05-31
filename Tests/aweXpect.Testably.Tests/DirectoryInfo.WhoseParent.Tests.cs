@@ -53,7 +53,8 @@ public sealed partial class DirectoryInfo
 					await That(rootDirInfo).WhoseParent.IsNotEmpty();
 				}
 
-				await That(Act).Throws<InvalidOperationException>();
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Cannot assert on the parent of a root directory because it has no parent.");
 			}
 		}
 	}

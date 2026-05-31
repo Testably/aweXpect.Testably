@@ -87,6 +87,29 @@ public sealed partial class FileInfo
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenNegatedAndCreationTimeMatches_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				DateTime expected = CurrentTime().ToUniversalTime();
+				string path = "foo.txt";
+				fileSystem.File.WriteAllText(path, "");
+				fileSystem.File.SetCreationTimeUtc(path, expected);
+				IFileInfo fileInfo = fileSystem.FileInfo.New(path);
+
+				async Task Act()
+				{
+					await That(fileInfo).DoesNotComplyWith(f => f.HasCreationTime(expected));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that fileInfo
+					              does not have creation time equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(expected)}
+					              """);
+			}
 		}
 	}
 }

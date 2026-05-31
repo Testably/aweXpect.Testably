@@ -48,6 +48,28 @@ public sealed partial class DirectoryInfo
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenNegatedAndLastWriteTimeMatches_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				DateTime expected = CurrentTime().ToUniversalTime();
+				fileSystem.Directory.CreateDirectory("foo");
+				fileSystem.Directory.SetLastWriteTimeUtc("foo", expected);
+				IDirectoryInfo dirInfo = fileSystem.DirectoryInfo.New("foo");
+
+				async Task Act()
+				{
+					await That(dirInfo).DoesNotComplyWith(d => d.HasLastWriteTime(expected));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that dirInfo
+					              does not have last write time equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(expected)}
+					              """);
+			}
 		}
 	}
 }
