@@ -36,7 +36,12 @@ public sealed partial class DriveInfo
 					await That(driveInfo).HasVolumeLabel("definitely-not-the-label");
 				}
 
-				await That(Act).ThrowsException();
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that driveInfo
+					             has volume label equal to "definitely-not-the-label",
+					             but it was *
+					             """).AsWildcard();
 			}
 
 			[Fact]

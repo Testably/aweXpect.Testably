@@ -37,7 +37,16 @@ public sealed partial class DriveInfo
 					await That(driveInfo).HasName("Z:\\");
 				}
 
-				await That(Act).ThrowsException();
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that driveInfo
+					             has name equal to "Z:\",
+					             but it was "D:\" which differs at index 0:
+					                ↓ (actual)
+					               "D:\"
+					               "Z:\"
+					                ↑ (expected)
+					             """);
 			}
 
 			[Fact]
