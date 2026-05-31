@@ -66,6 +66,28 @@ public sealed partial class FileVersionInfo
 					             but it was not
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenNegated_AndInfoIsDebug_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.WithFileVersionInfo("*.dll", v => v.SetIsDebug(true));
+				// ReSharper disable once MethodHasAsyncOverload
+				fileSystem.File.WriteAllText("Acme.dll", "");
+				IFileVersionInfo info = fileSystem.FileVersionInfo.GetVersionInfo("Acme.dll");
+
+				async Task Act()
+				{
+					await That(info).DoesNotComplyWith(it => it.IsDebug());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that info
+					             is not debug,
+					             but it was
+					             """);
+			}
 		}
 	}
 
@@ -129,6 +151,28 @@ public sealed partial class FileVersionInfo
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNegated_AndInfoIsNotDebug_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.WithFileVersionInfo("*.dll", v => v.SetIsDebug(false));
+				// ReSharper disable once MethodHasAsyncOverload
+				fileSystem.File.WriteAllText("Acme.dll", "");
+				IFileVersionInfo info = fileSystem.FileVersionInfo.GetVersionInfo("Acme.dll");
+
+				async Task Act()
+				{
+					await That(info).DoesNotComplyWith(it => it.IsNotDebug());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that info
+					             is debug,
+					             but it was not
+					             """);
 			}
 		}
 	}

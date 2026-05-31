@@ -56,6 +56,31 @@ public sealed partial class DirectoryInfo
 				await That(Act).Throws<InvalidOperationException>()
 					.WithMessage("Cannot assert on the parent of a root directory because it has no parent.");
 			}
+
+			[Fact]
+			public async Task HasName_AndWhoseParentHasName_WhenParentNameDiffers_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.Initialize().WithSubdirectory("project").Initialized(p => p
+					.WithSubdirectory("src"));
+				IDirectoryInfo dirInfo = fileSystem.DirectoryInfo.New("project/src");
+
+				async Task Act()
+				{
+					await That(dirInfo).HasName("src").And.WhoseParent.HasName("wrong");
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that dirInfo
+					             has name equal to "src" whose parent has name equal to "wrong",
+					             but it was "project" which differs at index 0:
+					                ↓ (actual)
+					               "project"
+					               "wrong"
+					                ↑ (expected)
+					             """);
+			}
 		}
 	}
 }

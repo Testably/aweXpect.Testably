@@ -66,6 +66,28 @@ public sealed partial class FileVersionInfo
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenNegated_AndInfoIsPatched_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.WithFileVersionInfo("*.dll", v => v.SetIsPatched(true));
+				// ReSharper disable once MethodHasAsyncOverload
+				fileSystem.File.WriteAllText("Acme.dll", "");
+				IFileVersionInfo info = fileSystem.FileVersionInfo.GetVersionInfo("Acme.dll");
+
+				async Task Act()
+				{
+					await That(info).DoesNotComplyWith(it => it.IsPatched());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that info
+					             is not patched,
+					             but it was
+					             """);
+			}
 		}
 	}
 
@@ -128,6 +150,28 @@ public sealed partial class FileVersionInfo
 					             Expected that info
 					             is not patched,
 					             but it was
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNegated_AndInfoIsNotPatched_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.WithFileVersionInfo("*.dll", v => v.SetIsPatched(false));
+				// ReSharper disable once MethodHasAsyncOverload
+				fileSystem.File.WriteAllText("Acme.dll", "");
+				IFileVersionInfo info = fileSystem.FileVersionInfo.GetVersionInfo("Acme.dll");
+
+				async Task Act()
+				{
+					await That(info).DoesNotComplyWith(it => it.IsNotPatched());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that info
+					             is patched,
+					             but it was not
 					             """);
 			}
 		}

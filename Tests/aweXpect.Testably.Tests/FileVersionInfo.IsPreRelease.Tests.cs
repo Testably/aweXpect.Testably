@@ -66,6 +66,28 @@ public sealed partial class FileVersionInfo
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenNegated_AndInfoIsPreRelease_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.WithFileVersionInfo("*.dll", v => v.SetIsPreRelease(true));
+				// ReSharper disable once MethodHasAsyncOverload
+				fileSystem.File.WriteAllText("Acme.dll", "");
+				IFileVersionInfo info = fileSystem.FileVersionInfo.GetVersionInfo("Acme.dll");
+
+				async Task Act()
+				{
+					await That(info).DoesNotComplyWith(it => it.IsPreRelease());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that info
+					             is not pre-release,
+					             but it was
+					             """);
+			}
 		}
 	}
 
@@ -128,6 +150,28 @@ public sealed partial class FileVersionInfo
 					             Expected that info
 					             is not pre-release,
 					             but it was
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNegated_AndInfoIsNotPreRelease_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.WithFileVersionInfo("*.dll", v => v.SetIsPreRelease(false));
+				// ReSharper disable once MethodHasAsyncOverload
+				fileSystem.File.WriteAllText("Acme.dll", "");
+				IFileVersionInfo info = fileSystem.FileVersionInfo.GetVersionInfo("Acme.dll");
+
+				async Task Act()
+				{
+					await That(info).DoesNotComplyWith(it => it.IsNotPreRelease());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that info
+					             is pre-release,
+					             but it was not
 					             """);
 			}
 		}
