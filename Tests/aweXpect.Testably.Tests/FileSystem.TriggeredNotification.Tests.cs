@@ -321,6 +321,70 @@ public sealed partial class FileSystem
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WithExactlyOnce_WhenTriggeredThreeTimes_ShouldFailWithCountInMessage()
+			{
+				MockFileSystem sut = new();
+				using IAwaitableCallback<ChangeDescription> reg = sut.Notify.OnEvent(
+					_ => { },
+					c => c.ChangeType == WatcherChangeTypes.Created);
+				sut.File.WriteAllText("a.txt", "x");
+				sut.File.WriteAllText("b.txt", "x");
+				sut.File.WriteAllText("c.txt", "x");
+				ChangeDescription[] created = reg.Wait(3, TimeSpan.FromSeconds(30));
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification(c => c.ChangeType == WatcherChangeTypes.Created)
+						.Exactly(1.Times())
+						.Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage($$"""
+					               Expected that sut
+					               triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
+					               but it was triggered 3 times in [
+					                 {{created[0]}},
+					                 {{created[1]}},
+					                 {{created[2]}}
+					               ]
+					               """);
+			}
+
+			[Fact]
+			public async Task WithZeroTimeout_WhenNoPriorEvent_ShouldFailWithTimeoutMessage()
+			{
+				MockFileSystem sut = new();
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification().Within(TimeSpan.Zero);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that sut
+					             triggered a notification at least once within 0:00,
+					             but it was not triggered
+					             """);
+			}
+
+			[Fact]
+			public async Task WithNegativeTimeout_ShouldThrowArgumentOutOfRangeException()
+			{
+				MockFileSystem sut = new();
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification().Within(TimeSpan.FromMilliseconds(-1));
+				}
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("timeout").And
+					.WithMessage("The timeout must not be negative.*").AsWildcard();
+			}
 		}
 	}
 }

@@ -184,6 +184,28 @@ public sealed partial class FileSystemWatcher
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenEventArrivesAsynchronouslyWithinTimeout_ShouldFail()
+			{
+				MockFileSystem fs = new();
+				fs.InitializeIn("/x");
+				using IFileSystemWatcher sut = fs.FileSystemWatcher.New("/x");
+				sut.EnableRaisingEvents = true;
+				_ = Task.Run(async () =>
+				{
+					await Task.Delay(20);
+					fs.File.WriteAllText("foo.txt", "x");
+				});
+
+				async Task Act()
+				{
+					await That(sut).DidNotTrigger().Within(TimeSpan.FromSeconds(30));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("*did not trigger an event*but it was triggered*").AsWildcard();
+			}
 		}
 	}
 }
