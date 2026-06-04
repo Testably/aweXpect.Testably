@@ -1,4 +1,4 @@
-﻿# aweXpect.Testably
+# aweXpect.Testably
 
 [![Nuget](https://img.shields.io/nuget/v/aweXpect.Testably)](https://www.nuget.org/packages/aweXpect.Testably)
 
