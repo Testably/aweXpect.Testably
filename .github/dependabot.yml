@@ -38,3 +38,6 @@ updates:
       aweXpect:
         patterns:
           - "aweXpect*"
+      testably:
+        patterns:
+          - "testably.abstractions*"
