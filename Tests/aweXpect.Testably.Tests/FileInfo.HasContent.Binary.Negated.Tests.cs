@@ -46,7 +46,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).DoesNotComplyWith(it => it.HasContent(content));
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileInfo
 						             has content different from content,

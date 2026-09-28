@@ -22,7 +22,7 @@ public sealed partial class DriveInfo
 					await That(driveInfo).DoesNotComplyWith(d => d.HasVolumeLabel(actualLabel));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that driveInfo
 					              does not have volume label not equal to "{actualLabel}",

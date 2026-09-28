@@ -27,7 +27,7 @@ public sealed partial class FileSystem
 						await That(sut).HasFile(path).WithCreationTime(expectedTime);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has file '{path}' with creation time equal to {Formatter.Format(expectedTime)},
@@ -50,7 +50,7 @@ public sealed partial class FileSystem
 						await That(sut).HasFile(path).WithCreationTime(expectedTime);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has file '{path}' with creation time equal to {Formatter.Format(expectedTime)},
@@ -110,11 +110,11 @@ public sealed partial class FileSystem
 						await That(sut).DoesNotComplyWith(it => it.HasFile(path).WithCreationTime(expectedTime));
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              does not have file '{path}' with creation time not equal to {Formatter.Format(expectedTime)},
-						              but it did and it was {Formatter.Format(expectedTime)}
+						              but it did and was {Formatter.Format(expectedTime)}
 						              """);
 				}
 

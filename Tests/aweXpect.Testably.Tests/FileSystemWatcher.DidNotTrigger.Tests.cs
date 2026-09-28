@@ -48,7 +48,7 @@ public sealed partial class FileSystemWatcher
 					await That(sut).DidNotTrigger();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
 					               did not trigger an event,
@@ -93,7 +93,7 @@ public sealed partial class FileSystemWatcher
 						.Which(c => c.HasName("foo.txt"));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
 					               did not trigger an event which has name equal to "foo.txt",
@@ -157,7 +157,7 @@ public sealed partial class FileSystemWatcher
 					await That(sut).DidNotTrigger(c => c.Name == "foo.txt");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
 					               did not trigger an event matching c => c.Name == "foo.txt",
@@ -203,7 +203,7 @@ public sealed partial class FileSystemWatcher
 					await That(sut).DidNotTrigger().Within(TimeSpan.FromSeconds(30));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("*did not trigger an event*but it was triggered*").AsWildcard();
 			}
 		}

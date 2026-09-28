@@ -21,7 +21,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).HasLength(0);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             has length 0,
@@ -42,7 +42,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).HasLength(5);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             has length 5,

@@ -32,7 +32,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change).DoesNotHaveChangeType(WatcherChangeTypes.Created);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that change
 					             does not have change type Created,
@@ -66,7 +66,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change).HasChangeType(WatcherChangeTypes.Deleted);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that change
 					             has change type Deleted,
@@ -113,7 +113,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change!).HasChangeType(WatcherChangeTypes.Created);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that change
 					             has change type Created,
@@ -132,7 +132,7 @@ public sealed partial class ChangeDescriptionTests
 						.HasChangeType(WatcherChangeTypes.Created | WatcherChangeTypes.Deleted);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that change
 					             has change type Created, Deleted,

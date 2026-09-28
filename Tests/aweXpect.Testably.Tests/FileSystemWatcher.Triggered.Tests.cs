@@ -30,7 +30,7 @@ public sealed partial class FileSystemWatcher
 					await That(sut).Triggered().Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered an event at least once within 0:00.100,
@@ -78,7 +78,7 @@ public sealed partial class FileSystemWatcher
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered an event matching c => c.Name == "other.txt" at least once within 0:00.100,
@@ -106,7 +106,7 @@ public sealed partial class FileSystemWatcher
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered an event which has name equal to "other.txt" at least once within 0:00.100,
@@ -172,7 +172,7 @@ public sealed partial class FileSystemWatcher
 					await That(sut).Triggered().Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered an event at least once within 0:00.100,
@@ -221,7 +221,7 @@ public sealed partial class FileSystemWatcher
 					await That(sut!).Triggered().Within(TimeSpan.FromMilliseconds(10));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered an event at least once within 0:00.010,
@@ -270,7 +270,7 @@ public sealed partial class FileSystemWatcher
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered an event which has name equal to "other.txt" at least once within 0:00.100,
@@ -334,7 +334,7 @@ public sealed partial class FileSystemWatcher
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
 					               triggered an event matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
@@ -383,7 +383,7 @@ public sealed partial class FileSystemWatcher
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered an event matching c => c.Name == "other.txt" at least once within 0:00.100,
@@ -430,7 +430,7 @@ public sealed partial class FileSystemWatcher
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
 					               triggered an event matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
@@ -455,7 +455,7 @@ public sealed partial class FileSystemWatcher
 					await That(sut).Triggered().Within(TimeSpan.Zero);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered an event at least once within 0:00,

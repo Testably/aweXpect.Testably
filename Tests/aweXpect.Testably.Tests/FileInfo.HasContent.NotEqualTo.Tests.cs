@@ -46,7 +46,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().NotEqualTo(content);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileInfo
 						             has content different from content,
@@ -89,7 +89,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().NotEqualTo(content);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileInfo
 						             has content not equal to "bar",
@@ -134,7 +134,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().NotEqualTo("ba?").AsWildcard();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileInfo
 						             has content not matching "ba?",

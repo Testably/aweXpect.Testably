@@ -42,11 +42,11 @@ public sealed partial class FileVersionInfo
 					await That(info).HasOriginalFilename("Other.dll");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             has original filename equal to "Other.dll",
-					             but it was "Acme.dll" which differs at index 0:
+					             but it was "Acme.dll", which differs at index 0:
 					                ↓ (actual)
 					               "Acme.dll"
 					               "Other.dll"

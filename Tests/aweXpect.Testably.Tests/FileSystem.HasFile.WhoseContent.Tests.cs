@@ -23,7 +23,7 @@ public sealed partial class FileSystem
 						await That(sut).HasFile(path).WhoseContent(c => c.IsEmpty());
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has file '{path}' whose content is empty,

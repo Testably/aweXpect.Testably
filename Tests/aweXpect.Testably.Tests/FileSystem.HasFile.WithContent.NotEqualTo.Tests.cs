@@ -45,7 +45,7 @@ public sealed partial class FileSystem
 							await That(sut).HasFile(path).WithContent().NotEqualTo(content);
 						}
 
-						await That(Act).ThrowsException()
+						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
 							              has file '{path}' with content different from content,
@@ -86,7 +86,7 @@ public sealed partial class FileSystem
 							await That(sut).HasFile(path).WithContent().NotEqualTo(content);
 						}
 
-						await That(Act).ThrowsException()
+						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
 							              has file '{path}' with content not equal to "bar",
@@ -129,7 +129,7 @@ public sealed partial class FileSystem
 							await That(sut).HasFile(path).WithContent().NotEqualTo("ba?").AsWildcard();
 						}
 
-						await That(Act).ThrowsException()
+						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
 							              has file '{path}' with content not matching "ba?",

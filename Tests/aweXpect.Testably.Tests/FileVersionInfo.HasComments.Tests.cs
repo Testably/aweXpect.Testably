@@ -42,11 +42,11 @@ public sealed partial class FileVersionInfo
 					await That(info).HasComments("Other comment");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             has comments equal to "Other comment",
-					             but it was "Acme comment" which differs at index 0:
+					             but it was "Acme comment", which differs at index 0:
 					                ↓ (actual)
 					               "Acme comment"
 					               "Other comment"

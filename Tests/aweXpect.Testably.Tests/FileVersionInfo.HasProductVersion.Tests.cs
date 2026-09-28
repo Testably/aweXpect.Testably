@@ -42,11 +42,11 @@ public sealed partial class FileVersionInfo
 					await That(info).HasProductVersion("9.9");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             has product version equal to "9.9",
-					             but it was "1.2" which differs at index 0:
+					             but it was "1.2", which differs at index 0:
 					                ↓ (actual)
 					               "1.2"
 					               "9.9"

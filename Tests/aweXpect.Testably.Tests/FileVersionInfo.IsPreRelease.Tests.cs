@@ -42,7 +42,7 @@ public sealed partial class FileVersionInfo
 					await That(info).IsPreRelease();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is pre-release,
@@ -81,7 +81,7 @@ public sealed partial class FileVersionInfo
 					await That(info).DoesNotComplyWith(it => it.IsPreRelease());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is not pre-release,
@@ -145,7 +145,7 @@ public sealed partial class FileVersionInfo
 					await That(info).IsNotPreRelease();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is not pre-release,
@@ -167,7 +167,7 @@ public sealed partial class FileVersionInfo
 					await That(info).DoesNotComplyWith(it => it.IsNotPreRelease());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is pre-release,

@@ -15,7 +15,7 @@ public static partial class FileVersionInfoExtensions
 		this IThat<IFileVersionInfo> source,
 		string? expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IFileVersionInfo, IThat<IFileVersionInfo>>(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileVersionInfoConstraints.HasStringPropertyConstraint(

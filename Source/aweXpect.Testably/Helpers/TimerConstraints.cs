@@ -17,7 +17,7 @@ internal static class TimerConstraints
 		ExpectationGrammars grammars,
 		Quantifier quantifier,
 		NotificationTimeoutOptions options)
-		: ConstraintResult.WithValue<ITimerMock>(grammars),
+		: ConstraintResult.WithValue<ITimerMock>(it, grammars),
 			IAsyncContextConstraint<ITimerMock>
 	{
 		private long _executionCount;
@@ -105,11 +105,11 @@ internal static class TimerConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 				return;
 			}
 
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			if (_executionCount == 0)
 			{
 				stringBuilder.Append("not executed");

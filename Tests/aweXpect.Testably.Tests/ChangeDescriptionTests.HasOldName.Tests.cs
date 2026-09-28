@@ -31,7 +31,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(renamed!).HasOldName("other-name.txt");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("*has old name equal to \"other-name.txt\"*").AsWildcard();
 			}
 
@@ -45,7 +45,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change).HasOldName("foo.txt");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("*has old name equal to \"foo.txt\"*").AsWildcard();
 			}
 

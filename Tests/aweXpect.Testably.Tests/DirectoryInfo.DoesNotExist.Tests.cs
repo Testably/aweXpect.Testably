@@ -35,7 +35,7 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).DoesNotExist();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
 					             does not exist,

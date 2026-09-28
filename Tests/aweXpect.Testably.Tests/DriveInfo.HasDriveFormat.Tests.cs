@@ -37,11 +37,11 @@ public sealed partial class DriveInfo
 					await That(driveInfo).HasDriveFormat("FAT32");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that driveInfo
 					             has drive format equal to "FAT32",
-					             but it was "NTFS" which differs at index 0:
+					             but it was "NTFS", which differs at index 0:
 					                ↓ (actual)
 					               "NTFS"
 					               "FAT32"

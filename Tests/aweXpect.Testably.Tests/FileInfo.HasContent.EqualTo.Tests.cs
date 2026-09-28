@@ -28,7 +28,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().EqualTo(expected);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileInfo
 						             has content equal to expected,
@@ -71,11 +71,11 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().EqualTo("bar");
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileInfo
 						             has content equal to "bar",
-						             but it was "baz" which differs at index 2:
+						             but it was "baz", which differs at index 2:
 						                  ↓ (actual)
 						               "baz"
 						               "bar"
@@ -121,7 +121,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().EqualTo("b?").AsWildcard();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileInfo
 						             has content matching "b?",

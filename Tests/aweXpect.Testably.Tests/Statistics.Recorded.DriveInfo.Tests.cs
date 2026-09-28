@@ -52,7 +52,7 @@ public sealed partial class Statistics
 							.DriveInfo.New(n => n == "C:").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DriveInfo.New with driveName matching n => n == "C:" exactly once,
@@ -71,7 +71,7 @@ public sealed partial class Statistics
 							.DriveInfo.Wrap(_ => true).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DriveInfo.Wrap with driveInfo matching _ => true exactly once,
@@ -233,7 +233,7 @@ public sealed partial class Statistics
 							.DriveInfo["C:"].DriveFormat.Get().Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a get of DriveInfo["C:"].DriveFormat exactly once,

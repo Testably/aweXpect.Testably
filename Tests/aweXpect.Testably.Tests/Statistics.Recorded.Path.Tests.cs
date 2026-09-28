@@ -39,7 +39,7 @@ public sealed partial class Statistics
 							.Path.Combine(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.Combine with path1 matching p => p == "foo" exactly once,
@@ -58,7 +58,7 @@ public sealed partial class Statistics
 							.Path.Combine(path2: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.Combine with path2 matching p => p == "foo" exactly once,
@@ -77,7 +77,7 @@ public sealed partial class Statistics
 							.Path.Combine(path3: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.Combine with path3 matching p => p == "foo" exactly once,
@@ -96,7 +96,7 @@ public sealed partial class Statistics
 							.Path.Combine(path4: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.Combine with path4 matching p => p == "foo" exactly once,
@@ -167,7 +167,7 @@ public sealed partial class Statistics
 							.Path.GetFileName(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.GetFileName with path matching p => p == "foo" exactly once,
@@ -200,7 +200,7 @@ public sealed partial class Statistics
 						await That(fileSystem.Statistics).Recorded().Path.GetFileName().Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.GetFileName exactly once,
@@ -223,7 +223,7 @@ public sealed partial class Statistics
 							.Path.GetRelativePath(path: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.GetRelativePath with path matching p => p == "foo" exactly once,
@@ -242,7 +242,7 @@ public sealed partial class Statistics
 							.Path.GetRelativePath(r => r == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.GetRelativePath with relativeTo matching r => r == "foo" exactly once,
@@ -316,7 +316,7 @@ public sealed partial class Statistics
 							.Path.TrimEndingDirectorySeparator(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.TrimEndingDirectorySeparator with path matching p => p == "foo" exactly once,
@@ -372,7 +372,7 @@ public sealed partial class Statistics
 							.Path.ChangeExtension(extension: e => e == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.ChangeExtension with extension matching e => e == "foo" exactly once,
@@ -391,7 +391,7 @@ public sealed partial class Statistics
 							.Path.ChangeExtension(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.ChangeExtension with path matching p => p == "foo" exactly once,
@@ -428,7 +428,7 @@ public sealed partial class Statistics
 							.Path.GetDirectoryName(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.GetDirectoryName with path matching p => p == "foo" exactly once,
@@ -465,7 +465,7 @@ public sealed partial class Statistics
 							.Path.GetExtension(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.GetExtension with path matching p => p == "foo" exactly once,
@@ -502,7 +502,7 @@ public sealed partial class Statistics
 							.Path.GetFileNameWithoutExtension(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.GetFileNameWithoutExtension with path matching p => p == "foo" exactly once,
@@ -539,7 +539,7 @@ public sealed partial class Statistics
 							.Path.GetFullPath(basePath: b => b == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.GetFullPath with basePath matching b => b == "foo" exactly once,
@@ -558,7 +558,7 @@ public sealed partial class Statistics
 							.Path.GetFullPath(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.GetFullPath with path matching p => p == "foo" exactly once,
@@ -612,7 +612,7 @@ public sealed partial class Statistics
 						await That(fileSystem.Statistics).Recorded().Path.GetInvalidPathChars().Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.GetInvalidPathChars exactly once,
@@ -649,7 +649,7 @@ public sealed partial class Statistics
 							.Path.GetPathRoot(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.GetPathRoot with path matching p => p == "foo" exactly once,
@@ -724,7 +724,7 @@ public sealed partial class Statistics
 							.Path.HasExtension(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.HasExtension with path matching p => p == "foo" exactly once,
@@ -761,7 +761,7 @@ public sealed partial class Statistics
 							.Path.IsPathRooted(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.IsPathRooted with path matching p => p == "foo" exactly once,
@@ -799,7 +799,7 @@ public sealed partial class Statistics
 							.Path.EndsInDirectorySeparator(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.EndsInDirectorySeparator with path matching p => p == "foo" exactly once,
@@ -836,7 +836,7 @@ public sealed partial class Statistics
 							.Path.Exists(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.Exists with path matching p => p == "foo" exactly once,
@@ -874,7 +874,7 @@ public sealed partial class Statistics
 							.Path.IsPathFullyQualified(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.IsPathFullyQualified with path matching p => p == "foo" exactly once,
@@ -926,7 +926,7 @@ public sealed partial class Statistics
 							.Path.Join(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.Join with path1 matching p => p == "foo" exactly once,
@@ -945,7 +945,7 @@ public sealed partial class Statistics
 							.Path.Join(path2: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.Join with path2 matching p => p == "foo" exactly once,
@@ -964,7 +964,7 @@ public sealed partial class Statistics
 							.Path.Join(path3: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.Join with path3 matching p => p == "foo" exactly once,
@@ -983,7 +983,7 @@ public sealed partial class Statistics
 							.Path.Join(path4: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Path.Join with path4 matching p => p == "foo" exactly once,

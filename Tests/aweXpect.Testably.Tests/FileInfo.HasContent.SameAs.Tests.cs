@@ -28,11 +28,11 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().SameAs(expectedPath);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that fileInfo
 						              has the same content as file '{fullExpectedPath}',
-						              but it was "baz" which differs at index 2:
+						              but it was "baz", which differs at index 2:
 						                   ↓ (actual)
 						                "baz"
 						                "bar"
@@ -59,7 +59,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().SameAs(expectedPath);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that fileInfo
 						              has the same content as file '{fullExpectedPath}',
@@ -110,7 +110,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().SameAs(expectedPath).AsWildcard();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that fileInfo
 						              has the same content as file '{fullExpectedPath}',

@@ -31,7 +31,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(renamed!).HasOldPath("totally-different-path");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("*has old path equal to \"totally-different-path\"*").AsWildcard();
 			}
 
@@ -45,7 +45,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change).HasOldPath("foo.txt");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("*has old path equal to \"foo.txt\"*").AsWildcard();
 			}
 

@@ -22,11 +22,11 @@ public sealed partial class FileInfo
 					await That(fileInfo).HasExtension(".md");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             has extension equal to ".md",
-					             but it was ".txt" which differs at index 1:
+					             but it was ".txt", which differs at index 1:
 					                 ↓ (actual)
 					               ".txt"
 					               ".md"
@@ -63,7 +63,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).DoesNotComplyWith(f => f.HasExtension(".txt"));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             does not have extension not equal to ".txt",

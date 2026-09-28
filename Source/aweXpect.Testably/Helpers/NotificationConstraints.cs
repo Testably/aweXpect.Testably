@@ -27,7 +27,7 @@ internal static class NotificationConstraints
 		NotificationTimeoutOptions options,
 		List<TChange> matches,
 		bool exitOnFirstMatch = false)
-		: ConstraintResult.WithValue<TSubject>(grammars),
+		: ConstraintResult.WithValue<TSubject>(it, grammars),
 			IAsyncContextConstraint<TSubject>
 		where TSubject : class
 		where TChange : ChangeDescription
@@ -121,7 +121,7 @@ internal static class NotificationConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 				return;
 			}
 
@@ -131,7 +131,7 @@ internal static class NotificationConstraints
 				snapshot = matches.ToArray();
 			}
 
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			if (snapshot.Length == 0)
 			{
 				stringBuilder.Append("not triggered");
@@ -241,7 +241,7 @@ internal static class NotificationConstraints
 		string it,
 		ExpectationGrammars grammars,
 		WatcherChangeTypes expected)
-		: ConstraintResult.WithValue<TChange>(grammars),
+		: ConstraintResult.WithValue<TChange>(it, grammars),
 			IValueConstraint<TChange>
 		where TChange : ChangeDescription
 	{
@@ -261,11 +261,11 @@ internal static class NotificationConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was ").Append(Actual.ChangeType);
+				stringBuilder.Append(It).Append(" was ").Append(Actual.ChangeType);
 			}
 		}
 
@@ -276,11 +276,11 @@ internal static class NotificationConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did");
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}
@@ -289,7 +289,7 @@ internal static class NotificationConstraints
 		string it,
 		ExpectationGrammars grammars,
 		FileSystemTypes expected)
-		: ConstraintResult.WithValue<TChange>(grammars),
+		: ConstraintResult.WithValue<TChange>(it, grammars),
 			IValueConstraint<TChange>
 		where TChange : ChangeDescription
 	{
@@ -309,11 +309,11 @@ internal static class NotificationConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was ").Append(Actual.FileSystemType);
+				stringBuilder.Append(It).Append(" was ").Append(Actual.FileSystemType);
 			}
 		}
 
@@ -324,11 +324,11 @@ internal static class NotificationConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did");
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}
@@ -337,7 +337,7 @@ internal static class NotificationConstraints
 		string it,
 		ExpectationGrammars grammars,
 		NotifyFilters expected)
-		: ConstraintResult.WithValue<TChange>(grammars),
+		: ConstraintResult.WithValue<TChange>(it, grammars),
 			IValueConstraint<TChange>
 		where TChange : ChangeDescription
 	{
@@ -357,11 +357,11 @@ internal static class NotificationConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was ").Append(Actual.NotifyFilters);
+				stringBuilder.Append(It).Append(" was ").Append(Actual.NotifyFilters);
 			}
 		}
 
@@ -372,11 +372,11 @@ internal static class NotificationConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did");
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}
@@ -388,7 +388,7 @@ internal static class NotificationConstraints
 		StringEqualityOptions options,
 		string? expected,
 		string propertyName)
-		: ConstraintResult.WithValue<TChange>(grammars),
+		: ConstraintResult.WithValue<TChange>(it, grammars),
 			IAsyncConstraint<TChange>
 		where TChange : ChangeDescription
 	{
@@ -417,11 +417,11 @@ internal static class NotificationConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(it, Grammars, _actualValue, expected));
+				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualValue, expected));
 			}
 		}
 
@@ -433,11 +433,11 @@ internal static class NotificationConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did");
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}

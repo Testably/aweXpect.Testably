@@ -21,7 +21,7 @@ public sealed partial class FileSystem
 					await That(sut).DoesNotHaveFile(path);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that sut
 					              does not have file '{path}',

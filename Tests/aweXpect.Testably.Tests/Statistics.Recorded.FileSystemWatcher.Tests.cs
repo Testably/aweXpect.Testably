@@ -23,7 +23,7 @@ public sealed partial class Statistics
 							.FileSystemWatcher.New(filter: f => f == "*.txt").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileSystemWatcher.New with filter matching f => f == "*.txt" exactly once,
@@ -42,7 +42,7 @@ public sealed partial class Statistics
 							.FileSystemWatcher.New(p => p == "a").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileSystemWatcher.New with path matching p => p == "a" exactly once,
@@ -79,7 +79,7 @@ public sealed partial class Statistics
 							.FileSystemWatcher.Wrap(_ => true).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileSystemWatcher.Wrap with fileSystemWatcher matching _ => true exactly once,
@@ -163,7 +163,7 @@ public sealed partial class Statistics
 							.WaitForChanged(c => c == WatcherChangeTypes.All).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileSystemWatcher["watch"].WaitForChanged with changeType matching c => c == WatcherChangeTypes.All exactly once,
@@ -183,7 +183,7 @@ public sealed partial class Statistics
 							.WaitForChanged(timeout: t => t == 0).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileSystemWatcher["watch"].WaitForChanged with timeout matching t => t == 0 exactly once,
@@ -386,7 +386,7 @@ public sealed partial class Statistics
 							.FileSystemWatcher["watch"].EnableRaisingEvents.Set().Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a set of FileSystemWatcher["watch"].EnableRaisingEvents exactly once,
@@ -406,7 +406,7 @@ public sealed partial class Statistics
 							.FileSystemWatcher["watch"].EndInit().Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileSystemWatcher["watch"].EndInit exactly once,
@@ -426,7 +426,7 @@ public sealed partial class Statistics
 							.FileSystemWatcher["watch"].Path.Get().Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a get of FileSystemWatcher["watch"].Path exactly once,
@@ -447,7 +447,7 @@ public sealed partial class Statistics
 							.WaitForChanged(timeout: t => t == 0).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileSystemWatcher["watch"].WaitForChanged with timeout matching t => t == 0 exactly once,

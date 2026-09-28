@@ -26,7 +26,7 @@ public sealed partial class FileInfo
 					.WithMessage("""
 					             Expected that fileInfo
 					             has content equal to "bar",
-					             but it was "bar2" with a length of 4 which is longer than the expected length of 3 and has superfluous:
+					             but it was "bar2" with a length of 4, which is longer than the expected length of 3 and has superfluous:
 					               "2"
 
 					             File content:
@@ -88,7 +88,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).HasContent(expected);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             has content equal to expected,
@@ -126,7 +126,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).HasContent(expected);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             has content equal to expected,
@@ -151,7 +151,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).HasContent("b?").AsWildcard();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             has content matching "b?" as wildcard,

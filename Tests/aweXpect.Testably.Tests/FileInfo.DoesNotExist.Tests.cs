@@ -35,7 +35,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).DoesNotExist();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             does not exist,

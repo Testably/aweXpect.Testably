@@ -23,7 +23,7 @@ public sealed partial class Statistics
 							.Directory.CreateDirectory(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.CreateDirectory with path matching p => p == "foo" exactly once,
@@ -57,7 +57,7 @@ public sealed partial class Statistics
 							.Directory.CreateDirectory(p => p == "other").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.CreateDirectory with path matching p => p == "other" exactly once,
@@ -95,7 +95,7 @@ public sealed partial class Statistics
 							.Directory.CreateDirectory(unixCreateMode: _ => true).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.CreateDirectory with unixCreateMode matching _ => true exactly once,
@@ -118,7 +118,7 @@ public sealed partial class Statistics
 							.Directory.Delete(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.Delete with path matching p => p == "foo" exactly once,
@@ -137,7 +137,7 @@ public sealed partial class Statistics
 							.Directory.Delete(recursive: b => b).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.Delete with recursive matching b => b exactly once,
@@ -193,7 +193,7 @@ public sealed partial class Statistics
 							.Directory.EnumerateDirectories(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.EnumerateDirectories with path matching p => p == "foo" exactly once,
@@ -212,7 +212,7 @@ public sealed partial class Statistics
 							.Directory.EnumerateDirectories(searchOption: o => o == SearchOption.AllDirectories).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.EnumerateDirectories with searchOption matching o => o == SearchOption.AllDirectories exactly once,
@@ -231,7 +231,7 @@ public sealed partial class Statistics
 							.Directory.EnumerateDirectories(searchPattern: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.EnumerateDirectories with searchPattern matching p => p == "foo" exactly once,
@@ -268,7 +268,7 @@ public sealed partial class Statistics
 							.Directory.EnumerateDirectories(enumerationOptions: o => o != null).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.EnumerateDirectories with enumerationOptions matching o => o != null exactly once,
@@ -291,7 +291,7 @@ public sealed partial class Statistics
 							.Directory.EnumerateFiles(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.EnumerateFiles with path matching p => p == "foo" exactly once,
@@ -310,7 +310,7 @@ public sealed partial class Statistics
 							.Directory.EnumerateFiles(searchPattern: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.EnumerateFiles with searchPattern matching p => p == "foo" exactly once,
@@ -365,7 +365,7 @@ public sealed partial class Statistics
 							.Directory.GetFiles(enumerationOptions: o => o != null).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetFiles with enumerationOptions matching o => o != null exactly once,
@@ -385,7 +385,7 @@ public sealed partial class Statistics
 							.Directory.GetFiles(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetFiles with path matching p => p == "foo" exactly once,
@@ -404,7 +404,7 @@ public sealed partial class Statistics
 							.Directory.GetFiles(searchOption: o => o == SearchOption.AllDirectories).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetFiles with searchOption matching o => o == SearchOption.AllDirectories exactly once,
@@ -423,7 +423,7 @@ public sealed partial class Statistics
 							.Directory.GetFiles(searchPattern: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetFiles with searchPattern matching p => p == "foo" exactly once,
@@ -446,7 +446,7 @@ public sealed partial class Statistics
 							.Directory.EnumerateFileSystemEntries(enumerationOptions: o => o != null).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.EnumerateFileSystemEntries with enumerationOptions matching o => o != null exactly once,
@@ -466,7 +466,7 @@ public sealed partial class Statistics
 							.Directory.EnumerateFileSystemEntries(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.EnumerateFileSystemEntries with path matching p => p == "foo" exactly once,
@@ -485,7 +485,7 @@ public sealed partial class Statistics
 							.Directory.EnumerateFileSystemEntries(searchOption: o => o == SearchOption.AllDirectories).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.EnumerateFileSystemEntries with searchOption matching o => o == SearchOption.AllDirectories exactly once,
@@ -504,7 +504,7 @@ public sealed partial class Statistics
 							.Directory.EnumerateFileSystemEntries(searchPattern: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.EnumerateFileSystemEntries with searchPattern matching p => p == "foo" exactly once,
@@ -559,7 +559,7 @@ public sealed partial class Statistics
 							.Directory.Exists(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.Exists with path matching p => p == "foo" exactly once,
@@ -596,7 +596,7 @@ public sealed partial class Statistics
 							.Directory.GetCreationTime(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetCreationTime with path matching p => p == "foo" exactly once,
@@ -634,7 +634,7 @@ public sealed partial class Statistics
 							.Directory.GetCreationTimeUtc(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetCreationTimeUtc with path matching p => p == "foo" exactly once,
@@ -673,7 +673,7 @@ public sealed partial class Statistics
 							.Directory.GetDirectories(enumerationOptions: o => o != null).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetDirectories with enumerationOptions matching o => o != null exactly once,
@@ -693,7 +693,7 @@ public sealed partial class Statistics
 							.Directory.GetDirectories(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetDirectories with path matching p => p == "foo" exactly once,
@@ -712,7 +712,7 @@ public sealed partial class Statistics
 							.Directory.GetDirectories(searchOption: o => o == SearchOption.AllDirectories).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetDirectories with searchOption matching o => o == SearchOption.AllDirectories exactly once,
@@ -731,7 +731,7 @@ public sealed partial class Statistics
 							.Directory.GetDirectories(searchPattern: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetDirectories with searchPattern matching p => p == "foo" exactly once,
@@ -769,7 +769,7 @@ public sealed partial class Statistics
 							.Directory.GetDirectoryRoot(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetDirectoryRoot with path matching p => p == "foo" exactly once,
@@ -788,7 +788,7 @@ public sealed partial class Statistics
 							.Directory.GetDirectoryRoot().Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetDirectoryRoot exactly once,
@@ -825,7 +825,7 @@ public sealed partial class Statistics
 							.Directory.GetFileSystemEntries(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetFileSystemEntries with path matching p => p == "foo" exactly once,
@@ -844,7 +844,7 @@ public sealed partial class Statistics
 							.Directory.GetFileSystemEntries(searchPattern: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetFileSystemEntries with searchPattern matching p => p == "foo" exactly once,
@@ -882,7 +882,7 @@ public sealed partial class Statistics
 							.Directory.GetLastAccessTime(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetLastAccessTime with path matching p => p == "foo" exactly once,
@@ -920,7 +920,7 @@ public sealed partial class Statistics
 							.Directory.GetLastAccessTimeUtc(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetLastAccessTimeUtc with path matching p => p == "foo" exactly once,
@@ -958,7 +958,7 @@ public sealed partial class Statistics
 							.Directory.GetLastWriteTime(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetLastWriteTime with path matching p => p == "foo" exactly once,
@@ -980,7 +980,7 @@ public sealed partial class Statistics
 							.Directory.GetLastWriteTimeUtc(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetLastWriteTimeUtc with path matching p => p == "foo" exactly once,
@@ -1002,7 +1002,7 @@ public sealed partial class Statistics
 							.Directory.GetParent(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.GetParent with path matching p => p == "foo" exactly once,
@@ -1024,7 +1024,7 @@ public sealed partial class Statistics
 							.Directory.Move(destDirName: p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.Move with destDirName matching p => p == "foo" exactly once,
@@ -1043,7 +1043,7 @@ public sealed partial class Statistics
 							.Directory.Move(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.Move with sourceDirName matching p => p == "foo" exactly once,
@@ -1065,7 +1065,7 @@ public sealed partial class Statistics
 							.Directory.SetCreationTime(creationTime: t => t.Year == 2000).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.SetCreationTime with creationTime matching t => t.Year == 2000 exactly once,
@@ -1084,7 +1084,7 @@ public sealed partial class Statistics
 							.Directory.SetCreationTime(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.SetCreationTime with path matching p => p == "foo" exactly once,
@@ -1106,7 +1106,7 @@ public sealed partial class Statistics
 							.Directory.SetCreationTimeUtc(creationTimeUtc: t => t.Year == 2000).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.SetCreationTimeUtc with creationTimeUtc matching t => t.Year == 2000 exactly once,
@@ -1125,7 +1125,7 @@ public sealed partial class Statistics
 							.Directory.SetCreationTimeUtc(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.SetCreationTimeUtc with path matching p => p == "foo" exactly once,
@@ -1147,7 +1147,7 @@ public sealed partial class Statistics
 							.Directory.SetCurrentDirectory(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.SetCurrentDirectory with path matching p => p == "foo" exactly once,
@@ -1169,7 +1169,7 @@ public sealed partial class Statistics
 							.Directory.SetLastAccessTime(lastAccessTime: t => t.Year == 2000).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.SetLastAccessTime with lastAccessTime matching t => t.Year == 2000 exactly once,
@@ -1188,7 +1188,7 @@ public sealed partial class Statistics
 							.Directory.SetLastAccessTime(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.SetLastAccessTime with path matching p => p == "foo" exactly once,
@@ -1210,7 +1210,7 @@ public sealed partial class Statistics
 							.Directory.SetLastAccessTimeUtc(lastAccessTimeUtc: t => t.Year == 2000).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.SetLastAccessTimeUtc with lastAccessTimeUtc matching t => t.Year == 2000 exactly once,
@@ -1229,7 +1229,7 @@ public sealed partial class Statistics
 							.Directory.SetLastAccessTimeUtc(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.SetLastAccessTimeUtc with path matching p => p == "foo" exactly once,
@@ -1251,7 +1251,7 @@ public sealed partial class Statistics
 							.Directory.SetLastWriteTime(lastWriteTime: t => t.Year == 2000).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.SetLastWriteTime with lastWriteTime matching t => t.Year == 2000 exactly once,
@@ -1270,7 +1270,7 @@ public sealed partial class Statistics
 							.Directory.SetLastWriteTime(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.SetLastWriteTime with path matching p => p == "foo" exactly once,
@@ -1292,7 +1292,7 @@ public sealed partial class Statistics
 							.Directory.SetLastWriteTimeUtc(lastWriteTimeUtc: t => t.Year == 2000).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.SetLastWriteTimeUtc with lastWriteTimeUtc matching t => t.Year == 2000 exactly once,
@@ -1311,7 +1311,7 @@ public sealed partial class Statistics
 							.Directory.SetLastWriteTimeUtc(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.SetLastWriteTimeUtc with path matching p => p == "foo" exactly once,
@@ -1334,7 +1334,7 @@ public sealed partial class Statistics
 							.Directory.ResolveLinkTarget(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.ResolveLinkTarget with linkPath matching p => p == "foo" exactly once,
@@ -1353,7 +1353,7 @@ public sealed partial class Statistics
 							.Directory.ResolveLinkTarget(returnFinalTarget: b => b).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.ResolveLinkTarget with returnFinalTarget matching b => b exactly once,
@@ -1411,7 +1411,7 @@ public sealed partial class Statistics
 							.Directory.CreateSymbolicLink(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.CreateSymbolicLink with path matching p => p == "foo" exactly once,
@@ -1430,7 +1430,7 @@ public sealed partial class Statistics
 							.Directory.CreateSymbolicLink(pathToTarget: t => t == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.CreateSymbolicLink with pathToTarget matching t => t == "foo" exactly once,
@@ -1485,7 +1485,7 @@ public sealed partial class Statistics
 							.Directory.CreateTempSubdirectory(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to Directory.CreateTempSubdirectory with prefix matching p => p == "foo" exactly once,

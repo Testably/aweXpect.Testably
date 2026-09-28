@@ -25,7 +25,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).HasLastAccessTime(expected);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that fileInfo
 					              has last access time equal to {Formatter.Format(expected)},
@@ -66,7 +66,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).DoesNotComplyWith(f => f.HasLastAccessTime(expected));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that fileInfo
 					              does not have last access time equal to {Formatter.Format(expected)},

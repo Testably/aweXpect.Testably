@@ -42,11 +42,11 @@ public sealed partial class FileVersionInfo
 					await That(info).HasPrivateBuild("Contoso");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             has private build equal to "Contoso",
-					             but it was "Acme" which differs at index 0:
+					             but it was "Acme", which differs at index 0:
 					                ↓ (actual)
 					               "Acme"
 					               "Contoso"

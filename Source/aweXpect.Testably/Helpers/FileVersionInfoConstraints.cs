@@ -18,7 +18,7 @@ internal static class FileVersionInfoConstraints
 		StringEqualityOptions options,
 		string? expected,
 		string propertyName)
-		: ConstraintResult.WithValue<IFileVersionInfo>(grammars),
+		: ConstraintResult.WithValue<IFileVersionInfo>(it, grammars),
 			IAsyncConstraint<IFileVersionInfo>
 	{
 		private string? _actualValue;
@@ -45,11 +45,11 @@ internal static class FileVersionInfoConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(it, Grammars, _actualValue, expected));
+				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualValue, expected));
 			}
 		}
 
@@ -61,11 +61,11 @@ internal static class FileVersionInfoConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did");
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}
@@ -76,7 +76,7 @@ internal static class FileVersionInfoConstraints
 		Func<IFileVersionInfo, int> selector,
 		int expected,
 		string propertyName)
-		: ConstraintResult.WithValue<IFileVersionInfo>(grammars),
+		: ConstraintResult.WithValue<IFileVersionInfo>(it, grammars),
 			IValueConstraint<IFileVersionInfo>
 	{
 		private int _actualValue;
@@ -102,11 +102,11 @@ internal static class FileVersionInfoConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was ").Append(_actualValue);
+				stringBuilder.Append(It).Append(" was ").Append(_actualValue);
 			}
 		}
 
@@ -117,11 +117,11 @@ internal static class FileVersionInfoConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did");
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}
@@ -132,7 +132,7 @@ internal static class FileVersionInfoConstraints
 		Func<IFileVersionInfo, bool> selector,
 		string normalExpectation,
 		string negatedExpectation)
-		: ConstraintResult.WithValue<IFileVersionInfo>(grammars),
+		: ConstraintResult.WithValue<IFileVersionInfo>(it, grammars),
 			IValueConstraint<IFileVersionInfo>
 	{
 		public ConstraintResult IsMetBy(IFileVersionInfo actual)
@@ -155,11 +155,11 @@ internal static class FileVersionInfoConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was not");
+				stringBuilder.Append(It).Append(" was not");
 			}
 		}
 
@@ -170,11 +170,11 @@ internal static class FileVersionInfoConstraints
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was");
+				stringBuilder.Append(It).Append(" was");
 			}
 		}
 	}

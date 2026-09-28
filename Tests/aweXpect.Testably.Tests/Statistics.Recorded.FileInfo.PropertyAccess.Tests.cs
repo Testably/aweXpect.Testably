@@ -38,7 +38,7 @@ public sealed partial class Statistics
 						.FileInfo["foo.txt"].IsReadOnly.Get().Never();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
 					             recorded no get of FileInfo["foo.txt"].IsReadOnly,
@@ -60,7 +60,7 @@ public sealed partial class Statistics
 						.FileInfo["foo.txt"].IsReadOnly.Set().Never();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
 					             recorded no set of FileInfo["foo.txt"].IsReadOnly,
@@ -97,7 +97,7 @@ public sealed partial class Statistics
 						=> it.Recorded().FileInfo["foo.txt"].IsReadOnly.Get().Never());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
 					             recorded at least one get of FileInfo["foo.txt"].IsReadOnly,
@@ -117,7 +117,7 @@ public sealed partial class Statistics
 						=> it.Recorded().FileInfo["foo.txt"].IsReadOnly.Set().Never());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
 					             recorded at least one set of FileInfo["foo.txt"].IsReadOnly,
@@ -139,7 +139,7 @@ public sealed partial class Statistics
 						=> it.Recorded().FileInfo["foo.txt"].IsReadOnly.Get().Once());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
 					             did not record a get of FileInfo["foo.txt"].IsReadOnly exactly once,

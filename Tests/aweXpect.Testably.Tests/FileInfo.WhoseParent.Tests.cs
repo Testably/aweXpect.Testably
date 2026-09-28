@@ -71,11 +71,11 @@ public sealed partial class FileInfo
 					await That(fileInfo).HasName("today.log").And.WhoseParent.HasName("wrong");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             has name equal to "today.log" whose parent has name equal to "wrong",
-					             but it was "logs" which differs at index 0:
+					             but it was "logs", which differs at index 0:
 					                ↓ (actual)
 					               "logs"
 					               "wrong"
@@ -84,7 +84,7 @@ public sealed partial class FileInfo
 			}
 
 			[Fact]
-			public async Task OnRootFile_ShouldThrow()
+			public async Task OnRootFile_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
 				IFileInfo fileInfo = fileSystem.FileInfo.New(
@@ -95,8 +95,15 @@ public sealed partial class FileInfo
 					await That(fileInfo).WhoseParent.IsNotEmpty();
 				}
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Cannot assert on the parent directory of the file because it has none.");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that fileInfo
+					             is not empty,
+					             but it did throw an InvalidOperationException:
+					               Cannot assert on the parent directory of the file because it has none.
+					             """).And
+					.WithInner<InvalidOperationException>(inner => inner
+						.HasMessage("Cannot assert on the parent directory of the file because it has none."));
 			}
 		}
 	}

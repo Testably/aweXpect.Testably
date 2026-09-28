@@ -24,7 +24,7 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).HasLastWriteTime(expected);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that dirInfo
 					              has last write time equal to {Formatter.Format(expected)},
@@ -63,7 +63,7 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).DoesNotComplyWith(d => d.HasLastWriteTime(expected));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that dirInfo
 					              does not have last write time equal to {Formatter.Format(expected)},

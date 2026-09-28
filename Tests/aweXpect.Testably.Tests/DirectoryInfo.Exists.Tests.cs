@@ -20,7 +20,7 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).Exists();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
 					             exists,

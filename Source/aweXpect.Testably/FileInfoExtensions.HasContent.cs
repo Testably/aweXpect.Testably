@@ -23,7 +23,7 @@ public static partial class FileInfoExtensions
 	public static StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> HasContent(this IThat<IFileInfo> source,
 		string? expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
 				=> new HasContentValueConstraint(
@@ -56,7 +56,7 @@ public static partial class FileInfoExtensions
 		ExpectationGrammars grammars,
 		string? expected,
 		StringEqualityOptions options)
-		: ConstraintResult.WithValue<IFileInfo>(grammars),
+		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
 			IAsyncConstraint<IFileInfo>
 	{
 		private string? _fileContent;
@@ -103,11 +103,11 @@ public static partial class FileInfoExtensions
 		{
 			if (Actual?.Exists != true)
 			{
-				stringBuilder.Append(it).Append(" did not exist");
+				stringBuilder.Append(It).Append(" did not exist");
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(it, Grammars, _fileContent, expected));
+				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, expected));
 			}
 		}
 
@@ -123,7 +123,7 @@ public static partial class FileInfoExtensions
 		ExpectationGrammars grammars,
 		byte[] expected,
 		string expectedExpression)
-		: ConstraintResult.WithValue<IFileInfo>(grammars),
+		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
 			IValueConstraint<IFileInfo>
 	{
 		public ConstraintResult IsMetBy(IFileInfo actual)
@@ -156,11 +156,11 @@ public static partial class FileInfoExtensions
 		{
 			if (Actual?.Exists != true)
 			{
-				stringBuilder.Append(it).Append(" did not exist");
+				stringBuilder.Append(It).Append(" did not exist");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" differed");
+				stringBuilder.Append(It).Append(" differed");
 			}
 		}
 
@@ -177,6 +177,6 @@ public static partial class FileInfoExtensions
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" did match");
+			=> stringBuilder.Append(It).Append(" did match");
 	}
 }

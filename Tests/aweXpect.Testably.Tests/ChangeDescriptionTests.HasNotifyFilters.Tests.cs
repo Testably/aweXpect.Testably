@@ -33,7 +33,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change).DoesNotHaveNotifyFilters(present);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that change
 					              does not have notify filters {present},
@@ -99,7 +99,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change).HasNotifyFilters(NotifyFilters.Security);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that change
 					              has notify filters Security,
@@ -117,7 +117,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change!).HasNotifyFilters(NotifyFilters.FileName);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that change
 					             has notify filters FileName,
@@ -136,7 +136,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change).HasNotifyFilters(present | NotifyFilters.Security);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("*has notify filters*Security*but it was*").AsWildcard();
 			}
 		}

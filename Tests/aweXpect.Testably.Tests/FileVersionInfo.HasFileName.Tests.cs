@@ -40,7 +40,7 @@ public sealed partial class FileVersionInfo
 					await That(info).HasFileName("Other.dll");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("*has file name equal to \"Other.dll\"*").AsWildcard();
 			}
 

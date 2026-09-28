@@ -26,16 +26,16 @@ public sealed partial class FileInfo
 							.WithFiles(files => files.All().ComplyWith(file => file.HasContent(expected)));
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has directory 'foo' whose files have content equal to expected for all items,
-						              but not all were
+						              but none of at least 1 did
 
 						              Not matching items:
 						              [
 						                foo{Path.DirectorySeparatorChar}bar.txt,
-						                (… and maybe others)
+						                (… and maybe more)
 						              ]
 
 						              Collection:
@@ -95,16 +95,16 @@ public sealed partial class FileInfo
 								=> file.DoesNotComplyWith(it => it.HasContent(content))));
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has directory 'foo' whose files have content different from content for all items,
-						              but not all were
+						              but none of at least 1 did
 
 						              Not matching items:
 						              [
 						                foo{Path.DirectorySeparatorChar}bar.txt,
-						                (… and maybe others)
+						                (… and maybe more)
 						              ]
 
 						              Collection:
