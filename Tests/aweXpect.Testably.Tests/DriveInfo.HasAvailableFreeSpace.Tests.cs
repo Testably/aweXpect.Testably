@@ -37,7 +37,7 @@ public sealed partial class DriveInfo
 					await That(driveInfo).HasAvailableFreeSpace(99);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that driveInfo
 					             has available free space 99,

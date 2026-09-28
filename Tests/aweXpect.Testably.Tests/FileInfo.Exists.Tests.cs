@@ -20,7 +20,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).Exists();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             exists,

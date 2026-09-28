@@ -40,7 +40,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).IsNotReadOnly();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             is not read-only,

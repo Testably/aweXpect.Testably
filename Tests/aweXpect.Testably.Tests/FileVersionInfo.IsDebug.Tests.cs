@@ -59,7 +59,7 @@ public sealed partial class FileVersionInfo
 					await That(info).IsDebug();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is debug,
@@ -81,7 +81,7 @@ public sealed partial class FileVersionInfo
 					await That(info).DoesNotComplyWith(it => it.IsDebug());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is not debug,
@@ -128,7 +128,7 @@ public sealed partial class FileVersionInfo
 					await That(info).IsNotDebug();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is not debug,
@@ -167,7 +167,7 @@ public sealed partial class FileVersionInfo
 					await That(info).DoesNotComplyWith(it => it.IsNotDebug());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is debug,

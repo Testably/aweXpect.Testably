@@ -20,7 +20,7 @@ public static partial class DriveInfoExtensions
 			source);
 
 	private sealed class HasAvailableFreeSpaceConstraint(string it, ExpectationGrammars grammars, long expected)
-		: ConstraintResult.WithValue<IDriveInfo>(grammars),
+		: ConstraintResult.WithValue<IDriveInfo>(it, grammars),
 			IValueConstraint<IDriveInfo>
 	{
 		private long _actualAvailableFreeSpace;
@@ -46,11 +46,11 @@ public static partial class DriveInfoExtensions
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was ").Append(_actualAvailableFreeSpace);
+				stringBuilder.Append(It).Append(" was ").Append(_actualAvailableFreeSpace);
 			}
 		}
 
@@ -61,11 +61,11 @@ public static partial class DriveInfoExtensions
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did");
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}

@@ -22,7 +22,7 @@ public sealed partial class DriveInfo
 					await That(driveInfo).DoesNotComplyWith(d => d.HasTotalFreeSpace(2048));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that driveInfo
 					             does not have total free space 2048,

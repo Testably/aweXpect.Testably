@@ -23,7 +23,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).IsReadOnly();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             is read-only,
@@ -42,7 +42,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).IsReadOnly();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             is read-only,

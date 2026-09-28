@@ -42,11 +42,11 @@ public sealed partial class FileVersionInfo
 					await That(info).HasProductName("Rocket");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             has product name equal to "Rocket",
-					             but it was "Anvil" which differs at index 0:
+					             but it was "Anvil", which differs at index 0:
 					                ↓ (actual)
 					               "Anvil"
 					               "Rocket"

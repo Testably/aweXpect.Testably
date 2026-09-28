@@ -34,7 +34,7 @@ public sealed partial class Statistics
 						=> it.Recorded().Directory.CreateDirectory().Never());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
 					             recorded at least one call to Directory.CreateDirectory,
@@ -53,7 +53,7 @@ public sealed partial class Statistics
 						=> it.Recorded().Directory.CreateDirectory(p => p == "foo").Never());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
 					             recorded at least one call to Directory.CreateDirectory with path matching p => p == "foo",
@@ -73,7 +73,7 @@ public sealed partial class Statistics
 						=> it.Recorded().Directory.CreateDirectory().Once());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
 					             did not record a call to Directory.CreateDirectory exactly once,

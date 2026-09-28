@@ -24,11 +24,11 @@ public sealed partial class FileSystem
 						await That(sut).HasFile(path).WithContent("bar");
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has file '{path}' with content equal to "bar",
-						              but it was "baz" which differs at index 2:
+						              but it was "baz", which differs at index 2:
 						                   ↓ (actual)
 						                "baz"
 						                "bar"
@@ -74,7 +74,7 @@ public sealed partial class FileSystem
 						await That(sut).HasFile(path).WithContent(expected);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has file '{path}' with content equal to expected,
@@ -115,7 +115,7 @@ public sealed partial class FileSystem
 						await That(sut).HasFile(path).WithContent("b?").AsWildcard();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has file '{path}' with content matching "b?",

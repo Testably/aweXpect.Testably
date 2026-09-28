@@ -37,7 +37,7 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).IsNotEmpty();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
 					             is not empty,

@@ -40,7 +40,7 @@ public sealed partial class Statistics
 							.FileInfo["bar.txt"].AppendText().Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileInfo["bar.txt"].AppendText exactly once,
@@ -62,7 +62,7 @@ public sealed partial class Statistics
 							.FileInfo["foo.txt"].CopyTo(d => d == "a.txt").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileInfo["foo.txt"].CopyTo with destFileName matching d => d == "a.txt" exactly once,
@@ -81,7 +81,7 @@ public sealed partial class Statistics
 							.FileInfo["foo.txt"].CopyTo(overwrite: o => o).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileInfo["foo.txt"].CopyTo with overwrite matching o => o exactly once,
@@ -140,7 +140,7 @@ public sealed partial class Statistics
 							.FileInfo["link.txt"].CreateAsSymbolicLink(t => t == "target.txt").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileInfo["link.txt"].CreateAsSymbolicLink with pathToTarget matching t => t == "target.txt" exactly once,
@@ -219,7 +219,7 @@ public sealed partial class Statistics
 							.FileInfo["foo.txt"].IsReadOnly.Set().Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a set of FileInfo["foo.txt"].IsReadOnly exactly once,
@@ -277,7 +277,7 @@ public sealed partial class Statistics
 							.FileInfo["foo.txt"].Open(access: a => a == FileAccess.Read).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileInfo["foo.txt"].Open with access matching a => a == FileAccess.Read exactly once,
@@ -296,7 +296,7 @@ public sealed partial class Statistics
 							.FileInfo["foo.txt"].Open(m => m == FileMode.Open).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileInfo["foo.txt"].Open with mode matching m => m == FileMode.Open exactly once,
@@ -315,7 +315,7 @@ public sealed partial class Statistics
 							.FileInfo["foo.txt"].Open(share: s => s == FileShare.None).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileInfo["foo.txt"].Open with share matching s => s == FileShare.None exactly once,
@@ -398,7 +398,7 @@ public sealed partial class Statistics
 							.FileInfo["foo.txt"].Replace(destinationBackupFileName: b => b == "backup.txt").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileInfo["foo.txt"].Replace with destinationBackupFileName matching b => b == "backup.txt" exactly once,
@@ -417,7 +417,7 @@ public sealed partial class Statistics
 							.FileInfo["foo.txt"].Replace(d => d == "dest.txt").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileInfo["foo.txt"].Replace with destinationFileName matching d => d == "dest.txt" exactly once,
@@ -436,7 +436,7 @@ public sealed partial class Statistics
 							.FileInfo["foo.txt"].Replace(ignoreMetadataErrors: i => i).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileInfo["foo.txt"].Replace with ignoreMetadataErrors matching i => i exactly once,
@@ -585,7 +585,7 @@ public sealed partial class Statistics
 							.FileInfo["foo.txt"].MoveTo(d => d == "bar.txt").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileInfo["foo.txt"].MoveTo with destFileName matching d => d == "bar.txt" exactly once,
@@ -604,7 +604,7 @@ public sealed partial class Statistics
 							.FileInfo["foo.txt"].MoveTo(overwrite: o => o).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileInfo["foo.txt"].MoveTo with overwrite matching o => o exactly once,
@@ -681,7 +681,7 @@ public sealed partial class Statistics
 							.FileInfo["link.txt"].ResolveLinkTarget(r => r).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileInfo["link.txt"].ResolveLinkTarget with returnFinalTarget matching r => r exactly once,

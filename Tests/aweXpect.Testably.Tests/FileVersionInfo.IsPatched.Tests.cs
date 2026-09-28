@@ -42,7 +42,7 @@ public sealed partial class FileVersionInfo
 					await That(info).IsPatched();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is patched,
@@ -81,7 +81,7 @@ public sealed partial class FileVersionInfo
 					await That(info).DoesNotComplyWith(it => it.IsPatched());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is not patched,
@@ -145,7 +145,7 @@ public sealed partial class FileVersionInfo
 					await That(info).IsNotPatched();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is not patched,
@@ -167,7 +167,7 @@ public sealed partial class FileVersionInfo
 					await That(info).DoesNotComplyWith(it => it.IsNotPatched());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is patched,

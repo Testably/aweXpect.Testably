@@ -37,7 +37,7 @@ public sealed partial class DriveInfo
 					await That(driveInfo).IsNotReady();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that driveInfo
 					             is not ready,

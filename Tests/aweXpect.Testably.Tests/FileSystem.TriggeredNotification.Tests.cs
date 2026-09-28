@@ -45,7 +45,7 @@ public sealed partial class FileSystem
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered a notification matching c => c.Name == "other.txt" at least once within 0:00.100,
@@ -70,7 +70,7 @@ public sealed partial class FileSystem
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered a notification which has name equal to "other.txt" at least once within 0:00.100,
@@ -127,7 +127,7 @@ public sealed partial class FileSystem
 					await That(sut).TriggeredNotification().Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered a notification at least once within 0:00.100,
@@ -159,7 +159,7 @@ public sealed partial class FileSystem
 					await That(sut!).TriggeredNotification().Within(TimeSpan.FromMilliseconds(10));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered a notification at least once within 0:00.010,
@@ -202,7 +202,7 @@ public sealed partial class FileSystem
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered a notification which has name equal to "other.txt" at least once within 0:00.100,
@@ -224,7 +224,7 @@ public sealed partial class FileSystem
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("*which has name equal to \"foo.txt\" and has change type Deleted*").AsWildcard();
 			}
 
@@ -275,7 +275,7 @@ public sealed partial class FileSystem
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
 					               triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
@@ -318,7 +318,7 @@ public sealed partial class FileSystem
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered a notification matching c => c.Name == "other.txt" at least once within 0:00.100,
@@ -359,7 +359,7 @@ public sealed partial class FileSystem
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
 					               triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
@@ -381,7 +381,7 @@ public sealed partial class FileSystem
 					await That(sut).TriggeredNotification().Within(TimeSpan.Zero);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             triggered a notification at least once within 0:00,

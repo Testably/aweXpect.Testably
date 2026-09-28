@@ -51,7 +51,7 @@ public sealed partial class FileSystem
 						await That(sut).HasDirectory("logs").Which.IsEmpty();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that sut
 						             has directory 'logs' which is empty,

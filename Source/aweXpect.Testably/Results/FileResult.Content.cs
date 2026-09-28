@@ -58,7 +58,7 @@ public partial class FileResult<TParent>
 		public StringEqualityTypeResult<TParent, FileResult<TParent>> EqualTo(
 			string expected)
 		{
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new(nameof(expected));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 				_expectationBuilder.And(" ").AddConstraint((eb, it, grammars)
 					=> new HasStringContentEqualToConstraint(
@@ -95,7 +95,7 @@ public partial class FileResult<TParent>
 		public StringEqualityTypeResult<TParent, FileResult<TParent>> NotEqualTo(
 			string unexpected)
 		{
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new(nameof(unexpected));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 				_expectationBuilder.And(" ").AddConstraint((eb, it, grammars)
 					=> new HasStringContentEqualToConstraint(
@@ -114,7 +114,7 @@ public partial class FileResult<TParent>
 		public StringEqualityTypeResult<TParent, FileResult<TParent>> SameAs(
 			string filePath)
 		{
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new(nameof(filePath));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 				_expectationBuilder.And(" ").AddConstraint((eb, it, grammars)
 					=> new HasContentSameAsConstraint(eb, it, grammars, _resolver, options, filePath)),
@@ -127,7 +127,7 @@ public partial class FileResult<TParent>
 		public StringEqualityTypeResult<TParent, FileResult<TParent>> NotSameAs(
 			string filePath)
 		{
-			StringEqualityOptions options = new();
+			StringEqualityOptions options = new(nameof(filePath));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 				_expectationBuilder.And(" ").AddConstraint((eb, it, grammars)
 					=> new HasContentSameAsConstraint(eb, it, grammars, _resolver, options, filePath).Invert()),
@@ -141,7 +141,7 @@ public partial class FileResult<TParent>
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver,
 		byte[] expected,
 		string expectedExpression)
-		: ConstraintResult.WithValue<TParent>(grammars),
+		: ConstraintResult.WithValue<TParent>(it, grammars),
 			IValueConstraint<TParent>
 	{
 		public ConstraintResult IsMetBy(TParent actual)
@@ -157,13 +157,13 @@ public partial class FileResult<TParent>
 			=> stringBuilder.Append("with content equal to ").Append(expectedExpression);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" differed");
+			=> stringBuilder.Append(It).Append(" differed");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("with content different from ").Append(expectedExpression);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" did match");
+			=> stringBuilder.Append(It).Append(" did match");
 	}
 
 	private sealed class HasStringContentEqualToConstraint(
@@ -173,7 +173,7 @@ public partial class FileResult<TParent>
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver,
 		StringEqualityOptions options,
 		string expected)
-		: ConstraintResult.WithValue<TParent>(grammars),
+		: ConstraintResult.WithValue<TParent>(it, grammars),
 			IAsyncConstraint<TParent>
 	{
 		private string? _fileContent;
@@ -197,13 +197,13 @@ public partial class FileResult<TParent>
 			=> stringBuilder.Append("with content ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(it, Grammars, _fileContent, expected));
+			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("with content ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" did match");
+			=> stringBuilder.Append(It).Append(" did match");
 	}
 
 	private sealed class HasContentSameAsConstraint(
@@ -213,7 +213,7 @@ public partial class FileResult<TParent>
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver,
 		StringEqualityOptions options,
 		string expectedPath)
-		: ConstraintResult.WithValue<TParent>(grammars),
+		: ConstraintResult.WithValue<TParent>(it, grammars),
 			IAsyncConstraint<TParent>
 	{
 		private string? _expectedContent;
@@ -254,11 +254,11 @@ public partial class FileResult<TParent>
 		{
 			if (!_isExpectedFound)
 			{
-				stringBuilder.Append(it).Append(" did not contain any file at '").Append(_fullExpectedPath).Append('\'');
+				stringBuilder.Append(It).Append(" did not contain any file at '").Append(_fullExpectedPath).Append('\'');
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(it, Grammars, _fileContent, _expectedContent));
+				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, _expectedContent));
 			}
 		}
 
@@ -269,11 +269,11 @@ public partial class FileResult<TParent>
 		{
 			if (!_isExpectedFound)
 			{
-				stringBuilder.Append(it).Append(" did not contain any file at '").Append(_fullExpectedPath).Append('\'');
+				stringBuilder.Append(It).Append(" did not contain any file at '").Append(_fullExpectedPath).Append('\'');
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did match");
+				stringBuilder.Append(It).Append(" did match");
 			}
 		}
 	}

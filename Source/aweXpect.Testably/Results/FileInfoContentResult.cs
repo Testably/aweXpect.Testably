@@ -41,7 +41,7 @@ public class FileInfoContentResult(
 	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> EqualTo(
 		string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			expectationBuilder.And(" ").AddConstraint((eb, it, grammars)
 				=> new HasStringContentEqualToConstraint(
@@ -76,7 +76,7 @@ public class FileInfoContentResult(
 	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> NotEqualTo(
 		string unexpected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			expectationBuilder.And(" ").AddConstraint((eb, it, grammars)
 				=> new HasStringContentEqualToConstraint(
@@ -94,7 +94,7 @@ public class FileInfoContentResult(
 	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> SameAs(
 		string filePath)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(filePath));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			expectationBuilder.And(" ").AddConstraint((eb, it, grammars)
 				=> new HasContentSameAsConstraint(eb, it, grammars, options, filePath)),
@@ -107,7 +107,7 @@ public class FileInfoContentResult(
 	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> NotSameAs(
 		string filePath)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(filePath));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			expectationBuilder.And(" ").AddConstraint((eb, it, grammars)
 				=> new HasContentSameAsConstraint(eb, it, grammars, options, filePath).Invert()),
@@ -119,7 +119,7 @@ public class FileInfoContentResult(
 		ExpectationGrammars grammars,
 		byte[] expected,
 		string expectedExpression)
-		: ConstraintResult.WithValue<IFileInfo>(grammars),
+		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
 			IValueConstraint<IFileInfo>
 	{
 		/// <inheritdoc />
@@ -134,13 +134,13 @@ public class FileInfoContentResult(
 			=> stringBuilder.Append("has content equal to ").Append(expectedExpression);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" differed");
+			=> stringBuilder.Append(It).Append(" differed");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("has content different from ").Append(expectedExpression);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" did match");
+			=> stringBuilder.Append(It).Append(" did match");
 	}
 
 	private sealed class HasStringContentEqualToConstraint(
@@ -149,7 +149,7 @@ public class FileInfoContentResult(
 		ExpectationGrammars grammars,
 		StringEqualityOptions options,
 		string expected)
-		: ConstraintResult.WithValue<IFileInfo>(grammars),
+		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
 			IAsyncConstraint<IFileInfo>
 	{
 		private string? _fileContent;
@@ -172,13 +172,13 @@ public class FileInfoContentResult(
 			=> stringBuilder.Append("has content ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(it, Grammars, _fileContent, expected));
+			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("has content ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" did match");
+			=> stringBuilder.Append(It).Append(" did match");
 	}
 
 	private sealed class HasContentSameAsConstraint(
@@ -187,7 +187,7 @@ public class FileInfoContentResult(
 		ExpectationGrammars grammars,
 		StringEqualityOptions options,
 		string expectedPath)
-		: ConstraintResult.WithValue<IFileInfo>(grammars),
+		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
 			IAsyncConstraint<IFileInfo>
 	{
 		private string? _expectedContent;
@@ -227,11 +227,11 @@ public class FileInfoContentResult(
 		{
 			if (!_isExpectedFound)
 			{
-				stringBuilder.Append(it).Append(" did not contain any file at '").Append(_fullPath).Append('\'');
+				stringBuilder.Append(It).Append(" did not contain any file at '").Append(_fullPath).Append('\'');
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(it, Grammars, _fileContent, _expectedContent));
+				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, _expectedContent));
 			}
 		}
 
@@ -242,11 +242,11 @@ public class FileInfoContentResult(
 		{
 			if (!_isExpectedFound)
 			{
-				stringBuilder.Append(it).Append(" did not contain any file at '").Append(_fullPath).Append('\'');
+				stringBuilder.Append(It).Append(" did not contain any file at '").Append(_fullPath).Append('\'');
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did match");
+				stringBuilder.Append(It).Append(" did match");
 			}
 		}
 	}

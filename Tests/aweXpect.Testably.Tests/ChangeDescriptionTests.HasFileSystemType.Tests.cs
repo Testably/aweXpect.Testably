@@ -32,7 +32,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change).DoesNotHaveFileSystemType(FileSystemTypes.File);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that change
 					             does not have file system type File,
@@ -82,7 +82,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change).HasFileSystemType(FileSystemTypes.Directory);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that change
 					             has file system type Directory,
@@ -113,7 +113,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change!).HasFileSystemType(FileSystemTypes.File);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that change
 					             has file system type File,
@@ -132,7 +132,7 @@ public sealed partial class ChangeDescriptionTests
 						.HasFileSystemType(FileSystemTypes.File | FileSystemTypes.Directory);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that change
 					             has file system type DirectoryOrFile,

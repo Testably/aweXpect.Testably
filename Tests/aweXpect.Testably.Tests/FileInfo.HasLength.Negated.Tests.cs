@@ -39,7 +39,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).DoesNotComplyWith(it => it.HasLength(3));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             does not have length 3,

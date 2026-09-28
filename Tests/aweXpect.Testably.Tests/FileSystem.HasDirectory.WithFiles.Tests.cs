@@ -26,16 +26,16 @@ public sealed partial class FileSystem
 								=> file.HasContent("SOME-CONTENT")));
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has directory '{path}' whose files have content equal to "SOME-CONTENT" for all items,
-						              but not all were
+						              but none of at least 1 did
 
 						              Not matching items:
 						              [
 						                foo{Path.DirectorySeparatorChar}bar.txt,
-						                (… and maybe others)
+						                (… and maybe more)
 						              ]
 
 						              Collection:
@@ -95,16 +95,16 @@ public sealed partial class FileSystem
 								=> f.All().ComplyWith(x => x.DoesNotComplyWith(it => it.HasContent("some-content"))));
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has directory '{path}' whose files have content not equal to "some-content" for all items,
-						              but not all were
+						              but none of at least 1 did
 
 						              Not matching items:
 						              [
 						                foo{Path.DirectorySeparatorChar}bar.txt,
-						                (… and maybe others)
+						                (… and maybe more)
 						              ]
 
 						              Collection:
@@ -142,11 +142,11 @@ public sealed partial class FileSystem
 						await That(sut).HasDirectory(path).WithFiles(f => f.IsEmpty());
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has directory '{path}' whose files are empty,
-						              but files was [
+						              but files were [
 						                foo{Path.DirectorySeparatorChar}bar.txt
 						              ]
 						              """);

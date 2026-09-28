@@ -28,7 +28,7 @@ public static partial class FileInfoExtensions
 			source);
 
 	private sealed class IsReadOnlyConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IFileInfo>(grammars),
+		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
 			IValueConstraint<IFileInfo>
 	{
 		public ConstraintResult IsMetBy(IFileInfo actual)
@@ -51,11 +51,11 @@ public static partial class FileInfoExtensions
 		{
 			if (Actual?.Exists != true)
 			{
-				stringBuilder.Append(it).Append(" did not exist");
+				stringBuilder.Append(It).Append(" did not exist");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was not");
+				stringBuilder.Append(It).Append(" was not");
 			}
 		}
 
@@ -66,11 +66,11 @@ public static partial class FileInfoExtensions
 		{
 			if (Actual?.Exists != true)
 			{
-				stringBuilder.Append(it).Append(" did not exist");
+				stringBuilder.Append(It).Append(" did not exist");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was");
+				stringBuilder.Append(It).Append(" was");
 			}
 		}
 	}

@@ -20,7 +20,7 @@ public static partial class FileInfoExtensions
 			source);
 
 	private sealed class HasLengthConstraint(string it, ExpectationGrammars grammars, long expected)
-		: ConstraintResult.WithValue<IFileInfo>(grammars),
+		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
 			IValueConstraint<IFileInfo>
 	{
 		private long _actualLength;
@@ -46,11 +46,11 @@ public static partial class FileInfoExtensions
 		{
 			if (Actual?.Exists != true)
 			{
-				stringBuilder.Append(it).Append(" did not exist");
+				stringBuilder.Append(It).Append(" did not exist");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was ").Append(_actualLength);
+				stringBuilder.Append(It).Append(" was ").Append(_actualLength);
 			}
 		}
 
@@ -61,11 +61,11 @@ public static partial class FileInfoExtensions
 		{
 			if (Actual?.Exists != true)
 			{
-				stringBuilder.Append(it).Append(" did not exist");
+				stringBuilder.Append(It).Append(" did not exist");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did");
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}

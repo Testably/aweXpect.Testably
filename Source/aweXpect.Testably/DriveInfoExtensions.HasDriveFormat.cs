@@ -18,7 +18,7 @@ public static partial class DriveInfoExtensions
 	public static StringEqualityTypeResult<IDriveInfo, IThat<IDriveInfo>> HasDriveFormat(this IThat<IDriveInfo> source,
 		string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IDriveInfo, IThat<IDriveInfo>>(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasDriveFormatConstraint(it, grammars, options, expected)),
@@ -31,7 +31,7 @@ public static partial class DriveInfoExtensions
 		ExpectationGrammars grammars,
 		StringEqualityOptions options,
 		string expected)
-		: ConstraintResult.WithValue<IDriveInfo>(grammars),
+		: ConstraintResult.WithValue<IDriveInfo>(it, grammars),
 			IAsyncConstraint<IDriveInfo>
 	{
 		private string? _actualDriveFormat;
@@ -57,11 +57,11 @@ public static partial class DriveInfoExtensions
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(it, Grammars, _actualDriveFormat, expected));
+				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualDriveFormat, expected));
 			}
 		}
 
@@ -72,11 +72,11 @@ public static partial class DriveInfoExtensions
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did");
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}

@@ -36,7 +36,7 @@ public sealed partial class FileSystem
 						await That(sut).HasDrive("D:\\").Which.HasTotalSize(1024);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that sut
 						             has drive 'D:\' which has total size 1024,
@@ -54,7 +54,7 @@ public sealed partial class FileSystem
 						await That(sut).HasDrive("Z:\\").Which.HasTotalSize(1024);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that sut
 						             has drive 'Z:\' which has total size 1024,

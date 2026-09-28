@@ -16,7 +16,7 @@ internal static class FileSystemConstraints
 		string it,
 		ExpectationGrammars grammars,
 		FileAttributes expected)
-		: ConstraintResult.WithValue<TInfo>(grammars),
+		: ConstraintResult.WithValue<TInfo>(it, grammars),
 			IValueConstraint<TInfo>
 		where TInfo : class, IFileSystemInfo
 	{
@@ -43,11 +43,11 @@ internal static class FileSystemConstraints
 		{
 			if (Actual?.Exists != true)
 			{
-				stringBuilder.Append(it).Append(" did not exist");
+				stringBuilder.Append(It).Append(" did not exist");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was ").Append(_actualAttributes);
+				stringBuilder.Append(It).Append(" was ").Append(_actualAttributes);
 			}
 		}
 
@@ -58,17 +58,17 @@ internal static class FileSystemConstraints
 		{
 			if (Actual?.Exists != true)
 			{
-				stringBuilder.Append(it).Append(" did not exist");
+				stringBuilder.Append(It).Append(" did not exist");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did");
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}
 
 	internal sealed class ExistsConstraint<TInfo>(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<TInfo>(grammars),
+		: ConstraintResult.WithValue<TInfo>(it, grammars),
 			IValueConstraint<TInfo>
 		where TInfo : class, IFileSystemInfo
 	{
@@ -83,13 +83,13 @@ internal static class FileSystemConstraints
 			=> stringBuilder.Append("exists");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" did not");
+			=> stringBuilder.Append(It).Append(" did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("does not exist");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" did");
+			=> stringBuilder.Append(It).Append(" did");
 	}
 
 	internal sealed class HasNameConstraint<TInfo>(
@@ -97,7 +97,7 @@ internal static class FileSystemConstraints
 		ExpectationGrammars grammars,
 		StringEqualityOptions options,
 		string expected)
-		: ConstraintResult.WithValue<TInfo>(grammars),
+		: ConstraintResult.WithValue<TInfo>(it, grammars),
 			IAsyncConstraint<TInfo>
 		where TInfo : class, IFileSystemInfo
 	{
@@ -115,13 +115,13 @@ internal static class FileSystemConstraints
 			=> stringBuilder.Append("has name ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(it, Grammars, _actualName, expected));
+			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualName, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("does not have name ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" did");
+			=> stringBuilder.Append(It).Append(" did");
 	}
 
 	internal sealed class HasFileConstraint<TParent>(
@@ -129,7 +129,7 @@ internal static class FileSystemConstraints
 		ExpectationGrammars grammars,
 		string path,
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver)
-		: ConstraintResult.WithValue<TParent>(grammars),
+		: ConstraintResult.WithValue<TParent>(it, grammars),
 			IValueConstraint<TParent>
 		where TParent : class
 	{
@@ -151,11 +151,11 @@ internal static class FileSystemConstraints
 		{
 			if (_fs?.Directory.Exists(_fullPath) == true)
 			{
-				stringBuilder.Append(it).Append(" was a directory");
+				stringBuilder.Append(It).Append(" was a directory");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did not exist");
+				stringBuilder.Append(It).Append(" did not exist");
 			}
 		}
 
@@ -163,7 +163,7 @@ internal static class FileSystemConstraints
 			=> stringBuilder.Append("does not have file '").Append(path).Append('\'');
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" did");
+			=> stringBuilder.Append(It).Append(" did");
 	}
 
 	internal sealed class HasDirectoryConstraint<TParent>(
@@ -171,7 +171,7 @@ internal static class FileSystemConstraints
 		ExpectationGrammars grammars,
 		string path,
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver)
-		: ConstraintResult.WithValue<TParent>(grammars),
+		: ConstraintResult.WithValue<TParent>(it, grammars),
 			IValueConstraint<TParent>
 		where TParent : class
 	{
@@ -193,11 +193,11 @@ internal static class FileSystemConstraints
 		{
 			if (_fs?.File.Exists(_fullPath) == true)
 			{
-				stringBuilder.Append(it).Append(" was a file");
+				stringBuilder.Append(It).Append(" was a file");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did not exist");
+				stringBuilder.Append(It).Append(" did not exist");
 			}
 		}
 
@@ -205,7 +205,7 @@ internal static class FileSystemConstraints
 			=> stringBuilder.Append("does not have directory '").Append(path).Append('\'');
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" did");
+			=> stringBuilder.Append(It).Append(" did");
 	}
 
 	internal sealed class HasTimeConstraint<TActual>(
@@ -219,7 +219,7 @@ internal static class FileSystemConstraints
 		string normalVerb,
 		string negatedVerb,
 		string negatedConnector)
-		: ConstraintResult.WithValue<TActual>(grammars),
+		: ConstraintResult.WithValue<TActual>(it, grammars),
 			IValueConstraint<TActual>
 		where TActual : class
 	{
@@ -264,11 +264,11 @@ internal static class FileSystemConstraints
 		{
 			if (!_existed)
 			{
-				stringBuilder.Append(it).Append(" did not exist");
+				stringBuilder.Append(It).Append(" did not exist");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was ");
+				stringBuilder.Append(It).Append(" was ");
 				Formatter.Format(stringBuilder, _actualTime);
 			}
 		}

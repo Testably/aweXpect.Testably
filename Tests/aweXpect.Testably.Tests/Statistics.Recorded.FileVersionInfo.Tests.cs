@@ -21,7 +21,7 @@ public sealed partial class Statistics
 							.FileVersionInfo.GetVersionInfo(f => f == "a.exe").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to FileVersionInfo.GetVersionInfo with fileName matching f => f == "a.exe" exactly once,
@@ -494,7 +494,7 @@ public sealed partial class Statistics
 							.FileVersionInfo["a.exe"].Comments.Get().Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a get of FileVersionInfo["a.exe"].Comments exactly once,

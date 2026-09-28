@@ -35,7 +35,7 @@ public sealed partial class FileSystem
 					await That(sut).DidNotTriggerNotification();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
 					               did not trigger a notification,
@@ -59,7 +59,7 @@ public sealed partial class FileSystem
 						.Which(c => c.HasName("foo.txt"));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
 					               did not trigger a notification which has name equal to "foo.txt",
@@ -118,7 +118,7 @@ public sealed partial class FileSystem
 					await That(sut).DidNotTriggerNotification(c => c.Name == "foo.txt");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
 					               did not trigger a notification matching c => c.Name == "foo.txt",
@@ -158,7 +158,7 @@ public sealed partial class FileSystem
 					await That(sut).DidNotTriggerNotification().Within(TimeSpan.FromSeconds(30));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("*did not trigger a notification*but it was triggered*").AsWildcard();
 			}
 		}

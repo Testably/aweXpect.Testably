@@ -42,11 +42,11 @@ public sealed partial class FileVersionInfo
 					await That(info).HasInternalName("OtherInternal");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             has internal name equal to "OtherInternal",
-					             but it was "AcmeInternal" which differs at index 0:
+					             but it was "AcmeInternal", which differs at index 0:
 					                ↓ (actual)
 					               "AcmeInternal"
 					               "OtherInternal"

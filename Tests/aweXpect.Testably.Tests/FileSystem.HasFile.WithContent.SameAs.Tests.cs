@@ -28,11 +28,11 @@ public sealed partial class FileSystem
 							await That(sut).HasFile(path).WithContent().SameAs(expectedPath);
 						}
 
-						await That(Act).ThrowsException()
+						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
 							              has file '{path}' with the same content as file '{fullExpectedPath}',
-							              but it was "baz" which differs at index 2:
+							              but it was "baz", which differs at index 2:
 							                   ↓ (actual)
 							                "baz"
 							                "bar"
@@ -58,7 +58,7 @@ public sealed partial class FileSystem
 							await That(sut).HasFile(path).WithContent().SameAs(expectedPath);
 						}
 
-						await That(Act).ThrowsException()
+						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
 							              has file '{path}' with the same content as file '{fullExpectedPath}',
@@ -107,7 +107,7 @@ public sealed partial class FileSystem
 							await That(sut).HasFile(path).WithContent().SameAs(expectedPath).AsWildcard();
 						}
 
-						await That(Act).ThrowsException()
+						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
 							              has file '{path}' with the same content as file '{fullExpectedPath}',

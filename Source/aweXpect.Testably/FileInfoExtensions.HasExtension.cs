@@ -18,7 +18,7 @@ public static partial class FileInfoExtensions
 	public static StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> HasExtension(this IThat<IFileInfo> source,
 		string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasExtensionConstraint(it, grammars, options, expected)),
@@ -31,7 +31,7 @@ public static partial class FileInfoExtensions
 		ExpectationGrammars grammars,
 		StringEqualityOptions options,
 		string expected)
-		: ConstraintResult.WithValue<IFileInfo>(grammars),
+		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
 			IAsyncConstraint<IFileInfo>
 	{
 		private string? _actualExtension;
@@ -48,12 +48,12 @@ public static partial class FileInfoExtensions
 			=> stringBuilder.Append("has extension ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(it, Grammars, _actualExtension, expected));
+			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualExtension, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("does not have extension ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" did");
+			=> stringBuilder.Append(It).Append(" did");
 	}
 }

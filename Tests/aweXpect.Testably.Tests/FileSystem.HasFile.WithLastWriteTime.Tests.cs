@@ -27,7 +27,7 @@ public sealed partial class FileSystem
 						await That(sut).HasFile(path).WithLastWriteTime(expectedTime);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has file '{path}' with last write time equal to {Formatter.Format(expectedTime)},
@@ -50,7 +50,7 @@ public sealed partial class FileSystem
 						await That(sut).HasFile(path).WithLastWriteTime(expectedTime);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has file '{path}' with last write time equal to {Formatter.Format(expectedTime)},

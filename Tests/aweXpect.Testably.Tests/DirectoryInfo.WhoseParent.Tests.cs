@@ -43,7 +43,7 @@ public sealed partial class DirectoryInfo
 			}
 
 			[Fact]
-			public async Task OnRootDirectory_ShouldThrow()
+			public async Task OnRootDirectory_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
 				IDirectoryInfo rootDirInfo = fileSystem.DirectoryInfo.New(fileSystem.Path.GetPathRoot(fileSystem.Directory.GetCurrentDirectory())!);
@@ -53,8 +53,15 @@ public sealed partial class DirectoryInfo
 					await That(rootDirInfo).WhoseParent.IsNotEmpty();
 				}
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Cannot assert on the parent of a root directory because it has no parent.");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that rootDirInfo
+					             is not empty,
+					             but it did throw an InvalidOperationException:
+					               Cannot assert on the parent of a root directory because it has no parent.
+					             """).And
+					.WithInner<InvalidOperationException>(inner => inner
+						.HasMessage("Cannot assert on the parent of a root directory because it has no parent."));
 			}
 
 			[Fact]
@@ -70,11 +77,11 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).HasName("src").And.WhoseParent.HasName("wrong");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
 					             has name equal to "src" whose parent has name equal to "wrong",
-					             but it was "project" which differs at index 0:
+					             but it was "project", which differs at index 0:
 					                ↓ (actual)
 					               "project"
 					               "wrong"

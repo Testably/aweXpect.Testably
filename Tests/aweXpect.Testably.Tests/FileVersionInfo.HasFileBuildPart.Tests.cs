@@ -42,7 +42,7 @@ public sealed partial class FileVersionInfo
 					await That(info).HasFileBuildPart(9);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             has file build part 9,

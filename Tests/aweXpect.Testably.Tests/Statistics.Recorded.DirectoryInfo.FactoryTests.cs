@@ -35,7 +35,7 @@ public sealed partial class Statistics
 							.DirectoryInfo.New(p => p == "foo").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo.New with path matching p => p == "foo" exactly once,
@@ -87,7 +87,7 @@ public sealed partial class Statistics
 							.DirectoryInfo.Wrap(_ => true).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo.Wrap with directoryInfo matching _ => true exactly once,

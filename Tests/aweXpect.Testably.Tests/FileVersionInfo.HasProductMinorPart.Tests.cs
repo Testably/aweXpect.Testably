@@ -42,7 +42,7 @@ public sealed partial class FileVersionInfo
 					await That(info).HasProductMinorPart(9);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             has product minor part 9,

@@ -42,11 +42,11 @@ public sealed partial class FileVersionInfo
 					await That(info).HasFileDescription("Other");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             has file description equal to "Other",
-					             but it was "Acme runtime" which differs at index 0:
+					             but it was "Acme runtime", which differs at index 0:
 					                ↓ (actual)
 					               "Acme runtime"
 					               "Other"

@@ -39,7 +39,7 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).DoesNotHaveAttribute(FileAttributes.Directory);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
 					             does not have attribute Directory,

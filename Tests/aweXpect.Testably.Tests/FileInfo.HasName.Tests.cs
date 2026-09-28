@@ -22,11 +22,11 @@ public sealed partial class FileInfo
 					await That(fileInfo).HasName("bar.txt");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
 					             has name equal to "bar.txt",
-					             but it was "foo.txt" which differs at index 0:
+					             but it was "foo.txt", which differs at index 0:
 					                ↓ (actual)
 					               "foo.txt"
 					               "bar.txt"

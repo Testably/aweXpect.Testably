@@ -38,7 +38,7 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).HasFile("bar.txt").Which.HasLength(99);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
 					             has file 'bar.txt' which has length 99,
@@ -74,7 +74,7 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).HasFile("bar.txt");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
 					             has file 'bar.txt',

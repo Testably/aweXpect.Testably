@@ -37,7 +37,7 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).DoesNotHaveFile("bar.txt");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
 					             does not have file 'bar.txt',

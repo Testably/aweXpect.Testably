@@ -17,7 +17,7 @@ internal static class StatisticsConstraints
 		string bucketDescription,
 		string methodName,
 		ParameterMatcher[] matchers)
-		: ConstraintResult.WithValue<IFileSystemStatistics>(grammars),
+		: ConstraintResult.WithValue<IFileSystemStatistics>(it, grammars),
 			IValueConstraint<IFileSystemStatistics>
 	{
 		private int _matchCount;
@@ -122,7 +122,7 @@ internal static class StatisticsConstraints
 
 		private void AppendResult(StringBuilder stringBuilder)
 		{
-			stringBuilder.Append(it).Append(" was recorded ").Append(_matchCount).Append(" time");
+			stringBuilder.Append(It).Append(" was recorded ").Append(_matchCount).Append(" time");
 			if (_matchCount != 1)
 			{
 				stringBuilder.Append('s');
@@ -138,7 +138,7 @@ internal static class StatisticsConstraints
 		string bucketDescription,
 		string propertyName,
 		PropertyAccess access)
-		: ConstraintResult.WithValue<IFileSystemStatistics>(grammars),
+		: ConstraintResult.WithValue<IFileSystemStatistics>(it, grammars),
 			IValueConstraint<IFileSystemStatistics>
 	{
 		private int _matchCount;
@@ -191,7 +191,7 @@ internal static class StatisticsConstraints
 
 		private void AppendResult(StringBuilder stringBuilder)
 		{
-			stringBuilder.Append(it).Append(" was recorded ").Append(_matchCount).Append(" time");
+			stringBuilder.Append(It).Append(" was recorded ").Append(_matchCount).Append(" time");
 			if (_matchCount != 1)
 			{
 				stringBuilder.Append('s');

@@ -68,7 +68,7 @@ public sealed class Timer
 					await That(sut).Executed().Within(TimeSpan.FromMilliseconds(100)).Exactly(3.Times());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             executed exactly 3 times within 0:00.100,
@@ -120,7 +120,7 @@ public sealed class Timer
 						=> it.Executed().Within(TimeSpan.FromMilliseconds(100)));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             did not execute at least once within 0:00.100,
@@ -146,7 +146,7 @@ public sealed class Timer
 						=> it.Executed().AtLeast(3.Times()).Within(TimeSpan.FromMilliseconds(100)));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             did not execute at least 3 times within 0:00.100,
@@ -171,7 +171,7 @@ public sealed class Timer
 						=> it.Executed().Never().Within(TimeSpan.FromMilliseconds(100)));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             executed at least once within 0:00.100,
@@ -189,7 +189,7 @@ public sealed class Timer
 					await That(sut!).Executed().Within(TimeSpan.FromMilliseconds(10));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             executed at least once within 0:00.010,
@@ -219,7 +219,7 @@ public sealed class Timer
 					await That(sut).Executed().Never().Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 						Expected that sut
 						did not execute within 0:00.100,
@@ -249,7 +249,7 @@ public sealed class Timer
 					await That(sut).Executed().Exactly(2.Times()).Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 						Expected that sut
 						executed exactly twice within 0:00.100,
@@ -279,7 +279,7 @@ public sealed class Timer
 					await That(sut).Executed().Exactly(3.Times()).Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 						Expected that sut
 						executed exactly 3 times within 0:00.100,
@@ -309,7 +309,7 @@ public sealed class Timer
 					await That(sut).Executed().Exactly(4.Times()).Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 						Expected that sut
 						executed exactly 4 times within 0:00.100,

@@ -47,7 +47,7 @@ public sealed partial class FileSystem
 							await That(sut).HasFile(path).WithContent().NotSameAs(expectedPath);
 						}
 
-						await That(Act).ThrowsException()
+						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
 							              has file '{path}' with not the same content as file '{fullExpectedPath}',
@@ -95,7 +95,7 @@ public sealed partial class FileSystem
 							await That(sut).HasFile(path).WithContent().NotSameAs(expectedPath).AsWildcard();
 						}
 
-						await That(Act).ThrowsException()
+						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
 							              has file '{path}' with not the same content as file '{fullExpectedPath}',

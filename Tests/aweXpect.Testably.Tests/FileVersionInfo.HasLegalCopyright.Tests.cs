@@ -42,11 +42,11 @@ public sealed partial class FileVersionInfo
 					await That(info).HasLegalCopyright("Other (c)");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             has legal copyright equal to "Other (c)",
-					             but it was "Acme (c)" which differs at index 0:
+					             but it was "Acme (c)", which differs at index 0:
 					                ↓ (actual)
 					               "Acme (c)"
 					               "Other (c)"

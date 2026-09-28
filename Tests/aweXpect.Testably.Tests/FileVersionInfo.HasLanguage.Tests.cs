@@ -42,11 +42,11 @@ public sealed partial class FileVersionInfo
 					await That(info).HasLanguage("German (Germany)");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             has language equal to "German (Germany)",
-					             but it was "English (United States)" which differs at index 0:
+					             but it was "English (United States)", which differs at index 0:
 					                ↓ (actual)
 					               "English (United States)"
 					               "German (Germany)"

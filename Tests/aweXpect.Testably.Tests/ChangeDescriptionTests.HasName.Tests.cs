@@ -18,11 +18,11 @@ public sealed partial class ChangeDescriptionTests
 					await That(change).HasName("bar.txt");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that change
 					             has name equal to "bar.txt",
-					             but it was "foo.txt" which differs at index 0:
+					             but it was "foo.txt", which differs at index 0:
 					                ↓ (actual)
 					               "foo.txt"
 					               "bar.txt"
@@ -53,7 +53,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change!).HasName("foo.txt");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that change
 					             has name equal to "foo.txt",

@@ -40,7 +40,7 @@ public partial class FileResult<TParent>
 	public StringEqualityTypeResult<TParent, FileResult<TParent>> WithContent(
 		string expected)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 			_expectationBuilder.And(" ").AddConstraint((expectationBuilder, it, grammar)
 				=> new HasStringContentEqualToConstraint(expectationBuilder, it, grammar, _resolver, options, expected)),
@@ -64,7 +64,7 @@ public partial class FileResult<TParent>
 	public StringEqualityTypeResult<TParent, FileResult<TParent>> WhoseContent(
 		Action<IThat<string?>> expectations)
 	{
-		StringEqualityOptions options = new();
+		StringEqualityOptions options = new(nameof(expectations));
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver = _resolver;
 		return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 			_expectationBuilder

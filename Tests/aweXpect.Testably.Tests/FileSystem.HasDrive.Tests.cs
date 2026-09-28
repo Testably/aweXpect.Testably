@@ -61,7 +61,7 @@ public sealed partial class FileSystem
 					await That(sut).HasDrive("Z:\\");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
 					             has drive 'Z:\',

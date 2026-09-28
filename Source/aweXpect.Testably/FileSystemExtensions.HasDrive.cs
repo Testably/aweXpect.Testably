@@ -67,7 +67,7 @@ public static partial class FileSystemExtensions
 		ExpectationGrammars grammars,
 		string driveName,
 		Func<TFileSystem, IDriveInfo?> resolver)
-		: ConstraintResult.WithValue<TFileSystem>(grammars),
+		: ConstraintResult.WithValue<TFileSystem>(it, grammars),
 			IValueConstraint<TFileSystem>
 		where TFileSystem : class, IFileSystem
 	{
@@ -82,12 +82,12 @@ public static partial class FileSystemExtensions
 			=> stringBuilder.Append("has drive '").Append(driveName).Append('\'');
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" did not exist");
+			=> stringBuilder.Append(It).Append(" did not exist");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("does not have drive '").Append(driveName).Append('\'');
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" did");
+			=> stringBuilder.Append(It).Append(" did");
 	}
 }

@@ -42,7 +42,7 @@ public sealed partial class FileVersionInfo
 					await That(info).HasFileMajorPart(9);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             has file major part 9,

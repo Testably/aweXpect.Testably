@@ -23,7 +23,7 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).HasAttribute(FileAttributes.ReadOnly);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
 					             has attribute ReadOnly,

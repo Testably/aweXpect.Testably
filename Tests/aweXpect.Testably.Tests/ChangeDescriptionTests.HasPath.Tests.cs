@@ -18,7 +18,7 @@ public sealed partial class ChangeDescriptionTests
 					await That(change).HasPath("totally-different-path");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("*has path equal to \"totally-different-path\"*").AsWildcard();
 			}
 

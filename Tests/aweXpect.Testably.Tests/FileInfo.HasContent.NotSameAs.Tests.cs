@@ -48,7 +48,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().NotSameAs(expectedPath);
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that fileInfo
 						              does not have the same content as file '{fullExpectedPath}',
@@ -98,7 +98,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().NotSameAs(expectedPath).AsWildcard();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that fileInfo
 						              does not have the same content as file '{fullExpectedPath}',

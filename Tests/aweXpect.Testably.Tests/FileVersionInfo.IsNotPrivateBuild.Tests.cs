@@ -59,7 +59,7 @@ public sealed partial class FileVersionInfo
 					await That(info).IsNotPrivateBuild();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is not private build,
@@ -81,7 +81,7 @@ public sealed partial class FileVersionInfo
 					await That(info).DoesNotComplyWith(it => it.IsNotPrivateBuild());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is private build,

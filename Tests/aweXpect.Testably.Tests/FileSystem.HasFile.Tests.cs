@@ -35,7 +35,7 @@ public sealed partial class FileSystem
 					await That(sut).HasFile(path);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that sut
 					              has file '{path}',
@@ -55,7 +55,7 @@ public sealed partial class FileSystem
 					await That(sut).HasFile(path);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that sut
 					              has file '{path}',

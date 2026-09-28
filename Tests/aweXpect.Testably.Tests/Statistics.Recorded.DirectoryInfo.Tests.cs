@@ -41,7 +41,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["bar"].Create().Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["bar"].Create exactly once,
@@ -63,7 +63,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].CreateSubdirectory(p => p == "bar").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].CreateSubdirectory with path matching p => p == "bar" exactly once,
@@ -103,7 +103,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].Delete(b => b).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].Delete with recursive matching b => b exactly once,
@@ -146,7 +146,7 @@ public sealed partial class Statistics
 							.EnumerateDirectories(searchOption: o => o == SearchOption.AllDirectories).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].EnumerateDirectories with searchOption matching o => o == SearchOption.AllDirectories exactly once,
@@ -165,7 +165,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].EnumerateDirectories(p => p == "bar").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].EnumerateDirectories with searchPattern matching p => p == "bar" exactly once,
@@ -223,7 +223,7 @@ public sealed partial class Statistics
 							.EnumerateDirectories(enumerationOptions: o => o != null).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].EnumerateDirectories with enumerationOptions matching o => o != null exactly once,
@@ -264,7 +264,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].MoveTo(p => p == "bar").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].MoveTo with destDirName matching p => p == "bar" exactly once,
@@ -342,7 +342,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].EnumerateFiles(enumerationOptions: o => o != null).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].EnumerateFiles with enumerationOptions matching o => o != null exactly once,
@@ -363,7 +363,7 @@ public sealed partial class Statistics
 							.EnumerateFiles(searchOption: o => o == SearchOption.AllDirectories).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].EnumerateFiles with searchOption matching o => o == SearchOption.AllDirectories exactly once,
@@ -382,7 +382,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].EnumerateFiles(p => p == "bar").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].EnumerateFiles with searchPattern matching p => p == "bar" exactly once,
@@ -423,7 +423,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].EnumerateFileSystemInfos(enumerationOptions: o => o != null).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].EnumerateFileSystemInfos with enumerationOptions matching o => o != null exactly once,
@@ -444,7 +444,7 @@ public sealed partial class Statistics
 							.EnumerateFileSystemInfos(searchOption: o => o == SearchOption.AllDirectories).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].EnumerateFileSystemInfos with searchOption matching o => o == SearchOption.AllDirectories exactly once,
@@ -463,7 +463,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].EnumerateFileSystemInfos(p => p == "bar").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].EnumerateFileSystemInfos with searchPattern matching p => p == "bar" exactly once,
@@ -503,7 +503,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].GetDirectories(enumerationOptions: o => o != null).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].GetDirectories with enumerationOptions matching o => o != null exactly once,
@@ -524,7 +524,7 @@ public sealed partial class Statistics
 							.GetDirectories(searchOption: o => o == SearchOption.AllDirectories).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].GetDirectories with searchOption matching o => o == SearchOption.AllDirectories exactly once,
@@ -543,7 +543,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].GetDirectories(p => p == "bar").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].GetDirectories with searchPattern matching p => p == "bar" exactly once,
@@ -583,7 +583,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].GetFiles(enumerationOptions: o => o != null).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].GetFiles with enumerationOptions matching o => o != null exactly once,
@@ -604,7 +604,7 @@ public sealed partial class Statistics
 							.GetFiles(searchOption: o => o == SearchOption.AllDirectories).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].GetFiles with searchOption matching o => o == SearchOption.AllDirectories exactly once,
@@ -623,7 +623,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].GetFiles(p => p == "bar").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].GetFiles with searchPattern matching p => p == "bar" exactly once,
@@ -663,7 +663,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].GetFileSystemInfos(enumerationOptions: o => o != null).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].GetFileSystemInfos with enumerationOptions matching o => o != null exactly once,
@@ -684,7 +684,7 @@ public sealed partial class Statistics
 							.GetFileSystemInfos(searchOption: o => o == SearchOption.AllDirectories).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].GetFileSystemInfos with searchOption matching o => o == SearchOption.AllDirectories exactly once,
@@ -703,7 +703,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].GetFileSystemInfos(p => p == "bar").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].GetFileSystemInfos with searchPattern matching p => p == "bar" exactly once,
@@ -822,7 +822,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].FullName.Get().Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a get of DirectoryInfo["foo"].FullName exactly once,
@@ -977,7 +977,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].CreateAsSymbolicLink(p => p == "bar").Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].CreateAsSymbolicLink with pathToTarget matching p => p == "bar" exactly once,
@@ -1016,7 +1016,7 @@ public sealed partial class Statistics
 							.DirectoryInfo["foo"].ResolveLinkTarget(b => b).Once();
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
 						             recorded a call to DirectoryInfo["foo"].ResolveLinkTarget with returnFinalTarget matching b => b exactly once,

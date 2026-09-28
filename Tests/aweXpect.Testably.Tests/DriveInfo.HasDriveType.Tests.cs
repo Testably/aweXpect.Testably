@@ -38,7 +38,7 @@ public sealed partial class DriveInfo
 					await That(driveInfo).HasDriveType(DriveType.Network);
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that driveInfo
 					             has drive type Network,

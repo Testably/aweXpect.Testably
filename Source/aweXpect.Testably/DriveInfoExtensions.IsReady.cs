@@ -28,7 +28,7 @@ public static partial class DriveInfoExtensions
 			source);
 
 	private sealed class IsReadyConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IDriveInfo>(grammars),
+		: ConstraintResult.WithValue<IDriveInfo>(it, grammars),
 			IValueConstraint<IDriveInfo>
 	{
 		public ConstraintResult IsMetBy(IDriveInfo actual)
@@ -51,11 +51,11 @@ public static partial class DriveInfoExtensions
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was not");
+				stringBuilder.Append(It).Append(" was not");
 			}
 		}
 
@@ -66,11 +66,11 @@ public static partial class DriveInfoExtensions
 		{
 			if (Actual is null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.Append(It).Append(" was <null>");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was");
+				stringBuilder.Append(It).Append(" was");
 			}
 		}
 	}

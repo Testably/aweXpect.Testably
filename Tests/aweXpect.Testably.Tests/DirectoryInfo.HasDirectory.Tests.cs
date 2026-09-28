@@ -36,7 +36,7 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).HasDirectory("bar");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
 					             has directory 'bar',

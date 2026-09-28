@@ -21,7 +21,7 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).DoesNotHaveDirectory("bar");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
 					             does not have directory 'bar',

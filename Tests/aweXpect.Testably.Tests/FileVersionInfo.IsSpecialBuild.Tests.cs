@@ -42,7 +42,7 @@ public sealed partial class FileVersionInfo
 					await That(info).IsSpecialBuild();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is special build,
@@ -81,7 +81,7 @@ public sealed partial class FileVersionInfo
 					await That(info).DoesNotComplyWith(it => it.IsSpecialBuild());
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that info
 					             is not special build,

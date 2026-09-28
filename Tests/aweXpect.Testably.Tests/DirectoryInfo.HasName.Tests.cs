@@ -21,11 +21,11 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).HasName("bar");
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
 					             has name equal to "bar",
-					             but it was "foo" which differs at index 0:
+					             but it was "foo", which differs at index 0:
 					                ↓ (actual)
 					               "foo"
 					               "bar"

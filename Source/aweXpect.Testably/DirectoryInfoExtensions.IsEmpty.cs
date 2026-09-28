@@ -29,7 +29,7 @@ public static partial class DirectoryInfoExtensions
 			source);
 
 	private sealed class IsEmptyConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IDirectoryInfo>(grammars),
+		: ConstraintResult.WithValue<IDirectoryInfo>(it, grammars),
 			IValueConstraint<IDirectoryInfo>
 	{
 		public ConstraintResult IsMetBy(IDirectoryInfo actual)
@@ -52,11 +52,11 @@ public static partial class DirectoryInfoExtensions
 		{
 			if (Actual?.Exists != true)
 			{
-				stringBuilder.Append(it).Append(" did not exist");
+				stringBuilder.Append(It).Append(" did not exist");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was not");
+				stringBuilder.Append(It).Append(" was not");
 			}
 		}
 
@@ -67,11 +67,11 @@ public static partial class DirectoryInfoExtensions
 		{
 			if (Actual?.Exists != true)
 			{
-				stringBuilder.Append(it).Append(" did not exist");
+				stringBuilder.Append(It).Append(" did not exist");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" was");
+				stringBuilder.Append(It).Append(" was");
 			}
 		}
 	}

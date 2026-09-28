@@ -25,11 +25,11 @@ public sealed partial class FileSystem
 						await That(sut).HasDirectory(path).WithDirectories(f => f.HasCount().EqualTo(3));
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose subdirectories has exactly 3 items,
-						              but found only 2
+						              has directory '{path}' whose subdirectories have exactly 3 items,
+						              but subdirectories had only 2 items
 
 						              Collection:
 						              [
@@ -54,16 +54,16 @@ public sealed partial class FileSystem
 							.WithDirectories(dirs => dirs.All().ComplyWith(dir => dir.IsEmpty()));
 					}
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
 						              has directory '{path}' whose subdirectories is empty for all items,
-						              but not all were
+						              but none of at least 1 were
 
 						              Not matching items:
 						              [
 						                foo{Path.DirectorySeparatorChar}directory1,
-						                (… and maybe others)
+						                (… and maybe more)
 						              ]
 
 						              Collection:
