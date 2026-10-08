@@ -56,7 +56,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that rootDirInfo
-					             is not empty,
+					             whose parent is not empty,
 					             but it did throw an InvalidOperationException:
 					               Cannot assert on the parent of a root directory because it has no parent.
 					             """).And
@@ -80,7 +80,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
-					             has name equal to "src" whose parent has name equal to "wrong",
+					             has name equal to "src" and whose parent has name equal to "wrong",
 					             but it was "project", which differs at index 0:
 					                ↓ (actual)
 					               "project"

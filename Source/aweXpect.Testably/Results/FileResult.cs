@@ -42,8 +42,8 @@ public partial class FileResult<TParent>
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
-			_expectationBuilder.And(" ").AddConstraint((expectationBuilder, it, grammar)
-				=> new HasStringContentEqualToConstraint(expectationBuilder, it, grammar, _resolver, options, expected)),
+			_expectationBuilder.And(" ").AddConstraint((it, grammar)
+				=> new HasStringContentEqualToConstraint(it, grammar, _resolver, options, expected)),
 			this, options);
 	}
 

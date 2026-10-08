@@ -25,7 +25,7 @@ public sealed partial class DriveInfo
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that driveInfo
-					             does not have name not equal to "D:\",
+					             does not have name not equal to "D:\\",
 					             but it did
 					             """);
 			}

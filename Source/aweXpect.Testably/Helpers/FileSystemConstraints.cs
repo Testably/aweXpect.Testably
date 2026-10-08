@@ -103,7 +103,7 @@ internal static class FileSystemConstraints
 	{
 		private string? _actualName;
 
-		public async Task<ConstraintResult> IsMetBy(TInfo actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TInfo actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			_actualName = actual.Name;

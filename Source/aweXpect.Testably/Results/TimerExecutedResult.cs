@@ -11,19 +11,25 @@ namespace aweXpect.Testably.Results;
 ///     The result for <see cref="TimerExtensions.Executed(aweXpect.Core.IThat{ITimerMock})" />.
 /// </summary>
 public class TimerExecutedResult
-	: CountResult<ITimerMock, IThat<ITimerMock>, TimerExecutedResult>
+	: AndOrResult<ITimerMock, IThat<ITimerMock>, TimerExecutedResult>,
+		IOptionsProvider<Quantifier>
 {
 	private readonly NotificationTimeoutOptions _options;
+	private readonly Quantifier _quantifier;
 
 	internal TimerExecutedResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<ITimerMock> subject,
 		Quantifier quantifier,
 		NotificationTimeoutOptions options)
-		: base(expectationBuilder, subject, quantifier)
+		: base(expectationBuilder, subject)
 	{
+		_quantifier = quantifier;
 		_options = options;
 	}
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
 
 	/// <summary>
 	///     Allows a <paramref name="timeout" /> for waiting for asynchronous timer executions.

@@ -74,7 +74,7 @@ public sealed partial class FileInfo
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
-					             has name equal to "today.log" whose parent has name equal to "wrong",
+					             has name equal to "today.log" and whose parent has name equal to "wrong",
 					             but it was "logs", which differs at index 0:
 					                ↓ (actual)
 					               "logs"
@@ -98,7 +98,7 @@ public sealed partial class FileInfo
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that fileInfo
-					             is not empty,
+					             whose parent is not empty,
 					             but it did throw an InvalidOperationException:
 					               Cannot assert on the parent directory of the file because it has none.
 					             """).And

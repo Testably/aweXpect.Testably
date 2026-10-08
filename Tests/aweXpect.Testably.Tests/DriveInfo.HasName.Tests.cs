@@ -40,11 +40,11 @@ public sealed partial class DriveInfo
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that driveInfo
-					             has name equal to "Z:\",
-					             but it was "D:\", which differs at index 0:
+					             has name equal to "Z:\\",
+					             but it was "D:\\", which differs at index 0:
 					                ↓ (actual)
-					               "D:\"
-					               "Z:\"
+					               "D:\\"
+					               "Z:\\"
 					                ↑ (expected)
 					             """);
 			}

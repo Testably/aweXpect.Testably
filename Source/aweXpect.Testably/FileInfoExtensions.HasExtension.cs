@@ -36,7 +36,7 @@ public static partial class FileInfoExtensions
 	{
 		private string? _actualExtension;
 
-		public async Task<ConstraintResult> IsMetBy(IFileInfo actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IFileInfo actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			_actualExtension = actual.Extension;

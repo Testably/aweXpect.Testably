@@ -60,9 +60,8 @@ public partial class FileResult<TParent>
 		{
 			StringEqualityOptions options = new(nameof(expected));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
-				_expectationBuilder.And(" ").AddConstraint((eb, it, grammars)
+				_expectationBuilder.And(" ").AddConstraint((it, grammars)
 					=> new HasStringContentEqualToConstraint(
-						eb,
 						it,
 						grammars,
 						_resolver,
@@ -97,9 +96,8 @@ public partial class FileResult<TParent>
 		{
 			StringEqualityOptions options = new(nameof(unexpected));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
-				_expectationBuilder.And(" ").AddConstraint((eb, it, grammars)
+				_expectationBuilder.And(" ").AddConstraint((it, grammars)
 					=> new HasStringContentEqualToConstraint(
-						eb,
 						it,
 						grammars,
 						_resolver,
@@ -116,8 +114,8 @@ public partial class FileResult<TParent>
 		{
 			StringEqualityOptions options = new(nameof(filePath));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
-				_expectationBuilder.And(" ").AddConstraint((eb, it, grammars)
-					=> new HasContentSameAsConstraint(eb, it, grammars, _resolver, options, filePath)),
+				_expectationBuilder.And(" ").AddConstraint((it, grammars)
+					=> new HasContentSameAsConstraint(it, grammars, _resolver, options, filePath)),
 				_subject, options);
 		}
 
@@ -129,8 +127,8 @@ public partial class FileResult<TParent>
 		{
 			StringEqualityOptions options = new(nameof(filePath));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
-				_expectationBuilder.And(" ").AddConstraint((eb, it, grammars)
-					=> new HasContentSameAsConstraint(eb, it, grammars, _resolver, options, filePath).Invert()),
+				_expectationBuilder.And(" ").AddConstraint((it, grammars)
+					=> new HasContentSameAsConstraint(it, grammars, _resolver, options, filePath).Invert()),
 				_subject, options);
 		}
 	}
@@ -167,7 +165,6 @@ public partial class FileResult<TParent>
 	}
 
 	private sealed class HasStringContentEqualToConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver,
@@ -178,20 +175,17 @@ public partial class FileResult<TParent>
 	{
 		private string? _fileContent;
 
-		public async Task<ConstraintResult> IsMetBy(TParent actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TParent actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			(IFileSystem fs, string fullPath) = resolver(actual);
 			_fileContent = fs.File.ReadAllText(fullPath);
 			Outcome = await options.AreConsideredEqual(_fileContent, expected) ? Outcome.Success : Outcome.Failure;
-			if (Outcome == Outcome.Failure)
-			{
-				expectationBuilder.UpdateContexts(contexts => contexts
-					.Add(new ResultContext.Fixed(Constants.FileContentContext, _fileContent)));
-			}
-
 			return this;
 		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.Add(new ResultContext.Fixed(Constants.FileContentContext, _fileContent));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("with content ").Append(options.GetExpectation(expected, Grammars));
@@ -207,7 +201,6 @@ public partial class FileResult<TParent>
 	}
 
 	private sealed class HasContentSameAsConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver,
@@ -221,7 +214,7 @@ public partial class FileResult<TParent>
 		private string? _fullExpectedPath;
 		private bool _isExpectedFound;
 
-		public async Task<ConstraintResult> IsMetBy(TParent actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TParent actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			(IFileSystem fs, string fullPath) = resolver(actual);
@@ -230,22 +223,17 @@ public partial class FileResult<TParent>
 			_isExpectedFound = fs.File.Exists(expectedPath);
 			if (!_isExpectedFound)
 			{
-				expectationBuilder.UpdateContexts(contexts => contexts
-					.Add(new ResultContext.Fixed(Constants.FileContentContext, _fileContent)));
 				Outcome = Outcome.Failure;
 				return this;
 			}
 
 			_expectedContent = fs.File.ReadAllText(expectedPath);
 			Outcome = await options.AreConsideredEqual(_fileContent, _expectedContent) ? Outcome.Success : Outcome.Failure;
-			if (Outcome == Outcome.Failure)
-			{
-				expectationBuilder.UpdateContexts(contexts => contexts
-					.Add(new ResultContext.Fixed(Constants.FileContentContext, _fileContent)));
-			}
-
 			return this;
 		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.Add(new ResultContext.Fixed(Constants.FileContentContext, _fileContent));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("with the same content as file '").Append(_fullExpectedPath).Append('\'');

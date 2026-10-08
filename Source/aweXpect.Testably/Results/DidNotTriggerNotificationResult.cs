@@ -13,7 +13,6 @@ namespace aweXpect.Testably.Results;
 public class DidNotTriggerNotificationResult
 	: AndOrResult<MockFileSystem, IThat<MockFileSystem>, DidNotTriggerNotificationResult>
 {
-	private readonly ExpectationBuilder _expectationBuilder;
 	private readonly NotificationConstraints.TriggerNotificationFilter<ChangeDescription> _filter;
 	private readonly NotificationTimeoutOptions _options;
 
@@ -23,7 +22,6 @@ public class DidNotTriggerNotificationResult
 		NotificationTimeoutOptions options, NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter)
 		: base(expectationBuilder, subject)
 	{
-		_expectationBuilder = expectationBuilder;
 		_options = options;
 		_filter = filter;
 	}
@@ -46,7 +44,7 @@ public class DidNotTriggerNotificationResult
 			throw new ArgumentNullException(nameof(expectation));
 		}
 
-		ManualExpectationBuilder<ChangeDescription> manualBuilder = new(_expectationBuilder);
+		ManualExpectationBuilder<ChangeDescription> manualBuilder = new();
 		expectation(new ThatSubject<ChangeDescription>(manualBuilder));
 		_filter.Add(manualBuilder);
 		return this;

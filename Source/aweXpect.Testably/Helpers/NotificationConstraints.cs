@@ -32,7 +32,7 @@ internal static class NotificationConstraints
 		where TSubject : class
 		where TChange : ChangeDescription
 	{
-		public async Task<ConstraintResult> IsMetBy(TSubject actual,
+		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
@@ -394,7 +394,7 @@ internal static class NotificationConstraints
 	{
 		private string? _actualValue;
 
-		public async Task<ConstraintResult> IsMetBy(TChange actual,
+		public async ValueTask<ConstraintResult> IsMetBy(TChange actual,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;

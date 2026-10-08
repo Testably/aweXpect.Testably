@@ -29,19 +29,23 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files have content equal to "SOME-CONTENT" for all items,
+						              has directory '{path}' whose files all have content equal to "SOME-CONTENT",
 						              but none of at least 1 did
 
-						              Not matching items:
+						              Not matching items (files):
 						              [
 						                foo{Path.DirectorySeparatorChar}bar.txt,
 						                (… and maybe more)
 						              ]
 
-						              Collection:
+						              Collection (files):
 						              [
-						                foo{Path.DirectorySeparatorChar}bar.txt
+						                foo{Path.DirectorySeparatorChar}bar.txt,
+						                (… and maybe more)
 						              ]
+
+						              File content (files[0]):
+						              some-content
 						              """).IgnoringNewlineStyle();
 				}
 
@@ -98,19 +102,23 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files have content not equal to "some-content" for all items,
+						              has directory '{path}' whose files all have content not equal to "some-content",
 						              but none of at least 1 did
 
-						              Not matching items:
+						              Not matching items (files):
 						              [
 						                foo{Path.DirectorySeparatorChar}bar.txt,
 						                (… and maybe more)
 						              ]
 
-						              Collection:
+						              Collection (files):
 						              [
-						                foo{Path.DirectorySeparatorChar}bar.txt
+						                foo{Path.DirectorySeparatorChar}bar.txt,
+						                (… and maybe more)
 						              ]
+
+						              File content (files[0]):
+						              some-content
 						              """).IgnoringNewlineStyle();
 				}
 

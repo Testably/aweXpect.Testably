@@ -25,9 +25,9 @@ public static partial class FileInfoExtensions
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasContentValueConstraint(
-					expectationBuilder, it, grammars, expected, options)),
+					it, grammars, expected, options)),
 			source,
 			options);
 	}
@@ -51,7 +51,6 @@ public static partial class FileInfoExtensions
 		=> new(source.Get().ExpectationBuilder, source);
 
 	private sealed class HasContentValueConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string? expected,
@@ -61,7 +60,7 @@ public static partial class FileInfoExtensions
 	{
 		private string? _fileContent;
 
-		public async Task<ConstraintResult> IsMetBy(IFileInfo actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IFileInfo actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (!Actual.Exists)
@@ -79,9 +78,15 @@ public static partial class FileInfoExtensions
 			cancellationToken.ThrowIfCancellationRequested();
 #endif
 			Outcome = await options.AreConsideredEqual(_fileContent, expected) ? Outcome.Success : Outcome.Failure;
-			expectationBuilder.UpdateContexts(contexts => contexts
-				.Add(new ResultContext.Fixed(Constants.FileContentContext, _fileContent)));
 			return this;
+		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (_fileContent is not null)
+			{
+				contexts.Add(new ResultContext.Fixed(Constants.FileContentContext, _fileContent));
+			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -84,7 +84,7 @@ internal static class StatisticsConstraints
 
 		private void AppendExpectation(StringBuilder stringBuilder, bool negated)
 		{
-			if (quantifier.IsNever)
+			if (quantifier.IsNever(false))
 			{
 				stringBuilder.Append(negated ? "recorded at least one call to " : "recorded no call to ")
 					.Append(bucketDescription).Append('.').Append(methodName);
@@ -176,7 +176,7 @@ internal static class StatisticsConstraints
 		private void AppendExpectation(StringBuilder stringBuilder, bool negated)
 		{
 			string accessVerb = access == PropertyAccess.Get ? "get of " : "set of ";
-			if (quantifier.IsNever)
+			if (quantifier.IsNever(false))
 			{
 				stringBuilder.Append(negated ? "recorded at least one " : "recorded no ").Append(accessVerb)
 					.Append(bucketDescription).Append('.').Append(propertyName);

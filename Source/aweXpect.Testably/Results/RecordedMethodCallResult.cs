@@ -9,17 +9,24 @@ namespace aweXpect.Testably.Results;
 ///     The result of a recorded method call assertion.
 /// </summary>
 /// <remarks>
-///     Inherits the count vocabulary (<c>Once</c>, <c>Twice</c>, <c>Never</c>, <c>Exactly</c>,
-///     <c>AtLeast</c>, <c>AtMost</c>, …) from <see cref="CountResult{TType,TThat,TSelf}" />.
+///     Supports the count vocabulary (<c>Once</c>, <c>Twice</c>, <c>Never</c>, <c>Exactly</c>,
+///     <c>AtLeast</c>, <c>AtMost</c>, …) from <see cref="QuantifierExtensions" />.
 /// </remarks>
 public sealed class RecordedMethodCallResult
-	: CountResult<IFileSystemStatistics, IThat<IFileSystemStatistics>, RecordedMethodCallResult>
+	: AndOrResult<IFileSystemStatistics, IThat<IFileSystemStatistics>, RecordedMethodCallResult>,
+		IOptionsProvider<Quantifier>
 {
+	private readonly Quantifier _quantifier;
+
 	internal RecordedMethodCallResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<IFileSystemStatistics> subject,
 		Quantifier quantifier)
-		: base(expectationBuilder, subject, quantifier)
+		: base(expectationBuilder, subject)
 	{
+		_quantifier = quantifier;
 	}
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
 }
