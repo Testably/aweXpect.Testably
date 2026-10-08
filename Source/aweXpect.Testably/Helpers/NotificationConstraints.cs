@@ -200,7 +200,7 @@ internal static class NotificationConstraints
 			foreach (ManualExpectationBuilder<TChange> builder in _asyncFilters)
 			{
 				ConstraintResult result = builder.IsMetBy(change, context, cancellationToken)
-					.ConfigureAwait(false).GetAwaiter().GetResult();
+					.AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
 				if (result.Outcome != Outcome.Success)
 				{
 					return false;
