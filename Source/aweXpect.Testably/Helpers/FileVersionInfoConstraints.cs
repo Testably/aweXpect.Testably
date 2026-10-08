@@ -23,7 +23,7 @@ internal static class FileVersionInfoConstraints
 	{
 		private string? _actualValue;
 
-		public async Task<ConstraintResult> IsMetBy(IFileVersionInfo actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IFileVersionInfo actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)

@@ -29,18 +29,19 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory 'foo' whose files have content equal to expected for all items,
+						              has directory 'foo' whose files all have content equal to expected,
 						              but none of at least 1 did
 
-						              Not matching items:
+						              Not matching items (files):
 						              [
 						                foo{Path.DirectorySeparatorChar}bar.txt,
 						                (… and maybe more)
 						              ]
 
-						              Collection:
+						              Collection (files):
 						              [
-						                foo{Path.DirectorySeparatorChar}bar.txt
+						                foo{Path.DirectorySeparatorChar}bar.txt,
+						                (… and maybe more)
 						              ]
 						              """).IgnoringNewlineStyle();
 				}
@@ -98,18 +99,19 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory 'foo' whose files have content different from content for all items,
+						              has directory 'foo' whose files all have content different from content,
 						              but none of at least 1 did
 
-						              Not matching items:
+						              Not matching items (files):
 						              [
 						                foo{Path.DirectorySeparatorChar}bar.txt,
 						                (… and maybe more)
 						              ]
 
-						              Collection:
+						              Collection (files):
 						              [
-						                foo{Path.DirectorySeparatorChar}bar.txt
+						                foo{Path.DirectorySeparatorChar}bar.txt,
+						                (… and maybe more)
 						              ]
 						              """).IgnoringNewlineStyle();
 				}

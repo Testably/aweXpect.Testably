@@ -13,7 +13,6 @@ namespace aweXpect.Testably.Results;
 public class DidNotTriggerWatcherResult
 	: AndOrResult<IFileSystemWatcher, IThat<IFileSystemWatcher>, DidNotTriggerWatcherResult>
 {
-	private readonly ExpectationBuilder _expectationBuilder;
 	private readonly NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> _filter;
 	private readonly NotificationTimeoutOptions _options;
 
@@ -23,7 +22,6 @@ public class DidNotTriggerWatcherResult
 		NotificationTimeoutOptions options, NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> filter)
 		: base(expectationBuilder, subject)
 	{
-		_expectationBuilder = expectationBuilder;
 		_options = options;
 		_filter = filter;
 	}
@@ -46,7 +44,7 @@ public class DidNotTriggerWatcherResult
 			throw new ArgumentNullException(nameof(expectation));
 		}
 
-		ManualExpectationBuilder<WatcherChangeDescription> manualBuilder = new(_expectationBuilder);
+		ManualExpectationBuilder<WatcherChangeDescription> manualBuilder = new();
 		expectation(new ThatSubject<WatcherChangeDescription>(manualBuilder));
 		_filter.Add(manualBuilder);
 		return this;

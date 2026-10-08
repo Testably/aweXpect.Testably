@@ -36,7 +36,7 @@ public static partial class DriveInfoExtensions
 	{
 		private string? _actualName;
 
-		public async Task<ConstraintResult> IsMetBy(IDriveInfo actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IDriveInfo actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)

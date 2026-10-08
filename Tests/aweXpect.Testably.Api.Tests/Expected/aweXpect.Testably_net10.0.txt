@@ -529,18 +529,18 @@ namespace aweXpect.Testably.Results
             public aweXpect.Results.StringEqualityTypeResult<TParent, aweXpect.Testably.Results.FileResult<TParent>> SameAs(string filePath) { }
         }
     }
-    public sealed class RecordedMethodCallResult : aweXpect.Results.CountResult<Testably.Abstractions.Testing.Statistics.IFileSystemStatistics, aweXpect.Core.IThat<Testably.Abstractions.Testing.Statistics.IFileSystemStatistics>, aweXpect.Testably.Results.RecordedMethodCallResult> { }
-    public sealed class RecordedPropertyAccessResult : aweXpect.Results.CountResult<Testably.Abstractions.Testing.Statistics.IFileSystemStatistics, aweXpect.Core.IThat<Testably.Abstractions.Testing.Statistics.IFileSystemStatistics>, aweXpect.Testably.Results.RecordedPropertyAccessResult> { }
-    public class TimerExecutedResult : aweXpect.Results.CountResult<Testably.Abstractions.Testing.TimeSystem.ITimerMock, aweXpect.Core.IThat<Testably.Abstractions.Testing.TimeSystem.ITimerMock>, aweXpect.Testably.Results.TimerExecutedResult>
+    public sealed class RecordedMethodCallResult : aweXpect.Results.AndOrResult<Testably.Abstractions.Testing.Statistics.IFileSystemStatistics, aweXpect.Core.IThat<Testably.Abstractions.Testing.Statistics.IFileSystemStatistics>, aweXpect.Testably.Results.RecordedMethodCallResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+    public sealed class RecordedPropertyAccessResult : aweXpect.Results.AndOrResult<Testably.Abstractions.Testing.Statistics.IFileSystemStatistics, aweXpect.Core.IThat<Testably.Abstractions.Testing.Statistics.IFileSystemStatistics>, aweXpect.Testably.Results.RecordedPropertyAccessResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
+    public class TimerExecutedResult : aweXpect.Results.AndOrResult<Testably.Abstractions.Testing.TimeSystem.ITimerMock, aweXpect.Core.IThat<Testably.Abstractions.Testing.TimeSystem.ITimerMock>, aweXpect.Testably.Results.TimerExecutedResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>
     {
         public aweXpect.Testably.Results.TimerExecutedResult Within(System.TimeSpan timeout) { }
     }
-    public class TriggeredNotificationResult : aweXpect.Results.CountResult<Testably.Abstractions.Testing.MockFileSystem, aweXpect.Core.IThat<Testably.Abstractions.Testing.MockFileSystem>, aweXpect.Testably.Results.TriggeredNotificationResult>
+    public class TriggeredNotificationResult : aweXpect.Results.AndOrResult<Testably.Abstractions.Testing.MockFileSystem, aweXpect.Core.IThat<Testably.Abstractions.Testing.MockFileSystem>, aweXpect.Testably.Results.TriggeredNotificationResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>
     {
         public aweXpect.Testably.Results.TriggeredNotificationResult Which(System.Action<aweXpect.Core.IThat<Testably.Abstractions.Testing.FileSystem.ChangeDescription>> expectation) { }
         public aweXpect.Testably.Results.TriggeredNotificationResult Within(System.TimeSpan timeout) { }
     }
-    public class TriggeredWatcherResult : aweXpect.Results.CountResult<System.IO.Abstractions.IFileSystemWatcher, aweXpect.Core.IThat<System.IO.Abstractions.IFileSystemWatcher>, aweXpect.Testably.Results.TriggeredWatcherResult>
+    public class TriggeredWatcherResult : aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileSystemWatcher, aweXpect.Core.IThat<System.IO.Abstractions.IFileSystemWatcher>, aweXpect.Testably.Results.TriggeredWatcherResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>
     {
         public aweXpect.Testably.Results.TriggeredWatcherResult Which(System.Action<aweXpect.Core.IThat<Testably.Abstractions.Testing.FileSystem.WatcherChangeDescription>> expectation) { }
         public aweXpect.Testably.Results.TriggeredWatcherResult Within(System.TimeSpan timeout) { }

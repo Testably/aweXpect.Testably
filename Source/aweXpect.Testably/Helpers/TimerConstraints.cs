@@ -22,7 +22,7 @@ internal static class TimerConstraints
 	{
 		private long _executionCount;
 
-		public async Task<ConstraintResult> IsMetBy(ITimerMock actual,
+		public async ValueTask<ConstraintResult> IsMetBy(ITimerMock actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
@@ -89,7 +89,7 @@ internal static class TimerConstraints
 
 		private void AppendExpectation(StringBuilder stringBuilder, bool negated)
 		{
-			if (quantifier.IsNever)
+			if (quantifier.IsNever(false))
 			{
 				stringBuilder.Append(negated ? "executed at least once" : "did not execute");
 			}

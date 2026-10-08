@@ -31,7 +31,7 @@ public sealed partial class FileSystem
 						              has directory '{path}' whose subdirectories have exactly 3 items,
 						              but subdirectories had only 2 items
 
-						              Collection:
+						              Collection (subdirectories):
 						              [
 						                *,
 						                *
@@ -57,18 +57,19 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose subdirectories is empty for all items,
+						              has directory '{path}' whose subdirectories all are empty,
 						              but none of at least 1 were
 
-						              Not matching items:
+						              Not matching items (subdirectories):
 						              [
 						                foo{Path.DirectorySeparatorChar}directory1,
 						                (… and maybe more)
 						              ]
 
-						              Collection:
+						              Collection (subdirectories):
 						              [
-						                foo{Path.DirectorySeparatorChar}directory1
+						                foo{Path.DirectorySeparatorChar}directory1,
+						                (… and maybe more)
 						              ]
 						              """).IgnoringNewlineStyle();
 				}

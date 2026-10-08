@@ -12,20 +12,21 @@ namespace aweXpect.Testably.Results;
 ///     The result for <see cref="FileSystemExtensions.TriggeredNotification(aweXpect.Core.IThat{MockFileSystem})" />.
 /// </summary>
 public class TriggeredNotificationResult
-	: CountResult<MockFileSystem, IThat<MockFileSystem>, TriggeredNotificationResult>
+	: AndOrResult<MockFileSystem, IThat<MockFileSystem>, TriggeredNotificationResult>,
+		IOptionsProvider<Quantifier>
 {
-	private readonly ExpectationBuilder _expectationBuilder;
 	private readonly NotificationConstraints.TriggerNotificationFilter<ChangeDescription> _filter;
 	private readonly NotificationTimeoutOptions _options;
+	private readonly Quantifier _quantifier;
 
 	internal TriggeredNotificationResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<MockFileSystem> subject,
 		Quantifier quantifier,
 		NotificationTimeoutOptions options, NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter)
-		: base(expectationBuilder, subject, quantifier)
+		: base(expectationBuilder, subject)
 	{
-		_expectationBuilder = expectationBuilder;
+		_quantifier = quantifier;
 		_options = options;
 		_filter = filter;
 	}
@@ -48,11 +49,14 @@ public class TriggeredNotificationResult
 			throw new ArgumentNullException(nameof(expectation));
 		}
 
-		ManualExpectationBuilder<ChangeDescription> manualBuilder = new(_expectationBuilder);
+		ManualExpectationBuilder<ChangeDescription> manualBuilder = new();
 		expectation(new ThatSubject<ChangeDescription>(manualBuilder));
 		_filter.Add(manualBuilder);
 		return this;
 	}
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
 
 	/// <summary>
 	///     Allows a <paramref name="timeout" /> for waiting for asynchronous notifications.

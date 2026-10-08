@@ -12,20 +12,21 @@ namespace aweXpect.Testably.Results;
 ///     The result for <see cref="FileSystemWatcherExtensions.Triggered(aweXpect.Core.IThat{IFileSystemWatcher})" />.
 /// </summary>
 public class TriggeredWatcherResult
-	: CountResult<IFileSystemWatcher, IThat<IFileSystemWatcher>, TriggeredWatcherResult>
+	: AndOrResult<IFileSystemWatcher, IThat<IFileSystemWatcher>, TriggeredWatcherResult>,
+		IOptionsProvider<Quantifier>
 {
-	private readonly ExpectationBuilder _expectationBuilder;
 	private readonly NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> _filter;
 	private readonly NotificationTimeoutOptions _options;
+	private readonly Quantifier _quantifier;
 
 	internal TriggeredWatcherResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<IFileSystemWatcher> subject,
 		Quantifier quantifier,
 		NotificationTimeoutOptions options, NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> filter)
-		: base(expectationBuilder, subject, quantifier)
+		: base(expectationBuilder, subject)
 	{
-		_expectationBuilder = expectationBuilder;
+		_quantifier = quantifier;
 		_options = options;
 		_filter = filter;
 	}
@@ -48,11 +49,14 @@ public class TriggeredWatcherResult
 			throw new ArgumentNullException(nameof(expectation));
 		}
 
-		ManualExpectationBuilder<WatcherChangeDescription> manualBuilder = new(_expectationBuilder);
+		ManualExpectationBuilder<WatcherChangeDescription> manualBuilder = new();
 		expectation(new ThatSubject<WatcherChangeDescription>(manualBuilder));
 		_filter.Add(manualBuilder);
 		return this;
 	}
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
 
 	/// <summary>
 	///     Allows a <paramref name="timeout" /> for waiting for asynchronous events.
