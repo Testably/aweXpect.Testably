@@ -57,6 +57,37 @@ public sealed partial class FileSystem
 							              bar
 							              """);
 					}
+
+					[Fact]
+					public async Task WhenNegated_WhenContentIsDifferent_ShouldFail()
+					{
+						MockFileSystem sut = new();
+						string path = "foo.txt";
+						string expectedPath = "bar.txt";
+						string fullExpectedPath = sut.Path.GetFullPath(expectedPath);
+						sut.File.WriteAllText(path, "baz");
+						sut.File.WriteAllText(expectedPath, "bar");
+
+						async Task Act()
+						{
+							await That(sut).DoesNotComplyWith(it => it.HasFile(path).WithContent().NotSameAs(expectedPath));
+						}
+
+						await That(Act).Throws()
+							.WithMessage($"""
+							              Expected that sut
+							              does not have file '{path}' with not the same content as file '{fullExpectedPath}',
+							              but it did and was "baz", which differs at index 2:
+							                   ↓ (actual)
+							                "baz"
+							                "bar"
+							                   ↑ (expected)
+
+							              File content:
+							              baz
+							              """)
+							.Because("the outer negation belongs to the verb, while the content clause keeps its own negation");
+					}
 				}
 
 				public sealed class AsWildcardTests

@@ -146,6 +146,29 @@ public sealed partial class FileSystem
 
 					await That(Act).DoesNotThrow();
 				}
+
+				[Fact]
+				public async Task WhenNegated_WhenLastWriteTimeMatches_ShouldFail()
+				{
+					MockFileSystem sut = new();
+					DateTime expectedTime = CurrentTime().ToLocalTime();
+					string path = "foo.txt";
+					sut.File.WriteAllText(path, "");
+					sut.File.SetLastWriteTime(path, expectedTime);
+
+					async Task Act()
+					{
+						await That(sut).DoesNotComplyWith(it => it.HasFile(path).WithLastWriteTime(expectedTime));
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              does not have file '{path}' with last write time equal to {Formatter.Format(expectedTime)},
+						              but it did and was {Formatter.Format(expectedTime)}
+						              """)
+						.Because("the negation belongs to the verb only");
+				}
 			}
 		}
 	}

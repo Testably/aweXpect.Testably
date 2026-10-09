@@ -41,7 +41,7 @@ public static partial class FileInfoExtensions
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has length ").Append(expected);
+			=> stringBuilder.Append(Grammars.Verb("has length ", "have length ")).Append(expected);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -60,7 +60,7 @@ public static partial class FileInfoExtensions
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have length ").Append(expected);
+			=> stringBuilder.Append(Grammars.Verb("does not have length ", "do not have length ")).Append(expected);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

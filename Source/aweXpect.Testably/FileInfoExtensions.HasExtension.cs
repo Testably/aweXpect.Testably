@@ -51,13 +51,13 @@ public static partial class FileInfoExtensions
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has extension ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append(Grammars.Verb("has extension ", "have extension ")).Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualExtension, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have extension ")
+			=> stringBuilder.Append(Grammars.Verb("does not have extension ", "do not have extension "))
 				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

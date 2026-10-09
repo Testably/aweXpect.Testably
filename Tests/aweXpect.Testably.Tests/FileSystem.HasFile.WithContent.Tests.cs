@@ -55,6 +55,83 @@ public sealed partial class FileSystem
 
 					await That(Act).DoesNotThrow();
 				}
+
+				[Fact]
+				public async Task WhenFileDoesNotExist_ShouldFail()
+				{
+					string path = "foo.txt";
+					MockFileSystem sut = new();
+
+					async Task Act()
+					{
+						await That(sut).HasFile(path).WithContent("bar");
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              has file '{path}' with content equal to "bar",
+						              but it did not exist
+						              """)
+						.Because("a missing file has no content to read, so it fails instead of throwing");
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenContentMatches_ShouldFail()
+				{
+					string path = "foo.txt";
+					MockFileSystem sut = new();
+					sut.File.WriteAllText(path, "bar");
+
+					async Task Act()
+					{
+						await That(sut).DoesNotComplyWith(it => it.HasFile(path).WithContent("bar"));
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              does not have file '{path}' with content equal to "bar",
+						              but it did and did match
+
+						              File content:
+						              bar
+						              """)
+						.Because("the negation belongs to the verb only");
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenFileDoesNotExist_ShouldSucceed()
+				{
+					MockFileSystem sut = new();
+
+					async Task Act()
+					{
+						await That(sut).DoesNotComplyWith(it => it.HasFile("foo.txt").WithContent("bar"));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenPathIsADirectory_ShouldFail()
+				{
+					string path = "foo";
+					MockFileSystem sut = new();
+					sut.Directory.CreateDirectory(path);
+
+					async Task Act()
+					{
+						await That(sut).HasFile(path).WithContent("bar");
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              has file '{path}' with content equal to "bar",
+						              but it was a directory
+						              """);
+				}
 			}
 
 			public sealed class BinaryTests
@@ -97,6 +174,49 @@ public sealed partial class FileSystem
 					}
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenFileDoesNotExist_ShouldFail()
+				{
+					byte[] expected = Encoding.UTF8.GetBytes("bar");
+					string path = "foo.txt";
+					MockFileSystem sut = new();
+
+					async Task Act()
+					{
+						await That(sut).HasFile(path).WithContent(expected);
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              has file '{path}' with content equal to expected,
+						              but it did not exist
+						              """)
+						.Because("a missing file has no content to read, so it fails instead of throwing");
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenContentMatches_ShouldFail()
+				{
+					byte[] content = Encoding.UTF8.GetBytes("baz");
+					string path = "foo.txt";
+					MockFileSystem sut = new();
+					sut.File.WriteAllBytes(path, content);
+
+					async Task Act()
+					{
+						await That(sut).DoesNotComplyWith(it => it.HasFile(path).WithContent(content));
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              does not have file '{path}' with content equal to content,
+						              but it did and did match
+						              """)
+						.Because("the negation belongs to the verb only");
 				}
 			}
 

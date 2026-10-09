@@ -25,7 +25,7 @@ public static partial class FileInfoExtensions
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileSystemConstraints.HasTimeConstraint<IFileInfo>(it, grammars,
 					f => f.CreationTime, f => f.Exists, tolerance, expected, "creation time",
-					"has", "does not have", " equal to ")),
+					isWithClause: false)),
 			source, tolerance);
 	}
 }

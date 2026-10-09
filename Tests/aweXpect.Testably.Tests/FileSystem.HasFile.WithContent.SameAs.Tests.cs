@@ -87,6 +87,56 @@ public sealed partial class FileSystem
 
 						await That(Act).DoesNotThrow();
 					}
+
+					[Fact]
+					public async Task WhenFileDoesNotExist_ShouldFail()
+					{
+						MockFileSystem sut = new();
+						string path = "foo.txt";
+						string expectedPath = "bar.txt";
+						string fullExpectedPath = sut.Path.GetFullPath(expectedPath);
+						sut.File.WriteAllText(expectedPath, "bar");
+
+						async Task Act()
+						{
+							await That(sut).HasFile(path).WithContent().SameAs(expectedPath);
+						}
+
+						await That(Act).Throws()
+							.WithMessage($"""
+							              Expected that sut
+							              has file '{path}' with the same content as file '{fullExpectedPath}',
+							              but it did not exist
+							              """)
+							.Because("a missing file has no content to read, so it fails instead of throwing");
+					}
+
+					[Fact]
+					public async Task WhenNegated_WhenContentMatches_ShouldFail()
+					{
+						MockFileSystem sut = new();
+						string path = "foo.txt";
+						string expectedPath = "bar.txt";
+						string fullExpectedPath = sut.Path.GetFullPath(expectedPath);
+						sut.File.WriteAllText(path, "bar");
+						sut.File.WriteAllText(expectedPath, "bar");
+
+						async Task Act()
+						{
+							await That(sut).DoesNotComplyWith(it => it.HasFile(path).WithContent().SameAs(expectedPath));
+						}
+
+						await That(Act).Throws()
+							.WithMessage($"""
+							              Expected that sut
+							              does not have file '{path}' with the same content as file '{fullExpectedPath}',
+							              but it did and did match
+
+							              File content:
+							              bar
+							              """)
+							.Because("the negation belongs to the verb only");
+					}
 				}
 
 				public sealed class AsWildcardTests

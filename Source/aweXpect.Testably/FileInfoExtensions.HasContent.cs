@@ -105,7 +105,6 @@ public static partial class FileInfoExtensions
 			}
 
 			stringBuilder.Append(options.GetExpectation(expected, Grammars));
-			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -125,7 +124,8 @@ public static partial class FileInfoExtensions
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalExpectation(stringBuilder, indentation);
+			=> stringBuilder.Append(Grammars.Verb("does not have content ", "do not have content "))
+				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
@@ -182,16 +182,8 @@ public static partial class FileInfoExtensions
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.IsPlural())
-			{
-				stringBuilder.Append("have content different from ").Append(expectedExpression);
-			}
-			else
-			{
-				stringBuilder.Append("has content different from ").Append(expectedExpression);
-			}
-		}
+			=> stringBuilder.Append(Grammars.Verb("does not have content equal to ", "do not have content equal to "))
+				.Append(expectedExpression);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

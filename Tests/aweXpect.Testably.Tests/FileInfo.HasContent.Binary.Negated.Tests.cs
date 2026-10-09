@@ -49,7 +49,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileInfo
-						             has content different from content,
+						             does not have content equal to content,
 						             but it did match
 						             """);
 				}
