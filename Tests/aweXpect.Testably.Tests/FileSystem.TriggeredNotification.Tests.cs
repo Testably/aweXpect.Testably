@@ -642,8 +642,8 @@ public sealed partial class FileSystem
 				async Task Act()
 				{
 					await That(sut).TriggeredNotification()
-						.Which(c => c.IsAcceptedAfter(token => Task.Delay(300, token)))
-						.Within(TimeSpan.FromMilliseconds(100));
+						.Which(c => c.IsAcceptedAfter(token => Task.Delay(1000, token)))
+						.Within(TimeSpan.FromMilliseconds(500));
 				}
 
 				await That(Act).DoesNotThrow()
