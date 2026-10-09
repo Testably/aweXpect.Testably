@@ -121,7 +121,11 @@ public partial class FileResult<TParent>
 		return new TimeToleranceResult<TParent, FileResult<TParent>>(
 			_expectationBuilder.And(" ").AddConstraint((it, grammars)
 				=> new FileSystemConstraints.HasTimeConstraint<TParent>(it, grammars,
-					timeAccessor, null, tolerance, expected, expectedString,
+					timeAccessor, p =>
+					{
+						(IFileSystem fs, string fullPath) = _resolver(p);
+						return GetMissingFileResult(fs, fullPath);
+					}, tolerance, expected, expectedString,
 					isWithClause: true)),
 			this, tolerance);
 	}
