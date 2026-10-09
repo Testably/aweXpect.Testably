@@ -37,7 +37,7 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has attribute ").Append(expected);
+			=> stringBuilder.Append(Grammars.Verb("has attribute ", "have attribute ")).Append(expected);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -56,7 +56,7 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have attribute ").Append(expected);
+			=> stringBuilder.Append(Grammars.Verb("does not have attribute ", "do not have attribute ")).Append(expected);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -94,13 +94,13 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("exists");
+			=> stringBuilder.Append(Grammars.Verb("exists", "exist"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not exist");
+			=> stringBuilder.Append(Grammars.Verb("does not exist", "do not exist"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");
@@ -132,7 +132,7 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has name ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append(Grammars.Verb("has name ", "have name ")).Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -147,7 +147,7 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have name ")
+			=> stringBuilder.Append(Grammars.Verb("does not have name ", "do not have name "))
 				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -181,7 +181,7 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has file '").Append(path).Append('\'');
+			=> stringBuilder.Append(Grammars.Verb("has file '", "have file '")).Append(path).Append('\'');
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -200,7 +200,7 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have file '").Append(path).Append('\'');
+			=> stringBuilder.Append(Grammars.Verb("does not have file '", "do not have file '")).Append(path).Append('\'');
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");
@@ -233,7 +233,7 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has directory '").Append(path).Append('\'');
+			=> stringBuilder.Append(Grammars.Verb("has directory '", "have directory '")).Append(path).Append('\'');
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -252,7 +252,7 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have directory '").Append(path).Append('\'');
+			=> stringBuilder.Append(Grammars.Verb("does not have directory '", "do not have directory '")).Append(path).Append('\'');
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");
@@ -266,9 +266,7 @@ internal static class FileSystemConstraints
 		TimeTolerance tolerance,
 		DateTime expected,
 		string expectedString,
-		string normalVerb,
-		string negatedVerb,
-		string negatedConnector)
+		bool isWithClause)
 		: ConstraintResult.WithValue<TActual>(it, grammars),
 			IValueConstraint<TActual>
 		where TActual : class
@@ -312,7 +310,8 @@ internal static class FileSystemConstraints
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(normalVerb).Append(' ').Append(expectedString).Append(" equal to ");
+			stringBuilder.Append(isWithClause ? "with" : Grammars.Verb("has", "have"))
+				.Append(' ').Append(expectedString).Append(" equal to ");
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance);
 		}
@@ -336,7 +335,8 @@ internal static class FileSystemConstraints
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(negatedVerb).Append(' ').Append(expectedString).Append(negatedConnector);
+			stringBuilder.Append(isWithClause ? "with" : Grammars.Verb("does not have", "do not have"))
+				.Append(' ').Append(expectedString).Append(" equal to ");
 			Formatter.Format(stringBuilder, expected);
 			stringBuilder.Append(tolerance);
 		}

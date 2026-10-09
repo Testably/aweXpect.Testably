@@ -11,6 +11,66 @@ public sealed partial class FileInfo
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task EqualTo_WhenChainedWithAnd_ShouldKeepTheAnd()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.File.WriteAllText("foo.txt", "bar");
+				IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+				async Task Act()
+				{
+					await That(fileInfo).Exists().And.HasContent().EqualTo("baz");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that fileInfo
+					             exists and has content equal to "baz",
+					             but it was "bar", which differs at index 2:
+					                  ↓ (actual)
+					               "bar"
+					               "baz"
+					                  ↑ (expected)
+
+					             File content:
+					             bar
+					             """);
+			}
+
+			[Fact]
+			public async Task EqualTo_WhenUsedForAllItems_ShouldNotStartWithASpace()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.File.WriteAllText("foo.txt", "bar");
+				IFileInfo[] fileInfos = [fileSystem.FileInfo.New("foo.txt"),];
+
+				async Task Act()
+				{
+					await That(fileInfos).All().ComplyWith(f => f.HasContent().EqualTo("baz"));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that fileInfos
+					             has content equal to "baz" for all items,
+					             but none of 1 did
+
+					             Not matching items:
+					             [
+					               foo.txt
+					             ]
+
+					             Collection:
+					             [
+					               foo.txt
+					             ]
+
+					             File content (item [0]):
+					             bar
+					             """).IgnoringNewlineStyle();
+			}
+
+			[Fact]
 			public async Task WhenContentDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -83,6 +143,57 @@ public sealed partial class FileInfo
 				XunitException exception = await That(Act).Throws<XunitException>();
 				await That(exception.Message).DoesNotContain("File content")
 					.Because("the missing file has no content, so the content of the previous item must not leak into it");
+			}
+
+			[Fact]
+			public async Task WhenIgnoringCase_ShouldMentionTheOptionOnce()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.File.WriteAllText("foo.txt", "bar");
+				IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+				async Task Act()
+				{
+					await That(fileInfo).HasContent("BAZ").IgnoringCase();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that fileInfo
+					             has content equal to "BAZ" ignoring case,
+					             but it was "bar", which differs at index 2:
+					                  ↓ (actual)
+					               "bar"
+					               "BAZ"
+					                  ↑ (expected)
+
+					             File content:
+					             bar
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNegated_WhenContentMatches_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.File.WriteAllText("foo.txt", "bar");
+				IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+				async Task Act()
+				{
+					await That(fileInfo).DoesNotComplyWith(it => it.HasContent("bar"));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that fileInfo
+					             does not have content equal to "bar",
+					             but it was "bar"
+
+					             File content:
+					             bar
+					             """)
+					.Because("the negation belongs to the verb only");
 			}
 		}
 
@@ -171,7 +282,7 @@ public sealed partial class FileInfo
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
-					             has content matching "b?" as wildcard,
+					             has content matching "b?",
 					             but it did not match:
 					               ↓ (actual)
 					               "baz"

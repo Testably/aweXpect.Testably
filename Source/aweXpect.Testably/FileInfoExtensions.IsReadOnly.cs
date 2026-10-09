@@ -47,7 +47,7 @@ public static partial class FileInfoExtensions
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is read-only");
+			=> stringBuilder.Append(Grammars.Verb("is read-only", "are read-only"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -66,7 +66,7 @@ public static partial class FileInfoExtensions
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not read-only");
+			=> stringBuilder.Append(Grammars.Verb("is not read-only", "are not read-only"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

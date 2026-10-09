@@ -49,7 +49,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileInfo
-						             has content different from content,
+						             does not have content equal to content,
 						             but it did match
 						             """);
 				}
@@ -92,7 +92,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileInfo
-						             has content not equal to "bar",
+						             does not have content equal to "bar",
 						             but it did match
 
 						             File content:
@@ -137,7 +137,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileInfo
-						             has content not matching "ba?",
+						             does not have content matching "ba?",
 						             but it did match
 
 						             File content:

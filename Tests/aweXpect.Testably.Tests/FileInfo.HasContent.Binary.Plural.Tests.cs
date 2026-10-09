@@ -99,7 +99,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory 'foo' whose files all have content different from content,
+						              has directory 'foo' whose files all do not have content equal to content,
 						              but none of at least 1 did
 
 						              Not matching items (files):

@@ -27,7 +27,7 @@ public class FileInfoContentResult(
 		byte[] expected,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		=> new(
-			expectationBuilder.And(" ").AddConstraint((it, grammars)
+			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasBinaryContentEqualToConstraint(
 					it,
 					grammars,
@@ -43,7 +43,7 @@ public class FileInfoContentResult(
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.And(" ").AddConstraint((it, grammars)
+			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasStringContentEqualToConstraint(
 					it,
 					grammars,
@@ -60,7 +60,7 @@ public class FileInfoContentResult(
 		[CallerArgumentExpression("unexpected")]
 		string doNotPopulateThisValue = "")
 		=> new(
-			expectationBuilder.And(" ").AddConstraint((it, grammars)
+			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasBinaryContentEqualToConstraint(
 						it,
 						grammars,
@@ -77,7 +77,7 @@ public class FileInfoContentResult(
 	{
 		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.And(" ").AddConstraint((it, grammars)
+			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasStringContentEqualToConstraint(
 					it,
 					grammars,
@@ -94,7 +94,7 @@ public class FileInfoContentResult(
 	{
 		StringEqualityOptions options = new(nameof(filePath));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.And(" ").AddConstraint((it, grammars)
+			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasContentSameAsConstraint(it, grammars, options, filePath)),
 			subject, options);
 	}
@@ -107,7 +107,7 @@ public class FileInfoContentResult(
 	{
 		StringEqualityOptions options = new(nameof(filePath));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.And(" ").AddConstraint((it, grammars)
+			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasContentSameAsConstraint(it, grammars, options, filePath).Invert()),
 			subject, options);
 	}
@@ -135,13 +135,15 @@ public class FileInfoContentResult(
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has content equal to ").Append(expectedExpression);
+			=> stringBuilder.Append(Grammars.Verb("has content equal to ", "have content equal to "))
+				.Append(expectedExpression);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" differed");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has content different from ").Append(expectedExpression);
+			=> stringBuilder.Append(Grammars.Verb("does not have content equal to ", "do not have content equal to "))
+				.Append(expectedExpression);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did match");
@@ -175,13 +177,15 @@ public class FileInfoContentResult(
 			=> contexts.Add(new ResultContext.Fixed(FileContentContext, _fileContent));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has content ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append(Grammars.Verb("has content ", "have content "))
+				.Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has content ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append(Grammars.Verb("does not have content ", "do not have content "))
+				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did match");
@@ -227,7 +231,8 @@ public class FileInfoContentResult(
 			=> contexts.Add(new ResultContext.Fixed(FileContentContext, _fileContent));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has the same content as file '").Append(_fullPath ?? expectedPath).Append('\'');
+			=> stringBuilder.Append(Grammars.Verb("has the same content as file '", "have the same content as file '"))
+				.Append(_fullPath ?? expectedPath).Append('\'');
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -242,7 +247,9 @@ public class FileInfoContentResult(
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have the same content as file '").Append(_fullPath ?? expectedPath).Append('\'');
+			=> stringBuilder
+				.Append(Grammars.Verb("does not have the same content as file '", "do not have the same content as file '"))
+				.Append(_fullPath ?? expectedPath).Append('\'');
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

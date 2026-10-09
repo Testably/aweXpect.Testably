@@ -84,7 +84,8 @@ public partial class FileResult<TParent>
 							grammars,
 							_resolver,
 							unexpected,
-							doNotPopulateThisValue)
+							doNotPopulateThisValue,
+							isInverted: true)
 						.Invert()),
 				_subject);
 
@@ -102,7 +103,8 @@ public partial class FileResult<TParent>
 						grammars,
 						_resolver,
 						options,
-						unexpected).Invert()),
+						unexpected,
+						isInverted: true).Invert()),
 				_subject, options);
 		}
 
@@ -128,7 +130,8 @@ public partial class FileResult<TParent>
 			StringEqualityOptions options = new(nameof(filePath));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 				_expectationBuilder.And(" ").AddConstraint((it, grammars)
-					=> new HasContentSameAsConstraint(it, grammars, _resolver, options, filePath).Invert()),
+					=> new HasContentSameAsConstraint(it, grammars, _resolver, options, filePath, isInverted: true)
+						.Invert()),
 				_subject, options);
 		}
 	}
@@ -138,10 +141,13 @@ public partial class FileResult<TParent>
 		ExpectationGrammars grammars,
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver,
 		byte[] expected,
-		string expectedExpression)
+		string expectedExpression,
+		bool isInverted = false)
 		: ConstraintResult.WithNotNullValue<TParent>(it, grammars),
 			IValueConstraint<TParent>
 	{
+		private string? _missingFileResult;
+
 		public ConstraintResult IsMetBy(TParent actual)
 		{
 			Actual = actual;
@@ -151,22 +157,30 @@ public partial class FileResult<TParent>
 			}
 
 			(IFileSystem fs, string fullPath) = resolver(actual);
+			_missingFileResult = GetMissingFileResult(fs, fullPath);
+			if (_missingFileResult is not null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			byte[] content = fs.File.ReadAllBytes(fullPath);
 			Outcome = content.SequenceEqual(expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("with content equal to ").Append(expectedExpression);
+			=> stringBuilder.Append(isInverted ? "with content different from " : "with content equal to ")
+				.Append(expectedExpression);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" differed");
+			=> stringBuilder.Append(It).Append(_missingFileResult ?? " differed");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("with content different from ").Append(expectedExpression);
+			=> AppendNormalExpectation(stringBuilder, indentation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" did match");
+			=> stringBuilder.Append(It).Append(_missingFileResult ?? " did match");
 	}
 
 	private sealed class HasStringContentEqualToConstraint(
@@ -174,40 +188,65 @@ public partial class FileResult<TParent>
 		ExpectationGrammars grammars,
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver,
 		StringEqualityOptions options,
-		string expected)
+		string expected,
+		bool isInverted = false)
 		: ConstraintResult.WithNotNullValue<TParent>(it, grammars),
 			IAsyncConstraint<TParent>
 	{
 		private string? _fileContent;
+		private string? _missingFileResult;
 
 		public async ValueTask<ConstraintResult> IsMetBy(TParent actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_fileContent = null;
 			if (actual is null)
 			{
 				return this;
 			}
 
 			(IFileSystem fs, string fullPath) = resolver(actual);
+			_missingFileResult = GetMissingFileResult(fs, fullPath);
+			if (_missingFileResult is not null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			_fileContent = fs.File.ReadAllText(fullPath);
 			Outcome = await options.AreConsideredEqual(_fileContent, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.Add(new ResultContext.Fixed(Constants.FileContentContext, _fileContent));
+		{
+			if (_fileContent is not null)
+			{
+				contexts.Add(new ResultContext.Fixed(Constants.FileContentContext, _fileContent));
+			}
+		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("with content ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("with content ").Append(options.GetExpectation(expected,
+				isInverted ? Grammars | ExpectationGrammars.Negated : Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, expected));
+		{
+			if (_missingFileResult is not null)
+			{
+				stringBuilder.Append(It).Append(_missingFileResult);
+			}
+			else
+			{
+				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, expected));
+			}
+		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("with content ").Append(options.GetExpectation(expected, Grammars));
+			=> AppendNormalExpectation(stringBuilder, indentation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" did match");
+			=> stringBuilder.Append(It).Append(_missingFileResult ?? " did match");
 	}
 
 	private sealed class HasContentSameAsConstraint(
@@ -215,7 +254,8 @@ public partial class FileResult<TParent>
 		ExpectationGrammars grammars,
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver,
 		StringEqualityOptions options,
-		string expectedPath)
+		string expectedPath,
+		bool isInverted = false)
 		: ConstraintResult.WithNotNullValue<TParent>(it, grammars),
 			IAsyncConstraint<TParent>
 	{
@@ -223,18 +263,27 @@ public partial class FileResult<TParent>
 		private string? _fileContent;
 		private string? _fullExpectedPath;
 		private bool _isExpectedFound;
+		private string? _missingFileResult;
 
 		public async ValueTask<ConstraintResult> IsMetBy(TParent actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_fileContent = null;
 			if (actual is null)
 			{
 				return this;
 			}
 
 			(IFileSystem fs, string fullPath) = resolver(actual);
-			_fileContent = fs.File.ReadAllText(fullPath);
 			_fullExpectedPath = fs.Path.GetFullPath(expectedPath);
+			_missingFileResult = GetMissingFileResult(fs, fullPath);
+			if (_missingFileResult is not null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
+			_fileContent = fs.File.ReadAllText(fullPath);
 			_isExpectedFound = fs.File.Exists(expectedPath);
 			if (!_isExpectedFound)
 			{
@@ -248,14 +297,24 @@ public partial class FileResult<TParent>
 		}
 
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.Add(new ResultContext.Fixed(Constants.FileContentContext, _fileContent));
+		{
+			if (_fileContent is not null)
+			{
+				contexts.Add(new ResultContext.Fixed(Constants.FileContentContext, _fileContent));
+			}
+		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("with the same content as file '").Append(_fullExpectedPath ?? expectedPath).Append('\'');
+			=> stringBuilder.Append(isInverted ? "with not the same content as file '" : "with the same content as file '")
+				.Append(_fullExpectedPath ?? expectedPath).Append('\'');
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (!_isExpectedFound)
+			if (_missingFileResult is not null)
+			{
+				stringBuilder.Append(It).Append(_missingFileResult);
+			}
+			else if (!_isExpectedFound)
 			{
 				stringBuilder.Append(It).Append(" did not contain any file at '").Append(_fullExpectedPath).Append('\'');
 			}
@@ -266,11 +325,15 @@ public partial class FileResult<TParent>
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("with not the same content as file '").Append(_fullExpectedPath ?? expectedPath).Append('\'');
+			=> AppendNormalExpectation(stringBuilder, indentation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (!_isExpectedFound)
+			if (_missingFileResult is not null)
+			{
+				stringBuilder.Append(It).Append(_missingFileResult);
+			}
+			else if (!_isExpectedFound)
 			{
 				stringBuilder.Append(It).Append(" did not contain any file at '").Append(_fullExpectedPath).Append('\'');
 			}
@@ -279,5 +342,19 @@ public partial class FileResult<TParent>
 				stringBuilder.Append(It).Append(" did match");
 			}
 		}
+	}
+
+	/// <remarks>
+	///     Repeats the result of <see cref="FileSystemConstraints.HasFileConstraint{TParent}" />, so that a combined
+	///     failure reports a missing file only once.
+	/// </remarks>
+	private static string? GetMissingFileResult(IFileSystem fs, string fullPath)
+	{
+		if (fs.File.Exists(fullPath))
+		{
+			return null;
+		}
+
+		return fs.Directory.Exists(fullPath) ? " was a directory" : " did not exist";
 	}
 }

@@ -25,7 +25,7 @@ public static partial class DirectoryInfoExtensions
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileSystemConstraints.HasTimeConstraint<IDirectoryInfo>(it, grammars,
 					d => d.LastWriteTime, d => d.Exists, tolerance, expected, "last write time",
-					"has", "does not have", " equal to ")),
+					isWithClause: false)),
 			source, tolerance);
 	}
 }

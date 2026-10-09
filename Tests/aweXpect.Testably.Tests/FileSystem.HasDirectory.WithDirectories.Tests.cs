@@ -127,6 +127,100 @@ public sealed partial class FileSystem
 				}
 
 				[Fact]
+				public async Task AllHaveDirectory_WhenDirectoryIsMissing_ShouldFail()
+				{
+					string path = "foo";
+					MockFileSystem sut = new();
+					sut.Initialize().WithSubdirectory(path).Initialized(d => d
+						.WithSubdirectory("directory1"));
+
+					async Task Act()
+					{
+						await That(sut).HasDirectory(path)
+							.WithDirectories(dirs => dirs.All().ComplyWith(dir => dir.HasDirectory("bar")));
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              has directory '{path}' whose subdirectories all have directory 'bar',
+						              but none of at least 1 did*
+						              """).AsWildcard()
+						.Because("the verb agrees with the plural subdirectories");
+				}
+
+				[Fact]
+				public async Task AllHaveFile_WhenFileIsMissing_ShouldFail()
+				{
+					string path = "foo";
+					MockFileSystem sut = new();
+					sut.Initialize().WithSubdirectory(path).Initialized(d => d
+						.WithSubdirectory("directory1"));
+
+					async Task Act()
+					{
+						await That(sut).HasDirectory(path)
+							.WithDirectories(dirs => dirs.All().ComplyWith(dir => dir.HasFile("bar.txt").WithContent("baz")));
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              has directory '{path}' whose subdirectories all have file 'bar.txt' with content equal to "baz",
+						              but none of at least 1 did*
+						              """).AsWildcard()
+						.Because("the verb agrees with the plural subdirectories");
+				}
+
+				[Fact]
+				public async Task AllHaveFile_WhenNegated_WhenFileHasTheContent_ShouldFail()
+				{
+					string path = "foo";
+					MockFileSystem sut = new();
+					sut.Initialize().WithSubdirectory(path).Initialized(d => d
+						.WithSubdirectory("directory1").Initialized(s => s
+							.WithFile("bar.txt").Which(f => f.HasStringContent("baz"))));
+
+					async Task Act()
+					{
+						await That(sut).HasDirectory(path)
+							.WithDirectories(dirs => dirs.All().ComplyWith(dir
+								=> dir.DoesNotComplyWith(it => it.HasFile("bar.txt").WithContent("baz"))));
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              has directory '{path}' whose subdirectories all do not have file 'bar.txt' with content equal to "baz",
+						              but none of at least 1 did*
+						              """).AsWildcard()
+						.Because("the negation belongs to the plural verb only");
+				}
+
+				[Fact]
+				public async Task AllHaveName_WhenNameDiffers_ShouldFail()
+				{
+					string path = "foo";
+					MockFileSystem sut = new();
+					sut.Initialize().WithSubdirectory(path).Initialized(d => d
+						.WithSubdirectory("directory1"));
+
+					async Task Act()
+					{
+						await That(sut).HasDirectory(path)
+							.WithDirectories(dirs => dirs.All().ComplyWith(dir => dir.HasName("bar")));
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              has directory '{path}' whose subdirectories all have name equal to "bar",
+						              but none of at least 1 did*
+						              """).AsWildcard()
+						.Because("the verb agrees with the plural subdirectories");
+				}
+
+				[Fact]
 				public async Task WhenItemCountMatches_ShouldSucceed()
 				{
 					string path = "foo";

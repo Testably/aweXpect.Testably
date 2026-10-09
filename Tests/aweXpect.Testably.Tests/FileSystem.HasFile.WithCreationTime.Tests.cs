@@ -113,7 +113,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              does not have file '{path}' with creation time not equal to {Formatter.Format(expectedTime)},
+						              does not have file '{path}' with creation time equal to {Formatter.Format(expectedTime)},
 						              but it did and was {Formatter.Format(expectedTime)}
 						              """);
 				}

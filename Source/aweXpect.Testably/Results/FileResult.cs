@@ -122,7 +122,7 @@ public partial class FileResult<TParent>
 			_expectationBuilder.And(" ").AddConstraint((it, grammars)
 				=> new FileSystemConstraints.HasTimeConstraint<TParent>(it, grammars,
 					timeAccessor, null, tolerance, expected, expectedString,
-					"with", "with", " not equal to ")),
+					isWithClause: true)),
 			this, tolerance);
 	}
 
