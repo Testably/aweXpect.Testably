@@ -596,13 +596,18 @@ public sealed partial class FileSystem
 			public async Task WhenNotificationIsRaisedOnThreadWithSingleThreadedContext_ShouldNotBlockIt()
 			{
 				MockFileSystem sut = new();
+				// Not disposed, as the background thread may still wait on it when the test fails.
+				ManualResetEventSlim isEvaluated = new();
 				Thread writer = new(() =>
 				{
 					QueuingSynchronizationContext context = new();
 					SynchronizationContext.SetSynchronizationContext(context);
-					Thread.Sleep(100);
-					sut.File.WriteAllText("foo.txt", "x");
-					context.RunPending();
+					// Repeated, as notifications raised before the expectation subscribed are not observed.
+					do
+					{
+						sut.File.WriteAllText("foo.txt", "x");
+						context.RunPending();
+					} while (!isEvaluated.Wait(TimeSpan.FromMilliseconds(10)));
 				})
 				{
 					IsBackground = true,
@@ -611,9 +616,16 @@ public sealed partial class FileSystem
 				async Task Act()
 				{
 					writer.Start();
-					await That(sut).TriggeredNotification()
-						.Which(c => c.IsAcceptedAfter(async _ => await Task.Yield()))
-						.Within(TimeSpan.FromSeconds(5));
+					try
+					{
+						await That(sut).TriggeredNotification()
+							.Which(c => c.IsAcceptedAfter(async _ => await Task.Yield()))
+							.Within(TimeSpan.FromSeconds(5));
+					}
+					finally
+					{
+						isEvaluated.Set();
+					}
 				}
 
 				await That(Act).DoesNotThrow();
