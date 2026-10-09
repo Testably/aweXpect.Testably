@@ -60,6 +60,78 @@ public sealed class NullOrMissingSubject
 		}
 
 		[Fact]
+		public async Task DirectoryInfo_DoesNotExist_ShouldFail()
+		{
+			IDirectoryInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotExist();
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task DirectoryInfo_DoesNotHaveCreationTime_ShouldFail()
+		{
+			IDirectoryInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(d => d.HasCreationTime(DateTime.Now));
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task DirectoryInfo_DoesNotHaveDirectory_ShouldFail()
+		{
+			IDirectoryInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotHaveDirectory("foo");
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task DirectoryInfo_DoesNotHaveFile_ShouldFail()
+		{
+			IDirectoryInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotHaveFile("foo.txt");
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task DirectoryInfo_DoesNotHaveName_ShouldFail()
+		{
+			IDirectoryInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(d => d.HasName("foo"));
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task DirectoryInfo_IsNotEmpty_ShouldFail()
+		{
+			IDirectoryInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).IsNotEmpty();
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
 		public async Task DriveInfo_DoesNotHaveAvailableFreeSpace_ShouldFail()
 		{
 			IDriveInfo subject = null!;
@@ -150,6 +222,90 @@ public sealed class NullOrMissingSubject
 
 			async Task Act()
 				=> await That(subject).IsNotReady();
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_DoesNotExist_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotExist();
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_DoesNotHaveAttribute_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotHaveAttribute(FileAttributes.ReadOnly);
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_DoesNotHaveBinaryContent_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(f => f.HasContent(Encoding.UTF8.GetBytes("foo")));
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_DoesNotHaveContent_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(f => f.HasContent("foo"));
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_DoesNotHaveLength_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(f => f.HasLength(1));
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_DoesNotHaveName_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(f => f.HasName("foo.txt"));
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_IsNotReadOnly_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).IsNotReadOnly();
 
 			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
 				.Because("a null subject fails an expectation that inspects it and its negation alike");
