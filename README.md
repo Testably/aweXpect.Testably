@@ -13,6 +13,9 @@ file-system and time-system mocks from
 `IFileVersionInfo`, `IFileSystemWatcher`, `IFileSystemStatistics` and
 `ITimerMock`.
 
+The samples use the `TimeSpan` helpers (`1.Second()`, `100.Milliseconds()`)
+from [aweXpect.Chronology](https://github.com/Testably/aweXpect.Chronology).
+
 ## File system (`IFileSystem`)
 
 Verify that a file, directory or drive is present in the file system. Every
@@ -41,7 +44,7 @@ fileSystem.File.WriteAllText("my-file.txt", "some content");
 
 await That(fileSystem).HasFile("my-file.txt").WithContent("some content").IgnoringCase();
 await That(fileSystem).HasFile("my-file.txt").WithContent().NotEqualTo("some unexpected content");
-await That(fileSystem).HasFile("my-file.txt").WithContent(new byte[] { 0x73, 0x6F, 0x6D, 0x65 });
+await That(fileSystem).HasFile("my-file.txt").WithContent(Encoding.UTF8.GetBytes("some content"));
 ```
 
 You can compare against another file on the same file system:
@@ -69,8 +72,8 @@ await That(fileSystem).HasFile("my-file.txt").WithLastWriteTime(DateTime.Now).Wi
 
 ```csharp
 IFileSystem fileSystem = new MockFileSystem();
-fileSystem.Directory.CreateDirectory("foo/bar1");
-fileSystem.Directory.CreateDirectory("foo/bar2/baz");
+fileSystem.Directory.CreateDirectory("foo/bar");
+fileSystem.Directory.CreateDirectory("foo/baz");
 fileSystem.File.WriteAllText("foo/bar/my-file.txt", "some content");
 
 await That(fileSystem).HasDirectory("foo").WithDirectories(d => d.HasCount().EqualTo(2));
@@ -102,7 +105,7 @@ await That(fileInfo).HasName("my-file.txt");
 await That(fileInfo).HasExtension(".txt");
 await That(fileInfo).HasLength(12);
 await That(fileInfo).HasContent("some content");
-await That(fileInfo).HasContent(new byte[] { 0x73, 0x6F, 0x6D, 0x65 });
+await That(fileInfo).HasContent(Encoding.UTF8.GetBytes("some content"));
 
 await That(fileInfo).IsReadOnly();
 await That(fileInfo).IsNotReadOnly();
@@ -303,7 +306,8 @@ events fired on other watchers of the same `MockFileSystem` are ignored.
 
 ```csharp
 MockFileSystem fileSystem = new();
-using IFileSystemWatcher watcher = fileSystem.FileSystemWatcher.New("/");
+fileSystem.InitializeIn("/watched");
+using IFileSystemWatcher watcher = fileSystem.FileSystemWatcher.New("/watched");
 watcher.EnableRaisingEvents = true;
 fileSystem.File.WriteAllText("my-file.txt", "some content");
 
@@ -410,13 +414,14 @@ MockTimeSystem timeSystem = new();
 ITimerMock timer = (ITimerMock)timeSystem.Timer.New(
     _ => { }, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(10));
 
-await That(timer).Executed(3.Times()).Within(5.Seconds());
+await That(timer).Executed().AtLeast(3.Times()).Within(5.Seconds());
 ```
 
-`Executed()` accepts a `Quantifier` (`AtLeast`, `AtMost`, `Exactly`,
-`Between`, `Never`, `Once`) and exposes `.Within(timeout)` for asynchronous
-execution. The assertion polls `ITimerMock.ExecutionCount` until the
-quantifier is satisfied or the timeout expires (30 seconds by default).
+The result of `Executed()` accepts a quantifier (`AtLeast`, `AtMost`,
+`Exactly`, `Between`, `Never`, `Once`; at least once by default) and exposes
+`.Within(timeout)` for asynchronous execution. The assertion polls
+`ITimerMock.ExecutionCount` until the quantifier is satisfied or the timeout
+expires (30 seconds by default).
 
 ```csharp
 await That(timer).Executed().AtLeast(2.Times()).Within(100.Milliseconds());
