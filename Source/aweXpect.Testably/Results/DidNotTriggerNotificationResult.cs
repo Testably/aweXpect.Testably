@@ -34,15 +34,12 @@ public class DidNotTriggerNotificationResult
 	///     assertions from <see cref="ChangeDescriptionExtensions" /> (e.g. <c>.HasName(...)</c>,
 	///     <c>.HasChangeType(...)</c>) compose naturally (the assertion fails if any notification
 	///     satisfies all of them). The expectation text is taken from the inner expectation builder,
-	///     so it reads like <c>matching has name equal to "foo.txt"</c> rather than the raw lambda
+	///     so it reads like <c>which has name equal to "foo.txt"</c> rather than the raw lambda
 	///     source.
 	/// </remarks>
 	public DidNotTriggerNotificationResult Which(Action<IThat<ChangeDescription>> expectation)
 	{
-		if (expectation is null)
-		{
-			throw new ArgumentNullException(nameof(expectation));
-		}
+		ThrowHelper.ThrowIfNull(expectation, nameof(expectation));
 
 		ManualExpectationBuilder<ChangeDescription> manualBuilder = new();
 		expectation(new ThatSubject<ChangeDescription>(manualBuilder));

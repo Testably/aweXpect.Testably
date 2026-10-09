@@ -41,10 +41,7 @@ public static partial class FileSystemExtensions
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
-		if (predicate is null)
-		{
-			throw new ArgumentNullException(nameof(predicate));
-		}
+		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
 
 		return TriggeredNotificationCore(subject, predicate, doNotPopulateThisValue);
 	}
@@ -73,10 +70,7 @@ public static partial class FileSystemExtensions
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
-		if (predicate is null)
-		{
-			throw new ArgumentNullException(nameof(predicate));
-		}
+		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
 
 		return DidNotTriggerNotificationCore(subject, predicate, doNotPopulateThisValue);
 	}

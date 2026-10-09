@@ -1,4 +1,5 @@
 using System;
+using aweXpect.Core;
 
 namespace aweXpect.Testably.Helpers;
 
@@ -12,7 +13,14 @@ internal sealed class NotificationTimeoutOptions
 	{
 		if (timeout < TimeSpan.Zero)
 		{
-			throw new ArgumentOutOfRangeException(nameof(timeout), "The timeout must not be negative.");
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(timeout), "The timeout must not be negative."));
+		}
+
+		if (IsExplicit)
+		{
+			throw Tracing.WriteException(
+				new InvalidOperationException($"{nameof(Within)} cannot be specified more than once."));
 		}
 
 		Timeout = timeout;

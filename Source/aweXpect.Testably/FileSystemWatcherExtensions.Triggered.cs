@@ -53,10 +53,7 @@ public static class FileSystemWatcherExtensions
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
-		if (predicate is null)
-		{
-			throw new ArgumentNullException(nameof(predicate));
-		}
+		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
 
 		return TriggeredCore(subject, predicate, doNotPopulateThisValue);
 	}
@@ -89,10 +86,7 @@ public static class FileSystemWatcherExtensions
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
-		if (predicate is null)
-		{
-			throw new ArgumentNullException(nameof(predicate));
-		}
+		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
 
 		return DidNotTriggerCore(subject, predicate, doNotPopulateThisValue);
 	}

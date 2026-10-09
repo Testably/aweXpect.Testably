@@ -301,7 +301,40 @@ public sealed partial class FileSystem
 				}
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("expectation");
+					.WithParamName("expectation").And
+					.WithMessage("The 'expectation' cannot be null.*").AsWildcard();
+			}
+
+			[Fact]
+			public async Task WithNullPredicate_ShouldThrowArgumentNullException()
+			{
+				MockFileSystem sut = new();
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification(null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("predicate").And
+					.WithMessage("The 'predicate' cannot be null.*").AsWildcard();
+			}
+
+			[Fact]
+			public async Task WithinTwice_ShouldThrowInvalidOperationException()
+			{
+				MockFileSystem sut = new();
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification()
+						.Within(TimeSpan.FromMilliseconds(10))
+						.Within(TimeSpan.FromMilliseconds(20));
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Within cannot be specified more than once.")
+					.Because("each option can only be specified once in v3 instead of the last one silently winning");
 			}
 
 			[Fact]

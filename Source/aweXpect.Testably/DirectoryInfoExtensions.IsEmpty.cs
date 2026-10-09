@@ -46,7 +46,7 @@ public static partial class DirectoryInfoExtensions
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.HasFlag(ExpectationGrammars.Plural) ? "are empty" : "is empty");
+			=> stringBuilder.Append(Grammars.IsPlural() ? "are empty" : "is empty");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -61,7 +61,7 @@ public static partial class DirectoryInfoExtensions
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.HasFlag(ExpectationGrammars.Plural) ? "are not empty" : "is not empty");
+			=> stringBuilder.Append(Grammars.IsPlural() ? "are not empty" : "is not empty");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
