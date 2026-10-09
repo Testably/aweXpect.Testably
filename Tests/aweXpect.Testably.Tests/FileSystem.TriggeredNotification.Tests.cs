@@ -452,6 +452,91 @@ public sealed partial class FileSystem
 			}
 
 			[Fact]
+			public async Task WhenNegatedWithAtLeast_ShouldDescribeNegatedQuantifier()
+			{
+				MockFileSystem sut = new();
+				using IAwaitableCallback<ChangeDescription> reg = sut.Notify.OnEvent(
+					_ => { },
+					c => c.ChangeType == WatcherChangeTypes.Created);
+				sut.File.WriteAllText("a.txt", "x");
+				sut.File.WriteAllText("b.txt", "x");
+				ChangeDescription[] created = reg.Wait(2, TimeSpan.FromSeconds(30));
+
+				async Task Act()
+				{
+					await That(sut).DoesNotComplyWith(x => x
+						.TriggeredNotification(c => c.ChangeType == WatcherChangeTypes.Created)
+						.AtLeast(2.Times())
+						.Within(TimeSpan.FromMilliseconds(100)));
+				}
+
+				await That(Act).Throws()
+					.WithMessage($$"""
+					               Expected that sut
+					               triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created fewer than twice within 0:00.100,
+					               but it was triggered twice in [
+					                 {{created[0]}},
+					                 {{created[1]}}
+					               ]
+					               """);
+			}
+
+			[Fact]
+			public async Task WhenNegatedWithTwice_ShouldDescribeNegatedQuantifier()
+			{
+				MockFileSystem sut = new();
+				using IAwaitableCallback<ChangeDescription> reg = sut.Notify.OnEvent(
+					_ => { },
+					c => c.ChangeType == WatcherChangeTypes.Created);
+				sut.File.WriteAllText("a.txt", "x");
+				sut.File.WriteAllText("b.txt", "x");
+				ChangeDescription[] created = reg.Wait(2, TimeSpan.FromSeconds(30));
+
+				async Task Act()
+				{
+					await That(sut).DoesNotComplyWith(x => x
+						.TriggeredNotification(c => c.ChangeType == WatcherChangeTypes.Created)
+						.Twice()
+						.Within(TimeSpan.FromMilliseconds(100)));
+				}
+
+				await That(Act).Throws()
+					.WithMessage($$"""
+					               Expected that sut
+					               triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created not exactly twice within 0:00.100,
+					               but it was triggered twice in [
+					                 {{created[0]}},
+					                 {{created[1]}}
+					               ]
+					               """);
+			}
+
+			[Fact]
+			public async Task WithNever_WhenTriggered_ShouldFail()
+			{
+				MockFileSystem sut = new();
+				ChangeDescription? firstEvent = null;
+				using IAwaitableCallback<ChangeDescription> reg = sut.Notify.OnEvent(c => firstEvent ??= c);
+				sut.File.WriteAllText("foo.txt", "x");
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification(c => c.ChangeType == WatcherChangeTypes.Created)
+						.Never()
+						.Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).Throws()
+					.WithMessage($$"""
+					               Expected that sut
+					               did not trigger a notification matching c => c.ChangeType == WatcherChangeTypes.Created within 0:00.100,
+					               but it was triggered once in [
+					                 {{firstEvent}}
+					               ]
+					               """);
+			}
+
+			[Fact]
 			public async Task WhenEvaluatedForMultipleFileSystems_ShouldCountEachFileSystemSeparately()
 			{
 				MockFileSystem[] fileSystems = [new(), new(),];

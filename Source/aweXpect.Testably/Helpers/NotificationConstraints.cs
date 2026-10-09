@@ -161,21 +161,26 @@ internal static class NotificationConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(normalExpectation);
-			stringBuilder.Append(filter);
-			stringBuilder.Append(' ').Append(quantifier);
-			stringBuilder.Append(options);
-			filter.AppendReasons(stringBuilder);
-		}
+			=> AppendExpectation(stringBuilder, false);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendCount(stringBuilder, indentation);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> AppendExpectation(stringBuilder, true);
+
+		private void AppendExpectation(StringBuilder stringBuilder, bool isNegated)
 		{
-			stringBuilder.Append(negatedExpectation);
-			stringBuilder.Append(filter);
+			if (quantifier.IsNever(isNegated))
+			{
+				stringBuilder.Append(negatedExpectation).Append(filter);
+			}
+			else
+			{
+				stringBuilder.Append(normalExpectation).Append(filter)
+					.Append(' ').Append(quantifier.ToString(isNegated));
+			}
+
 			stringBuilder.Append(options);
 			filter.AppendReasons(stringBuilder);
 		}
