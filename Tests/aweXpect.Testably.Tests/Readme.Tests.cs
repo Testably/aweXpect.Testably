@@ -17,13 +17,13 @@ public sealed class Readme
 		public async Task DirectoryChain_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
-			fileSystem.Directory.CreateDirectory("foo/bar");
-			fileSystem.Directory.CreateDirectory("foo/baz");
-			fileSystem.File.WriteAllText("foo/bar/my-file.txt", "some content");
+			fileSystem.Directory.CreateDirectory("beatles/abbey-road");
+			fileSystem.Directory.CreateDirectory("beatles/revolver");
+			fileSystem.File.WriteAllText("beatles/abbey-road/something.txt", "something");
 
-			await That(fileSystem).HasDirectory("foo").WithDirectories(d => d.HasCount().EqualTo(2));
-			await That(fileSystem).HasDirectory("foo/bar").WithFiles(f => f
-				.All().ComplyWith(x => x.HasContent("SOME CONTENT").IgnoringCase()));
+			await That(fileSystem).HasDirectory("beatles").WithDirectories(d => d.HasCount().EqualTo(2));
+			await That(fileSystem).HasDirectory("beatles/abbey-road").WithFiles(f => f
+				.All().ComplyWith(x => x.HasContent("SOMETHING").IgnoringCase()));
 		}
 
 #if NET8_0_OR_GREATER
@@ -48,35 +48,35 @@ public sealed class Readme
 		public async Task FileChain_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
-			fileSystem.File.WriteAllText("my-file.txt", "some content");
+			fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
 
-			await That(fileSystem).HasFile("my-file.txt").WithContent("some content").IgnoringCase();
-			await That(fileSystem).HasFile("my-file.txt").WithContent().NotEqualTo("some unexpected content");
-			await That(fileSystem).HasFile("my-file.txt").WithContent(Encoding.UTF8.GetBytes("some content"));
+			await That(fileSystem).HasFile("let-it-be.txt").WithContent("LET IT BE").IgnoringCase();
+			await That(fileSystem).HasFile("let-it-be.txt").WithContent().NotEqualTo("let it go");
+			await That(fileSystem).HasFile("let-it-be.txt").WithContent(Encoding.UTF8.GetBytes("let it be"));
 
-			fileSystem.File.WriteAllText("my-other-file.txt", "SOME CONTENT");
-			fileSystem.File.WriteAllText("my-third-file.txt", "some other content");
+			fileSystem.File.WriteAllText("let-it-be-remastered.txt", "LET IT BE");
+			fileSystem.File.WriteAllText("hey-jude.txt", "hey jude");
 
-			await That(fileSystem).HasFile("my-file.txt").WithContent().SameAs("my-other-file.txt").IgnoringCase();
-			await That(fileSystem).HasFile("my-file.txt").WithContent().NotSameAs("my-third-file.txt");
+			await That(fileSystem).HasFile("let-it-be.txt").WithContent().SameAs("let-it-be-remastered.txt").IgnoringCase();
+			await That(fileSystem).HasFile("let-it-be.txt").WithContent().NotSameAs("hey-jude.txt");
 
-			await That(fileSystem).HasFile("my-file.txt").WithCreationTime(DateTime.Now).Within(TimeSpan.FromSeconds(1));
-			await That(fileSystem).HasFile("my-file.txt").WithLastAccessTime(DateTime.Now).Within(TimeSpan.FromSeconds(1));
-			await That(fileSystem).HasFile("my-file.txt").WithLastWriteTime(DateTime.Now).Within(TimeSpan.FromSeconds(1));
+			await That(fileSystem).HasFile("let-it-be.txt").WithCreationTime(DateTime.Now).Within(TimeSpan.FromSeconds(1));
+			await That(fileSystem).HasFile("let-it-be.txt").WithLastAccessTime(DateTime.Now).Within(TimeSpan.FromSeconds(1));
+			await That(fileSystem).HasFile("let-it-be.txt").WithLastWriteTime(DateTime.Now).Within(TimeSpan.FromSeconds(1));
 		}
 
 		[Fact]
 		public async Task FileSystem_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
-			fileSystem.Directory.CreateDirectory("my/path");
-			fileSystem.File.WriteAllText("my-file.txt", "some content");
+			fileSystem.Directory.CreateDirectory("beatles/abbey-road");
+			fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
 
-			await That(fileSystem).HasDirectory("my/path");
-			await That(fileSystem).HasFile("my-file.txt");
+			await That(fileSystem).HasDirectory("beatles/abbey-road");
+			await That(fileSystem).HasFile("let-it-be.txt");
 
-			await That(fileSystem).DoesNotHaveDirectory("not/here");
-			await That(fileSystem).DoesNotHaveFile("missing.txt");
+			await That(fileSystem).DoesNotHaveDirectory("beatles/white-album");
+			await That(fileSystem).DoesNotHaveFile("yesterday.txt");
 		}
 
 		[Fact]
@@ -84,16 +84,16 @@ public sealed class Readme
 		{
 			MockFileSystem fileSystem = new();
 			fileSystem.WithFileVersionInfo("*.dll", v => v
-				.SetCompanyName("Acme")
-				.SetProductName("Anvil")
-				.SetFileVersion("1.2.3.4")
+				.SetCompanyName("Apple Corps")
+				.SetProductName("Abbey Road")
+				.SetFileVersion("1.9.6.9")
 				.SetIsDebug(true));
-			fileSystem.File.WriteAllText("Acme.dll", "");
+			fileSystem.File.WriteAllText("AbbeyRoad.dll", "");
 
-			IFileVersionInfo info = fileSystem.FileVersionInfo.GetVersionInfo("Acme.dll");
+			IFileVersionInfo info = fileSystem.FileVersionInfo.GetVersionInfo("AbbeyRoad.dll");
 
-			await That(info).HasCompanyName("Acme").And.HasProductName("Anvil");
-			await That(info).HasFileVersion("1.2.3.4").And.HasFileMajorPart(1);
+			await That(info).HasCompanyName("Apple Corps").And.HasProductName("Abbey Road");
+			await That(info).HasFileVersion("1.9.6.9").And.HasFileMajorPart(1);
 			await That(info).IsDebug().And.IsNotPreRelease();
 		}
 
@@ -101,30 +101,30 @@ public sealed class Readme
 		public async Task Notifications_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
-			fileSystem.File.WriteAllText("my-file.txt", "some content");
+			fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
 
 			await That(fileSystem).TriggeredNotification();
-			await That(fileSystem).TriggeredNotification(c => c.Name == "my-file.txt");
+			await That(fileSystem).TriggeredNotification(c => c.Name == "let-it-be.txt");
 
-			_ = Task.Run(() => fileSystem.File.WriteAllText("foo.txt", "x"));
+			_ = Task.Run(() => fileSystem.File.WriteAllText("help.txt", "help"));
 			await That(fileSystem).TriggeredNotification().Within(TimeSpan.FromMilliseconds(100));
 
-			await That(fileSystem).DidNotTriggerNotification(c => c.Name == "secret.txt");
+			await That(fileSystem).DidNotTriggerNotification(c => c.Name == "unreleased.txt");
 		}
 
 		[Fact]
 		public async Task NotificationsWithQuantifier_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
-			fileSystem.File.WriteAllText("a.txt", "x");
-			fileSystem.File.WriteAllText("b.txt", "y");
+			fileSystem.File.WriteAllText("come-together.txt", "come together");
+			fileSystem.File.WriteAllText("something.txt", "something");
 
 			await That(fileSystem).TriggeredNotification(c => c.ChangeType == WatcherChangeTypes.Created)
 				.Exactly(2.Times());
 
 			await That(fileSystem)
 				.TriggeredNotification()
-				.Which(c => c.HasName("a.txt").And.HasChangeType(WatcherChangeTypes.Created))
+				.Which(c => c.HasName("come-together.txt").And.HasChangeType(WatcherChangeTypes.Created))
 				.Exactly(1.Times());
 		}
 
@@ -132,14 +132,14 @@ public sealed class Readme
 		public async Task RecordedCalls_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
-			fileSystem.File.WriteAllText("foo.txt", "x");
+			fileSystem.File.WriteAllText("help.txt", "help");
 
 			await That(fileSystem.Statistics).Recorded().File.WriteAllText().Once();
-			await That(fileSystem.Statistics).Recorded().File.WriteAllText(path: p => p == "foo.txt").Once();
+			await That(fileSystem.Statistics).Recorded().File.WriteAllText(path: p => p == "help.txt").Once();
 
-			fileSystem.FileInfo.New("foo.txt").IsReadOnly = true;
+			fileSystem.FileInfo.New("help.txt").IsReadOnly = true;
 
-			await That(fileSystem.Statistics).Recorded().FileInfo["foo.txt"].IsReadOnly.Set().Once();
+			await That(fileSystem.Statistics).Recorded().FileInfo["help.txt"].IsReadOnly.Set().Once();
 		}
 
 		[Fact]
@@ -160,15 +160,15 @@ public sealed class Readme
 			fileSystem.InitializeIn("/watched");
 			using IFileSystemWatcher watcher = fileSystem.FileSystemWatcher.New("/watched");
 			watcher.EnableRaisingEvents = true;
-			fileSystem.File.WriteAllText("my-file.txt", "some content");
+			fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
 
 			await That(watcher).Triggered();
-			await That(watcher).Triggered(c => c.Name == "my-file.txt");
-			await That(watcher).DidNotTrigger(c => c.Name == "secret.txt");
+			await That(watcher).Triggered(c => c.Name == "let-it-be.txt");
+			await That(watcher).DidNotTrigger(c => c.Name == "unreleased.txt");
 
 			await That(watcher)
 				.Triggered()
-				.Which(c => c.HasName("my-file.txt").And.HasChangeType(WatcherChangeTypes.Created))
+				.Which(c => c.HasName("let-it-be.txt").And.HasChangeType(WatcherChangeTypes.Created))
 				.Exactly(1.Times());
 		}
 	}
