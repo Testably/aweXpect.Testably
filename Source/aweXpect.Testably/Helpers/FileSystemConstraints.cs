@@ -229,6 +229,7 @@ internal static class FileSystemConstraints
 		public ConstraintResult IsMetBy(TActual actual)
 		{
 			Actual = actual;
+			_existed = true;
 			if (existsCheck != null && !existsCheck(actual))
 			{
 				_existed = false;

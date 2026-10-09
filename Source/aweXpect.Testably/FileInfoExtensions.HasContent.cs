@@ -63,6 +63,7 @@ public static partial class FileInfoExtensions
 		public async ValueTask<ConstraintResult> IsMetBy(IFileInfo actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_fileContent = null;
 			if (!Actual.Exists)
 			{
 				Outcome = Outcome.Failure;
