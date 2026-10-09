@@ -13,6 +13,7 @@ public static partial class DirectoryInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IDirectoryInfo" /> is empty (no files and no subdirectories).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> IsEmpty(this IThat<IDirectoryInfo> source)
 		=> new(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -22,6 +23,7 @@ public static partial class DirectoryInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IDirectoryInfo" /> is not empty.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> IsNotEmpty(this IThat<IDirectoryInfo> source)
 		=> new(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)

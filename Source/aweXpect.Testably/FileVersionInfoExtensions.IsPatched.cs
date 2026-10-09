@@ -11,6 +11,7 @@ public static partial class FileVersionInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileVersionInfo" /> is patched.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> IsPatched(this IThat<IFileVersionInfo> source)
 		=> new(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -21,6 +22,7 @@ public static partial class FileVersionInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileVersionInfo" /> is not patched.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> IsNotPatched(
 		this IThat<IFileVersionInfo> source)
 		=> new(

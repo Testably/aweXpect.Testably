@@ -17,6 +17,7 @@ public static partial class ChangeDescriptionExtensions
 	/// <remarks>
 	///     The check uses flag containment, because <see cref="FileSystemTypes" /> is a flag enum.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<TChange, IThat<TChange>> HasFileSystemType<TChange>(
 		this IThat<TChange> source,
 		FileSystemTypes expected)
@@ -38,6 +39,7 @@ public static partial class ChangeDescriptionExtensions
 	///     Verifies that the <see cref="ChangeDescription" /> does not have the <paramref name="unexpected" />
 	///     <see cref="FileSystemTypes" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TChange, IThat<TChange>> DoesNotHaveFileSystemType<TChange>(
 		this IThat<TChange> source,
 		FileSystemTypes unexpected)

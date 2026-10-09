@@ -3,6 +3,7 @@ using System.IO.Abstractions;
 using System.Text;
 using Testably.Abstractions.Testing;
 using Testably.Abstractions.Testing.FileSystem;
+using Testably.Abstractions.Testing.Statistics;
 using Testably.Abstractions.Testing.TimeSystem;
 
 namespace aweXpect.Testably.Tests;
@@ -276,6 +277,18 @@ public sealed class NullOrMissingSubject
 		}
 
 		[Fact]
+		public async Task FileInfo_DoesNotHaveExtension_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(f => f.HasExtension(".txt"));
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
 		public async Task FileInfo_DoesNotHaveLength_ShouldFail()
 		{
 			IFileInfo subject = null!;
@@ -294,6 +307,92 @@ public sealed class NullOrMissingSubject
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(f => f.HasName("foo.txt"));
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_HasBinaryContentEqualTo_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasContent().EqualTo(Encoding.UTF8.GetBytes("foo"));
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_HasBinaryContentNotEqualTo_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasContent().NotEqualTo(Encoding.UTF8.GetBytes("foo"));
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_HasContentEqualTo_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasContent().EqualTo("foo");
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_HasContentNotEqualTo_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasContent().NotEqualTo("foo");
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_HasContentNotSameAs_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasContent().NotSameAs("foo.txt");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have the same content as file 'foo.txt',*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_HasContentSameAs_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasContent().SameAs("foo.txt");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*has the same content as file 'foo.txt',*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileInfo_HasExtension_ShouldFail()
+		{
+			IFileInfo subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasExtension(".txt");
 
 			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
 				.Because("a null subject fails an expectation that inspects it and its negation alike");
@@ -320,6 +419,104 @@ public sealed class NullOrMissingSubject
 				=> await That(subject).DidNotTriggerNotification().Within(TimeSpan.FromMilliseconds(10));
 
 			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileSystem_DoesNotHaveDrive_ShouldFail()
+		{
+			MockFileSystem subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotHaveDrive("C:");
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileSystem_HasDrive_ShouldFail()
+		{
+			MockFileSystem subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasDrive("C:");
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileSystem_HasFileWithBinaryContent_ShouldFail()
+		{
+			MockFileSystem subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasFile("foo.txt").WithContent(Encoding.UTF8.GetBytes("foo"));
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileSystem_HasFileWithBinaryContentNotEqualTo_ShouldFail()
+		{
+			MockFileSystem subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasFile("foo.txt").WithContent().NotEqualTo(Encoding.UTF8.GetBytes("foo"));
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileSystem_HasFileWithContent_ShouldFail()
+		{
+			MockFileSystem subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasFile("foo.txt").WithContent("foo");
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileSystem_HasFileWithContentNotEqualTo_ShouldFail()
+		{
+			MockFileSystem subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasFile("foo.txt").WithContent().NotEqualTo("foo");
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileSystem_HasFileWithContentNotSameAs_ShouldFail()
+		{
+			MockFileSystem subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasFile("foo.txt").WithContent().NotSameAs("bar.txt");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*with not the same content as file 'bar.txt',*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task FileSystem_HasFileWithContentSameAs_ShouldFail()
+		{
+			MockFileSystem subject = null!;
+
+			async Task Act()
+				=> await That(subject).HasFile("foo.txt").WithContent().SameAs("bar.txt");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*with the same content as file 'bar.txt',*but it was <null>").AsWildcard()
 				.Because("a null subject fails an expectation that inspects it and its negation alike");
 		}
 
@@ -366,6 +563,54 @@ public sealed class NullOrMissingSubject
 
 			async Task Act()
 				=> await That(subject).IsNotDebug();
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task Statistics_DidNotRecordCall_ShouldFail()
+		{
+			IFileSystemStatistics subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => s.Recorded().File.WriteAllText().Once());
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task Statistics_DidNotRecordPropertyAccess_ShouldFail()
+		{
+			IFileSystemStatistics subject = null!;
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(s => s.Recorded().FileInfo["foo.txt"].IsReadOnly.Get().Once());
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task Statistics_RecordedCall_ShouldFail()
+		{
+			IFileSystemStatistics subject = null!;
+
+			async Task Act()
+				=> await That(subject).Recorded().File.WriteAllText().Never();
+
+			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
+				.Because("a null subject fails an expectation that inspects it and its negation alike");
+		}
+
+		[Fact]
+		public async Task Statistics_RecordedPropertyAccess_ShouldFail()
+		{
+			IFileSystemStatistics subject = null!;
+
+			async Task Act()
+				=> await That(subject).Recorded().FileInfo["foo.txt"].IsReadOnly.Get().Never();
 
 			await That(Act).Throws<XunitException>().WithMessage("*but it was <null>").AsWildcard()
 				.Because("a null subject fails an expectation that inspects it and its negation alike");

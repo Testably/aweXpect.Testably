@@ -15,6 +15,7 @@ public static partial class ChangeDescriptionExtensions
 	///     <see cref="ChangeDescription.Name" /> can be <see langword="null" /> on the underlying
 	///     <see cref="ChangeDescription" />, so <paramref name="expected" /> is nullable too.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<TChange, IThat<TChange>> HasName<TChange>(
 		this IThat<TChange> source,
 		string? expected)

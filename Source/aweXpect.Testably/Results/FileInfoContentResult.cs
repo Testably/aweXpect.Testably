@@ -117,12 +117,18 @@ public class FileInfoContentResult(
 		ExpectationGrammars grammars,
 		byte[] expected,
 		string expectedExpression)
-		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),
 			IValueConstraint<IFileInfo>
 	{
 		/// <inheritdoc />
 		public ConstraintResult IsMetBy(IFileInfo actual)
 		{
+			Actual = actual;
+			if (actual is null)
+			{
+				return this;
+			}
+
 			byte[] content = actual.FileSystem.File.ReadAllBytes(actual.FullName);
 			Outcome = content.SequenceEqual(expected) ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -146,7 +152,7 @@ public class FileInfoContentResult(
 		ExpectationGrammars grammars,
 		StringEqualityOptions options,
 		string expected)
-		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),
 			IAsyncConstraint<IFileInfo>
 	{
 		private string? _fileContent;
@@ -154,6 +160,12 @@ public class FileInfoContentResult(
 		/// <inheritdoc />
 		public async ValueTask<ConstraintResult> IsMetBy(IFileInfo actual, CancellationToken cancellationToken)
 		{
+			Actual = actual;
+			if (actual is null)
+			{
+				return this;
+			}
+
 			_fileContent = actual.FileSystem.File.ReadAllText(actual.FullName);
 			Outcome = await options.AreConsideredEqual(_fileContent, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -180,7 +192,7 @@ public class FileInfoContentResult(
 		ExpectationGrammars grammars,
 		StringEqualityOptions options,
 		string expectedPath)
-		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),
 			IAsyncConstraint<IFileInfo>
 	{
 		private string? _expectedContent;
@@ -191,6 +203,12 @@ public class FileInfoContentResult(
 		/// <inheritdoc />
 		public async ValueTask<ConstraintResult> IsMetBy(IFileInfo actual, CancellationToken cancellationToken)
 		{
+			Actual = actual;
+			if (actual is null)
+			{
+				return this;
+			}
+
 			_fileContent = actual.FileSystem.File.ReadAllText(actual.FullName);
 			_fullPath = actual.FileSystem.Path.GetFullPath(expectedPath);
 			_isExpectedFound = actual.FileSystem.File.Exists(expectedPath);
@@ -209,7 +227,7 @@ public class FileInfoContentResult(
 			=> contexts.Add(new ResultContext.Fixed(FileContentContext, _fileContent));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has the same content as file '").Append(_fullPath).Append('\'');
+			=> stringBuilder.Append("has the same content as file '").Append(_fullPath ?? expectedPath).Append('\'');
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -224,7 +242,7 @@ public class FileInfoContentResult(
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have the same content as file '").Append(_fullPath).Append('\'');
+			=> stringBuilder.Append("does not have the same content as file '").Append(_fullPath ?? expectedPath).Append('\'');
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

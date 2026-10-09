@@ -11,6 +11,7 @@ public static partial class FileVersionInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileVersionInfo" /> has the <paramref name="expected" /> special build.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IFileVersionInfo, IThat<IFileVersionInfo>> HasSpecialBuild(
 		this IThat<IFileVersionInfo> source,
 		string? expected)

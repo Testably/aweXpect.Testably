@@ -139,12 +139,17 @@ public partial class FileResult<TParent>
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver,
 		byte[] expected,
 		string expectedExpression)
-		: ConstraintResult.WithValue<TParent>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TParent>(it, grammars),
 			IValueConstraint<TParent>
 	{
 		public ConstraintResult IsMetBy(TParent actual)
 		{
 			Actual = actual;
+			if (actual is null)
+			{
+				return this;
+			}
+
 			(IFileSystem fs, string fullPath) = resolver(actual);
 			byte[] content = fs.File.ReadAllBytes(fullPath);
 			Outcome = content.SequenceEqual(expected) ? Outcome.Success : Outcome.Failure;
@@ -170,7 +175,7 @@ public partial class FileResult<TParent>
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver,
 		StringEqualityOptions options,
 		string expected)
-		: ConstraintResult.WithValue<TParent>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TParent>(it, grammars),
 			IAsyncConstraint<TParent>
 	{
 		private string? _fileContent;
@@ -178,6 +183,11 @@ public partial class FileResult<TParent>
 		public async ValueTask<ConstraintResult> IsMetBy(TParent actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (actual is null)
+			{
+				return this;
+			}
+
 			(IFileSystem fs, string fullPath) = resolver(actual);
 			_fileContent = fs.File.ReadAllText(fullPath);
 			Outcome = await options.AreConsideredEqual(_fileContent, expected) ? Outcome.Success : Outcome.Failure;
@@ -206,7 +216,7 @@ public partial class FileResult<TParent>
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver,
 		StringEqualityOptions options,
 		string expectedPath)
-		: ConstraintResult.WithValue<TParent>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TParent>(it, grammars),
 			IAsyncConstraint<TParent>
 	{
 		private string? _expectedContent;
@@ -217,6 +227,11 @@ public partial class FileResult<TParent>
 		public async ValueTask<ConstraintResult> IsMetBy(TParent actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (actual is null)
+			{
+				return this;
+			}
+
 			(IFileSystem fs, string fullPath) = resolver(actual);
 			_fileContent = fs.File.ReadAllText(fullPath);
 			_fullExpectedPath = fs.Path.GetFullPath(expectedPath);
@@ -236,7 +251,7 @@ public partial class FileResult<TParent>
 			=> contexts.Add(new ResultContext.Fixed(Constants.FileContentContext, _fileContent));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("with the same content as file '").Append(_fullExpectedPath).Append('\'');
+			=> stringBuilder.Append("with the same content as file '").Append(_fullExpectedPath ?? expectedPath).Append('\'');
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -251,7 +266,7 @@ public partial class FileResult<TParent>
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("with not the same content as file '").Append(_fullExpectedPath).Append('\'');
+			=> stringBuilder.Append("with not the same content as file '").Append(_fullExpectedPath ?? expectedPath).Append('\'');
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

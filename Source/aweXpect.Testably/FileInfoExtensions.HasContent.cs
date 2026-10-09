@@ -20,6 +20,7 @@ public static partial class FileInfoExtensions
 	///     Verifies that the string content of the <see cref="IFileInfo" /> is equal to
 	///     the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> HasContent(this IThat<IFileInfo> source,
 		string? expected)
 	{
@@ -36,6 +37,7 @@ public static partial class FileInfoExtensions
 	///     Verifies that the content of the <see cref="IFileInfo" /> is equal to
 	///     the <paramref name="expected" /> binary content.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IFileInfo, IThat<IFileInfo>> HasContent(this IThat<IFileInfo> source,
 		byte[] expected,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -47,6 +49,7 @@ public static partial class FileInfoExtensions
 	/// <summary>
 	///     Verifies that the content of the <see cref="IFileInfo" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static FileInfoContentResult HasContent(this IThat<IFileInfo> source)
 		=> new(source.Get().ExpectationBuilder, source);
 

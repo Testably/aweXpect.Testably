@@ -11,6 +11,7 @@ public static partial class FileVersionInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileVersionInfo" /> is a pre-release.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> IsPreRelease(
 		this IThat<IFileVersionInfo> source)
 		=> new(
@@ -22,6 +23,7 @@ public static partial class FileVersionInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileVersionInfo" /> is not a pre-release.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> IsNotPreRelease(
 		this IThat<IFileVersionInfo> source)
 		=> new(

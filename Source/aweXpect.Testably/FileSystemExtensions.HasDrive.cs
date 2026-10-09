@@ -20,6 +20,7 @@ public static partial class FileSystemExtensions
 	///     <see cref="IDriveInfoFactory.GetDrives" />. UNC drives (which do not appear in
 	///     <c>GetDrives()</c>) are not supported by this assertion.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static DriveResult<TFileSystem> HasDrive<TFileSystem>(
 		this IThat<TFileSystem> subject, string driveName)
 		where TFileSystem : class, IFileSystem
@@ -40,6 +41,7 @@ public static partial class FileSystemExtensions
 	///     <see cref="IDriveInfoFactory.GetDrives" />. UNC drives (which do not appear in
 	///     <c>GetDrives()</c>) are not supported by this assertion.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<TFileSystem, IThat<TFileSystem>> DoesNotHaveDrive<TFileSystem>(
 		this IThat<TFileSystem> subject, string driveName)
 		where TFileSystem : class, IFileSystem
@@ -67,13 +69,18 @@ public static partial class FileSystemExtensions
 		ExpectationGrammars grammars,
 		string driveName,
 		Func<TFileSystem, IDriveInfo?> resolver)
-		: ConstraintResult.WithValue<TFileSystem>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TFileSystem>(it, grammars),
 			IValueConstraint<TFileSystem>
 		where TFileSystem : class, IFileSystem
 	{
 		public ConstraintResult IsMetBy(TFileSystem actual)
 		{
 			Actual = actual;
+			if (actual is null)
+			{
+				return this;
+			}
+
 			Outcome = resolver(actual) is not null ? Outcome.Success : Outcome.Failure;
 			return this;
 		}

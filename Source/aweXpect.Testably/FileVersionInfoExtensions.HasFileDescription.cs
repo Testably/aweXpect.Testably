@@ -11,6 +11,7 @@ public static partial class FileVersionInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileVersionInfo" /> has the <paramref name="expected" /> file description.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IFileVersionInfo, IThat<IFileVersionInfo>> HasFileDescription(
 		this IThat<IFileVersionInfo> source,
 		string? expected)

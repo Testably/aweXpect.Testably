@@ -16,6 +16,7 @@ public static partial class FileInfoExtensions
 	///     Uses <see cref="IFileSystemInfo.LastAccessTime" /> or <see cref="IFileSystemInfo.LastAccessTimeUtc" /> depending
 	///     on the <see cref="DateTime.Kind" /> property of the <paramref name="expected" /> value.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TimeToleranceResult<IFileInfo, IThat<IFileInfo>> HasLastAccessTime(
 		this IThat<IFileInfo> source, DateTime expected)
 	{

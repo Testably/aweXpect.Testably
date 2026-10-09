@@ -12,6 +12,7 @@ public static partial class DriveInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IDriveInfo" /> has the <paramref name="expected" /> total size in bytes.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> HasTotalSize(this IThat<IDriveInfo> source,
 		long expected)
 		=> new(

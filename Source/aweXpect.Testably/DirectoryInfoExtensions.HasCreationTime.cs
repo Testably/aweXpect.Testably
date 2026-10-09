@@ -16,6 +16,7 @@ public static partial class DirectoryInfoExtensions
 	///     Uses <see cref="IFileSystemInfo.CreationTime" /> or <see cref="IFileSystemInfo.CreationTimeUtc" /> depending
 	///     on the <see cref="DateTime.Kind" /> property of the <paramref name="expected" /> value.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TimeToleranceResult<IDirectoryInfo, IThat<IDirectoryInfo>> HasCreationTime(
 		this IThat<IDirectoryInfo> source, DateTime expected)
 	{

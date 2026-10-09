@@ -52,6 +52,7 @@ public static class StatisticsExtensions
 	/// await That(fileSystem.Statistics).Recorded().FileInfo["foo.txt"].IsReadOnly.Set().Once();
 	/// </code>
 	/// </example>
+	[GuaranteesNotNull]
 	public static RecordedFileSystemStatistics Recorded(this IThat<IFileSystemStatistics> subject)
 		=> new(subject);
 }

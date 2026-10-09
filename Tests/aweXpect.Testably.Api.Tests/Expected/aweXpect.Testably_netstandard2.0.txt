@@ -4,141 +4,237 @@ namespace aweXpect.Testably
 {
     public static class ChangeDescriptionExtensions
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TChange, aweXpect.Core.IThat<TChange>> DoesNotHaveChangeType<TChange>(this aweXpect.Core.IThat<TChange> source, System.IO.WatcherChangeTypes unexpected)
             where TChange : Testably.Abstractions.Testing.FileSystem.ChangeDescription { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TChange, aweXpect.Core.IThat<TChange>> DoesNotHaveFileSystemType<TChange>(this aweXpect.Core.IThat<TChange> source, Testably.Abstractions.Testing.FileSystemTypes unexpected)
             where TChange : Testably.Abstractions.Testing.FileSystem.ChangeDescription { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TChange, aweXpect.Core.IThat<TChange>> DoesNotHaveNotifyFilters<TChange>(this aweXpect.Core.IThat<TChange> source, System.IO.NotifyFilters unexpected)
             where TChange : Testably.Abstractions.Testing.FileSystem.ChangeDescription { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TChange, aweXpect.Core.IThat<TChange>> HasChangeType<TChange>(this aweXpect.Core.IThat<TChange> source, System.IO.WatcherChangeTypes expected)
             where TChange : Testably.Abstractions.Testing.FileSystem.ChangeDescription { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TChange, aweXpect.Core.IThat<TChange>> HasFileSystemType<TChange>(this aweXpect.Core.IThat<TChange> source, Testably.Abstractions.Testing.FileSystemTypes expected)
             where TChange : Testably.Abstractions.Testing.FileSystem.ChangeDescription { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<TChange, aweXpect.Core.IThat<TChange>> HasName<TChange>(this aweXpect.Core.IThat<TChange> source, string? expected)
             where TChange : Testably.Abstractions.Testing.FileSystem.ChangeDescription { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TChange, aweXpect.Core.IThat<TChange>> HasNotifyFilters<TChange>(this aweXpect.Core.IThat<TChange> source, System.IO.NotifyFilters expected)
             where TChange : Testably.Abstractions.Testing.FileSystem.ChangeDescription { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<TChange, aweXpect.Core.IThat<TChange>> HasOldName<TChange>(this aweXpect.Core.IThat<TChange> source, string? expected)
             where TChange : Testably.Abstractions.Testing.FileSystem.ChangeDescription { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<TChange, aweXpect.Core.IThat<TChange>> HasOldPath<TChange>(this aweXpect.Core.IThat<TChange> source, string? expected)
             where TChange : Testably.Abstractions.Testing.FileSystem.ChangeDescription { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<TChange, aweXpect.Core.IThat<TChange>> HasPath<TChange>(this aweXpect.Core.IThat<TChange> source, string expected)
             where TChange : Testably.Abstractions.Testing.FileSystem.ChangeDescription { }
     }
     public static class DirectoryInfoExtensions
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDirectoryInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo>> DoesNotExist(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDirectoryInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo>> DoesNotHaveAttribute(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> source, System.IO.FileAttributes unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDirectoryInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo>> DoesNotHaveDirectory(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> subject, string path) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDirectoryInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo>> DoesNotHaveFile(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> subject, string path) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDirectoryInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo>> Exists(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDirectoryInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo>> HasAttribute(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> source, System.IO.FileAttributes expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.IO.Abstractions.IDirectoryInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo>> HasCreationTime(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> source, System.DateTime expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.DirectoryResult<System.IO.Abstractions.IDirectoryInfo> HasDirectory(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> subject, string path) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.FileResult<System.IO.Abstractions.IDirectoryInfo> HasFile(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> subject, string path) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.IO.Abstractions.IDirectoryInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo>> HasLastAccessTime(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> source, System.DateTime expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.IO.Abstractions.IDirectoryInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo>> HasLastWriteTime(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> source, System.DateTime expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IDirectoryInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo>> HasName(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> source, string expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDirectoryInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo>> IsEmpty(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDirectoryInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo>> IsNotEmpty(this aweXpect.Core.IThat<System.IO.Abstractions.IDirectoryInfo> source) { }
     }
     public static class DriveInfoExtensions
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDriveInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo>> HasAvailableFreeSpace(this aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo> source, long expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IDriveInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo>> HasDriveFormat(this aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo> source, string expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDriveInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo>> HasDriveType(this aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo> source, System.IO.DriveType expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IDriveInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo>> HasName(this aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo> source, string expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDriveInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo>> HasTotalFreeSpace(this aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo> source, long expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDriveInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo>> HasTotalSize(this aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo> source, long expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IDriveInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo>> HasVolumeLabel(this aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDriveInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo>> IsNotReady(this aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IDriveInfo, aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo>> IsReady(this aweXpect.Core.IThat<System.IO.Abstractions.IDriveInfo> source) { }
     }
     public static class FileInfoExtensions
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> DoesNotExist(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> DoesNotHaveAttribute(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source, System.IO.FileAttributes unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> Exists(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> HasAttribute(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source, System.IO.FileAttributes expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.FileInfoContentResult HasContent(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> HasContent(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> HasContent(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source, byte[] expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> HasCreationTime(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source, System.DateTime expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> HasExtension(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source, string expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> HasLastAccessTime(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source, System.DateTime expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> HasLastWriteTime(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source, System.DateTime expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> HasLength(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source, long expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> HasName(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source, string expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> IsNotReadOnly(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo>> IsReadOnly(this aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> source) { }
     }
     public static class FileSystemExtensions
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.DidNotTriggerNotificationResult DidNotTriggerNotification(this aweXpect.Core.IThat<Testably.Abstractions.Testing.MockFileSystem> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.DidNotTriggerNotificationResult DidNotTriggerNotification(this aweXpect.Core.IThat<Testably.Abstractions.Testing.MockFileSystem> subject, System.Func<Testably.Abstractions.Testing.FileSystem.ChangeDescription, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TFileSystem, aweXpect.Core.IThat<TFileSystem>> DoesNotHaveDirectory<TFileSystem>(this aweXpect.Core.IThat<TFileSystem> subject, string path)
             where TFileSystem :  class, System.IO.Abstractions.IFileSystem { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TFileSystem, aweXpect.Core.IThat<TFileSystem>> DoesNotHaveDrive<TFileSystem>(this aweXpect.Core.IThat<TFileSystem> subject, string driveName)
             where TFileSystem :  class, System.IO.Abstractions.IFileSystem { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TFileSystem, aweXpect.Core.IThat<TFileSystem>> DoesNotHaveFile<TFileSystem>(this aweXpect.Core.IThat<TFileSystem> subject, string path)
             where TFileSystem :  class, System.IO.Abstractions.IFileSystem { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.DirectoryResult<TFileSystem> HasDirectory<TFileSystem>(this aweXpect.Core.IThat<TFileSystem> subject, string path)
             where TFileSystem :  class, System.IO.Abstractions.IFileSystem { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.DriveResult<TFileSystem> HasDrive<TFileSystem>(this aweXpect.Core.IThat<TFileSystem> subject, string driveName)
             where TFileSystem :  class, System.IO.Abstractions.IFileSystem { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.FileResult<TFileSystem> HasFile<TFileSystem>(this aweXpect.Core.IThat<TFileSystem> subject, string path)
             where TFileSystem :  class, System.IO.Abstractions.IFileSystem { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.TriggeredNotificationResult TriggeredNotification(this aweXpect.Core.IThat<Testably.Abstractions.Testing.MockFileSystem> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.TriggeredNotificationResult TriggeredNotification(this aweXpect.Core.IThat<Testably.Abstractions.Testing.MockFileSystem> subject, System.Func<Testably.Abstractions.Testing.FileSystem.ChangeDescription, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
     }
     public static class FileSystemWatcherExtensions
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.DidNotTriggerWatcherResult DidNotTrigger(this aweXpect.Core.IThat<System.IO.Abstractions.IFileSystemWatcher> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.DidNotTriggerWatcherResult DidNotTrigger(this aweXpect.Core.IThat<System.IO.Abstractions.IFileSystemWatcher> subject, System.Func<Testably.Abstractions.Testing.FileSystem.WatcherChangeDescription, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.TriggeredWatcherResult Triggered(this aweXpect.Core.IThat<System.IO.Abstractions.IFileSystemWatcher> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.TriggeredWatcherResult Triggered(this aweXpect.Core.IThat<System.IO.Abstractions.IFileSystemWatcher> subject, System.Func<Testably.Abstractions.Testing.FileSystem.WatcherChangeDescription, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
     }
     public static class FileVersionInfoExtensions
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasComments(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasCompanyName(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasFileBuildPart(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasFileDescription(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasFileMajorPart(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasFileMinorPart(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasFileName(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasFilePrivatePart(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasFileVersion(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasInternalName(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasLanguage(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasLegalCopyright(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasLegalTrademarks(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasOriginalFilename(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasPrivateBuild(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasProductBuildPart(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasProductMajorPart(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasProductMinorPart(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasProductName(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasProductPrivatePart(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasProductVersion(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> HasSpecialBuild(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> IsDebug(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> IsNotDebug(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> IsNotPatched(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> IsNotPreRelease(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> IsNotPrivateBuild(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> IsNotSpecialBuild(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> IsPatched(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> IsPreRelease(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> IsPrivateBuild(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileVersionInfo, aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo>> IsSpecialBuild(this aweXpect.Core.IThat<System.IO.Abstractions.IFileVersionInfo> source) { }
     }
     public static class StatisticsExtensions
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Recorded.RecordedFileSystemStatistics Recorded(this aweXpect.Core.IThat<Testably.Abstractions.Testing.Statistics.IFileSystemStatistics> subject) { }
     }
     public static class TimerExtensions
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Testably.Results.TimerExecutedResult Executed(this aweXpect.Core.IThat<Testably.Abstractions.Testing.TimeSystem.ITimerMock> subject) { }
     }
 }
