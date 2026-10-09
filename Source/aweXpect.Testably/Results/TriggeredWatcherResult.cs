@@ -44,10 +44,7 @@ public class TriggeredWatcherResult
 	/// </remarks>
 	public TriggeredWatcherResult Which(Action<IThat<WatcherChangeDescription>> expectation)
 	{
-		if (expectation is null)
-		{
-			throw new ArgumentNullException(nameof(expectation));
-		}
+		ThrowHelper.ThrowIfNull(expectation, nameof(expectation));
 
 		ManualExpectationBuilder<WatcherChangeDescription> manualBuilder = new();
 		expectation(new ThatSubject<WatcherChangeDescription>(manualBuilder));

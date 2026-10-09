@@ -29,7 +29,7 @@ internal static class TimerConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 

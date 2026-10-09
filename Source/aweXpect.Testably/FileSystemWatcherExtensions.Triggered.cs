@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
@@ -54,10 +53,7 @@ public static class FileSystemWatcherExtensions
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
-		if (predicate is null)
-		{
-			throw new ArgumentNullException(nameof(predicate));
-		}
+		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
 
 		return TriggeredCore(subject, predicate, doNotPopulateThisValue);
 	}
@@ -90,10 +86,7 @@ public static class FileSystemWatcherExtensions
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
-		if (predicate is null)
-		{
-			throw new ArgumentNullException(nameof(predicate));
-		}
+		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
 
 		return DidNotTriggerCore(subject, predicate, doNotPopulateThisValue);
 	}
@@ -111,7 +104,6 @@ public static class FileSystemWatcherExtensions
 			filter.Add(predicate, predicateExpression);
 		}
 
-		List<WatcherChangeDescription> matches = new();
 		return new TriggeredWatcherResult(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new NotificationConstraints.TriggeredNotificationConstraint<IFileSystemWatcher, WatcherChangeDescription>(
@@ -119,7 +111,7 @@ public static class FileSystemWatcherExtensions
 					"triggered an event",
 					"did not trigger an event",
 					Subscribe,
-					filter, quantifier, options, matches)),
+					filter, quantifier, options)),
 			subject,
 			quantifier,
 			options,
@@ -139,7 +131,6 @@ public static class FileSystemWatcherExtensions
 			filter.Add(predicate, predicateExpression);
 		}
 
-		List<WatcherChangeDescription> matches = new();
 		return new DidNotTriggerWatcherResult(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new NotificationConstraints.TriggeredNotificationConstraint<IFileSystemWatcher, WatcherChangeDescription>(
@@ -147,8 +138,7 @@ public static class FileSystemWatcherExtensions
 					"triggered an event",
 					"did not trigger an event",
 					Subscribe,
-					filter, quantifier, options, matches,
-					true).Invert()),
+					filter, quantifier, options).Invert()),
 			subject,
 			options,
 			filter);
@@ -156,8 +146,7 @@ public static class FileSystemWatcherExtensions
 
 	private static IAwaitableCallback<WatcherChangeDescription> Subscribe(
 		IFileSystemWatcher watcher,
-		Action<WatcherChangeDescription> action,
-		Func<WatcherChangeDescription, bool> userFilter)
+		Action<WatcherChangeDescription> action)
 	{
 		if (watcher.FileSystem is not MockFileSystem mockFs)
 		{
@@ -167,6 +156,6 @@ public static class FileSystemWatcherExtensions
 
 		return mockFs.Watcher.OnTriggeredOrReplay(
 			action,
-			c => c.FileSystemWatcher == watcher && userFilter(c));
+			c => c.FileSystemWatcher == watcher);
 	}
 }

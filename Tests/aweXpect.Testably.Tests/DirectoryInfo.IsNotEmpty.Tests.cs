@@ -44,6 +44,26 @@ public sealed partial class DirectoryInfo
 					             but it was
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenDirectoryDoesNotExist_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				IDirectoryInfo dirInfo = fileSystem.DirectoryInfo.New("missing");
+
+				async Task Act()
+				{
+					await That(dirInfo).IsNotEmpty();
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that dirInfo
+					             is not empty,
+					             but it did not exist
+					             """)
+					.Because("a missing directory cannot be inspected, so the negation fails as well");
+			}
 		}
 	}
 }

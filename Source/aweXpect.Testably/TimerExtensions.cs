@@ -20,18 +20,8 @@ public static class TimerExtensions
 	/// </remarks>
 	public static TimerExecutedResult Executed(
 		this IThat<ITimerMock> subject)
-		=> ExecutedCore(subject, null);
-
-	private static TimerExecutedResult ExecutedCore(
-		IThat<ITimerMock> subject,
-		Times? times)
 	{
 		Quantifier quantifier = new();
-		if (times.HasValue)
-		{
-			quantifier.Exactly(times.Value.Value);
-		}
-
 		NotificationTimeoutOptions options = new();
 		return new TimerExecutedResult(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)

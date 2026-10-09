@@ -180,6 +180,29 @@ public sealed class Timer
 			}
 
 			[Fact]
+			public async Task WithinTwice_ShouldThrowInvalidOperationException()
+			{
+				MockTimeSystem timeSystem = new();
+				using ITimerMock sut = (ITimerMock)timeSystem.Timer.New(
+					_ => { },
+					null,
+					Timeout.InfiniteTimeSpan,
+					Timeout.InfiniteTimeSpan);
+
+				async Task Act()
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					await That(sut).Executed()
+						.Within(TimeSpan.FromMilliseconds(10))
+						.Within(TimeSpan.FromMilliseconds(20));
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Within cannot be specified more than once.")
+					.Because("each option can only be specified once in v3 instead of the last one silently winning");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				ITimerMock? sut = null;

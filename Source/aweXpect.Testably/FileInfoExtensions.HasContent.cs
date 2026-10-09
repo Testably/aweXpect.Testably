@@ -39,7 +39,7 @@ public static partial class FileInfoExtensions
 	public static AndOrResult<IFileInfo, IThat<IFileInfo>> HasContent(this IThat<IFileInfo> source,
 		byte[] expected,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-		=> new(source.Get().ExpectationBuilder.AddConstraint((_, it, grammars)
+		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasBinaryContentConstraint(
 					it, grammars, expected, doNotPopulateThisValue)),
 			source);
@@ -63,9 +63,10 @@ public static partial class FileInfoExtensions
 		public async ValueTask<ConstraintResult> IsMetBy(IFileInfo actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (!Actual.Exists)
+			_fileContent = null;
+			if (actual is null || !actual.Exists)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -91,7 +92,7 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Grammars.HasFlag(ExpectationGrammars.Plural))
+			if (Grammars.IsPlural())
 			{
 				stringBuilder.Append("have content ");
 			}
@@ -106,7 +107,11 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual?.Exists != true)
+			if (Actual is null)
+			{
+				stringBuilder.Append(It).Append(" was <null>");
+			}
+			else if (!Actual.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}
@@ -134,9 +139,9 @@ public static partial class FileInfoExtensions
 		public ConstraintResult IsMetBy(IFileInfo actual)
 		{
 			Actual = actual;
-			if (!Actual.Exists)
+			if (actual is null || !actual.Exists)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -147,7 +152,7 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Grammars.HasFlag(ExpectationGrammars.Plural))
+			if (Grammars.IsPlural())
 			{
 				stringBuilder.Append("have content equal to ").Append(expectedExpression);
 			}
@@ -159,7 +164,11 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual?.Exists != true)
+			if (Actual is null)
+			{
+				stringBuilder.Append(It).Append(" was <null>");
+			}
+			else if (!Actual.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}
@@ -171,7 +180,7 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Grammars.HasFlag(ExpectationGrammars.Plural))
+			if (Grammars.IsPlural())
 			{
 				stringBuilder.Append("have content different from ").Append(expectedExpression);
 			}
@@ -182,6 +191,19 @@ public static partial class FileInfoExtensions
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" did match");
+		{
+			if (Actual is null)
+			{
+				stringBuilder.Append(It).Append(" was <null>");
+			}
+			else if (!Actual.Exists)
+			{
+				stringBuilder.Append(It).Append(" did not exist");
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(" did match");
+			}
+		}
 	}
 }

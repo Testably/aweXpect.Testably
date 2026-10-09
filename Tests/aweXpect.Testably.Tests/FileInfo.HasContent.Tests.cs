@@ -67,6 +67,23 @@ public sealed partial class FileInfo
 					             but it did not exist
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenEvaluatedForMultipleItems_ShouldNotShowContentOfPreviousItem()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.File.WriteAllText("a.txt", "abc");
+				IFileInfo[] fileInfos = [fileSystem.FileInfo.New("a.txt"), fileSystem.FileInfo.New("missing.txt"),];
+
+				async Task Act()
+				{
+					await That(fileInfos).All().ComplyWith(f => f.HasContent("abc"));
+				}
+
+				XunitException exception = await That(Act).Throws<XunitException>();
+				await That(exception.Message).DoesNotContain("File content")
+					.Because("the missing file has no content, so the content of the previous item must not leak into it");
+			}
 		}
 
 

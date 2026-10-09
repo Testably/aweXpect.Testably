@@ -28,9 +28,9 @@ public static partial class FileInfoExtensions
 		public ConstraintResult IsMetBy(IFileInfo actual)
 		{
 			Actual = actual;
-			if (!actual.Exists)
+			if (actual is null || !actual.Exists)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -44,7 +44,11 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual?.Exists != true)
+			if (Actual is null)
+			{
+				stringBuilder.Append(It).Append(" was <null>");
+			}
+			else if (!Actual.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}
@@ -59,7 +63,11 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual?.Exists != true)
+			if (Actual is null)
+			{
+				stringBuilder.Append(It).Append(" was <null>");
+			}
+			else if (!Actual.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}

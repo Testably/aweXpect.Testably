@@ -86,6 +86,31 @@ public sealed partial class FileSystem
 			}
 
 			[Fact]
+			public async Task WhichWithInnerExpectation_WhenItThrows_ShouldFail()
+			{
+				MockFileSystem sut = new();
+				ChangeDescription? firstEvent = null;
+				using IAwaitableCallback<ChangeDescription> reg = sut.Notify.OnEvent(c => firstEvent ??= c);
+				sut.File.WriteAllText("foo.txt", "x");
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification()
+						.Which(c => c.Satisfies(_ => throw new InvalidOperationException("boom")))
+						.Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($$"""
+					               Expected that sut
+					               did not trigger a notification which satisfies _ => throw new InvalidOperationException("boom") within 0:00.100,
+					               but for change {{firstEvent}}, the predicate did throw an InvalidOperationException:
+					                 boom
+					               """)
+					.Because("a change that the inner expectation could not answer fails the negated expectation as well");
+			}
+
+			[Fact]
 			public async Task WhichWithNullExpectation_ShouldThrowArgumentNullException()
 			{
 				MockFileSystem sut = new();

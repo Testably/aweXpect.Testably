@@ -369,6 +369,10 @@ underlying API and an indexer (`[path]`) for per-instance buckets. Every
 result inherits the count vocabulary (`Once`, `Twice`, `Never`, `Exactly`,
 `AtLeast`, `AtMost`, `Between`, …).
 
+Like every count in this package, it can be specified only once: chaining two
+counts, e.g. `.Once().Twice()`, throws an `InvalidOperationException`; use
+`Between(minimum).And(maximum)` for a range.
+
 Property reads and writes are recorded with `.Get()` / `.Set()`:
 
 ```csharp

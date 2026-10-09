@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,108 +17,178 @@ namespace aweXpect.Testably.Helpers;
 
 internal static class NotificationConstraints
 {
+	/// <remarks>
+	///     The notification callback only enqueues the changes, as it runs on the thread that raised the notification:
+	///     the filters (code of the caller) are applied on the evaluation flow, so that they can neither block nor throw
+	///     into the code under test.
+	/// </remarks>
 	internal sealed class TriggeredNotificationConstraint<TSubject, TChange>(
 		string it,
 		ExpectationGrammars grammars,
 		string normalExpectation,
 		string negatedExpectation,
-		Func<TSubject, Action<TChange>, Func<TChange, bool>, IAwaitableCallback<TChange>> subscribe,
+		Func<TSubject, Action<TChange>, IAwaitableCallback<TChange>> subscribe,
 		TriggerNotificationFilter<TChange> filter,
 		Quantifier quantifier,
-		NotificationTimeoutOptions options,
-		List<TChange> matches,
-		bool exitOnFirstMatch = false)
+		NotificationTimeoutOptions options)
 		: ConstraintResult.WithValue<TSubject>(it, grammars),
-			IAsyncContextConstraint<TSubject>
+			IAsyncContextConstraint<TSubject>,
+			IExpectationTextConstraint
 		where TSubject : class
 		where TChange : ChangeDescription
 	{
+		private readonly List<TChange> _matches = new();
+		private (TChange Change, ConstraintResult Result)? _unanswered;
+
+		public async ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
+			await filter.PrepareExpectation(context, cancellationToken);
+			return this;
+		}
+
 		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_matches.Clear();
+			_unanswered = null;
+			await filter.PrepareExpectation(context, cancellationToken);
 			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
-			TimeSpan timeout = options.Timeout;
-			TaskCompletionSource<bool> earlyExit = new();
-
-			using CancellationTokenSource deadlineCts =
-				CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-			deadlineCts.CancelAfter(timeout);
-			CancellationToken deadlineToken = deadlineCts.Token;
-
-			using IAwaitableCallback<TChange> registration = subscribe(
-				actual,
-				change =>
+			ConcurrentQueue<TChange> changes = new();
+			// Not disposed, as a notification that is raised while the registration is disposed may still release it.
+			SemaphoreSlim changeSignal = new(0);
+			IAwaitableCallback<TChange> registration = subscribe(actual, change =>
+			{
+				changes.Enqueue(change);
+				changeSignal.Release();
+			});
+			try
+			{
+				using CancellationTokenSource deadline =
+					CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+				deadline.CancelAfter(options.Timeout);
+				while (true)
 				{
-					if (deadlineToken.IsCancellationRequested ||
-					    !filter.IsAsyncMatchSync(change, context, deadlineToken))
+					if (await IsDetermined(changes, context, cancellationToken))
 					{
-						return;
+						return this;
 					}
 
-					lock (matches)
+					try
 					{
-						if (exitOnFirstMatch && matches.Count > 0)
-						{
-							return;
-						}
-
-						matches.Add(change);
-						if (exitOnFirstMatch || quantifier.Check(matches.Count, false) is not null)
-						{
-							earlyExit.TrySetResult(false);
-						}
+						await changeSignal.WaitAsync(deadline.Token);
 					}
-				},
-				filter.IsSyncMatch);
-
-			if (!deadlineToken.IsCancellationRequested && !earlyExit.Task.IsCompleted)
+					catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+					{
+						break;
+					}
+				}
+			}
+			finally
 			{
-				await Task.WhenAny(
-					earlyExit.Task,
-					Task.Delay(Timeout.InfiniteTimeSpan, deadlineToken)).ConfigureAwait(false);
+				registration.Dispose();
 			}
 
-			cancellationToken.ThrowIfCancellationRequested();
-
-			int matchCount;
-			lock (matches)
+			if (!await IsDetermined(changes, context, cancellationToken))
 			{
-				matchCount = matches.Count;
+				Outcome = quantifier.Check(_matches.Count, true) == true ? Outcome.Success : Outcome.Failure;
 			}
 
-			Outcome = quantifier.Check(matchCount, true) == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+		/// <summary>
+		///     Applies the filters to the received <paramref name="changes" /> and returns <see langword="true" /> when the
+		///     outcome is decided without waiting for further changes.
+		/// </summary>
+		private async ValueTask<bool> IsDetermined(ConcurrentQueue<TChange> changes,
+			IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
-			stringBuilder.Append(normalExpectation);
-			stringBuilder.Append(filter);
-			stringBuilder.Append(' ').Append(quantifier);
-			stringBuilder.Append(options);
+			while (changes.TryDequeue(out TChange? change))
+			{
+				if (!filter.IsMatch(change))
+				{
+					continue;
+				}
+
+				ConstraintResult? unmetResult = await filter.GetUnmetResult(change, context, cancellationToken);
+				cancellationToken.ThrowIfCancellationRequested();
+				if (unmetResult?.Outcome == Outcome.FailureBothWays)
+				{
+					_unanswered = (change, unmetResult);
+					Outcome = Outcome.FailureBothWays;
+					return true;
+				}
+
+				if (unmetResult is not null)
+				{
+					continue;
+				}
+
+				_matches.Add(change);
+				if (quantifier.Check(_matches.Count, false) == true)
+				{
+					Outcome = Outcome.Success;
+					return true;
+				}
+			}
+
+			if (quantifier.Check(_matches.Count, false) == false)
+			{
+				Outcome = Outcome.Failure;
+				return true;
+			}
+
+			return false;
 		}
 
+		public override Exception? FailureCause => _unanswered?.Result.FailureCause;
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (_unanswered is { } unanswered)
+			{
+				contexts.Visit(unanswered.Result);
+			}
+		}
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> AppendExpectation(stringBuilder, false);
+
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendCount(stringBuilder);
+			=> AppendCount(stringBuilder, indentation);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> AppendExpectation(stringBuilder, true);
+
+		private void AppendExpectation(StringBuilder stringBuilder, bool isNegated)
 		{
-			stringBuilder.Append(negatedExpectation);
-			stringBuilder.Append(filter);
+			if (quantifier.IsNever(isNegated))
+			{
+				stringBuilder.Append(negatedExpectation).Append(filter);
+			}
+			else
+			{
+				stringBuilder.Append(normalExpectation).Append(filter)
+					.Append(' ').Append(quantifier.ToString(isNegated));
+			}
+
 			stringBuilder.Append(options);
+			filter.AppendReasons(stringBuilder);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendCount(stringBuilder);
+			=> AppendCount(stringBuilder, indentation);
 
-		private void AppendCount(StringBuilder stringBuilder)
+		private void AppendCount(StringBuilder stringBuilder, string? indentation)
 		{
 			if (Actual is null)
 			{
@@ -125,30 +196,31 @@ internal static class NotificationConstraints
 				return;
 			}
 
-			TChange[] snapshot;
-			lock (matches)
+			if (_unanswered is { } unanswered)
 			{
-				snapshot = matches.ToArray();
+				stringBuilder.Append("for change ").Append(unanswered.Change).Append(", ");
+				unanswered.Result.AppendResult(stringBuilder, indentation);
+				return;
 			}
 
 			stringBuilder.Append(It).Append(" was ");
-			if (snapshot.Length == 0)
+			if (_matches.Count == 0)
 			{
 				stringBuilder.Append("not triggered");
 				return;
 			}
 
 			stringBuilder.Append("triggered ");
-			AppendTimes(stringBuilder, snapshot.Length);
+			AppendTimes(stringBuilder, _matches.Count);
 			stringBuilder.Append(" in [");
-			for (int i = 0; i < snapshot.Length; i++)
+			for (int i = 0; i < _matches.Count; i++)
 			{
 				if (i > 0)
 				{
 					stringBuilder.Append(',');
 				}
 
-				stringBuilder.Append(Environment.NewLine).Append("  ").Append(snapshot[i]);
+				stringBuilder.Append(Environment.NewLine).Append("  ").Append(_matches[i]);
 			}
 
 			stringBuilder.Append(Environment.NewLine).Append(']');
@@ -178,36 +250,51 @@ internal static class NotificationConstraints
 		private readonly List<(Func<TChange, bool> Predicate, string Description)> _syncPredicates = new();
 
 		public void Add(Func<TChange, bool> predicate, string predicateExpression)
-		{
-			if (predicate is null)
-			{
-				throw new ArgumentNullException(nameof(predicate));
-			}
-
-			_syncPredicates.Add((predicate, predicateExpression.Trim()));
-		}
+			=> _syncPredicates.Add((predicate, predicateExpression.Trim()));
 
 		public void Add(ManualExpectationBuilder<TChange> builder)
 			=> _asyncFilters.Add(builder);
 
-		public bool IsSyncMatch(TChange change)
-			=> _syncPredicates.All(p => p.Predicate(change));
+		/// <summary>
+		///     Prepares the text of the nested expectations, so that it is complete also when no change is evaluated.
+		/// </summary>
+		public async Task PrepareExpectation(IEvaluationContext context, CancellationToken cancellationToken)
+		{
+			foreach (ManualExpectationBuilder<TChange> builder in _asyncFilters)
+			{
+				await builder.PrepareExpectation(context, cancellationToken);
+			}
+		}
 
-		public bool IsAsyncMatchSync(TChange change,
+		public void AppendReasons(StringBuilder stringBuilder)
+		{
+			foreach (ManualExpectationBuilder<TChange> builder in _asyncFilters)
+			{
+				builder.AppendReasons(stringBuilder);
+			}
+		}
+
+		public bool IsMatch(TChange change)
+			=> _syncPredicates.All(p => UserCode.Invoke(p.Predicate, change, "the predicate"));
+
+		/// <summary>
+		///     Returns the result of the first nested expectation that the <paramref name="change" /> does not meet, or
+		///     <see langword="null" /> when it meets all of them.
+		/// </summary>
+		public async ValueTask<ConstraintResult?> GetUnmetResult(TChange change,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			foreach (ManualExpectationBuilder<TChange> builder in _asyncFilters)
 			{
-				ConstraintResult result = builder.IsMetBy(change, context, cancellationToken)
-					.AsTask().ConfigureAwait(false).GetAwaiter().GetResult();
+				ConstraintResult result = await builder.IsMetBy(change, context, cancellationToken);
 				if (result.Outcome != Outcome.Success)
 				{
-					return false;
+					return result;
 				}
 			}
 
-			return true;
+			return null;
 		}
 
 		public override string ToString()
@@ -248,7 +335,13 @@ internal static class NotificationConstraints
 		public ConstraintResult IsMetBy(TChange actual)
 		{
 			Actual = actual;
-			Outcome = actual != null! && (actual.ChangeType & expected) == expected
+			if (actual is null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
+			Outcome = (actual.ChangeType & expected) == expected
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -296,7 +389,13 @@ internal static class NotificationConstraints
 		public ConstraintResult IsMetBy(TChange actual)
 		{
 			Actual = actual;
-			Outcome = actual != null! && (actual.FileSystemType & expected) == expected
+			if (actual is null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
+			Outcome = (actual.FileSystemType & expected) == expected
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -344,7 +443,13 @@ internal static class NotificationConstraints
 		public ConstraintResult IsMetBy(TChange actual)
 		{
 			Actual = actual;
-			Outcome = actual != null! && (actual.NotifyFilters & expected) == expected
+			if (actual is null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
+			Outcome = (actual.NotifyFilters & expected) == expected
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -400,7 +505,7 @@ internal static class NotificationConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 

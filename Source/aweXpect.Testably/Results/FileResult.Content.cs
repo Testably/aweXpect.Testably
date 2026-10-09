@@ -223,7 +223,7 @@ public partial class FileResult<TParent>
 			_isExpectedFound = fs.File.Exists(expectedPath);
 			if (!_isExpectedFound)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 

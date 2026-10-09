@@ -25,9 +25,9 @@ internal static class FileSystemConstraints
 		public ConstraintResult IsMetBy(TInfo actual)
 		{
 			Actual = actual;
-			if (!actual.Exists)
+			if (actual is null || !actual.Exists)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -41,7 +41,11 @@ internal static class FileSystemConstraints
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual?.Exists != true)
+			if (Actual is null)
+			{
+				stringBuilder.Append(It).Append(" was <null>");
+			}
+			else if (!Actual.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}
@@ -56,7 +60,11 @@ internal static class FileSystemConstraints
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual?.Exists != true)
+			if (Actual is null)
+			{
+				stringBuilder.Append(It).Append(" was <null>");
+			}
+			else if (!Actual.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}
@@ -75,6 +83,12 @@ internal static class FileSystemConstraints
 		public ConstraintResult IsMetBy(TInfo actual)
 		{
 			Actual = actual;
+			if (actual is null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			Outcome = actual.Exists ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -83,13 +97,13 @@ internal static class FileSystemConstraints
 			=> stringBuilder.Append("exists");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" did not");
+			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("does not exist");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" did");
+			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");
 	}
 
 	internal sealed class HasNameConstraint<TInfo>(
@@ -106,6 +120,12 @@ internal static class FileSystemConstraints
 		public async ValueTask<ConstraintResult> IsMetBy(TInfo actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (actual is null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			_actualName = actual.Name;
 			Outcome = await options.AreConsideredEqual(_actualName, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -115,13 +135,22 @@ internal static class FileSystemConstraints
 			=> stringBuilder.Append("has name ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualName, expected));
+		{
+			if (Actual is null)
+			{
+				stringBuilder.Append(It).Append(" was <null>");
+			}
+			else
+			{
+				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualName, expected));
+			}
+		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("does not have name ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" did");
+			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");
 	}
 
 	internal sealed class HasFileConstraint<TParent>(
@@ -139,6 +168,12 @@ internal static class FileSystemConstraints
 		public ConstraintResult IsMetBy(TParent actual)
 		{
 			Actual = actual;
+			if (actual is null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			(_fs, _fullPath) = resolver(actual);
 			Outcome = _fs.File.Exists(_fullPath) ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -149,7 +184,11 @@ internal static class FileSystemConstraints
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_fs?.Directory.Exists(_fullPath) == true)
+			if (Actual is null)
+			{
+				stringBuilder.Append(It).Append(" was <null>");
+			}
+			else if (_fs?.Directory.Exists(_fullPath) == true)
 			{
 				stringBuilder.Append(It).Append(" was a directory");
 			}
@@ -163,7 +202,7 @@ internal static class FileSystemConstraints
 			=> stringBuilder.Append("does not have file '").Append(path).Append('\'');
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" did");
+			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");
 	}
 
 	internal sealed class HasDirectoryConstraint<TParent>(
@@ -181,6 +220,12 @@ internal static class FileSystemConstraints
 		public ConstraintResult IsMetBy(TParent actual)
 		{
 			Actual = actual;
+			if (actual is null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			(_fs, _fullPath) = resolver(actual);
 			Outcome = _fs.Directory.Exists(_fullPath) ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -191,7 +236,11 @@ internal static class FileSystemConstraints
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_fs?.File.Exists(_fullPath) == true)
+			if (Actual is null)
+			{
+				stringBuilder.Append(It).Append(" was <null>");
+			}
+			else if (_fs?.File.Exists(_fullPath) == true)
 			{
 				stringBuilder.Append(It).Append(" was a file");
 			}
@@ -205,7 +254,7 @@ internal static class FileSystemConstraints
 			=> stringBuilder.Append("does not have directory '").Append(path).Append('\'');
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" did");
+			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");
 	}
 
 	internal sealed class HasTimeConstraint<TActual>(
@@ -229,10 +278,17 @@ internal static class FileSystemConstraints
 		public ConstraintResult IsMetBy(TActual actual)
 		{
 			Actual = actual;
+			_existed = true;
+			if (actual is null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			if (existsCheck != null && !existsCheck(actual))
 			{
 				_existed = false;
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -262,7 +318,11 @@ internal static class FileSystemConstraints
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (!_existed)
+			if (Actual is null)
+			{
+				stringBuilder.Append(It).Append(" was <null>");
+			}
+			else if (!_existed)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}
