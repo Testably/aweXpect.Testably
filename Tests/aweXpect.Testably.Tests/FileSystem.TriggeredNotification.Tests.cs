@@ -217,6 +217,47 @@ public sealed partial class FileSystem
 			}
 
 			[Fact]
+			public async Task WhichWithReason_WhenChangeDoesNotMatch_ShouldIncludeReason()
+			{
+				MockFileSystem sut = new();
+				sut.File.WriteAllText("foo.txt", "x");
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification()
+						.Which(c => c.HasName("other.txt").Because("REASON-R"))
+						.Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that sut
+					             triggered a notification which has name equal to "other.txt" at least once within 0:00.100, because REASON-R,
+					             but it was not triggered
+					             """);
+			}
+
+			[Fact]
+			public async Task WhichWithNegatedInnerExpectation_WhenNoChange_ShouldDescribeNegation()
+			{
+				MockFileSystem sut = new();
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification()
+						.Which(c => c.DoesNotComplyWith(x => x.HasChangeType(WatcherChangeTypes.Deleted)))
+						.Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that sut
+					             triggered a notification which does not have change type Deleted at least once within 0:00.100,
+					             but it was not triggered
+					             """);
+			}
+
+			[Fact]
 			public async Task WhichTwice_WhenChangeDoesNotMatch_ShouldJoinFiltersWithAnd()
 			{
 				MockFileSystem sut = new();

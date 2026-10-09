@@ -32,12 +32,20 @@ internal static class NotificationConstraints
 		Quantifier quantifier,
 		NotificationTimeoutOptions options)
 		: ConstraintResult.WithValue<TSubject>(it, grammars),
-			IAsyncContextConstraint<TSubject>
+			IAsyncContextConstraint<TSubject>,
+			IExpectationTextConstraint
 		where TSubject : class
 		where TChange : ChangeDescription
 	{
 		private readonly List<TChange> _matches = new();
 		private (TChange Change, ConstraintResult Result)? _unanswered;
+
+		public async ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
+			await filter.PrepareExpectation(context, cancellationToken);
+			return this;
+		}
 
 		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual,
 			IEvaluationContext context,
@@ -46,6 +54,7 @@ internal static class NotificationConstraints
 			Actual = actual;
 			_matches.Clear();
 			_unanswered = null;
+			await filter.PrepareExpectation(context, cancellationToken);
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -157,6 +166,7 @@ internal static class NotificationConstraints
 			stringBuilder.Append(filter);
 			stringBuilder.Append(' ').Append(quantifier);
 			stringBuilder.Append(options);
+			filter.AppendReasons(stringBuilder);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -167,6 +177,7 @@ internal static class NotificationConstraints
 			stringBuilder.Append(negatedExpectation);
 			stringBuilder.Append(filter);
 			stringBuilder.Append(options);
+			filter.AppendReasons(stringBuilder);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -238,6 +249,25 @@ internal static class NotificationConstraints
 
 		public void Add(ManualExpectationBuilder<TChange> builder)
 			=> _asyncFilters.Add(builder);
+
+		/// <summary>
+		///     Prepares the text of the nested expectations, so that it is complete also when no change is evaluated.
+		/// </summary>
+		public async Task PrepareExpectation(IEvaluationContext context, CancellationToken cancellationToken)
+		{
+			foreach (ManualExpectationBuilder<TChange> builder in _asyncFilters)
+			{
+				await builder.PrepareExpectation(context, cancellationToken);
+			}
+		}
+
+		public void AppendReasons(StringBuilder stringBuilder)
+		{
+			foreach (ManualExpectationBuilder<TChange> builder in _asyncFilters)
+			{
+				builder.AppendReasons(stringBuilder);
+			}
+		}
 
 		public bool IsMatch(TChange change)
 			=> _syncPredicates.All(p => UserCode.Invoke(p.Predicate, change, "the predicate"));

@@ -310,6 +310,30 @@ public sealed partial class FileSystemWatcher
 			}
 
 			[Fact]
+			public async Task WhichWithReason_WhenChangeDoesNotMatch_ShouldIncludeReason()
+			{
+				MockFileSystem fs = new();
+				fs.InitializeIn("/x");
+				using IFileSystemWatcher sut = fs.FileSystemWatcher.New("/x");
+				sut.EnableRaisingEvents = true;
+				fs.File.WriteAllText("foo.txt", "x");
+
+				async Task Act()
+				{
+					await That(sut).Triggered()
+						.Which(c => c.HasName("other.txt").Because("REASON-R"))
+						.Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that sut
+					             triggered an event which has name equal to "other.txt" at least once within 0:00.100, because REASON-R,
+					             but it was not triggered
+					             """);
+			}
+
+			[Fact]
 			public async Task WhichWithInnerExpectation_WhenChangeMatches_ShouldSucceed()
 			{
 				MockFileSystem fs = new();
