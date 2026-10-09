@@ -120,12 +120,21 @@ public class FileInfoContentResult(
 		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),
 			IValueConstraint<IFileInfo>
 	{
+		private bool _exists;
+
 		/// <inheritdoc />
 		public ConstraintResult IsMetBy(IFileInfo actual)
 		{
 			Actual = actual;
 			if (actual is null)
 			{
+				return this;
+			}
+
+			_exists = actual.Exists;
+			if (!_exists)
+			{
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -139,14 +148,14 @@ public class FileInfoContentResult(
 				.Append(expectedExpression);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" differed");
+			=> stringBuilder.Append(It).Append(_exists ? " differed" : " did not exist");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have content equal to ", "do not have content equal to "))
 				.Append(expectedExpression);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" did match");
+			=> stringBuilder.Append(It).Append(_exists ? " did match" : " did not exist");
 	}
 
 	private sealed class HasStringContentEqualToConstraint(
@@ -163,8 +172,15 @@ public class FileInfoContentResult(
 		public async ValueTask<ConstraintResult> IsMetBy(IFileInfo actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_fileContent = null;
 			if (actual is null)
 			{
+				return this;
+			}
+
+			if (!actual.Exists)
+			{
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -174,21 +190,35 @@ public class FileInfoContentResult(
 		}
 
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.Add(new ResultContext.Fixed(FileContentContext, _fileContent));
+		{
+			if (_fileContent is not null)
+			{
+				contexts.Add(new ResultContext.Fixed(FileContentContext, _fileContent));
+			}
+		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has content ", "have content "))
 				.Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, expected));
+		{
+			if (_fileContent is null)
+			{
+				stringBuilder.Append(It).Append(" did not exist");
+			}
+			else
+			{
+				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, expected));
+			}
+		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have content ", "do not have content "))
 				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" did match");
+			=> stringBuilder.Append(It).Append(_fileContent is null ? " did not exist" : " did match");
 	}
 
 	private sealed class HasContentSameAsConstraint(
@@ -208,13 +238,20 @@ public class FileInfoContentResult(
 		public async ValueTask<ConstraintResult> IsMetBy(IFileInfo actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_fileContent = null;
 			if (actual is null)
 			{
 				return this;
 			}
 
-			_fileContent = actual.FileSystem.File.ReadAllText(actual.FullName);
 			_fullPath = actual.FileSystem.Path.GetFullPath(expectedPath);
+			if (!actual.Exists)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
+			_fileContent = actual.FileSystem.File.ReadAllText(actual.FullName);
 			_isExpectedFound = actual.FileSystem.File.Exists(expectedPath);
 			if (!_isExpectedFound)
 			{
@@ -228,7 +265,12 @@ public class FileInfoContentResult(
 		}
 
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.Add(new ResultContext.Fixed(FileContentContext, _fileContent));
+		{
+			if (_fileContent is not null)
+			{
+				contexts.Add(new ResultContext.Fixed(FileContentContext, _fileContent));
+			}
+		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has the same content as file '", "have the same content as file '"))
@@ -236,7 +278,11 @@ public class FileInfoContentResult(
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (!_isExpectedFound)
+			if (_fileContent is null)
+			{
+				stringBuilder.Append(It).Append(" did not exist");
+			}
+			else if (!_isExpectedFound)
 			{
 				stringBuilder.Append(It).Append(" did not contain any file at '").Append(_fullPath).Append('\'');
 			}
@@ -253,7 +299,11 @@ public class FileInfoContentResult(
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (!_isExpectedFound)
+			if (_fileContent is null)
+			{
+				stringBuilder.Append(It).Append(" did not exist");
+			}
+			else if (!_isExpectedFound)
 			{
 				stringBuilder.Append(It).Append(" did not contain any file at '").Append(_fullPath).Append('\'');
 			}

@@ -53,6 +53,47 @@ public sealed partial class FileInfo
 						             but it did match
 						             """);
 				}
+
+				[Fact]
+				public async Task WhenFileDoesNotExist_ShouldFail()
+				{
+					byte[] unexpected = Encoding.UTF8.GetBytes("bar");
+					MockFileSystem fileSystem = new();
+					IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+					async Task Act()
+					{
+						await That(fileInfo).HasContent().NotEqualTo(unexpected);
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that fileInfo
+						             has content different from unexpected,
+						             but it did not exist
+						             """)
+						.Because("a missing file has no content that could differ");
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenFileDoesNotExist_ShouldFail()
+				{
+					byte[] unexpected = Encoding.UTF8.GetBytes("bar");
+					MockFileSystem fileSystem = new();
+					IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+					async Task Act()
+					{
+						await That(fileInfo).DoesNotComplyWith(it => it.HasContent().NotEqualTo(unexpected));
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that fileInfo
+						             has content equal to unexpected,
+						             but it did not exist
+						             """);
+				}
 			}
 
 			public sealed class StringTests
@@ -97,6 +138,45 @@ public sealed partial class FileInfo
 
 						             File content:
 						             bar
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenFileDoesNotExist_ShouldFail()
+				{
+					MockFileSystem fileSystem = new();
+					IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+					async Task Act()
+					{
+						await That(fileInfo).HasContent().NotEqualTo("bar");
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that fileInfo
+						             has content not equal to "bar",
+						             but it did not exist
+						             """)
+						.Because("a missing file has no content that could differ");
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenFileDoesNotExist_ShouldFail()
+				{
+					MockFileSystem fileSystem = new();
+					IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+					async Task Act()
+					{
+						await That(fileInfo).DoesNotComplyWith(it => it.HasContent().NotEqualTo("bar"));
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that fileInfo
+						             has content equal to "bar",
+						             but it did not exist
 						             """);
 				}
 			}
