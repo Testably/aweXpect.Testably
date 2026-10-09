@@ -47,6 +47,26 @@ public sealed partial class DirectoryInfo
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenNegatedAndNameMatches_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.Directory.CreateDirectory("foo");
+				IDirectoryInfo dirInfo = fileSystem.DirectoryInfo.New("foo");
+
+				async Task Act()
+				{
+					await That(dirInfo).DoesNotComplyWith(d => d.HasName("foo"));
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that dirInfo
+					             does not have name equal to "foo",
+					             but it did
+					             """);
+			}
 		}
 	}
 }

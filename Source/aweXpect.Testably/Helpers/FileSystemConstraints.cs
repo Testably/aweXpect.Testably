@@ -147,7 +147,8 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have name ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("does not have name ")
+				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");

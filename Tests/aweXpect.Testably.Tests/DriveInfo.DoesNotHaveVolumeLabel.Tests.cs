@@ -25,7 +25,7 @@ public sealed partial class DriveInfo
 				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that driveInfo
-					              does not have volume label not equal to "{actualLabel}",
+					              does not have volume label equal to "{actualLabel}",
 					              but it did
 					              """);
 			}

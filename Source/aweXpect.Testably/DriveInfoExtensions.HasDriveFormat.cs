@@ -66,7 +66,8 @@ public static partial class DriveInfoExtensions
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have drive format ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("does not have drive format ")
+				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

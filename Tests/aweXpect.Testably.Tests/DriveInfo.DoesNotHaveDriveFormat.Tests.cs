@@ -25,7 +25,7 @@ public sealed partial class DriveInfo
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that driveInfo
-					             does not have drive format not equal to "NTFS",
+					             does not have drive format equal to "NTFS",
 					             but it did
 					             """);
 			}

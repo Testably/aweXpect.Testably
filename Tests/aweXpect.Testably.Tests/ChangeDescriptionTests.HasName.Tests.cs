@@ -44,6 +44,24 @@ public sealed partial class ChangeDescriptionTests
 			}
 
 			[Fact]
+			public async Task WhenNegatedAndNameMatches_ShouldFail()
+			{
+				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
+
+				async Task Act()
+				{
+					await That(change).DoesNotComplyWith(c => c.HasName(change.Name));
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that change
+					             does not have name equal to "foo.txt",
+					             but it did
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				ChangeDescription? change = null;
