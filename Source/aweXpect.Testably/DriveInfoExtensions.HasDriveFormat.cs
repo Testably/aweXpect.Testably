@@ -15,6 +15,7 @@ public static partial class DriveInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IDriveInfo" /> has the <paramref name="expected" /> drive format.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IDriveInfo, IThat<IDriveInfo>> HasDriveFormat(this IThat<IDriveInfo> source,
 		string expected)
 	{

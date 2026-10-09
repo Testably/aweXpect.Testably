@@ -15,6 +15,7 @@ public static partial class DriveInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IDriveInfo" /> has the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IDriveInfo, IThat<IDriveInfo>> HasName(this IThat<IDriveInfo> source,
 		string expected)
 	{

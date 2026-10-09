@@ -11,6 +11,7 @@ public static partial class DirectoryInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IDirectoryInfo" /> has the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IDirectoryInfo, IThat<IDirectoryInfo>> HasName(
 		this IThat<IDirectoryInfo> source,
 		string expected)

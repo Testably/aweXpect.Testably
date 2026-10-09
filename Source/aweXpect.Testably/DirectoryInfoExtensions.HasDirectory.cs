@@ -14,6 +14,7 @@ public static partial class DirectoryInfoExtensions
 	///     Verifies that the <see cref="IDirectoryInfo" /> has a directory at the given <paramref name="path" />
 	///     (relative to the directory).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static DirectoryResult<IDirectoryInfo> HasDirectory(
 		this IThat<IDirectoryInfo> subject, string path)
 	{
@@ -30,6 +31,7 @@ public static partial class DirectoryInfoExtensions
 	///     Verifies that the <see cref="IDirectoryInfo" /> does not have a directory at the given <paramref name="path" />
 	///     (relative to the directory).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> DoesNotHaveDirectory(
 		this IThat<IDirectoryInfo> subject, string path)
 	{

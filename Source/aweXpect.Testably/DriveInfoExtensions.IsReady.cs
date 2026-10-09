@@ -12,6 +12,7 @@ public static partial class DriveInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IDriveInfo" /> is ready.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> IsReady(this IThat<IDriveInfo> source)
 		=> new(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -21,6 +22,7 @@ public static partial class DriveInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IDriveInfo" /> is not ready.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> IsNotReady(this IThat<IDriveInfo> source)
 		=> new(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)

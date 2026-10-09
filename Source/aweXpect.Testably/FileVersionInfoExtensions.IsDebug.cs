@@ -11,6 +11,7 @@ public static partial class FileVersionInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileVersionInfo" /> is a debug build.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> IsDebug(this IThat<IFileVersionInfo> source)
 		=> new(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -21,6 +22,7 @@ public static partial class FileVersionInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileVersionInfo" /> is not a debug build.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> IsNotDebug(this IThat<IFileVersionInfo> source)
 		=> new(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)

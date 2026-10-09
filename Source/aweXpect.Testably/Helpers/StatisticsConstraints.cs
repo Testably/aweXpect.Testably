@@ -17,7 +17,7 @@ internal static class StatisticsConstraints
 		string bucketDescription,
 		string methodName,
 		ParameterMatcher[] matchers)
-		: ConstraintResult.WithValue<IFileSystemStatistics>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IFileSystemStatistics>(it, grammars),
 			IValueConstraint<IFileSystemStatistics>
 	{
 		private int _matchCount;
@@ -26,6 +26,11 @@ internal static class StatisticsConstraints
 		{
 			Actual = actual;
 			_matchCount = 0;
+			if (actual is null)
+			{
+				return this;
+			}
+
 			foreach (MethodStatistic method in bucketSelector(actual).Methods)
 			{
 				if (method.Name != methodName)
@@ -138,7 +143,7 @@ internal static class StatisticsConstraints
 		string bucketDescription,
 		string propertyName,
 		PropertyAccess access)
-		: ConstraintResult.WithValue<IFileSystemStatistics>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IFileSystemStatistics>(it, grammars),
 			IValueConstraint<IFileSystemStatistics>
 	{
 		private int _matchCount;
@@ -147,6 +152,11 @@ internal static class StatisticsConstraints
 		{
 			Actual = actual;
 			_matchCount = 0;
+			if (actual is null)
+			{
+				return this;
+			}
+
 			foreach (PropertyStatistic property in bucketSelector(actual).Properties)
 			{
 				if (property.Name == propertyName && property.Access == access)

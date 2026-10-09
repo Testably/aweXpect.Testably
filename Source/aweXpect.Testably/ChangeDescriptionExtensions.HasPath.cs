@@ -15,6 +15,7 @@ public static partial class ChangeDescriptionExtensions
 	///     <see cref="ChangeDescription.Path" /> is always set on the underlying
 	///     <see cref="ChangeDescription" />, so <paramref name="expected" /> is non-nullable.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<TChange, IThat<TChange>> HasPath<TChange>(
 		this IThat<TChange> source,
 		string expected)

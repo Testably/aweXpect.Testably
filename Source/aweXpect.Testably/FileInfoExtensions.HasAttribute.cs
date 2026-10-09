@@ -13,6 +13,7 @@ public static partial class FileInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileInfo" /> has the <paramref name="expected" /> <see cref="FileAttributes" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IFileInfo, IThat<IFileInfo>> HasAttribute(this IThat<IFileInfo> source,
 		FileAttributes expected)
 	{
@@ -32,6 +33,7 @@ public static partial class FileInfoExtensions
 	///     Verifies that the <see cref="IFileInfo" /> does not have the <paramref name="unexpected" />
 	///     <see cref="FileAttributes" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IFileInfo, IThat<IFileInfo>> DoesNotHaveAttribute(this IThat<IFileInfo> source,
 		FileAttributes unexpected)
 	{

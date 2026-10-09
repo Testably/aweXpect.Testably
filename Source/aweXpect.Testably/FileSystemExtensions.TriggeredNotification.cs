@@ -21,6 +21,7 @@ public static partial class FileSystemExtensions
 	///     The assertion always waits up to a timeout for late-arriving (asynchronous)
 	///     notifications (30 seconds by default; use <c>.Within(timeout)</c> to override).
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TriggeredNotificationResult TriggeredNotification(
 		this IThat<MockFileSystem> subject)
 		=> TriggeredNotificationCore(subject, null, "");
@@ -35,6 +36,7 @@ public static partial class FileSystemExtensions
 	///     The assertion always waits up to a timeout for late-arriving (asynchronous)
 	///     notifications (30 seconds by default; use <c>.Within(timeout)</c> to override).
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TriggeredNotificationResult TriggeredNotification(
 		this IThat<MockFileSystem> subject,
 		Func<ChangeDescription, bool> predicate,
@@ -56,6 +58,7 @@ public static partial class FileSystemExtensions
 	///     default; use <c>.Within(timeout)</c> to lower it when you do not need to wait). The
 	///     assertion short-circuits as soon as a matching notification is observed.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static DidNotTriggerNotificationResult DidNotTriggerNotification(
 		this IThat<MockFileSystem> subject)
 		=> DidNotTriggerNotificationCore(subject, null, "");
@@ -64,6 +67,7 @@ public static partial class FileSystemExtensions
 	///     Verifies that the <see cref="MockFileSystem.Notify" /> handler did <i>not</i> fire for
 	///     any change matching the <paramref name="predicate" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static DidNotTriggerNotificationResult DidNotTriggerNotification(
 		this IThat<MockFileSystem> subject,
 		Func<ChangeDescription, bool> predicate,

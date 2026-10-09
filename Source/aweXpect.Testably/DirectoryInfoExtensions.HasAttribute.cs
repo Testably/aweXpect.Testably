@@ -14,6 +14,7 @@ public static partial class DirectoryInfoExtensions
 	///     Verifies that the <see cref="IDirectoryInfo" /> has the <paramref name="expected" />
 	///     <see cref="FileAttributes" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> HasAttribute(this IThat<IDirectoryInfo> source,
 		FileAttributes expected)
 	{
@@ -33,6 +34,7 @@ public static partial class DirectoryInfoExtensions
 	///     Verifies that the <see cref="IDirectoryInfo" /> does not have the <paramref name="unexpected" />
 	///     <see cref="FileAttributes" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> DoesNotHaveAttribute(
 		this IThat<IDirectoryInfo> source,
 		FileAttributes unexpected)

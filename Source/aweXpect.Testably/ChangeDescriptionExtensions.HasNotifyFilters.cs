@@ -17,6 +17,7 @@ public static partial class ChangeDescriptionExtensions
 	/// <remarks>
 	///     The check uses flag containment, because <see cref="NotifyFilters" /> is a flag enum.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<TChange, IThat<TChange>> HasNotifyFilters<TChange>(
 		this IThat<TChange> source,
 		NotifyFilters expected)
@@ -38,6 +39,7 @@ public static partial class ChangeDescriptionExtensions
 	///     Verifies that the <see cref="ChangeDescription" /> does not have the <paramref name="unexpected" />
 	///     <see cref="NotifyFilters" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TChange, IThat<TChange>> DoesNotHaveNotifyFilters<TChange>(
 		this IThat<TChange> source,
 		NotifyFilters unexpected)

@@ -16,6 +16,7 @@ public static partial class FileInfoExtensions
 	///     Uses <see cref="IFileSystemInfo.CreationTime" /> or <see cref="IFileSystemInfo.CreationTimeUtc" /> depending
 	///     on the <see cref="DateTime.Kind" /> property of the <paramref name="expected" /> value.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TimeToleranceResult<IFileInfo, IThat<IFileInfo>> HasCreationTime(
 		this IThat<IFileInfo> source, DateTime expected)
 	{

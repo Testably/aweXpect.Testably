@@ -29,6 +29,7 @@ public static class FileSystemWatcherExtensions
 	///     <see cref="IFileSystemWatcher.EnableRaisingEvents" /> must be <see langword="true" /> for
 	///     any event to be observed.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TriggeredWatcherResult Triggered(
 		this IThat<IFileSystemWatcher> subject)
 		=> TriggeredCore(subject, null, "");
@@ -47,6 +48,7 @@ public static class FileSystemWatcherExtensions
 	///     <see cref="IFileSystemWatcher.EnableRaisingEvents" /> must be <see langword="true" /> for
 	///     any event to be observed.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TriggeredWatcherResult Triggered(
 		this IThat<IFileSystemWatcher> subject,
 		Func<WatcherChangeDescription, bool> predicate,
@@ -72,6 +74,7 @@ public static class FileSystemWatcherExtensions
 	///     <see cref="IFileSystemWatcher.EnableRaisingEvents" /> must be <see langword="true" /> for
 	///     any event to be observed.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static DidNotTriggerWatcherResult DidNotTrigger(
 		this IThat<IFileSystemWatcher> subject)
 		=> DidNotTriggerCore(subject, null, "");
@@ -80,6 +83,7 @@ public static class FileSystemWatcherExtensions
 	///     Verifies that the <see cref="IFileSystemWatcher" /> did <i>not</i> trigger an event for
 	///     any change matching the <paramref name="predicate" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static DidNotTriggerWatcherResult DidNotTrigger(
 		this IThat<IFileSystemWatcher> subject,
 		Func<WatcherChangeDescription, bool> predicate,

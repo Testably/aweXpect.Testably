@@ -15,6 +15,7 @@ public static partial class ChangeDescriptionExtensions
 	///     The old path is only set on a <see cref="System.IO.WatcherChangeTypes.Renamed" /> change,
 	///     so <see cref="ChangeDescription.OldPath" /> is nullable and <paramref name="expected" /> is too.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<TChange, IThat<TChange>> HasOldPath<TChange>(
 		this IThat<TChange> source,
 		string? expected)

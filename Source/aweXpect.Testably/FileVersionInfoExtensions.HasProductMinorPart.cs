@@ -10,6 +10,7 @@ public static partial class FileVersionInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileVersionInfo" /> has the <paramref name="expected" /> product minor part.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> HasProductMinorPart(
 		this IThat<IFileVersionInfo> source,
 		int expected)

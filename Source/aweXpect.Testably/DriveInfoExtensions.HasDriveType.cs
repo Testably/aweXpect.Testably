@@ -13,6 +13,7 @@ public static partial class DriveInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IDriveInfo" /> has the <paramref name="expected" /> <see cref="DriveType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> HasDriveType(this IThat<IDriveInfo> source,
 		DriveType expected)
 		=> new(

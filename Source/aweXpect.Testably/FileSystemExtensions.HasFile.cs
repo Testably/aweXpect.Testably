@@ -13,6 +13,7 @@ public static partial class FileSystemExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileSystem" /> has a file at the given <paramref name="path" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static FileResult<TFileSystem> HasFile<TFileSystem>(
 		this IThat<TFileSystem> subject, string path)
 		where TFileSystem : class, IFileSystem
@@ -28,6 +29,7 @@ public static partial class FileSystemExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileSystem" /> does not have a file at the given <paramref name="path" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TFileSystem, IThat<TFileSystem>> DoesNotHaveFile<TFileSystem>(
 		this IThat<TFileSystem> subject, string path)
 		where TFileSystem : class, IFileSystem

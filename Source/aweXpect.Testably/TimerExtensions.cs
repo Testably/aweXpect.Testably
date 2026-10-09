@@ -18,6 +18,7 @@ public static class TimerExtensions
 	///     Polls <see cref="ITimerMock.ExecutionCount" /> until either the quantifier is satisfied
 	///     or the timeout expires (30 seconds by default; use <c>.Within(timeout)</c> to override).
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TimerExecutedResult Executed(
 		this IThat<ITimerMock> subject)
 	{

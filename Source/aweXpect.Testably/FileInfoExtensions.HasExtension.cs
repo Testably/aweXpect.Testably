@@ -15,6 +15,7 @@ public static partial class FileInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileInfo" /> has the <paramref name="expected" /> extension.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> HasExtension(this IThat<IFileInfo> source,
 		string expected)
 	{
@@ -31,7 +32,7 @@ public static partial class FileInfoExtensions
 		ExpectationGrammars grammars,
 		StringEqualityOptions options,
 		string expected)
-		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),
 			IAsyncConstraint<IFileInfo>
 	{
 		private string? _actualExtension;
@@ -39,6 +40,11 @@ public static partial class FileInfoExtensions
 		public async ValueTask<ConstraintResult> IsMetBy(IFileInfo actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			if (actual is null)
+			{
+				return this;
+			}
+
 			_actualExtension = actual.Extension;
 			Outcome = await options.AreConsideredEqual(_actualExtension, expected) ? Outcome.Success : Outcome.Failure;
 			return this;

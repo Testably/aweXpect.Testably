@@ -12,6 +12,7 @@ public static partial class FileInfoExtensions
 	/// <summary>
 	///     Verifies that the <see cref="IFileInfo" /> has the <paramref name="expected" /> length in bytes.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IFileInfo, IThat<IFileInfo>> HasLength(this IThat<IFileInfo> source,
 		long expected)
 		=> new(
