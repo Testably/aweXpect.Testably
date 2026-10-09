@@ -532,7 +532,7 @@ internal static class NotificationConstraints
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("does not have ").Append(propertyName).Append(' ')
-				.Append(options.GetExpectation(expected, Grammars));
+				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

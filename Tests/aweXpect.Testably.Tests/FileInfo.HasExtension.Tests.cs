@@ -66,7 +66,7 @@ public sealed partial class FileInfo
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileInfo
-					             does not have extension not equal to ".txt",
+					             does not have extension equal to ".txt",
 					             but it did
 					             """);
 			}

@@ -49,6 +49,69 @@ public sealed partial class FileInfo
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenNegatedAndCaseInsensitiveNameMatches_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				// ReSharper disable once MethodHasAsyncOverload
+				fileSystem.File.WriteAllText("foo.txt", "");
+				IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+				async Task Act()
+				{
+					await That(fileInfo).DoesNotComplyWith(f => f.HasName("FOO.TXT").IgnoringCase());
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that fileInfo
+					             does not have name equal to "FOO.TXT" ignoring case,
+					             but it did
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNegatedAndNameMatches_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				// ReSharper disable once MethodHasAsyncOverload
+				fileSystem.File.WriteAllText("foo.txt", "");
+				IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+				async Task Act()
+				{
+					await That(fileInfo).DoesNotComplyWith(f => f.HasName("foo.txt"));
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that fileInfo
+					             does not have name equal to "foo.txt",
+					             but it did
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNegatedAndWildcardMatches_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				// ReSharper disable once MethodHasAsyncOverload
+				fileSystem.File.WriteAllText("foo.txt", "");
+				IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+				async Task Act()
+				{
+					await That(fileInfo).DoesNotComplyWith(f => f.HasName("*.txt").AsWildcard());
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that fileInfo
+					             does not have name matching "*.txt",
+					             but it did
+					             """);
+			}
 		}
 	}
 }
