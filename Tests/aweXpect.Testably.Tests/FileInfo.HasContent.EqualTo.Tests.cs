@@ -53,6 +53,47 @@ public sealed partial class FileInfo
 
 					await That(Act).DoesNotThrow();
 				}
+
+				[Fact]
+				public async Task WhenFileDoesNotExist_ShouldFail()
+				{
+					byte[] expected = Encoding.UTF8.GetBytes("bar");
+					MockFileSystem fileSystem = new();
+					IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+					async Task Act()
+					{
+						await That(fileInfo).HasContent().EqualTo(expected);
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that fileInfo
+						             has content equal to expected,
+						             but it did not exist
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenFileDoesNotExist_ShouldFail()
+				{
+					byte[] expected = Encoding.UTF8.GetBytes("bar");
+					MockFileSystem fileSystem = new();
+					IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+					async Task Act()
+					{
+						await That(fileInfo).DoesNotComplyWith(it => it.HasContent().EqualTo(expected));
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that fileInfo
+						             has content different from expected,
+						             but it did not exist
+						             """)
+						.Because("a missing file has no content to compare, so the negation fails as well");
+				}
 			}
 
 			public sealed class StringTests
@@ -102,6 +143,72 @@ public sealed partial class FileInfo
 					}
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEvaluatedForMultipleItems_ShouldNotShowContentOfPreviousItem()
+				{
+					MockFileSystem fileSystem = new();
+					fileSystem.File.WriteAllText("a.txt", "abc");
+					IFileInfo[] fileInfos = [fileSystem.FileInfo.New("a.txt"), fileSystem.FileInfo.New("missing.txt"),];
+
+					async Task Act()
+					{
+						await That(fileInfos).All().ComplyWith(f => f.HasContent().EqualTo("abc"));
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that fileInfos
+						              has content equal to "abc" for all items,
+						             but for the item at index 1, it did not exist
+
+						             Collection:
+						             [
+						               a.txt,
+						               missing.txt
+						             ]
+						             """)
+						.Because("the missing file has no content, so the content of the previous item must not leak into it");
+				}
+
+				[Fact]
+				public async Task WhenFileDoesNotExist_ShouldFail()
+				{
+					MockFileSystem fileSystem = new();
+					IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+					async Task Act()
+					{
+						await That(fileInfo).HasContent().EqualTo("bar");
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that fileInfo
+						             has content equal to "bar",
+						             but it did not exist
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenFileDoesNotExist_ShouldFail()
+				{
+					MockFileSystem fileSystem = new();
+					IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+					async Task Act()
+					{
+						await That(fileInfo).DoesNotComplyWith(it => it.HasContent().EqualTo("bar"));
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that fileInfo
+						             has content not equal to "bar",
+						             but it did not exist
+						             """)
+						.Because("a missing file has no content to compare, so the negation fails as well");
 				}
 			}
 

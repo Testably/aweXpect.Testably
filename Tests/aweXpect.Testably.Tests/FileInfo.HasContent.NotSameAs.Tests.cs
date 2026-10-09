@@ -58,6 +58,51 @@ public sealed partial class FileInfo
 						              bar
 						              """);
 				}
+
+				[Fact]
+				public async Task WhenFileDoesNotExist_ShouldFail()
+				{
+					MockFileSystem fileSystem = new();
+					string expectedPath = "bar.txt";
+					string fullExpectedPath = fileSystem.Path.GetFullPath(expectedPath);
+					fileSystem.File.WriteAllText(expectedPath, "bar");
+					IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+					async Task Act()
+					{
+						await That(fileInfo).HasContent().NotSameAs(expectedPath);
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that fileInfo
+						              does not have the same content as file '{fullExpectedPath}',
+						              but it did not exist
+						              """)
+						.Because("a missing file has no content that could differ");
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenFileDoesNotExist_ShouldFail()
+				{
+					MockFileSystem fileSystem = new();
+					string expectedPath = "bar.txt";
+					string fullExpectedPath = fileSystem.Path.GetFullPath(expectedPath);
+					fileSystem.File.WriteAllText(expectedPath, "bar");
+					IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+
+					async Task Act()
+					{
+						await That(fileInfo).DoesNotComplyWith(it => it.HasContent().NotSameAs(expectedPath));
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that fileInfo
+						              has the same content as file '{fullExpectedPath}',
+						              but it did not exist
+						              """);
+				}
 			}
 
 			public sealed class AsWildcardTests
