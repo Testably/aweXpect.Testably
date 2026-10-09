@@ -13,6 +13,9 @@ file-system and time-system mocks from
 `IFileVersionInfo`, `IFileSystemWatcher`, `IFileSystemStatistics` and
 `ITimerMock`.
 
+The samples use the `TimeSpan` helpers (`1.Second()`, `100.Milliseconds()`)
+from [aweXpect.Chronology](https://github.com/Testably/aweXpect.Chronology).
+
 ## File system (`IFileSystem`)
 
 Verify that a file, directory or drive is present in the file system. Every
@@ -20,14 +23,14 @@ positive assertion has a `DoesNot…` counterpart:
 
 ```csharp
 IFileSystem fileSystem = new MockFileSystem();
-fileSystem.Directory.CreateDirectory("my/path");
-fileSystem.File.WriteAllText("my-file.txt", "some content");
+fileSystem.Directory.CreateDirectory("beatles/abbey-road");
+fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
 
-await That(fileSystem).HasDirectory("my/path");
-await That(fileSystem).HasFile("my-file.txt");
+await That(fileSystem).HasDirectory("beatles/abbey-road");
+await That(fileSystem).HasFile("let-it-be.txt");
 
-await That(fileSystem).DoesNotHaveDirectory("not/here");
-await That(fileSystem).DoesNotHaveFile("missing.txt");
+await That(fileSystem).DoesNotHaveDirectory("beatles/white-album");
+await That(fileSystem).DoesNotHaveFile("yesterday.txt");
 ```
 
 ### File chain
@@ -37,30 +40,30 @@ file's content and timestamps without re-resolving it:
 
 ```csharp
 IFileSystem fileSystem = new MockFileSystem();
-fileSystem.File.WriteAllText("my-file.txt", "some content");
+fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
 
-await That(fileSystem).HasFile("my-file.txt").WithContent("some content").IgnoringCase();
-await That(fileSystem).HasFile("my-file.txt").WithContent().NotEqualTo("some unexpected content");
-await That(fileSystem).HasFile("my-file.txt").WithContent(new byte[] { 0x73, 0x6F, 0x6D, 0x65 });
+await That(fileSystem).HasFile("let-it-be.txt").WithContent("LET IT BE").IgnoringCase();
+await That(fileSystem).HasFile("let-it-be.txt").WithContent().NotEqualTo("let it go");
+await That(fileSystem).HasFile("let-it-be.txt").WithContent(Encoding.UTF8.GetBytes("let it be"));
 ```
 
 You can compare against another file on the same file system:
 
 ```csharp
-fileSystem.File.WriteAllText("my-other-file.txt", "SOME CONTENT");
-fileSystem.File.WriteAllText("my-third-file.txt", "some other content");
+fileSystem.File.WriteAllText("let-it-be-remastered.txt", "LET IT BE");
+fileSystem.File.WriteAllText("hey-jude.txt", "hey jude");
 
-await That(fileSystem).HasFile("my-file.txt").WithContent().SameAs("my-other-file.txt").IgnoringCase();
-await That(fileSystem).HasFile("my-file.txt").WithContent().NotSameAs("my-third-file.txt");
+await That(fileSystem).HasFile("let-it-be.txt").WithContent().SameAs("let-it-be-remastered.txt").IgnoringCase();
+await That(fileSystem).HasFile("let-it-be.txt").WithContent().NotSameAs("hey-jude.txt");
 ```
 
 …and against the file's timestamps. `.Within(tolerance)` widens the comparison
 to a window:
 
 ```csharp
-await That(fileSystem).HasFile("my-file.txt").WithCreationTime(DateTime.Now).Within(1.Second());
-await That(fileSystem).HasFile("my-file.txt").WithLastAccessTime(DateTime.Now).Within(1.Second());
-await That(fileSystem).HasFile("my-file.txt").WithLastWriteTime(DateTime.Now).Within(1.Second());
+await That(fileSystem).HasFile("let-it-be.txt").WithCreationTime(DateTime.Now).Within(1.Second());
+await That(fileSystem).HasFile("let-it-be.txt").WithLastAccessTime(DateTime.Now).Within(1.Second());
+await That(fileSystem).HasFile("let-it-be.txt").WithLastWriteTime(DateTime.Now).Within(1.Second());
 ```
 
 ### Directory chain
@@ -69,13 +72,13 @@ await That(fileSystem).HasFile("my-file.txt").WithLastWriteTime(DateTime.Now).Wi
 
 ```csharp
 IFileSystem fileSystem = new MockFileSystem();
-fileSystem.Directory.CreateDirectory("foo/bar1");
-fileSystem.Directory.CreateDirectory("foo/bar2/baz");
-fileSystem.File.WriteAllText("foo/bar/my-file.txt", "some content");
+fileSystem.Directory.CreateDirectory("beatles/abbey-road");
+fileSystem.Directory.CreateDirectory("beatles/revolver");
+fileSystem.File.WriteAllText("beatles/abbey-road/something.txt", "something");
 
-await That(fileSystem).HasDirectory("foo").WithDirectories(d => d.HasCount().EqualTo(2));
-await That(fileSystem).HasDirectory("foo/bar").WithFiles(f => f
-    .All().ComplyWith(x => x.HasContent("SOME CONTENT").IgnoringCase()));
+await That(fileSystem).HasDirectory("beatles").WithDirectories(d => d.HasCount().EqualTo(2));
+await That(fileSystem).HasDirectory("beatles/abbey-road").WithFiles(f => f
+    .All().ComplyWith(x => x.HasContent("SOMETHING").IgnoringCase()));
 ```
 
 ### Bridging to `IFileInfo` / `IDirectoryInfo` / `IDriveInfo` via `.Which`
@@ -85,24 +88,24 @@ returns the resolved `IFileInfo` / `IDirectoryInfo` / `IDriveInfo` so the
 subject-level assertions below light up directly in the chain:
 
 ```csharp
-await That(fileSystem).HasFile("my-file.txt").Which.HasLength(12).And.HasContent("some content");
-await That(fileSystem).HasDirectory("logs").Which.IsEmpty();
+await That(fileSystem).HasFile("let-it-be.txt").Which.HasLength(9).And.HasContent("let it be");
+await That(fileSystem).HasDirectory("beatles/revolver").Which.IsEmpty();
 await That(fileSystem).HasDrive("D:\\").Which.IsReady().And.HasDriveFormat("NTFS");
 ```
 
 ## File (`IFileInfo`)
 
 ```csharp
-IFileInfo fileInfo = fileSystem.FileInfo.New("my-file.txt");
+IFileInfo fileInfo = fileSystem.FileInfo.New("let-it-be.txt");
 
 await That(fileInfo).Exists();
 await That(fileInfo).DoesNotExist();
 
-await That(fileInfo).HasName("my-file.txt");
+await That(fileInfo).HasName("let-it-be.txt");
 await That(fileInfo).HasExtension(".txt");
-await That(fileInfo).HasLength(12);
-await That(fileInfo).HasContent("some content");
-await That(fileInfo).HasContent(new byte[] { 0x73, 0x6F, 0x6D, 0x65 });
+await That(fileInfo).HasLength(9);
+await That(fileInfo).HasContent("let it be");
+await That(fileInfo).HasContent(Encoding.UTF8.GetBytes("let it be"));
 
 await That(fileInfo).IsReadOnly();
 await That(fileInfo).IsNotReadOnly();
@@ -124,26 +127,26 @@ On .NET 10 or later, `WhoseParent` switches the subject to the containing
 directory so the directory-level assertions can be reused:
 
 ```csharp
-await That(fileInfo).WhoseParent.HasName("docs").And.IsNotEmpty();
+await That(fileInfo).WhoseParent.HasName("beatles").And.IsNotEmpty();
 ```
 
 ## Directory (`IDirectoryInfo`)
 
 ```csharp
-IDirectoryInfo dirInfo = fileSystem.DirectoryInfo.New("foo");
+IDirectoryInfo dirInfo = fileSystem.DirectoryInfo.New("beatles");
 
 await That(dirInfo).Exists();
 await That(dirInfo).DoesNotExist();
 
-await That(dirInfo).HasName("foo");
+await That(dirInfo).HasName("beatles");
 
 await That(dirInfo).IsEmpty();
 await That(dirInfo).IsNotEmpty();
 
-await That(dirInfo).HasFile("bar/my-file.txt");
-await That(dirInfo).DoesNotHaveFile("bar/missing.txt");
-await That(dirInfo).HasDirectory("bar").Which.HasFile("my-file.txt");
-await That(dirInfo).DoesNotHaveDirectory("not-here");
+await That(dirInfo).HasFile("abbey-road/something.txt");
+await That(dirInfo).DoesNotHaveFile("abbey-road/yesterday.txt");
+await That(dirInfo).HasDirectory("abbey-road").Which.HasFile("something.txt");
+await That(dirInfo).DoesNotHaveDirectory("white-album");
 
 await That(dirInfo).HasAttribute(FileAttributes.Directory);
 await That(dirInfo).DoesNotHaveAttribute(FileAttributes.Hidden);
@@ -193,16 +196,16 @@ values come from `MockFileSystem.WithFileVersionInfo(glob, builder)`:
 ```csharp
 MockFileSystem fileSystem = new();
 fileSystem.WithFileVersionInfo("*.dll", v => v
-    .SetCompanyName("Acme")
-    .SetProductName("Anvil")
-    .SetFileVersion("1.2.3.4")
+    .SetCompanyName("Apple Corps")
+    .SetProductName("Abbey Road")
+    .SetFileVersion("1.9.6.9")
     .SetIsDebug(true));
-fileSystem.File.WriteAllText("Acme.dll", "");
+fileSystem.File.WriteAllText("AbbeyRoad.dll", "");
 
-IFileVersionInfo info = fileSystem.FileVersionInfo.GetVersionInfo("Acme.dll");
+IFileVersionInfo info = fileSystem.FileVersionInfo.GetVersionInfo("AbbeyRoad.dll");
 
-await That(info).HasCompanyName("Acme").And.HasProductName("Anvil");
-await That(info).HasFileVersion("1.2.3.4").And.HasFileMajorPart(1);
+await That(info).HasCompanyName("Apple Corps").And.HasProductName("Abbey Road");
+await That(info).HasFileVersion("1.9.6.9").And.HasFileMajorPart(1);
 await That(info).IsDebug().And.IsNotPreRelease();
 ```
 
@@ -247,10 +250,10 @@ the code under test, then assert against the notifications it produced:
 
 ```csharp
 MockFileSystem fileSystem = new();
-fileSystem.File.WriteAllText("my-file.txt", "some content");
+fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
 
 await That(fileSystem).TriggeredNotification();
-await That(fileSystem).TriggeredNotification(c => c.Name == "my-file.txt");
+await That(fileSystem).TriggeredNotification(c => c.Name == "let-it-be.txt");
 ```
 
 `.Within(timeout)` (default 30 s) lets the assertion wait for asynchronous
@@ -259,7 +262,7 @@ completes synchronously; otherwise it waits up to the timeout for a late
 arrival:
 
 ```csharp
-_ = Task.Run(() => fileSystem.File.WriteAllText("foo.txt", "x"));
+_ = Task.Run(() => fileSystem.File.WriteAllText("help.txt", "help"));
 await That(fileSystem).TriggeredNotification().Within(100.Milliseconds());
 ```
 
@@ -268,7 +271,7 @@ as a matching notification is observed:
 
 ```csharp
 await That(fileSystem).DidNotTriggerNotification().Within(100.Milliseconds());
-await That(fileSystem).DidNotTriggerNotification(c => c.Name == "secret.txt");
+await That(fileSystem).DidNotTriggerNotification(c => c.Name == "unreleased.txt");
 ```
 
 Both accept a `Quantifier` (`AtLeast`, `AtMost`, `Exactly`, `Between`,
@@ -277,15 +280,15 @@ Both accept a `Quantifier` (`AtLeast`, `AtMost`, `Exactly`, `Between`,
 from [`ChangeDescription`](#changedescription):
 
 ```csharp
-fileSystem.File.WriteAllText("a.txt", "x");
-fileSystem.File.WriteAllText("b.txt", "y");
+fileSystem.File.WriteAllText("come-together.txt", "come together");
+fileSystem.File.WriteAllText("something.txt", "something");
 
 await That(fileSystem).TriggeredNotification(c => c.ChangeType == WatcherChangeTypes.Created)
     .Exactly(2.Times());
 
 await That(fileSystem)
     .TriggeredNotification()
-    .Which(c => c.HasName("a.txt").And.HasChangeType(WatcherChangeTypes.Created))
+    .Which(c => c.HasName("come-together.txt").And.HasChangeType(WatcherChangeTypes.Created))
     .Exactly(1.Times());
 ```
 
@@ -303,15 +306,16 @@ events fired on other watchers of the same `MockFileSystem` are ignored.
 
 ```csharp
 MockFileSystem fileSystem = new();
-using IFileSystemWatcher watcher = fileSystem.FileSystemWatcher.New("/");
+fileSystem.InitializeIn("/watched");
+using IFileSystemWatcher watcher = fileSystem.FileSystemWatcher.New("/watched");
 watcher.EnableRaisingEvents = true;
-fileSystem.File.WriteAllText("my-file.txt", "some content");
+fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
 
 await That(watcher).Triggered();
-await That(watcher).Triggered(c => c.Name == "my-file.txt");
+await That(watcher).Triggered(c => c.Name == "let-it-be.txt");
 
 await That(watcher).DidNotTrigger().Within(100.Milliseconds());
-await That(watcher).DidNotTrigger(c => c.Name == "secret.txt");
+await That(watcher).DidNotTrigger(c => c.Name == "unreleased.txt");
 ```
 
 `Triggered` and `DidNotTrigger` share the same shape as the
@@ -324,7 +328,7 @@ composes the per-change expectations from
 ```csharp
 await That(watcher)
     .Triggered()
-    .Which(c => c.HasName("my-file.txt").And.HasChangeType(WatcherChangeTypes.Created))
+    .Which(c => c.HasName("let-it-be.txt").And.HasChangeType(WatcherChangeTypes.Created))
     .Exactly(1.Times());
 ```
 
@@ -339,8 +343,8 @@ await That(change).DoesNotHaveChangeType(WatcherChangeTypes.Deleted);
 await That(change).HasFileSystemType(FileSystemTypes.File);
 await That(change).HasNotifyFilters(NotifyFilters.LastWrite);
 
-await That(change).HasName("my-file.txt").And.HasPath("/abs/my-file.txt");
-await That(renamedChange).HasOldName("old.txt").And.HasOldPath("/abs/old.txt");
+await That(change).HasName("let-it-be.txt").And.HasPath("/music/let-it-be.txt");
+await That(renamedChange).HasOldName("scrambled-eggs.txt").And.HasOldPath("/music/scrambled-eggs.txt");
 ```
 
 `HasChangeType`, `HasFileSystemType` and `HasNotifyFilters` use flag
@@ -356,10 +360,10 @@ can assert what the system under test actually called:
 
 ```csharp
 MockFileSystem fileSystem = new();
-fileSystem.File.WriteAllText("foo.txt", "x");
+fileSystem.File.WriteAllText("help.txt", "help");
 
 await That(fileSystem.Statistics).Recorded().File.WriteAllText().Once();
-await That(fileSystem.Statistics).Recorded().File.WriteAllText(path: p => p == "foo.txt").Once();
+await That(fileSystem.Statistics).Recorded().File.WriteAllText(path: p => p == "help.txt").Once();
 ```
 
 The mirror has one entry per `IFileSystem` member (`.File`, `.Directory`,
@@ -376,10 +380,10 @@ counts, e.g. `.Once().Twice()`, throws an `InvalidOperationException`; use
 Property reads and writes are recorded with `.Get()` / `.Set()`:
 
 ```csharp
-fileSystem.FileInfo.New("foo.txt").IsReadOnly = true;
+fileSystem.FileInfo.New("help.txt").IsReadOnly = true;
 
-await That(fileSystem.Statistics).Recorded().FileInfo["foo.txt"].IsReadOnly.Set().Once();
-await That(fileSystem.Statistics).Recorded().DirectoryInfo["foo"].Exists.Get().AtLeast().Once();
+await That(fileSystem.Statistics).Recorded().FileInfo["help.txt"].IsReadOnly.Set().Once();
+await That(fileSystem.Statistics).Recorded().DirectoryInfo["beatles"].Exists.Get().AtLeast().Once();
 ```
 
 Each parameter on a mirror method is an optional `Func<T, bool>` predicate
@@ -410,13 +414,14 @@ MockTimeSystem timeSystem = new();
 ITimerMock timer = (ITimerMock)timeSystem.Timer.New(
     _ => { }, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(10));
 
-await That(timer).Executed(3.Times()).Within(5.Seconds());
+await That(timer).Executed().AtLeast(3.Times()).Within(5.Seconds());
 ```
 
-`Executed()` accepts a `Quantifier` (`AtLeast`, `AtMost`, `Exactly`,
-`Between`, `Never`, `Once`) and exposes `.Within(timeout)` for asynchronous
-execution. The assertion polls `ITimerMock.ExecutionCount` until the
-quantifier is satisfied or the timeout expires (30 seconds by default).
+The result of `Executed()` accepts a quantifier (`AtLeast`, `AtMost`,
+`Exactly`, `Between`, `Never`, `Once`; at least once by default) and exposes
+`.Within(timeout)` for asynchronous execution. The assertion polls
+`ITimerMock.ExecutionCount` until the quantifier is satisfied or the timeout
+expires (30 seconds by default).
 
 ```csharp
 await That(timer).Executed().AtLeast(2.Times()).Within(100.Milliseconds());
