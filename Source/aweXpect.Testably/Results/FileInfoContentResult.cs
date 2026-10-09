@@ -196,7 +196,7 @@ public class FileInfoContentResult(
 			_isExpectedFound = actual.FileSystem.File.Exists(expectedPath);
 			if (!_isExpectedFound)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 

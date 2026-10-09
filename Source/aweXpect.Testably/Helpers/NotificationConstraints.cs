@@ -57,7 +57,7 @@ internal static class NotificationConstraints
 			await filter.PrepareExpectation(context, cancellationToken);
 			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -330,7 +330,13 @@ internal static class NotificationConstraints
 		public ConstraintResult IsMetBy(TChange actual)
 		{
 			Actual = actual;
-			Outcome = actual != null! && (actual.ChangeType & expected) == expected
+			if (actual is null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
+			Outcome = (actual.ChangeType & expected) == expected
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -378,7 +384,13 @@ internal static class NotificationConstraints
 		public ConstraintResult IsMetBy(TChange actual)
 		{
 			Actual = actual;
-			Outcome = actual != null! && (actual.FileSystemType & expected) == expected
+			if (actual is null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
+			Outcome = (actual.FileSystemType & expected) == expected
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -426,7 +438,13 @@ internal static class NotificationConstraints
 		public ConstraintResult IsMetBy(TChange actual)
 		{
 			Actual = actual;
-			Outcome = actual != null! && (actual.NotifyFilters & expected) == expected
+			if (actual is null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
+			Outcome = (actual.NotifyFilters & expected) == expected
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -482,7 +500,7 @@ internal static class NotificationConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 

@@ -48,7 +48,7 @@ public sealed partial class DirectoryInfo
 			}
 
 			[Fact]
-			public async Task WhenDirectoryDoesNotExist_ShouldSucceed()
+			public async Task WhenDirectoryDoesNotExist_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
 				IDirectoryInfo dirInfo = fileSystem.DirectoryInfo.New("foo");
@@ -58,7 +58,13 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).DoesNotHaveAttribute(FileAttributes.Directory);
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that dirInfo
+					             does not have attribute Directory,
+					             but it did not exist
+					             """)
+					.Because("a missing directory cannot be inspected, so the negation fails as well");
 			}
 
 			[Fact]

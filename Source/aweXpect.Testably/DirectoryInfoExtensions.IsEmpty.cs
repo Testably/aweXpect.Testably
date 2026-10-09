@@ -37,7 +37,7 @@ public static partial class DirectoryInfoExtensions
 			Actual = actual;
 			if (!actual.Exists)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 

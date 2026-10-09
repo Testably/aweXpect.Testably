@@ -30,7 +30,7 @@ public static partial class DriveInfoExtensions
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 

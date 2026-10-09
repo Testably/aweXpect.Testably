@@ -30,7 +30,7 @@ public static partial class FileInfoExtensions
 			Actual = actual;
 			if (!actual.Exists)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 

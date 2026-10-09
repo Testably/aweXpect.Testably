@@ -27,7 +27,7 @@ internal static class FileSystemConstraints
 			Actual = actual;
 			if (!actual.Exists)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -233,7 +233,7 @@ internal static class FileSystemConstraints
 			if (existsCheck != null && !existsCheck(actual))
 			{
 				_existed = false;
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 

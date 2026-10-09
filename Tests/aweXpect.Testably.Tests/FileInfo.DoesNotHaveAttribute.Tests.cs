@@ -49,7 +49,7 @@ public sealed partial class FileInfo
 			}
 
 			[Fact]
-			public async Task WhenFileDoesNotExist_ShouldSucceed()
+			public async Task WhenFileDoesNotExist_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
 				IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
@@ -59,7 +59,13 @@ public sealed partial class FileInfo
 					await That(fileInfo).DoesNotHaveAttribute(FileAttributes.ReadOnly);
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that fileInfo
+					             does not have attribute ReadOnly,
+					             but it did not exist
+					             """)
+					.Because("a missing file cannot be inspected, so the negation fails as well");
 			}
 
 			[Fact]

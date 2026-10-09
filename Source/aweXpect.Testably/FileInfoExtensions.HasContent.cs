@@ -66,7 +66,7 @@ public static partial class FileInfoExtensions
 			_fileContent = null;
 			if (!Actual.Exists)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -137,7 +137,7 @@ public static partial class FileInfoExtensions
 			Actual = actual;
 			if (!Actual.Exists)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -183,6 +183,15 @@ public static partial class FileInfoExtensions
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" did match");
+		{
+			if (Actual?.Exists != true)
+			{
+				stringBuilder.Append(It).Append(" did not exist");
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(" did match");
+			}
+		}
 	}
 }

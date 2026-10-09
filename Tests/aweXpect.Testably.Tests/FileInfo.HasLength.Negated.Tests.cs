@@ -48,7 +48,7 @@ public sealed partial class FileInfo
 			}
 
 			[Fact]
-			public async Task WhenFileDoesNotExist_ShouldSucceed()
+			public async Task WhenFileDoesNotExist_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
 				IFileInfo fileInfo = fileSystem.FileInfo.New("missing.txt");
@@ -58,7 +58,13 @@ public sealed partial class FileInfo
 					await That(fileInfo).DoesNotComplyWith(it => it.HasLength(0));
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that fileInfo
+					             does not have length 0,
+					             but it did not exist
+					             """)
+					.Because("a missing file cannot be inspected, so the negation fails as well");
 			}
 		}
 	}
