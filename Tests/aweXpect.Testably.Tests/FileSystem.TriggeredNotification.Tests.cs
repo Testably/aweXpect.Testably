@@ -1,5 +1,11 @@
+using System.Collections.Concurrent;
 using System.IO;
+using System.Text;
+using System.Threading;
 using aweXpect.Core;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
+using aweXpect.Results;
 using Testably.Abstractions.Testing;
 using Testably.Abstractions.Testing.FileSystem;
 
@@ -403,6 +409,180 @@ public sealed partial class FileSystem
 					.WithParamName("timeout").And
 					.WithMessage("The timeout must not be negative.*").AsWildcard();
 			}
+
+			[Fact]
+			public async Task WhenEvaluatedForMultipleFileSystems_ShouldCountEachFileSystemSeparately()
+			{
+				MockFileSystem[] fileSystems = [new(), new(),];
+				foreach (MockFileSystem fileSystem in fileSystems)
+				{
+					fileSystem.File.WriteAllText("a.txt", "x");
+					fileSystem.File.WriteAllText("b.txt", "x");
+					fileSystem.File.WriteAllText("c.txt", "x");
+				}
+
+				async Task Act()
+				{
+					await That(fileSystems).All().ComplyWith(fs => fs
+						.TriggeredNotification(c => c.ChangeType == WatcherChangeTypes.Created)
+						.Between(3).And(3.Times())
+						.Within(TimeSpan.FromMilliseconds(100)));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("each file system triggered exactly three created notifications");
+			}
+
+			[Fact]
+			public async Task WhenNotificationIsRaisedOnThreadWithSingleThreadedContext_ShouldNotBlockIt()
+			{
+				MockFileSystem sut = new();
+				Thread writer = new(() =>
+				{
+					QueuingSynchronizationContext context = new();
+					SynchronizationContext.SetSynchronizationContext(context);
+					Thread.Sleep(100);
+					sut.File.WriteAllText("foo.txt", "x");
+					context.RunPending();
+				})
+				{
+					IsBackground = true,
+				};
+
+				async Task Act()
+				{
+					writer.Start();
+					await That(sut).TriggeredNotification()
+						.Which(c => c.IsAcceptedAfter(async _ => await Task.Yield()))
+						.Within(TimeSpan.FromSeconds(5));
+				}
+
+				await That(Act).DoesNotThrow();
+				await That(writer.Join(TimeSpan.FromSeconds(10))).IsTrue()
+					.Because("the nested expectation must not be evaluated synchronously on the notifying thread");
+			}
+
+			[Fact]
+			public async Task WhenNestedExpectationOutlastsTheTimeout_ShouldNotThrowIntoNotifyingCode()
+			{
+				MockFileSystem sut = new();
+				Exception? writerException = null;
+				Task writer = Task.Run(async () =>
+				{
+					await Task.Delay(20);
+					try
+					{
+						sut.File.WriteAllText("foo.txt", "x");
+					}
+					catch (Exception exception)
+					{
+						writerException = exception;
+					}
+				});
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification()
+						.Which(c => c.IsAcceptedAfter(token => Task.Delay(300, token)))
+						.Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the notification was triggered within the timeout");
+				await writer;
+				await That(writerException).IsNull()
+					.Because("the timeout of the expectation must not cancel the code that raised the notification");
+			}
+
+			[Fact]
+			public async Task WhenPredicateThrows_ShouldFailWithoutThrowingIntoNotifyingCode()
+			{
+				MockFileSystem sut = new();
+				Exception? writerException = null;
+				Task writer = Task.Run(async () =>
+				{
+					await Task.Delay(20);
+					try
+					{
+						sut.File.WriteAllText("foo.txt", "x");
+					}
+					catch (Exception exception)
+					{
+						writerException = exception;
+					}
+				});
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification(_ => throw new InvalidOperationException("boom"))
+						.Within(TimeSpan.FromSeconds(5));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that sut
+					             triggered a notification matching _ => throw new InvalidOperationException("boom") at least once within 0:05,
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """);
+				await writer;
+				await That(writerException).IsNull()
+					.Because("an exception of the predicate must not be thrown into the code that raised the notification");
+			}
 		}
+	}
+}
+
+file sealed class QueuingSynchronizationContext : SynchronizationContext
+{
+	private readonly ConcurrentQueue<(SendOrPostCallback Callback, object? State)> _pending = new();
+
+	public override void Post(SendOrPostCallback d, object? state)
+		=> _pending.Enqueue((d, state));
+
+	public void RunPending()
+	{
+		while (_pending.TryDequeue(out (SendOrPostCallback Callback, object? State) item))
+		{
+			item.Callback(item.State);
+		}
+	}
+}
+
+file static class AsyncChangeDescriptionExpectations
+{
+	public static AndOrResult<ChangeDescription, IThat<ChangeDescription>> IsAcceptedAfter(
+		this IThat<ChangeDescription> subject, Func<CancellationToken, Task> wait)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new IsAcceptedAfterConstraint(it, grammars, wait)),
+			subject);
+
+	private sealed class IsAcceptedAfterConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		Func<CancellationToken, Task> wait)
+		: ConstraintResult.WithNotNullValue<ChangeDescription>(it, grammars),
+			IAsyncConstraint<ChangeDescription>
+	{
+		public async ValueTask<ConstraintResult> IsMetBy(ChangeDescription actual,
+			CancellationToken cancellationToken)
+		{
+			Actual = actual;
+			await wait(cancellationToken);
+			Outcome = Outcome.Success;
+			return this;
+		}
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("is accepted asynchronously");
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" was not");
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("is not accepted asynchronously");
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" was");
 	}
 }

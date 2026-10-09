@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -95,15 +94,14 @@ public static partial class FileSystemExtensions
 			filter.Add(predicate, predicateExpression);
 		}
 
-		List<ChangeDescription> matches = new();
 		return new TriggeredNotificationResult(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new NotificationConstraints.TriggeredNotificationConstraint<MockFileSystem, ChangeDescription>(
 					it, grammars,
 					"triggered a notification",
 					"did not trigger a notification",
-					(fs, action, f) => fs.Notify.OnEventOrReplay(action, f),
-					filter, quantifier, options, matches)),
+					Subscribe,
+					filter, quantifier, options)),
 			subject,
 			quantifier,
 			options,
@@ -123,18 +121,21 @@ public static partial class FileSystemExtensions
 			filter.Add(predicate, predicateExpression);
 		}
 
-		List<ChangeDescription> matches = new();
 		return new DidNotTriggerNotificationResult(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new NotificationConstraints.TriggeredNotificationConstraint<MockFileSystem, ChangeDescription>(
 					it, grammars,
 					"triggered a notification",
 					"did not trigger a notification",
-					(fs, action, f) => fs.Notify.OnEventOrReplay(action, f),
-					filter, quantifier, options, matches,
-					true).Invert()),
+					Subscribe,
+					filter, quantifier, options).Invert()),
 			subject,
 			options,
 			filter);
 	}
+
+	private static IAwaitableCallback<ChangeDescription> Subscribe(
+		MockFileSystem fileSystem,
+		Action<ChangeDescription> action)
+		=> fileSystem.Notify.OnEventOrReplay(action);
 }

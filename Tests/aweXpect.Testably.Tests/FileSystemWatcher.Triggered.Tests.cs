@@ -39,6 +39,37 @@ public sealed partial class FileSystemWatcher
 			}
 
 			[Fact]
+			public async Task WhenEvaluatedForMultipleWatchers_ShouldCountEachWatcherSeparately()
+			{
+				MockFileSystem fs = new();
+				fs.Directory.CreateDirectory("/a");
+				fs.Directory.CreateDirectory("/b");
+				using IFileSystemWatcher watcherA = fs.FileSystemWatcher.New("/a");
+				using IFileSystemWatcher watcherB = fs.FileSystemWatcher.New("/b");
+				watcherA.EnableRaisingEvents = true;
+				watcherB.EnableRaisingEvents = true;
+				foreach (string directory in new[] { "/a", "/b", })
+				{
+					fs.File.WriteAllText($"{directory}/1.txt", "x");
+					fs.File.WriteAllText($"{directory}/2.txt", "x");
+					fs.File.WriteAllText($"{directory}/3.txt", "x");
+				}
+
+				IFileSystemWatcher[] watchers = [watcherA, watcherB,];
+
+				async Task Act()
+				{
+					await That(watchers).All().ComplyWith(w => w
+						.Triggered(c => c.ChangeType == WatcherChangeTypes.Created)
+						.Between(3).And(3.Times())
+						.Within(TimeSpan.FromMilliseconds(100)));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("each watcher triggered exactly three created events");
+			}
+
+			[Fact]
 			public async Task WhenEventArrivesAsynchronously_ShouldSucceedWithinTimeout()
 			{
 				MockFileSystem fs = new();
