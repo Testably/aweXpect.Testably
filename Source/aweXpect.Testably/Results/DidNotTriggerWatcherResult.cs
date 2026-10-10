@@ -1,6 +1,7 @@
 using System;
 using System.IO.Abstractions;
 using aweXpect.Core;
+using aweXpect.Options;
 using aweXpect.Results;
 using aweXpect.Testably.Helpers;
 using Testably.Abstractions.Testing.FileSystem;
@@ -14,12 +15,12 @@ public class DidNotTriggerWatcherResult
 	: AndOrResult<IFileSystemWatcher, IThat<IFileSystemWatcher>, DidNotTriggerWatcherResult>
 {
 	private readonly NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> _filter;
-	private readonly NotificationTimeoutOptions _options;
+	private readonly RepeatedCheckOptions _options;
 
 	internal DidNotTriggerWatcherResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<IFileSystemWatcher> subject,
-		NotificationTimeoutOptions options, NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> filter)
+		RepeatedCheckOptions options, NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> filter)
 		: base(expectationBuilder, subject)
 	{
 		_options = options;
@@ -50,6 +51,10 @@ public class DidNotTriggerWatcherResult
 	/// <summary>
 	///     Allows a <paramref name="timeout" /> for waiting for asynchronous events.
 	/// </summary>
+	/// <remarks>
+	///     Without a timeout, only the changes recorded so far are checked. With it, the expectation waits for the full
+	///     timeout before it can succeed, and fails as soon as a matching change is received.
+	/// </remarks>
 	public DidNotTriggerWatcherResult Within(TimeSpan timeout)
 	{
 		_options.Within(timeout);

@@ -1,5 +1,6 @@
 using System;
 using aweXpect.Core;
+using aweXpect.Options;
 using aweXpect.Results;
 using aweXpect.Testably.Helpers;
 using Testably.Abstractions.Testing;
@@ -14,12 +15,12 @@ public class DidNotTriggerNotificationResult
 	: AndOrResult<MockFileSystem, IThat<MockFileSystem>, DidNotTriggerNotificationResult>
 {
 	private readonly NotificationConstraints.TriggerNotificationFilter<ChangeDescription> _filter;
-	private readonly NotificationTimeoutOptions _options;
+	private readonly RepeatedCheckOptions _options;
 
 	internal DidNotTriggerNotificationResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<MockFileSystem> subject,
-		NotificationTimeoutOptions options, NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter)
+		RepeatedCheckOptions options, NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter)
 		: base(expectationBuilder, subject)
 	{
 		_options = options;
@@ -50,6 +51,10 @@ public class DidNotTriggerNotificationResult
 	/// <summary>
 	///     Allows a <paramref name="timeout" /> for waiting for asynchronous notifications.
 	/// </summary>
+	/// <remarks>
+	///     Without a timeout, only the changes recorded so far are checked. With it, the expectation waits for the full
+	///     timeout before it can succeed, and fails as soon as a matching change is received.
+	/// </remarks>
 	public DidNotTriggerNotificationResult Within(TimeSpan timeout)
 	{
 		_options.Within(timeout);

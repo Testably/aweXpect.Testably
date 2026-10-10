@@ -631,6 +631,7 @@ namespace aweXpect.Testably.Results
     public sealed class RecordedPropertyAccessResult : aweXpect.Results.AndOrResult<Testably.Abstractions.Testing.Statistics.IFileSystemStatistics, aweXpect.Core.IThat<Testably.Abstractions.Testing.Statistics.IFileSystemStatistics>, aweXpect.Testably.Results.RecordedPropertyAccessResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier> { }
     public class TimerExecutedResult : aweXpect.Results.AndOrResult<Testably.Abstractions.Testing.TimeSystem.ITimerMock, aweXpect.Core.IThat<Testably.Abstractions.Testing.TimeSystem.ITimerMock>, aweXpect.Testably.Results.TimerExecutedResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>
     {
+        public aweXpect.Testably.Results.TimerExecutedResult CheckEvery(System.TimeSpan interval) { }
         public aweXpect.Testably.Results.TimerExecutedResult Within(System.TimeSpan timeout) { }
     }
     public class TriggeredNotificationResult : aweXpect.Results.AndOrResult<Testably.Abstractions.Testing.MockFileSystem, aweXpect.Core.IThat<Testably.Abstractions.Testing.MockFileSystem>, aweXpect.Testably.Results.TriggeredNotificationResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>

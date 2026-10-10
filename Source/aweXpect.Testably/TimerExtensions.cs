@@ -15,15 +15,16 @@ public static class TimerExtensions
 	///     Verifies that the <see cref="ITimerMock" /> callback was executed.
 	/// </summary>
 	/// <remarks>
-	///     Polls <see cref="ITimerMock.ExecutionCount" /> until either the quantifier is satisfied
-	///     or the timeout expires (30 seconds by default; use <c>.Within(timeout)</c> to override).
+	///     Checks <see cref="ITimerMock.ExecutionCount" /> once. With <c>.Within(timeout)</c>, it is checked again in the
+	///     interval of <c>.CheckEvery(interval)</c> until the quantifier is decided or the timeout expires, so an upper
+	///     bound like <c>Never()</c> waits for the full timeout before it can succeed.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static TimerExecutedResult Executed(
 		this IThat<ITimerMock> subject)
 	{
 		Quantifier quantifier = new();
-		NotificationTimeoutOptions options = new();
+		RepeatedCheckOptions options = new();
 		return new TimerExecutedResult(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new TimerConstraints.TimerExecutedConstraint(it, grammars, quantifier, options)),

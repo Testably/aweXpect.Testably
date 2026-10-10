@@ -222,7 +222,7 @@ public sealed partial class FileSystemWatcher
 
 				async Task Act()
 				{
-					await That(sut).Triggered();
+					await That(sut).Triggered().Within(TimeSpan.FromSeconds(30));
 				}
 
 				await That(Act).DoesNotThrow();
@@ -457,7 +457,7 @@ public sealed partial class FileSystemWatcher
 
 				async Task Act()
 				{
-					await That(sut).Triggered(c => c.Name == "foo.txt");
+					await That(sut).Triggered(c => c.Name == "foo.txt").Within(TimeSpan.FromSeconds(30));
 				}
 
 				await That(Act).DoesNotThrow();
@@ -528,7 +528,7 @@ public sealed partial class FileSystemWatcher
 
 				async Task Act()
 				{
-					await That(sut).Triggered().Within(TimeSpan.FromMilliseconds(-1));
+					await That(sut).Triggered().Within(TimeSpan.FromSeconds(-1));
 				}
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()

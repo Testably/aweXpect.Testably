@@ -30,7 +30,7 @@ internal static class NotificationConstraints
 		Func<TSubject, Action<TChange>, IAwaitableCallback<TChange>> subscribe,
 		TriggerNotificationFilter<TChange> filter,
 		Quantifier quantifier,
-		NotificationTimeoutOptions options)
+		RepeatedCheckOptions options)
 		: ConstraintResult.WithValue<TSubject>(it, grammars),
 			IAsyncContextConstraint<TSubject>,
 			IExpectationTextConstraint
@@ -64,6 +64,7 @@ internal static class NotificationConstraints
 			ConcurrentQueue<TChange> changes = new();
 			// Not disposed, as a notification that is raised while the registration is disposed may still release it.
 			SemaphoreSlim changeSignal = new(0);
+			long startTimestamp = context.GetTimestamp();
 			IAwaitableCallback<TChange> registration = subscribe(actual, change =>
 			{
 				changes.Enqueue(change);
@@ -71,6 +72,7 @@ internal static class NotificationConstraints
 			});
 			try
 			{
+				// Without Within, the timeout is zero, so only the replayed changes are checked.
 				using CancellationTokenSource deadline =
 					CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 				deadline.CancelAfter(options.Timeout);
@@ -85,7 +87,7 @@ internal static class NotificationConstraints
 					{
 						await changeSignal.WaitAsync(deadline.Token);
 					}
-					catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+					catch (OperationCanceledException)
 					{
 						break;
 					}
@@ -94,6 +96,13 @@ internal static class NotificationConstraints
 			finally
 			{
 				registration.Dispose();
+			}
+
+			if (cancellationToken.IsCancellationRequested &&
+			    !context.Cancellation.HasWaitElapsed(options.Timeout, context.GetElapsedTime(startTimestamp)))
+			{
+				Outcome = Outcome.Undecided;
+				return this;
 			}
 
 			if (!await IsDetermined(changes, context, cancellationToken))
@@ -120,7 +129,10 @@ internal static class NotificationConstraints
 				}
 
 				ConstraintResult? unmetResult = await filter.GetUnmetResult(change, context, cancellationToken);
-				cancellationToken.ThrowIfCancellationRequested();
+				if (unmetResult?.Outcome == Outcome.Undecided)
+				{
+					cancellationToken.ThrowIfCancellationRequested();
+				}
 				if (unmetResult?.Outcome == Outcome.FailureBothWays)
 				{
 					_unanswered = (change, unmetResult);

@@ -206,6 +206,23 @@ public sealed partial class FileSystemWatcher
 				await That(Act).Throws()
 					.WithMessage("*did not trigger an event*but it was triggered*").AsWildcard();
 			}
+
+			[Fact]
+			public async Task WithoutWithin_WhenNoEvent_ShouldSucceedWithoutWaiting()
+			{
+				MockFileSystem fs = new();
+				fs.InitializeIn("/x");
+				using IFileSystemWatcher sut = fs.FileSystemWatcher.New("/x");
+				sut.EnableRaisingEvents = true;
+
+				async Task Act()
+				{
+					await That(sut).DidNotTrigger().WithTimeout(TimeSpan.FromSeconds(5));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("without Within only the events raised so far are checked");
+			}
 		}
 	}
 }

@@ -19,8 +19,17 @@ await Expect.That(timer).Executed().AtLeast(3.Times()).Within(5.Seconds());
 ```
 
 `Executed()` accepts a quantifier (`AtLeast`, `AtMost`, `Exactly`, `Between`, `Never`, `Once`; at least once by
-default) and `.Within(timeout)` (default 30 seconds) for an asynchronous execution. The expectation polls
-`ITimerMock.ExecutionCount` until the quantifier is satisfied or the timeout expires.
+default). Without `.Within(timeout)`, it checks `ITimerMock.ExecutionCount` once and does not wait. With
+`.Within(timeout)`, it checks the count again in the interval of `.CheckEvery(interval)` (default
+`Customize.aweXpect.Settings().DefaultCheckInterval`) until the quantifier is decided or the timeout expires, so an upper
+bound like `.Never()` or `.AtMost(…)` waits for the full timeout:
+
+```csharp
+await Expect.That(timer).Executed().AtLeast(3.Times()).Within(5.Seconds()).CheckEvery(10.Milliseconds());
+```
+
+A timeout of the evaluation (e.g. `.WithTimeout(…)`) that is not shorter than `.Within(timeout)` lets the last check
+decide; a cancellation before that leaves the expectation inconclusive.
 
 For example, for a timer that never fires, `Expect.That(timer).Executed().AtLeast(3.Times()).Within(100.Milliseconds())`
 fails with:

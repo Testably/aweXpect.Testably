@@ -476,12 +476,66 @@ public sealed partial class FileSystem
 
 				async Task Act()
 				{
-					await That(sut).TriggeredNotification().Within(TimeSpan.FromMilliseconds(-1));
+					await That(sut).TriggeredNotification().Within(TimeSpan.FromSeconds(-1));
 				}
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("timeout").And
 					.WithMessage("The timeout must not be negative.*").AsWildcard();
+			}
+
+			[Fact]
+			public async Task WithInfiniteTimeout_WhenPriorEventExists_ShouldSucceed()
+			{
+				MockFileSystem sut = new();
+				sut.File.WriteAllText("foo.txt", "x");
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification().Within(Timeout.InfiniteTimeSpan);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithoutWithin_WhenNoPriorEvent_ShouldFailWithoutWaiting()
+			{
+				MockFileSystem sut = new();
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification().WithTimeout(TimeSpan.FromSeconds(5));
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that sut
+					             triggered a notification at least once,
+					             but it was not triggered
+					             """)
+					.Because("without Within only the notifications triggered so far are checked");
+			}
+
+			[Fact]
+			public async Task WhenTimeoutOfEvaluationEndsWithin_ShouldFailWithTheReceivedNotifications()
+			{
+				MockFileSystem sut = new();
+
+				async Task Act()
+				{
+					await That(sut).TriggeredNotification()
+						.Within(TimeSpan.FromMilliseconds(200))
+						.WithTimeout(TimeSpan.FromMilliseconds(200));
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that sut
+					             triggered a notification at least once within 0:00.200,
+					             but it was not triggered
+					             """)
+					.Because("a timeout of the evaluation at the end of Within lets the received notifications decide");
 			}
 
 			[Fact]

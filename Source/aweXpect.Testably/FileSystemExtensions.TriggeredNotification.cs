@@ -18,8 +18,7 @@ public static partial class FileSystemExtensions
 	/// <remarks>
 	///     Subscribes via <see cref="INotificationHandler.OnEventOrReplay" /> so notifications
 	///     that already fired on this <see cref="MockFileSystem" /> count toward the quantifier.
-	///     The assertion always waits up to a timeout for late-arriving (asynchronous)
-	///     notifications (30 seconds by default; use <c>.Within(timeout)</c> to override).
+	///     Without <c>.Within(timeout)</c> it does not wait for further notifications.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static TriggeredNotificationResult TriggeredNotification(
@@ -33,8 +32,7 @@ public static partial class FileSystemExtensions
 	/// <remarks>
 	///     Subscribes via <see cref="INotificationHandler.OnEventOrReplay" /> so notifications
 	///     that already fired on this <see cref="MockFileSystem" /> count toward the quantifier.
-	///     The assertion always waits up to a timeout for late-arriving (asynchronous)
-	///     notifications (30 seconds by default; use <c>.Within(timeout)</c> to override).
+	///     Without <c>.Within(timeout)</c> it does not wait for further notifications.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static TriggeredNotificationResult TriggeredNotification(
@@ -54,9 +52,9 @@ public static partial class FileSystemExtensions
 	/// <remarks>
 	///     Subscribes via <see cref="INotificationHandler.OnEventOrReplay" /> so any notification
 	///     that already fired on this <see cref="MockFileSystem" /> fails the assertion. The
-	///     assertion also waits up to a timeout for late-arriving notifications (30 seconds by
-	///     default; use <c>.Within(timeout)</c> to lower it when you do not need to wait). The
-	///     assertion short-circuits as soon as a matching notification is observed.
+	///     assertion does not wait for further notifications, unless <c>.Within(timeout)</c> is
+	///     specified: then it waits for the full timeout and fails as soon as a matching
+	///     notification is observed.
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static DidNotTriggerNotificationResult DidNotTriggerNotification(
@@ -85,7 +83,7 @@ public static partial class FileSystemExtensions
 		string predicateExpression)
 	{
 		Quantifier quantifier = new();
-		NotificationTimeoutOptions options = new();
+		RepeatedCheckOptions options = new();
 		NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter = new();
 		if (predicate is not null)
 		{
@@ -112,7 +110,7 @@ public static partial class FileSystemExtensions
 		string predicateExpression)
 	{
 		Quantifier quantifier = new();
-		NotificationTimeoutOptions options = new();
+		RepeatedCheckOptions options = new();
 		NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter = new();
 		if (predicate is not null)
 		{
