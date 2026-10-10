@@ -1,4 +1,5 @@
 using System;
+using aweXpect.Core;
 using Testably.Abstractions.Testing.Statistics;
 
 namespace aweXpect.Testably.Helpers;
@@ -21,9 +22,15 @@ internal sealed class ParameterMatcher
 	public bool IsAny => _matcher is null;
 
 	public static ParameterMatcher From<T>(string name, Func<T, bool>? predicate, string? expression)
-		=> predicate is null
-			? new ParameterMatcher(name, null, null)
-			: new ParameterMatcher(name, p => p.Is(predicate), expression);
+	{
+		if (predicate is null)
+		{
+			return new ParameterMatcher(name, null, null);
+		}
+
+		string thrower = $"the {name} predicate";
+		return new ParameterMatcher(name, p => UserCode.Invoke(p.Is, predicate, thrower), expression);
+	}
 
 	public bool IsMatch(ParameterDescription parameter)
 		=> _matcher is null || _matcher(parameter);
