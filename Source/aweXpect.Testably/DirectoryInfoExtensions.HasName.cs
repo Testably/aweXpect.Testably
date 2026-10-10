@@ -20,8 +20,8 @@ public static partial class DirectoryInfoExtensions
 
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IDirectoryInfo, IThat<IDirectoryInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new FileSystemConstraints.HasNameConstraint<IDirectoryInfo>(it, grammars, options, expected)),
+			source.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
+				=> new FileSystemConstraints.HasNameConstraint<IDirectoryInfo>(it, grammars, s.options, s.expected)),
 			source,
 			options);
 	}

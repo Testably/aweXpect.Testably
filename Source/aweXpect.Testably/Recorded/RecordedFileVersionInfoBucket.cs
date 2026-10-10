@@ -44,18 +44,18 @@ public sealed class RecordedFileVersionInfoBucket
 	public RecordedMethodCallResult GetVersionInfo(
 		Func<string, bool>? fileName = null,
 		[CallerArgumentExpression(nameof(fileName))]
-		string? fileNameExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFileVersionInfoFactory.GetVersionInfo),
-			ParameterMatcher.From("fileName", fileName, fileNameExpression));
+			ParameterMatcher.From("fileName", fileName, doNotPopulateThisValue));
 
 	private RecordedMethodCallResult Build(string methodName, params ParameterMatcher[] matchers)
 	{
 		Quantifier quantifier = new();
 		return new RecordedMethodCallResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(
-					it, grammars, quantifier,
-					s => s.FileVersionInfo, BucketDescription, methodName, matchers)),
+					it, grammars, state.quantifier,
+					s => s.FileVersionInfo, BucketDescription, state.methodName, state.matchers)),
 			_subject, quantifier);
 	}
 }

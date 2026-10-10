@@ -26,9 +26,9 @@ public static partial class FileInfoExtensions
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint((expected, options), static (s, it, grammars)
 				=> new HasContentValueConstraint(
-					it, grammars, expected, options)),
+					it, grammars, s.expected, s.options)),
 			source,
 			options);
 	}
@@ -44,9 +44,9 @@ public static partial class FileInfoExtensions
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
-		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(source.Get().ExpectationBuilder.AddConstraint((expected, doNotPopulateThisValue), static (s, it, grammars)
 				=> new HasBinaryContentConstraint(
-					it, grammars, expected, doNotPopulateThisValue)),
+					it, grammars, s.expected, s.doNotPopulateThisValue)),
 			source);
 	}
 
@@ -62,7 +62,7 @@ public static partial class FileInfoExtensions
 		ExpectationGrammars grammars,
 		string? expected,
 		StringEqualityOptions options)
-		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),
 			IAsyncConstraint<IFileInfo>
 	{
 		private string? _fileContent;
@@ -71,7 +71,12 @@ public static partial class FileInfoExtensions
 		{
 			Actual = actual;
 			_fileContent = null;
-			if (actual is null || !actual.Exists)
+			if (actual is null)
+			{
+				return this;
+			}
+
+			if (!actual.Exists)
 			{
 				Outcome = Outcome.FailureBothWays;
 				return this;
@@ -113,11 +118,7 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else if (!Actual.Exists)
+			if (!Actual!.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}
@@ -140,13 +141,18 @@ public static partial class FileInfoExtensions
 		ExpectationGrammars grammars,
 		byte[] expected,
 		string expectedExpression)
-		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),
 			IValueConstraint<IFileInfo>
 	{
 		public ConstraintResult IsMetBy(IFileInfo actual)
 		{
 			Actual = actual;
-			if (actual is null || !actual.Exists)
+			if (actual is null)
+			{
+				return this;
+			}
+
+			if (!actual.Exists)
 			{
 				Outcome = Outcome.FailureBothWays;
 				return this;
@@ -171,11 +177,7 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else if (!Actual.Exists)
+			if (!Actual!.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}
@@ -191,11 +193,7 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else if (!Actual.Exists)
+			if (!Actual!.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}

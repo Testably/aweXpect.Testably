@@ -108,12 +108,12 @@ public static class FileSystemWatcherExtensions
 		}
 
 		return new TriggeredWatcherResult(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((filter, quantifier, options), static (s, it, grammars)
 				=> new NotificationConstraints.TriggeredNotificationConstraint<IFileSystemWatcher, WatcherChangeDescription>(
 					it, grammars,
 					"an event",
 					Subscribe,
-					filter, quantifier, options)),
+					s.filter, s.quantifier, s.options)),
 			subject,
 			quantifier,
 			options,
@@ -134,12 +134,12 @@ public static class FileSystemWatcherExtensions
 		}
 
 		return new DidNotTriggerWatcherResult(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((filter, quantifier, options), static (s, it, grammars)
 				=> new NotificationConstraints.TriggeredNotificationConstraint<IFileSystemWatcher, WatcherChangeDescription>(
 					it, grammars,
 					"an event",
 					Subscribe,
-					filter, quantifier, options).Invert()),
+					s.filter, s.quantifier, s.options).Invert()),
 			subject,
 			options,
 			filter);

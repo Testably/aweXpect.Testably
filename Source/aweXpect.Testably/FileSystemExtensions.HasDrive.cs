@@ -29,8 +29,8 @@ public static partial class FileSystemExtensions
 
 		Func<TFileSystem, IDriveInfo?> resolver = fs => ResolveDrive(fs, driveName);
 		return new DriveResult<TFileSystem>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasDriveConstraint<TFileSystem>(it, grammars, driveName, resolver)),
+			subject.Get().ExpectationBuilder.AddConstraint((driveName, resolver), static (s, it, grammars)
+				=> new HasDriveConstraint<TFileSystem>(it, grammars, s.driveName, s.resolver)),
 			subject,
 			resolver);
 	}
@@ -52,8 +52,8 @@ public static partial class FileSystemExtensions
 
 		Func<TFileSystem, IDriveInfo?> resolver = fs => ResolveDrive(fs, driveName);
 		return new AndOrResult<TFileSystem, IThat<TFileSystem>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasDriveConstraint<TFileSystem>(it, grammars, driveName, resolver).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((driveName, resolver), static (s, it, grammars)
+				=> new HasDriveConstraint<TFileSystem>(it, grammars, s.driveName, s.resolver).Invert()),
 			subject);
 	}
 

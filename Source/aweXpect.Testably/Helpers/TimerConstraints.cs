@@ -16,7 +16,7 @@ internal static class TimerConstraints
 		ExpectationGrammars grammars,
 		Quantifier quantifier,
 		RepeatedCheckOptions options)
-		: ConstraintResult.WithValue<ITimerMock>(it, grammars),
+		: ConstraintResult.WithNotNullValue<ITimerMock>(it, grammars),
 			IAsyncContextConstraint<ITimerMock>
 	{
 		private long _executionCount;
@@ -32,7 +32,6 @@ internal static class TimerConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -84,12 +83,6 @@ internal static class TimerConstraints
 
 		private void AppendCount(StringBuilder stringBuilder)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-				return;
-			}
-
 			stringBuilder.Append(It).Append(" was ");
 			if (_executionCount == 0)
 			{

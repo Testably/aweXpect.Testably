@@ -26,8 +26,8 @@ public static class TimerExtensions
 		Quantifier quantifier = new();
 		RepeatedCheckOptions options = new();
 		return new TimerExecutedResult(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new TimerConstraints.TimerExecutedConstraint(it, grammars, quantifier, options)),
+			subject.Get().ExpectationBuilder.AddConstraint((quantifier, options), static (s, it, grammars)
+				=> new TimerConstraints.TimerExecutedConstraint(it, grammars, s.quantifier, s.options)),
 			subject,
 			quantifier,
 			options);

@@ -168,9 +168,9 @@ public sealed class RecordedFileInfoInstance
 	public RecordedMethodCallResult CreateAsSymbolicLink(
 		Func<string, bool>? pathToTarget = null,
 		[CallerArgumentExpression(nameof(pathToTarget))]
-		string? pathToTargetExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build("CreateAsSymbolicLink",
-			ParameterMatcher.From("pathToTarget", pathToTarget, pathToTargetExpression));
+			ParameterMatcher.From("pathToTarget", pathToTarget, doNotPopulateThisValue));
 
 	/// <summary>
 	///     Recorded calls to <see cref="IFileInfo.CreateText()" />.
@@ -282,9 +282,9 @@ public sealed class RecordedFileInfoInstance
 	public RecordedMethodCallResult ResolveLinkTarget(
 		Func<bool, bool>? returnFinalTarget = null,
 		[CallerArgumentExpression(nameof(returnFinalTarget))]
-		string? returnFinalTargetExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build("ResolveLinkTarget",
-			ParameterMatcher.From("returnFinalTarget", returnFinalTarget, returnFinalTargetExpression));
+			ParameterMatcher.From("returnFinalTarget", returnFinalTarget, doNotPopulateThisValue));
 
 	private RecordedProperty Property(string propertyName)
 	{
@@ -298,10 +298,10 @@ public sealed class RecordedFileInfoInstance
 		string path = _path;
 		string bucketDescription = _bucketDescription;
 		return new RecordedMethodCallResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, path, bucketDescription, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(
-					it, grammars, quantifier,
-					s => s.FileInfo[path], bucketDescription, methodName, matchers)),
+					it, grammars, state.quantifier,
+					s => s.FileInfo[state.path], state.bucketDescription, state.methodName, state.matchers)),
 			_subject, quantifier);
 	}
 }

@@ -44,9 +44,9 @@ public sealed class RecordedDirectoryInfoBucket
 	public RecordedMethodCallResult New(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectoryInfoFactory.New),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>
 	///     Recorded calls to <see cref="IDirectoryInfoFactory.Wrap(System.IO.DirectoryInfo?)" />.
@@ -54,18 +54,18 @@ public sealed class RecordedDirectoryInfoBucket
 	public RecordedMethodCallResult Wrap(
 		Func<DirectoryInfo?, bool>? directoryInfo = null,
 		[CallerArgumentExpression(nameof(directoryInfo))]
-		string? directoryInfoExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectoryInfoFactory.Wrap),
-			ParameterMatcher.From("directoryInfo", directoryInfo, directoryInfoExpression));
+			ParameterMatcher.From("directoryInfo", directoryInfo, doNotPopulateThisValue));
 
 	private RecordedMethodCallResult Build(string methodName, params ParameterMatcher[] matchers)
 	{
 		Quantifier quantifier = new();
 		return new RecordedMethodCallResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(
-					it, grammars, quantifier,
-					s => s.DirectoryInfo, BucketDescription, methodName, matchers)),
+					it, grammars, state.quantifier,
+					s => s.DirectoryInfo, BucketDescription, state.methodName, state.matchers)),
 			_subject, quantifier);
 	}
 }

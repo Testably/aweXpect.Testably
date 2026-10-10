@@ -59,9 +59,9 @@ public sealed class RecordedDirectoryMethods
 	public RecordedMethodCallResult CreateTempSubdirectory(
 		Func<string?, bool>? prefix = null,
 		[CallerArgumentExpression(nameof(prefix))]
-		string? prefixExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build("CreateTempSubdirectory",
-			ParameterMatcher.From("prefix", prefix, prefixExpression));
+			ParameterMatcher.From("prefix", prefix, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IDirectory.Delete(string)" /> and overloads.</summary>
 	public RecordedMethodCallResult Delete(
@@ -178,25 +178,25 @@ public sealed class RecordedDirectoryMethods
 	public RecordedMethodCallResult Exists(
 		Func<string?, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectory.Exists),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IDirectory.GetCreationTime(string)" />.</summary>
 	public RecordedMethodCallResult GetCreationTime(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectory.GetCreationTime),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IDirectory.GetCreationTimeUtc(string)" />.</summary>
 	public RecordedMethodCallResult GetCreationTimeUtc(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectory.GetCreationTimeUtc),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IDirectory.GetCurrentDirectory" />.</summary>
 	public RecordedMethodCallResult GetCurrentDirectory()
@@ -239,9 +239,9 @@ public sealed class RecordedDirectoryMethods
 	public RecordedMethodCallResult GetDirectoryRoot(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectory.GetDirectoryRoot),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IDirectory.GetFiles(string)" /> and overloads.</summary>
 	/// <remarks>
@@ -313,33 +313,33 @@ public sealed class RecordedDirectoryMethods
 	public RecordedMethodCallResult GetLastAccessTime(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectory.GetLastAccessTime),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IDirectory.GetLastAccessTimeUtc(string)" />.</summary>
 	public RecordedMethodCallResult GetLastAccessTimeUtc(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectory.GetLastAccessTimeUtc),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IDirectory.GetLastWriteTime(string)" />.</summary>
 	public RecordedMethodCallResult GetLastWriteTime(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectory.GetLastWriteTime),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IDirectory.GetLastWriteTimeUtc(string)" />.</summary>
 	public RecordedMethodCallResult GetLastWriteTimeUtc(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectory.GetLastWriteTimeUtc),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IDirectory.GetLogicalDrives" />.</summary>
 	public RecordedMethodCallResult GetLogicalDrives()
@@ -349,9 +349,9 @@ public sealed class RecordedDirectoryMethods
 	public RecordedMethodCallResult GetParent(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectory.GetParent),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IDirectory.Move(string, string)" />.</summary>
 	public RecordedMethodCallResult Move(
@@ -405,9 +405,9 @@ public sealed class RecordedDirectoryMethods
 	public RecordedMethodCallResult SetCurrentDirectory(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectory.SetCurrentDirectory),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IDirectory.SetLastAccessTime(string, DateTime)" />.</summary>
 	public RecordedMethodCallResult SetLastAccessTime(
@@ -479,10 +479,10 @@ public sealed class RecordedDirectoryMethods
 	{
 		Quantifier quantifier = new();
 		return new RecordedMethodCallResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(
-					it, grammars, quantifier,
-					s => s.Directory, BucketDescription, methodName, matchers)),
+					it, grammars, state.quantifier,
+					s => s.Directory, BucketDescription, state.methodName, state.matchers)),
 			_subject, quantifier);
 	}
 }

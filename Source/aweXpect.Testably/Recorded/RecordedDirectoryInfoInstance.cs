@@ -136,9 +136,9 @@ public sealed class RecordedDirectoryInfoInstance
 	public RecordedMethodCallResult CreateAsSymbolicLink(
 		Func<string, bool>? pathToTarget = null,
 		[CallerArgumentExpression(nameof(pathToTarget))]
-		string? pathToTargetExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build("CreateAsSymbolicLink",
-			ParameterMatcher.From("pathToTarget", pathToTarget, pathToTargetExpression));
+			ParameterMatcher.From("pathToTarget", pathToTarget, doNotPopulateThisValue));
 
 	/// <summary>
 	///     Recorded calls to <see cref="IDirectoryInfo.CreateSubdirectory(string)" />.
@@ -146,9 +146,9 @@ public sealed class RecordedDirectoryInfoInstance
 	public RecordedMethodCallResult CreateSubdirectory(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectoryInfo.CreateSubdirectory),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>
 	///     Recorded calls to <see cref="IFileSystemInfo.Delete" /> and <c>IDirectoryInfo.Delete(bool)</c>.
@@ -156,9 +156,9 @@ public sealed class RecordedDirectoryInfoInstance
 	public RecordedMethodCallResult Delete(
 		Func<bool, bool>? recursive = null,
 		[CallerArgumentExpression(nameof(recursive))]
-		string? recursiveExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFileSystemInfo.Delete),
-			ParameterMatcher.From("recursive", recursive, recursiveExpression));
+			ParameterMatcher.From("recursive", recursive, doNotPopulateThisValue));
 
 	/// <summary>
 	///     Recorded calls to <see cref="IDirectoryInfo.EnumerateDirectories()" /> and overloads.
@@ -340,9 +340,9 @@ public sealed class RecordedDirectoryInfoInstance
 	public RecordedMethodCallResult MoveTo(
 		Func<string, bool>? destDirName = null,
 		[CallerArgumentExpression(nameof(destDirName))]
-		string? destDirNameExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDirectoryInfo.MoveTo),
-			ParameterMatcher.From("destDirName", destDirName, destDirNameExpression));
+			ParameterMatcher.From("destDirName", destDirName, doNotPopulateThisValue));
 
 	/// <summary>
 	///     Recorded calls to <see cref="IFileSystemInfo.Refresh" />.
@@ -356,9 +356,9 @@ public sealed class RecordedDirectoryInfoInstance
 	public RecordedMethodCallResult ResolveLinkTarget(
 		Func<bool, bool>? returnFinalTarget = null,
 		[CallerArgumentExpression(nameof(returnFinalTarget))]
-		string? returnFinalTargetExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build("ResolveLinkTarget",
-			ParameterMatcher.From("returnFinalTarget", returnFinalTarget, returnFinalTargetExpression));
+			ParameterMatcher.From("returnFinalTarget", returnFinalTarget, doNotPopulateThisValue));
 
 	private RecordedProperty Property(string propertyName)
 	{
@@ -390,10 +390,10 @@ public sealed class RecordedDirectoryInfoInstance
 		string path = _path;
 		string bucketDescription = _bucketDescription;
 		return new RecordedMethodCallResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, path, bucketDescription, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(
-					it, grammars, quantifier,
-					s => s.DirectoryInfo[path], bucketDescription, methodName, matchers)),
+					it, grammars, state.quantifier,
+					s => s.DirectoryInfo[state.path], state.bucketDescription, state.methodName, state.matchers)),
 			_subject, quantifier);
 	}
 }

@@ -18,7 +18,7 @@ internal static class FileVersionInfoConstraints
 		StringEqualityOptions options,
 		string? expected,
 		string propertyName)
-		: ConstraintResult.WithValue<IFileVersionInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IFileVersionInfo>(it, grammars),
 			IAsyncConstraint<IFileVersionInfo>
 	{
 		private string? _actualValue;
@@ -28,7 +28,6 @@ internal static class FileVersionInfoConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -42,32 +41,14 @@ internal static class FileVersionInfoConstraints
 				.Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualValue, expected));
-			}
-		}
+			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualValue, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")).Append(propertyName).Append(' ')
 				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" did");
-			}
-		}
+			=> stringBuilder.Append(It).Append(" did");
 	}
 
 	internal sealed class HasInt32PropertyConstraint(
@@ -76,7 +57,7 @@ internal static class FileVersionInfoConstraints
 		Func<IFileVersionInfo, int> selector,
 		int expected,
 		string propertyName)
-		: ConstraintResult.WithValue<IFileVersionInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IFileVersionInfo>(it, grammars),
 			IValueConstraint<IFileVersionInfo>
 	{
 		private int _actualValue;
@@ -86,7 +67,6 @@ internal static class FileVersionInfoConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -103,15 +83,8 @@ internal static class FileVersionInfoConstraints
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" was ");
-				Formatter.Format(stringBuilder, _actualValue);
-			}
+			stringBuilder.Append(It).Append(" was ");
+			Formatter.Format(stringBuilder, _actualValue);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -121,16 +94,7 @@ internal static class FileVersionInfoConstraints
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" did");
-			}
-		}
+			=> stringBuilder.Append(It).Append(" did");
 	}
 
 	internal sealed class HasBoolPropertyConstraint(
@@ -139,7 +103,7 @@ internal static class FileVersionInfoConstraints
 		Func<IFileVersionInfo, bool> selector,
 		string normalExpectation,
 		string negatedExpectation)
-		: ConstraintResult.WithValue<IFileVersionInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IFileVersionInfo>(it, grammars),
 			IValueConstraint<IFileVersionInfo>
 	{
 		public ConstraintResult IsMetBy(IFileVersionInfo actual)
@@ -147,7 +111,6 @@ internal static class FileVersionInfoConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -159,30 +122,12 @@ internal static class FileVersionInfoConstraints
 			=> stringBuilder.Append(normalExpectation);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" was not");
-			}
-		}
+			=> stringBuilder.Append(It).Append(" was not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(negatedExpectation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" was");
-			}
-		}
+			=> stringBuilder.Append(It).Append(" was");
 	}
 }

@@ -42,8 +42,8 @@ public partial class FileResult<TParent>
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
-			_expectationBuilder.And(" ").AddConstraint((it, grammar)
-				=> new HasStringContentEqualToConstraint(it, grammar, _resolver, options, expected)),
+			_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, options, expected), static (s, it, grammar)
+				=> new HasStringContentEqualToConstraint(it, grammar, s.resolver, s.options, s.expected)),
 			this, options);
 	}
 
@@ -57,8 +57,8 @@ public partial class FileResult<TParent>
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
 		return new AndOrResult<TParent, FileResult<TParent>>(
-			_expectationBuilder.And(" ").AddConstraint((it, grammars)
-				=> new HasBinaryContentEqualToConstraint(it, grammars, _resolver, expected, doNotPopulateThisValue)),
+			_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, expected, doNotPopulateThisValue), static (s, it, grammars)
+				=> new HasBinaryContentEqualToConstraint(it, grammars, s.resolver, s.expected, s.doNotPopulateThisValue)),
 			this);
 	}
 
@@ -124,13 +124,13 @@ public partial class FileResult<TParent>
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TParent, FileResult<TParent>>(
-			_expectationBuilder.And(" ").AddConstraint((it, grammars)
+			_expectationBuilder.And(" ").AddConstraint((timeAccessor, resolver: _resolver, tolerance, expected, expectedString), static (s, it, grammars)
 				=> new FileSystemConstraints.HasTimeConstraint<TParent>(it, grammars,
-					timeAccessor, p =>
+					s.timeAccessor, p =>
 					{
-						(IFileSystem fs, string fullPath) = _resolver(p);
+						(IFileSystem fs, string fullPath) = s.resolver(p);
 						return GetMissingFileResult(fs, fullPath);
-					}, tolerance, expected, expectedString,
+					}, s.tolerance, s.expected, s.expectedString,
 					isWithClause: true)),
 			this, tolerance);
 	}

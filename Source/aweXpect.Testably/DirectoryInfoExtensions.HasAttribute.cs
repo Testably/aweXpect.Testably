@@ -25,7 +25,7 @@ public static partial class DirectoryInfoExtensions
 		}
 
 		return new AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new FileSystemConstraints.HasAttributeConstraint<IDirectoryInfo>(it, grammars, expected)),
 			source);
 	}
@@ -46,7 +46,7 @@ public static partial class DirectoryInfoExtensions
 		}
 
 		return new AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars)
 				=> new FileSystemConstraints.HasAttributeConstraint<IDirectoryInfo>(it, grammars, unexpected).Invert()),
 			source);
 	}

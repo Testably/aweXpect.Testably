@@ -3,7 +3,6 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Results;
-using aweXpect.Testably.Helpers;
 
 namespace aweXpect.Testably;
 
@@ -30,7 +29,7 @@ public static partial class DriveInfoExtensions
 			source);
 
 	private sealed class IsReadyConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IDriveInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IDriveInfo>(it, grammars),
 			IValueConstraint<IDriveInfo>
 	{
 		public ConstraintResult IsMetBy(IDriveInfo actual)
@@ -38,7 +37,6 @@ public static partial class DriveInfoExtensions
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -50,30 +48,12 @@ public static partial class DriveInfoExtensions
 			=> stringBuilder.Append(Grammars.Verb("is ready", "are ready"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" was not");
-			}
-		}
+			=> stringBuilder.Append(It).Append(" was not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("is not ready", "are not ready"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" was");
-			}
-		}
+			=> stringBuilder.Append(It).Append(" was");
 	}
 }

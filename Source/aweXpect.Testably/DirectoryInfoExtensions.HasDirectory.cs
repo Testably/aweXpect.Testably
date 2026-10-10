@@ -23,8 +23,8 @@ public static partial class DirectoryInfoExtensions
 		Func<IDirectoryInfo, (IFileSystem fs, string fullPath)> resolver =
 			d => (d.FileSystem, d.FileSystem.Path.Combine(d.FullName, path));
 		return new DirectoryResult<IDirectoryInfo>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new FileSystemConstraints.HasDirectoryConstraint<IDirectoryInfo>(it, grammars, path, resolver)),
+			subject.Get().ExpectationBuilder.AddConstraint((path, resolver), static (s, it, grammars)
+				=> new FileSystemConstraints.HasDirectoryConstraint<IDirectoryInfo>(it, grammars, s.path, s.resolver)),
 			subject,
 			resolver);
 	}
@@ -42,8 +42,8 @@ public static partial class DirectoryInfoExtensions
 		Func<IDirectoryInfo, (IFileSystem fs, string fullPath)> resolver =
 			d => (d.FileSystem, d.FileSystem.Path.Combine(d.FullName, path));
 		return new AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new FileSystemConstraints.HasDirectoryConstraint<IDirectoryInfo>(it, grammars, path, resolver).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((path, resolver), static (s, it, grammars)
+				=> new FileSystemConstraints.HasDirectoryConstraint<IDirectoryInfo>(it, grammars, s.path, s.resolver).Invert()),
 			subject);
 	}
 }

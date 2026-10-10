@@ -31,12 +31,12 @@ public class FileInfoContentResult(
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
 		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.AddConstraint((it, grammars)
+			expectationBuilder.AddConstraint((expected, doNotPopulateThisValue), static (s, it, grammars)
 				=> new HasBinaryContentEqualToConstraint(
 					it,
 					grammars,
-					expected,
-					doNotPopulateThisValue)),
+					s.expected,
+					s.doNotPopulateThisValue)),
 			subject);
 	}
 
@@ -48,12 +48,12 @@ public class FileInfoContentResult(
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.AddConstraint((it, grammars)
+			expectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new HasStringContentEqualToConstraint(
 					it,
 					grammars,
-					options,
-					expected)),
+					s.options,
+					s.expected)),
 			subject, options);
 	}
 
@@ -68,12 +68,12 @@ public class FileInfoContentResult(
 		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
 
 		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.AddConstraint((it, grammars)
+			expectationBuilder.AddConstraint((unexpected, doNotPopulateThisValue), static (s, it, grammars)
 				=> new HasBinaryContentEqualToConstraint(
 						it,
 						grammars,
-						unexpected,
-						doNotPopulateThisValue)
+						s.unexpected,
+						s.doNotPopulateThisValue)
 					.Invert()),
 			subject);
 	}
@@ -86,12 +86,12 @@ public class FileInfoContentResult(
 	{
 		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.AddConstraint((it, grammars)
+			expectationBuilder.AddConstraint((options, unexpected), static (s, it, grammars)
 				=> new HasStringContentEqualToConstraint(
 					it,
 					grammars,
-					options,
-					unexpected).Invert()),
+					s.options,
+					s.unexpected).Invert()),
 			subject, options);
 	}
 
@@ -105,8 +105,8 @@ public class FileInfoContentResult(
 
 		StringEqualityOptions options = new(nameof(filePath));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasContentSameAsConstraint(it, grammars, options, filePath)),
+			expectationBuilder.AddConstraint((options, filePath), static (s, it, grammars)
+				=> new HasContentSameAsConstraint(it, grammars, s.options, s.filePath)),
 			subject, options);
 	}
 
@@ -120,8 +120,8 @@ public class FileInfoContentResult(
 
 		StringEqualityOptions options = new(nameof(filePath));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasContentSameAsConstraint(it, grammars, options, filePath).Invert()),
+			expectationBuilder.AddConstraint((options, filePath), static (s, it, grammars)
+				=> new HasContentSameAsConstraint(it, grammars, s.options, s.filePath).Invert()),
 			subject, options);
 	}
 

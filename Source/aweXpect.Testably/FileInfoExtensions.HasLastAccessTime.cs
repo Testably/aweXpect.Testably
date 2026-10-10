@@ -22,9 +22,9 @@ public static partial class FileInfoExtensions
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<IFileInfo, IThat<IFileInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint((tolerance, expected), static (s, it, grammars)
 				=> new FileSystemConstraints.HasTimeConstraint<IFileInfo>(it, grammars,
-					f => f.LastAccessTime, FileSystemConstraints.GetMissingResult, tolerance, expected, "last access time",
+					f => f.LastAccessTime, FileSystemConstraints.GetMissingResult, s.tolerance, s.expected, "last access time",
 					isWithClause: false)),
 			source, tolerance);
 	}
