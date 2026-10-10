@@ -414,7 +414,8 @@ public sealed partial class FileSystem
 						              Expected that sut
 						              has directory {Formatter.Format(path)} whose files are empty,
 						              but files were [
-						                foo{Path.DirectorySeparatorChar}bar.txt
+						                foo{Path.DirectorySeparatorChar}bar.txt,
+						                (… and maybe more)
 						              ]
 						              """);
 				}
