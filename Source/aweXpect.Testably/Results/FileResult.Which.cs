@@ -11,7 +11,7 @@ public partial class FileResult<TParent>
 	public IThat<IFileInfo> Which
 		=> new ThatSubject<IFileInfo>(
 			_expectationBuilder.ForWhich<TParent, IFileInfo>(
-				ResolveFileInfo, " which "));
+				ResolveFileInfo, " which ", "the file"));
 
 	private IFileInfo? ResolveFileInfo(TParent source)
 	{

@@ -39,10 +39,10 @@ public class TriggeredNotificationResult
 	///     assertions from <see cref="ChangeDescriptionExtensions" /> (e.g. <c>.HasName(...)</c>,
 	///     <c>.HasChangeType(...)</c>) compose naturally (only notifications that satisfy all of
 	///     them count toward the quantifier). The expectation text is taken from the inner
-	///     expectation builder, so it reads like <c>which has name equal to "foo.txt"</c> rather
+	///     expectation builder, so it reads like <c>that has name equal to "foo.txt"</c> rather
 	///     than the raw lambda source.
 	/// </remarks>
-	public TriggeredNotificationResult Which(Action<IThat<ChangeDescription>> expectation)
+	public TriggeredNotificationResult Matching(Action<IThat<ChangeDescription>> expectation)
 	{
 		ThrowHelper.ThrowIfNull(expectation, nameof(expectation));
 

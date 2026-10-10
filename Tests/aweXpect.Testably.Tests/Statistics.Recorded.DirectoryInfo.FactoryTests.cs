@@ -38,7 +38,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to DirectoryInfo.New with path matching p => p == "foo" exactly once,
+						             has recorded a call to DirectoryInfo.New with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -90,7 +90,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to DirectoryInfo.Wrap with directoryInfo matching _ => true exactly once,
+						             has recorded a call to DirectoryInfo.Wrap with directoryInfo matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}

@@ -26,7 +26,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has file '{path}' whose content is empty,
+						              has file {Formatter.Format(path)} whose content is empty,
 						              but content was "baz"
 						              """);
 				}

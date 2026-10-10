@@ -37,7 +37,7 @@ public sealed partial class Statistics
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
-					             recorded at least one call to Directory.CreateDirectory,
+					             has recorded at least one call to Directory.CreateDirectory,
 					             but it was recorded 0 times
 					             """);
 			}
@@ -56,7 +56,7 @@ public sealed partial class Statistics
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
-					             recorded at least one call to Directory.CreateDirectory with path matching p => p == "foo",
+					             has recorded at least one call to Directory.CreateDirectory with path matching p => p == "foo",
 					             but it was recorded 0 times
 					             """);
 			}
@@ -76,7 +76,7 @@ public sealed partial class Statistics
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
-					             did not record a call to Directory.CreateDirectory exactly once,
+					             has not recorded a call to Directory.CreateDirectory exactly once,
 					             but it was recorded 1 time
 					             """);
 			}

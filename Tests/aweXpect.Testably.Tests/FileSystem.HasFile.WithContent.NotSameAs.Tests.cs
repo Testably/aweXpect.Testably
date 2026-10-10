@@ -50,7 +50,7 @@ public sealed partial class FileSystem
 						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
-							              has file '{path}' with not the same content as file '{fullExpectedPath}',
+							              has file {Formatter.Format(path)} with not the same content as file {Formatter.Format(fullExpectedPath)},
 							              but it did match
 
 							              File content:
@@ -76,7 +76,7 @@ public sealed partial class FileSystem
 						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
-							              does not have file '{path}' with not the same content as file '{fullExpectedPath}',
+							              does not have file {Formatter.Format(path)} with not the same content as file {Formatter.Format(fullExpectedPath)},
 							              but it did and was "baz", which differs at index 2:
 							                   ↓ (actual)
 							                "baz"
@@ -129,7 +129,7 @@ public sealed partial class FileSystem
 						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
-							              has file '{path}' with not the same content as file '{fullExpectedPath}',
+							              has file {Formatter.Format(path)} with not the same content as file {Formatter.Format(fullExpectedPath)},
 							              but it did match
 
 							              File content:

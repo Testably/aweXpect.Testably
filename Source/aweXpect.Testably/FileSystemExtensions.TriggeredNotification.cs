@@ -94,8 +94,7 @@ public static partial class FileSystemExtensions
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new NotificationConstraints.TriggeredNotificationConstraint<MockFileSystem, ChangeDescription>(
 					it, grammars,
-					"triggered a notification",
-					"did not trigger a notification",
+					"a notification",
 					Subscribe,
 					filter, quantifier, options)),
 			subject,
@@ -121,8 +120,7 @@ public static partial class FileSystemExtensions
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new NotificationConstraints.TriggeredNotificationConstraint<MockFileSystem, ChangeDescription>(
 					it, grammars,
-					"triggered a notification",
-					"did not trigger a notification",
+					"a notification",
 					Subscribe,
 					filter, quantifier, options).Invert()),
 			subject,

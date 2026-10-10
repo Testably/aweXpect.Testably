@@ -54,13 +54,13 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered a notification matching c => c.Name == "other.txt" at least once within 0:00.100,
+					             has triggered a notification matching c => c.Name == "other.txt" at least once within 0:00.100,
 					             but it was not triggered
 					             """);
 			}
 
 			[Fact]
-			public async Task WhenLiveEventDoesNotMatchWhich_ShouldFailAfterTimeout()
+			public async Task WhenLiveEventDoesNotMatchFilter_ShouldFailAfterTimeout()
 			{
 				MockFileSystem sut = new();
 				_ = Task.Run(async () =>
@@ -72,14 +72,14 @@ public sealed partial class FileSystem
 				async Task Act()
 				{
 					await That(sut).TriggeredNotification()
-						.Which(c => c.HasName("other.txt"))
+						.Matching(c => c.HasName("other.txt"))
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered a notification which has name equal to "other.txt" at least once within 0:00.100,
+					             has triggered a notification that has name equal to "other.txt" at least once within 0:00.100,
 					             but it was not triggered
 					             """);
 			}
@@ -104,7 +104,7 @@ public sealed partial class FileSystem
 			}
 
 			[Fact]
-			public async Task WhenLiveEventMatchesWhich_ShouldSucceedWithinTimeout()
+			public async Task WhenLiveEventMatchesFilter_ShouldSucceedWithinTimeout()
 			{
 				MockFileSystem sut = new();
 				_ = Task.Run(async () =>
@@ -116,7 +116,7 @@ public sealed partial class FileSystem
 				async Task Act()
 				{
 					await That(sut).TriggeredNotification()
-						.Which(c => c.HasName("foo.txt"))
+						.Matching(c => c.HasName("foo.txt"))
 						.Within(TimeSpan.FromSeconds(30));
 				}
 
@@ -136,7 +136,7 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered a notification at least once within 0:00.100,
+					             has triggered a notification at least once within 0:00.100,
 					             but it was not triggered
 					             """);
 			}
@@ -168,13 +168,13 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered a notification at least once within 0:00.010,
+					             has triggered a notification at least once within 0:00.010,
 					             but it was <null>
 					             """);
 			}
 
 			[Fact]
-			public async Task WhichWithInnerExpectation_ComposesWithQuantifier()
+			public async Task MatchingWithInnerExpectation_ComposesWithQuantifier()
 			{
 				MockFileSystem sut = new();
 				using IAwaitableCallback<ChangeDescription> reg = sut.Notify.OnEvent(
@@ -187,7 +187,7 @@ public sealed partial class FileSystem
 				async Task Act()
 				{
 					await That(sut).TriggeredNotification()
-						.Which(c => c.HasChangeType(WatcherChangeTypes.Created))
+						.Matching(c => c.HasChangeType(WatcherChangeTypes.Created))
 						.Exactly(2.Times())
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
@@ -196,7 +196,7 @@ public sealed partial class FileSystem
 			}
 
 			[Fact]
-			public async Task WhichWithInnerExpectation_WhenChangeDoesNotMatch_ShouldFail()
+			public async Task MatchingWithInnerExpectation_WhenChangeDoesNotMatch_ShouldFail()
 			{
 				MockFileSystem sut = new();
 				sut.File.WriteAllText("foo.txt", "x");
@@ -204,20 +204,20 @@ public sealed partial class FileSystem
 				async Task Act()
 				{
 					await That(sut).TriggeredNotification()
-						.Which(c => c.HasName("other.txt"))
+						.Matching(c => c.HasName("other.txt"))
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered a notification which has name equal to "other.txt" at least once within 0:00.100,
+					             has triggered a notification that has name equal to "other.txt" at least once within 0:00.100,
 					             but it was not triggered
 					             """);
 			}
 
 			[Fact]
-			public async Task WhichWithReason_WhenChangeDoesNotMatch_ShouldIncludeReason()
+			public async Task MatchingWithReason_WhenChangeDoesNotMatch_ShouldIncludeReason()
 			{
 				MockFileSystem sut = new();
 				sut.File.WriteAllText("foo.txt", "x");
@@ -225,40 +225,40 @@ public sealed partial class FileSystem
 				async Task Act()
 				{
 					await That(sut).TriggeredNotification()
-						.Which(c => c.HasName("other.txt").Because("REASON-R"))
+						.Matching(c => c.HasName("other.txt").Because("REASON-R"))
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered a notification which has name equal to "other.txt" at least once within 0:00.100, because REASON-R,
+					             has triggered a notification that has name equal to "other.txt" at least once within 0:00.100, because REASON-R,
 					             but it was not triggered
 					             """);
 			}
 
 			[Fact]
-			public async Task WhichWithNegatedInnerExpectation_WhenNoChange_ShouldDescribeNegation()
+			public async Task MatchingWithNegatedInnerExpectation_WhenNoChange_ShouldDescribeNegation()
 			{
 				MockFileSystem sut = new();
 
 				async Task Act()
 				{
 					await That(sut).TriggeredNotification()
-						.Which(c => c.DoesNotComplyWith(x => x.HasChangeType(WatcherChangeTypes.Deleted)))
+						.Matching(c => c.DoesNotComplyWith(x => x.HasChangeType(WatcherChangeTypes.Deleted)))
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered a notification which does not have change type Deleted at least once within 0:00.100,
+					             has triggered a notification that does not have change type Deleted at least once within 0:00.100,
 					             but it was not triggered
 					             """);
 			}
 
 			[Fact]
-			public async Task WhichTwice_WhenChangeDoesNotMatch_ShouldJoinFiltersWithAnd()
+			public async Task MatchingTwice_WhenChangeDoesNotMatch_ShouldJoinFiltersWithAnd()
 			{
 				MockFileSystem sut = new();
 				sut.File.WriteAllText("foo.txt", "x");
@@ -266,17 +266,17 @@ public sealed partial class FileSystem
 				async Task Act()
 				{
 					await That(sut).TriggeredNotification()
-						.Which(c => c.HasName("foo.txt"))
-						.Which(c => c.HasChangeType(WatcherChangeTypes.Deleted))
+						.Matching(c => c.HasName("foo.txt"))
+						.Matching(c => c.HasChangeType(WatcherChangeTypes.Deleted))
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
 				await That(Act).Throws()
-					.WithMessage("*which has name equal to \"foo.txt\" and has change type Deleted*").AsWildcard();
+					.WithMessage("*that has name equal to \"foo.txt\" and has change type Deleted*").AsWildcard();
 			}
 
 			[Fact]
-			public async Task WhichWithInnerExpectation_WhenChangeMatches_ShouldSucceed()
+			public async Task MatchingWithInnerExpectation_WhenChangeMatches_ShouldSucceed()
 			{
 				MockFileSystem sut = new();
 				sut.File.WriteAllText("foo.txt", "x");
@@ -284,20 +284,20 @@ public sealed partial class FileSystem
 				async Task Act()
 				{
 					await That(sut).TriggeredNotification()
-						.Which(c => c.HasName("foo.txt").And.HasChangeType(WatcherChangeTypes.Created));
+						.Matching(c => c.HasName("foo.txt").And.HasChangeType(WatcherChangeTypes.Created));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
-			public async Task WhichWithNullExpectation_ShouldThrowArgumentNullException()
+			public async Task MatchingWithNullExpectation_ShouldThrowArgumentNullException()
 			{
 				MockFileSystem sut = new();
 
 				async Task Act()
 				{
-					await That(sut).TriggeredNotification().Which(null!);
+					await That(sut).TriggeredNotification().Matching(null!);
 				}
 
 				await That(Act).Throws<ArgumentNullException>()
@@ -358,8 +358,11 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
-					               triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
-					               but it was triggered twice in [
+					               has triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
+					               but it was triggered twice
+
+					               Matching changes:
+					               [
 					                 {{created[0]}},
 					                 {{created[1]}}
 					               ]
@@ -401,7 +404,7 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered a notification matching c => c.Name == "other.txt" at least once within 0:00.100,
+					             has triggered a notification matching c => c.Name == "other.txt" at least once within 0:00.100,
 					             but it was not triggered
 					             """);
 			}
@@ -442,8 +445,11 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
-					               triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
-					               but it was triggered 3 times in [
+					               has triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
+					               but it was triggered 3 times
+
+					               Matching changes:
+					               [
 					                 {{created[0]}},
 					                 {{created[1]}},
 					                 {{created[2]}}
@@ -464,7 +470,7 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered a notification at least once within 0:00,
+					             has triggered a notification at least once within 0:00,
 					             but it was not triggered
 					             """);
 			}
@@ -511,7 +517,7 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered a notification at least once,
+					             has triggered a notification at least once,
 					             but it was not triggered
 					             """)
 					.Because("without Within only the notifications triggered so far are checked");
@@ -532,7 +538,7 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered a notification at least once within 0:00.200,
+					             has triggered a notification at least once within 0:00.200,
 					             but it was not triggered
 					             """)
 					.Because("a timeout of the evaluation at the end of Within lets the received notifications decide");
@@ -560,8 +566,11 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
-					               triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created fewer than twice within 0:00.100,
-					               but it was triggered twice in [
+					               has triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created fewer than twice within 0:00.100,
+					               but it was triggered twice
+
+					               Matching changes:
+					               [
 					                 {{created[0]}},
 					                 {{created[1]}}
 					               ]
@@ -590,8 +599,11 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
-					               triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created not exactly twice within 0:00.100,
-					               but it was triggered twice in [
+					               has triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created not exactly twice within 0:00.100,
+					               but it was triggered twice
+
+					               Matching changes:
+					               [
 					                 {{created[0]}},
 					                 {{created[1]}}
 					               ]
@@ -616,8 +628,11 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
-					               did not trigger a notification matching c => c.ChangeType == WatcherChangeTypes.Created within 0:00.100,
-					               but it was triggered once in [
+					               has never triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created within 0:00.100,
+					               but it was triggered once
+
+					               Matching changes:
+					               [
 					                 {{firstEvent}}
 					               ]
 					               """);
@@ -673,7 +688,7 @@ public sealed partial class FileSystem
 					try
 					{
 						await That(sut).TriggeredNotification()
-							.Which(c => c.IsAcceptedAfter(async _ => await Task.Yield()))
+							.Matching(c => c.IsAcceptedAfter(async _ => await Task.Yield()))
 							.Within(TimeSpan.FromSeconds(5));
 					}
 					finally
@@ -708,7 +723,7 @@ public sealed partial class FileSystem
 				async Task Act()
 				{
 					await That(sut).TriggeredNotification()
-						.Which(c => c.IsAcceptedAfter(token => Task.Delay(1000, token)))
+						.Matching(c => c.IsAcceptedAfter(token => Task.Delay(1000, token)))
 						.Within(TimeSpan.FromMilliseconds(500));
 				}
 
@@ -746,7 +761,7 @@ public sealed partial class FileSystem
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that sut
-					             triggered a notification matching _ => throw new InvalidOperationException("boom") at least once within 0:05,
+					             has triggered a notification matching _ => throw new InvalidOperationException("boom") at least once within 0:05,
 					             but the predicate did throw an InvalidOperationException:
 					               boom
 					             """);

@@ -40,7 +40,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
-					             does not have file 'bar.txt',
+					             does not have file "bar.txt",
 					             but it did
 					             """);
 			}

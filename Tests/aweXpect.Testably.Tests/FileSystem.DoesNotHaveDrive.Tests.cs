@@ -23,7 +23,7 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             does not have drive 'D:\',
+					             does not have drive "D:\\",
 					             but it did
 					             """);
 			}

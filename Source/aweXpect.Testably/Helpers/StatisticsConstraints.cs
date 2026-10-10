@@ -91,13 +91,13 @@ internal static class StatisticsConstraints
 		{
 			if (quantifier.IsNever(false))
 			{
-				stringBuilder.Append(negated ? "recorded at least one call to " : "recorded no call to ")
+				stringBuilder.Append(negated ? "has recorded at least one call to " : "has recorded no call to ")
 					.Append(bucketDescription).Append('.').Append(methodName);
 				AppendMatcherDescription(stringBuilder);
 			}
 			else
 			{
-				stringBuilder.Append(negated ? "did not record a call to " : "recorded a call to ")
+				stringBuilder.Append(negated ? "has not recorded a call to " : "has recorded a call to ")
 					.Append(bucketDescription).Append('.').Append(methodName);
 				AppendMatcherDescription(stringBuilder);
 				stringBuilder.Append(' ').Append(quantifier);
@@ -188,12 +188,12 @@ internal static class StatisticsConstraints
 			string accessVerb = access == PropertyAccess.Get ? "get of " : "set of ";
 			if (quantifier.IsNever(false))
 			{
-				stringBuilder.Append(negated ? "recorded at least one " : "recorded no ").Append(accessVerb)
+				stringBuilder.Append(negated ? "has recorded at least one " : "has recorded no ").Append(accessVerb)
 					.Append(bucketDescription).Append('.').Append(propertyName);
 			}
 			else
 			{
-				stringBuilder.Append(negated ? "did not record a " : "recorded a ").Append(accessVerb)
+				stringBuilder.Append(negated ? "has not recorded a " : "has recorded a ").Append(accessVerb)
 					.Append(bucketDescription).Append('.').Append(propertyName)
 					.Append(' ').Append(quantifier);
 			}

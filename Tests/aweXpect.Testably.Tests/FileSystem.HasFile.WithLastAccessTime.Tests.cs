@@ -55,7 +55,7 @@ public sealed partial class FileSystem
 						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that fileSystem
-							              has file '{path}' with last access time equal to {Formatter.Format(expected)} ± 0:02,
+							              has file {Formatter.Format(path)} with last access time equal to {Formatter.Format(expected)} ± 0:02,
 							              but it was {Formatter.Format(actual)}
 							              """)
 							.Because("the message shows the customized default tolerance that was applied");
@@ -77,7 +77,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has file '{path}' with last access time equal to {Formatter.Format(expectedTime)},
+						              has file {Formatter.Format(path)} with last access time equal to {Formatter.Format(expectedTime)},
 						              but it did not exist
 						              """)
 						.Because("a missing file has no last access time to compare");
@@ -101,7 +101,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has file '{path}' with last access time equal to {Formatter.Format(expectedTime)},
+						              has file {Formatter.Format(path)} with last access time equal to {Formatter.Format(expectedTime)},
 						              but it was {Formatter.Format(actualTime)}
 						              """);
 				}
@@ -124,7 +124,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has file '{path}' with last access time equal to {Formatter.Format(expectedTime)},
+						              has file {Formatter.Format(path)} with last access time equal to {Formatter.Format(expectedTime)},
 						              but it was {Formatter.Format(actualTime)}
 						              """);
 				}
@@ -249,7 +249,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              does not have file '{path}' with last access time equal to {Formatter.Format(expectedTime)},
+						              does not have file {Formatter.Format(path)} with last access time equal to {Formatter.Format(expectedTime)},
 						              but it did and was {Formatter.Format(expectedTime)}
 						              """)
 						.Because("the negation belongs to the verb only");
@@ -287,7 +287,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has file '{path}' with last access time equal to {Formatter.Format(expectedTime)},
+						              has file {Formatter.Format(path)} with last access time equal to {Formatter.Format(expectedTime)},
 						              but it was a directory
 						              """)
 						.Because("the last access time of a directory is not the last access time of a file");

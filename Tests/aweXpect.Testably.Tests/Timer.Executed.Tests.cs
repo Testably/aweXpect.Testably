@@ -71,7 +71,7 @@ public sealed class Timer
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             executed exactly 3 times within 0:00.100,
+					             has executed exactly 3 times within 0:00.100,
 					             but it was not executed
 					             """);
 			}
@@ -123,7 +123,7 @@ public sealed class Timer
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             did not execute at least once within 0:00.100,
+					             has not executed at least once within 0:00.100,
 					             but it was executed *
 					             """).AsWildcard();
 			}
@@ -149,7 +149,7 @@ public sealed class Timer
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             did not execute at least 3 times within 0:00.100,
+					             has not executed at least 3 times within 0:00.100,
 					             but it was executed *
 					             """).AsWildcard();
 			}
@@ -174,7 +174,7 @@ public sealed class Timer
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             executed at least once within 0:00.100,
+					             has executed at least once within 0:00.100,
 					             but it was not executed
 					             """);
 			}
@@ -215,7 +215,7 @@ public sealed class Timer
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             executed at least once within 0:00.010,
+					             has executed at least once within 0:00.010,
 					             but it was <null>
 					             """);
 			}
@@ -245,7 +245,7 @@ public sealed class Timer
 				await That(Act).Throws()
 					.WithMessage("""
 						Expected that sut
-						did not execute within 0:00.100,
+						has never executed within 0:00.100,
 						but it was executed once
 						""");
 			}
@@ -275,7 +275,7 @@ public sealed class Timer
 				await That(Act).Throws()
 					.WithMessage("""
 						Expected that sut
-						executed exactly twice within 0:00.100,
+						has executed exactly twice within 0:00.100,
 						but it was executed once
 						""");
 			}
@@ -305,7 +305,7 @@ public sealed class Timer
 				await That(Act).Throws()
 					.WithMessage("""
 						Expected that sut
-						executed exactly 3 times within 0:00.100,
+						has executed exactly 3 times within 0:00.100,
 						but it was executed twice
 						""");
 			}
@@ -335,7 +335,7 @@ public sealed class Timer
 				await That(Act).Throws()
 					.WithMessage("""
 						Expected that sut
-						executed exactly 4 times within 0:00.100,
+						has executed exactly 4 times within 0:00.100,
 						but it was executed 3 times
 						""");
 			}
@@ -379,7 +379,7 @@ public sealed class Timer
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             executed at least once,
+					             has executed at least once,
 					             but it was not executed
 					             """)
 					.Because("without Within the execution count is checked once");

@@ -23,7 +23,7 @@ public sealed partial class Statistics
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
-					             recorded a call to Directory.CreateSymbolicLink with path matching p => p == "foo", pathToTarget matching t => t == "bar" exactly once,
+					             has recorded a call to Directory.CreateSymbolicLink with path matching p => p == "foo", pathToTarget matching t => t == "bar" exactly once,
 					             but it was recorded 0 times
 					             """);
 			}
@@ -44,7 +44,7 @@ public sealed partial class Statistics
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
-					             recorded no call to Directory.CreateSymbolicLink with path matching p => p == "link",
+					             has recorded no call to Directory.CreateSymbolicLink with path matching p => p == "link",
 					             but it was recorded 1 time
 					             """);
 			}

@@ -31,7 +31,7 @@ public sealed partial class FileSystem
 						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
-							              has file '{path}' with the same content as file '{fullExpectedPath}',
+							              has file {Formatter.Format(path)} with the same content as file {Formatter.Format(fullExpectedPath)},
 							              but it was "baz", which differs at index 2:
 							                   ↓ (actual)
 							                "baz"
@@ -61,8 +61,8 @@ public sealed partial class FileSystem
 						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
-							              has file '{path}' with the same content as file '{fullExpectedPath}',
-							              but it did not contain any file at '{fullExpectedPath}'
+							              has file {Formatter.Format(path)} with the same content as file {Formatter.Format(fullExpectedPath)},
+							              but it did not contain any file at {Formatter.Format(fullExpectedPath)}
 
 							              File content:
 							              baz
@@ -105,7 +105,7 @@ public sealed partial class FileSystem
 						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
-							              has file '{path}' with the same content as file '{fullExpectedPath}',
+							              has file {Formatter.Format(path)} with the same content as file {Formatter.Format(fullExpectedPath)},
 							              but it did not exist
 							              """)
 							.Because("a missing file has no content to read, so it fails instead of throwing");
@@ -129,7 +129,7 @@ public sealed partial class FileSystem
 						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
-							              does not have file '{path}' with the same content as file '{fullExpectedPath}',
+							              does not have file {Formatter.Format(path)} with the same content as file {Formatter.Format(fullExpectedPath)},
 							              but it did and did match
 
 							              File content:
@@ -160,7 +160,7 @@ public sealed partial class FileSystem
 						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
-							              has file '{path}' with the same content as file '{fullExpectedPath}',
+							              has file {Formatter.Format(path)} with the same content as file {Formatter.Format(fullExpectedPath)},
 							              but it did not match:
 							                ↓ (actual)
 							                "baz"

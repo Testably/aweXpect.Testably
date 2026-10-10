@@ -54,8 +54,8 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that sut
-						             has directory 'logs' which is empty,
-						             but it was not
+						             has directory "logs" which is empty,
+						             but the directory was not
 						             """);
 				}
 			}

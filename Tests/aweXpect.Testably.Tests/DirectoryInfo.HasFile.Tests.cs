@@ -41,8 +41,8 @@ public sealed partial class DirectoryInfo
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
-					             has file 'bar.txt' which has length 99,
-					             but it was 3
+					             has file "bar.txt" which has length 99,
+					             but the file was 3
 					             """);
 			}
 
@@ -77,7 +77,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
-					             has file 'bar.txt',
+					             has file "bar.txt",
 					             but it did not exist
 					             """);
 			}
@@ -98,7 +98,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that dirInfo
-					              has file 'bar.txt' with creation time equal to {Formatter.Format(expectedTime)},
+					              has file "bar.txt" with creation time equal to {Formatter.Format(expectedTime)},
 					              but it did not exist
 					              """)
 					.Because("a missing file has no creation time to compare");
@@ -120,7 +120,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that dirInfo
-					              has file 'bar' with creation time equal to {Formatter.Format(expectedTime)},
+					              has file "bar" with creation time equal to {Formatter.Format(expectedTime)},
 					              but it was a directory
 					              """)
 					.Because("the creation time of a directory is not the creation time of a file");

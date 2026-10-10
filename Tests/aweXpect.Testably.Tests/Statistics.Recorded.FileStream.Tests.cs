@@ -26,7 +26,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream.New with access matching a => a == FileAccess.Read exactly once,
+						             has recorded a call to FileStream.New with access matching a => a == FileAccess.Read exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -45,7 +45,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream.New with bufferSize matching b => b == 4096 exactly once,
+						             has recorded a call to FileStream.New with bufferSize matching b => b == 4096 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -64,7 +64,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream.New with mode matching m => m == FileMode.Open exactly once,
+						             has recorded a call to FileStream.New with mode matching m => m == FileMode.Open exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -101,7 +101,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream.New with path matching p => p == "a.txt" exactly once,
+						             has recorded a call to FileStream.New with path matching p => p == "a.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -120,7 +120,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream.New with share matching s => s == FileShare.None exactly once,
+						             has recorded a call to FileStream.New with share matching s => s == FileShare.None exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -139,7 +139,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream.Wrap with fileStream matching _ => true exactly once,
+						             has recorded a call to FileStream.Wrap with fileStream matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -179,7 +179,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].WriteByte with value matching n => n == 0 exactly once,
+						             has recorded a call to FileStream["foo.txt"].WriteByte with value matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -220,7 +220,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a get of FileStream["a.txt"].Length exactly once,
+						             has recorded a get of FileStream["a.txt"].Length exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -242,7 +242,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["a.txt"].Close exactly once,
+						             has recorded a call to FileStream["a.txt"].Close exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -280,7 +280,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].CopyTo with bufferSize matching n => n == 0 exactly once,
+						             has recorded a call to FileStream["foo.txt"].CopyTo with bufferSize matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -299,7 +299,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].CopyTo with destination matching _ => true exactly once,
+						             has recorded a call to FileStream["foo.txt"].CopyTo with destination matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -341,7 +341,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].CopyToAsync with bufferSize matching n => n == 0 exactly once,
+						             has recorded a call to FileStream["foo.txt"].CopyToAsync with bufferSize matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -360,7 +360,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].CopyToAsync with destination matching _ => true exactly once,
+						             has recorded a call to FileStream["foo.txt"].CopyToAsync with destination matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -402,7 +402,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].Flush with flushToDisk matching b => b exactly once,
+						             has recorded a call to FileStream["foo.txt"].Flush with flushToDisk matching b => b exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -442,7 +442,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].FlushAsync with cancellationToken matching _ => true exactly once,
+						             has recorded a call to FileStream["foo.txt"].FlushAsync with cancellationToken matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -482,7 +482,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].Read with buffer matching _ => true exactly once,
+						             has recorded a call to FileStream["foo.txt"].Read with buffer matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -501,7 +501,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].Read with count matching n => n == 0 exactly once,
+						             has recorded a call to FileStream["foo.txt"].Read with count matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -520,7 +520,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].Read with offset matching n => n == 0 exactly once,
+						             has recorded a call to FileStream["foo.txt"].Read with offset matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -562,7 +562,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].ReadAsync with buffer matching _ => true exactly once,
+						             has recorded a call to FileStream["foo.txt"].ReadAsync with buffer matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -581,7 +581,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].ReadAsync with count matching n => n == 0 exactly once,
+						             has recorded a call to FileStream["foo.txt"].ReadAsync with count matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -600,7 +600,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].ReadAsync with offset matching n => n == 0 exactly once,
+						             has recorded a call to FileStream["foo.txt"].ReadAsync with offset matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -664,7 +664,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].Seek with offset matching n => n == 0 exactly once,
+						             has recorded a call to FileStream["foo.txt"].Seek with offset matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -683,7 +683,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].Seek with origin matching o => o == SeekOrigin.Begin exactly once,
+						             has recorded a call to FileStream["foo.txt"].Seek with origin matching o => o == SeekOrigin.Begin exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -724,7 +724,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].SetLength with value matching n => n == 0 exactly once,
+						             has recorded a call to FileStream["foo.txt"].SetLength with value matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -786,7 +786,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].Write with buffer matching _ => true exactly once,
+						             has recorded a call to FileStream["foo.txt"].Write with buffer matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -805,7 +805,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].Write with count matching n => n == 0 exactly once,
+						             has recorded a call to FileStream["foo.txt"].Write with count matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -824,7 +824,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].Write with offset matching n => n == 0 exactly once,
+						             has recorded a call to FileStream["foo.txt"].Write with offset matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -868,7 +868,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].WriteAsync with buffer matching _ => true exactly once,
+						             has recorded a call to FileStream["foo.txt"].WriteAsync with buffer matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -887,7 +887,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].WriteAsync with count matching n => n == 0 exactly once,
+						             has recorded a call to FileStream["foo.txt"].WriteAsync with count matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -906,7 +906,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileStream["foo.txt"].WriteAsync with offset matching n => n == 0 exactly once,
+						             has recorded a call to FileStream["foo.txt"].WriteAsync with offset matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}

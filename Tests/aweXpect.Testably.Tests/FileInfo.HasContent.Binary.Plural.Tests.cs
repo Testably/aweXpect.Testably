@@ -29,7 +29,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory 'foo' whose files all have content equal to expected,
+						              has directory "foo" whose files all have content equal to expected,
 						              but none of at least 1 did
 
 						              Not matching items (files):
@@ -99,7 +99,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory 'foo' whose files all do not have content equal to content,
+						              has directory "foo" whose files all do not have content equal to content,
 						              but none of at least 1 did
 
 						              Not matching items (files):

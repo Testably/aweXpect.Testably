@@ -23,7 +23,7 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that sut
-					              does not have directory '{path}',
+					              does not have directory {Formatter.Format(path)},
 					              but it did
 					              """);
 			}

@@ -38,15 +38,18 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
-					               did not trigger a notification,
-					               but it was triggered once in [
+					               has never triggered a notification,
+					               but it was triggered once
+
+					               Matching changes:
+					               [
 					                 {{firstEvent}}
 					               ]
 					               """);
 			}
 
 			[Fact]
-			public async Task WhichWithInnerExpectation_WhenMatchingChange_ShouldFail()
+			public async Task MatchingWithInnerExpectation_WhenMatchingChange_ShouldFail()
 			{
 				MockFileSystem sut = new();
 				ChangeDescription? firstEvent = null;
@@ -56,21 +59,24 @@ public sealed partial class FileSystem
 				async Task Act()
 				{
 					await That(sut).DidNotTriggerNotification()
-						.Which(c => c.HasName("foo.txt"));
+						.Matching(c => c.HasName("foo.txt"));
 				}
 
 				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
-					               did not trigger a notification which has name equal to "foo.txt",
-					               but it was triggered once in [
+					               has never triggered a notification that has name equal to "foo.txt",
+					               but it was triggered once
+
+					               Matching changes:
+					               [
 					                 {{firstEvent}}
 					               ]
 					               """);
 			}
 
 			[Fact]
-			public async Task WhichWithInnerExpectation_WhenNoMatchingChange_ShouldSucceed()
+			public async Task MatchingWithInnerExpectation_WhenNoMatchingChange_ShouldSucceed()
 			{
 				MockFileSystem sut = new();
 				sut.File.WriteAllText("foo.txt", "x");
@@ -78,7 +84,7 @@ public sealed partial class FileSystem
 				async Task Act()
 				{
 					await That(sut).DidNotTriggerNotification()
-						.Which(c => c.HasName("other.txt"))
+						.Matching(c => c.HasName("other.txt"))
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
@@ -86,7 +92,7 @@ public sealed partial class FileSystem
 			}
 
 			[Fact]
-			public async Task WhichWithInnerExpectation_WhenItThrows_ShouldFail()
+			public async Task MatchingWithInnerExpectation_WhenItThrows_ShouldFail()
 			{
 				MockFileSystem sut = new();
 				ChangeDescription? firstEvent = null;
@@ -96,28 +102,31 @@ public sealed partial class FileSystem
 				async Task Act()
 				{
 					await That(sut).DidNotTriggerNotification()
-						.Which(c => c.Satisfies(_ => throw new InvalidOperationException("boom")))
+						.Matching(c => c.Satisfies(_ => throw new InvalidOperationException("boom")))
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that sut
-					               did not trigger a notification which satisfies _ => throw new InvalidOperationException("boom") within 0:00.100,
-					               but for change {{firstEvent}}, the predicate did throw an InvalidOperationException:
+					               has never triggered a notification that satisfies _ => throw new InvalidOperationException("boom") within 0:00.100,
+					               but it triggered a notification for which the predicate did throw an InvalidOperationException:
 					                 boom
+
+					               Change:
+					               {{firstEvent}}
 					               """)
 					.Because("a change that the inner expectation could not answer fails the negated expectation as well");
 			}
 
 			[Fact]
-			public async Task WhichWithNullExpectation_ShouldThrowArgumentNullException()
+			public async Task MatchingWithNullExpectation_ShouldThrowArgumentNullException()
 			{
 				MockFileSystem sut = new();
 
 				async Task Act()
 				{
-					await That(sut).DidNotTriggerNotification().Which(null!);
+					await That(sut).DidNotTriggerNotification().Matching(null!);
 				}
 
 				await That(Act).Throws<ArgumentNullException>()
@@ -146,8 +155,11 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
-					               did not trigger a notification matching c => c.Name == "foo.txt",
-					               but it was triggered once in [
+					               has never triggered a notification matching c => c.Name == "foo.txt",
+					               but it was triggered once
+
+					               Matching changes:
+					               [
 					                 {{firstMatch}}
 					               ]
 					               """);
@@ -184,7 +196,7 @@ public sealed partial class FileSystem
 				}
 
 				await That(Act).Throws()
-					.WithMessage("*did not trigger a notification*but it was triggered*").AsWildcard();
+					.WithMessage("*has never triggered a notification*but it was triggered*").AsWildcard();
 			}
 
 			[Fact]

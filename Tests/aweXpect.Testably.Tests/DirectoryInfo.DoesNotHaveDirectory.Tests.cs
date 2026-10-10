@@ -24,7 +24,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
-					             does not have directory 'bar',
+					             does not have directory "bar",
 					             but it did
 					             """);
 			}

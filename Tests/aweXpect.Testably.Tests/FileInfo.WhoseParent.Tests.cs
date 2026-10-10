@@ -75,7 +75,7 @@ public sealed partial class FileInfo
 					.WithMessage("""
 					             Expected that fileInfo
 					             has name equal to "today.log" and whose parent has name equal to "wrong",
-					             but it was "logs", which differs at index 0:
+					             but the parent was "logs", which differs at index 0:
 					                ↓ (actual)
 					               "logs"
 					               "wrong"
@@ -99,7 +99,7 @@ public sealed partial class FileInfo
 					.WithMessage("""
 					             Expected that fileInfo
 					             whose parent is not empty,
-					             but it did throw an InvalidOperationException:
+					             but the parent did throw an InvalidOperationException:
 					               Cannot assert on the parent directory of the file because it has none.
 					             """).And
 					.WithInner<InvalidOperationException>(inner => inner

@@ -27,7 +27,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has file '{path}' with content equal to "bar",
+						              has file {Formatter.Format(path)} with content equal to "bar",
 						              but it was "baz", which differs at index 2:
 						                   ↓ (actual)
 						                "baz"
@@ -70,7 +70,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has file '{path}' with content equal to "bar",
+						              has file {Formatter.Format(path)} with content equal to "bar",
 						              but it did not exist
 						              """)
 						.Because("a missing file has no content to read, so it fails instead of throwing");
@@ -91,7 +91,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              does not have file '{path}' with content equal to "bar",
+						              does not have file {Formatter.Format(path)} with content equal to "bar",
 						              but it did and did match
 
 						              File content:
@@ -128,7 +128,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has file '{path}' with content equal to "bar",
+						              has file {Formatter.Format(path)} with content equal to "bar",
 						              but it was a directory
 						              """);
 				}
@@ -154,7 +154,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has file '{path}' with content equal to expected,
+						              has file {Formatter.Format(path)} with content equal to expected,
 						              but it differed
 						              """);
 				}
@@ -191,7 +191,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has file '{path}' with content equal to expected,
+						              has file {Formatter.Format(path)} with content equal to expected,
 						              but it did not exist
 						              """)
 						.Because("a missing file has no content to read, so it fails instead of throwing");
@@ -213,7 +213,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              does not have file '{path}' with content equal to content,
+						              does not have file {Formatter.Format(path)} with content equal to content,
 						              but it did and did match
 						              """)
 						.Because("the negation belongs to the verb only");
@@ -238,7 +238,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has file '{path}' with content matching "b?",
+						              has file {Formatter.Format(path)} with content matching "b?",
 						              but it did not match:
 						                ↓ (actual)
 						                "baz"

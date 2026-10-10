@@ -52,7 +52,7 @@ public static partial class DriveInfoExtensions
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has volume label ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append(Grammars.Verb("has volume label ", "have volume label ")).Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -67,7 +67,7 @@ public static partial class DriveInfoExtensions
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have volume label ")
+			=> stringBuilder.Append(Grammars.Verb("does not have volume label ", "do not have volume label "))
 				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

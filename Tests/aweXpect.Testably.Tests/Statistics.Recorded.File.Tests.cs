@@ -26,7 +26,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllBytes with bytes matching _ => true exactly once,
+						             has recorded a call to File.AppendAllBytes with bytes matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -45,7 +45,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllBytes with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.AppendAllBytes with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -80,7 +80,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllBytesAsync with bytes matching _ => true exactly once,
+						             has recorded a call to File.AppendAllBytesAsync with bytes matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -99,7 +99,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllBytesAsync with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.AppendAllBytesAsync with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -134,7 +134,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Copy with destFileName matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.Copy with destFileName matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -153,7 +153,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Copy with overwrite matching b => b exactly once,
+						             has recorded a call to File.Copy with overwrite matching b => b exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -172,7 +172,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Copy with sourceFileName matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.Copy with sourceFileName matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -228,7 +228,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.CreateSymbolicLink with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.CreateSymbolicLink with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -247,7 +247,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.CreateSymbolicLink with pathToTarget matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.CreateSymbolicLink with pathToTarget matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -304,7 +304,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded no call to File.Delete,
+						             has recorded no call to File.Delete,
 						             but it was recorded 1 time
 						             """);
 				}
@@ -323,7 +323,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Delete with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.Delete with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -359,7 +359,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Exists with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.Exists with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -456,7 +456,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllText exactly once,
+						             has recorded a call to File.WriteAllText exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -491,7 +491,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllText with contents matching c => c == "hello" exactly once,
+						             has recorded a call to File.WriteAllText with contents matching c => c == "hello" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -510,7 +510,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllText with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.WriteAllText with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -529,7 +529,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllText with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.WriteAllText with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -583,7 +583,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllTextAsync with contents matching c => c == "hello" exactly once,
+						             has recorded a call to File.WriteAllTextAsync with contents matching c => c == "hello" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -602,7 +602,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllTextAsync with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.WriteAllTextAsync with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -621,7 +621,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllTextAsync with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.WriteAllTextAsync with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -644,7 +644,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllLines with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.AppendAllLines with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -663,7 +663,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllLines with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.AppendAllLines with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -703,7 +703,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllText with contents matching c => c == "hello" exactly once,
+						             has recorded a call to File.AppendAllText with contents matching c => c == "hello" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -722,7 +722,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllText with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.AppendAllText with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -741,7 +741,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllText with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.AppendAllText with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -778,7 +778,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendText with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.AppendText with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -815,7 +815,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Create with bufferSize matching n => n == 0 exactly once,
+						             has recorded a call to File.Create with bufferSize matching n => n == 0 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -834,7 +834,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Create with options matching o => o == FileOptions.None exactly once,
+						             has recorded a call to File.Create with options matching o => o == FileOptions.None exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -853,7 +853,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Create with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.Create with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -890,7 +890,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.CreateText with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.CreateText with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -927,7 +927,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Decrypt with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.Decrypt with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -973,7 +973,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Encrypt with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.Encrypt with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1019,7 +1019,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.GetAttributes with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.GetAttributes with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1057,7 +1057,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.GetCreationTime with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.GetCreationTime with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1095,7 +1095,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.GetCreationTimeUtc with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.GetCreationTimeUtc with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1133,7 +1133,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.GetLastAccessTime with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.GetLastAccessTime with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1171,7 +1171,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.GetLastAccessTimeUtc with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.GetLastAccessTimeUtc with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1209,7 +1209,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.GetLastWriteTime with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.GetLastWriteTime with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1247,7 +1247,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.GetLastWriteTimeUtc with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.GetLastWriteTimeUtc with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1285,7 +1285,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Move with destFileName matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.Move with destFileName matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1304,7 +1304,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Move with overwrite matching b => b exactly once,
+						             has recorded a call to File.Move with overwrite matching b => b exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1323,7 +1323,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Move with sourceFileName matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.Move with sourceFileName matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1361,7 +1361,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Open with access matching a => a == FileAccess.Read exactly once,
+						             has recorded a call to File.Open with access matching a => a == FileAccess.Read exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1380,7 +1380,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Open with mode matching m => m == FileMode.Open exactly once,
+						             has recorded a call to File.Open with mode matching m => m == FileMode.Open exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1399,7 +1399,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Open with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.Open with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1418,7 +1418,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Open with share matching s => s == FileShare.None exactly once,
+						             has recorded a call to File.Open with share matching s => s == FileShare.None exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1440,7 +1440,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.OpenRead with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.OpenRead with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1462,7 +1462,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.OpenText with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.OpenText with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1484,7 +1484,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.OpenWrite with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.OpenWrite with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1506,7 +1506,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadAllBytes with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.ReadAllBytes with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1528,7 +1528,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadAllLines with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.ReadAllLines with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1547,7 +1547,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadAllLines with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.ReadAllLines with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1569,7 +1569,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadAllText with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.ReadAllText with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1588,7 +1588,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadAllText with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.ReadAllText with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1610,7 +1610,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadLines with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.ReadLines with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1629,7 +1629,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadLines with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.ReadLines with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1651,7 +1651,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Replace with destinationBackupFileName matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.Replace with destinationBackupFileName matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1670,7 +1670,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Replace with destinationFileName matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.Replace with destinationFileName matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1689,7 +1689,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Replace with ignoreMetadataErrors matching b => b exactly once,
+						             has recorded a call to File.Replace with ignoreMetadataErrors matching b => b exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1708,7 +1708,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.Replace with sourceFileName matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.Replace with sourceFileName matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1730,7 +1730,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetAttributes with fileAttributes matching a => a == FileAttributes.ReadOnly exactly once,
+						             has recorded a call to File.SetAttributes with fileAttributes matching a => a == FileAttributes.ReadOnly exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1749,7 +1749,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetAttributes with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.SetAttributes with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1771,7 +1771,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetCreationTime with creationTime matching t => t.Year == 2000 exactly once,
+						             has recorded a call to File.SetCreationTime with creationTime matching t => t.Year == 2000 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1790,7 +1790,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetCreationTime with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.SetCreationTime with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1812,7 +1812,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetCreationTimeUtc with creationTimeUtc matching t => t.Year == 2000 exactly once,
+						             has recorded a call to File.SetCreationTimeUtc with creationTimeUtc matching t => t.Year == 2000 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1831,7 +1831,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetCreationTimeUtc with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.SetCreationTimeUtc with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1853,7 +1853,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetLastAccessTime with lastAccessTime matching t => t.Year == 2000 exactly once,
+						             has recorded a call to File.SetLastAccessTime with lastAccessTime matching t => t.Year == 2000 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1872,7 +1872,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetLastAccessTime with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.SetLastAccessTime with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1894,7 +1894,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetLastAccessTimeUtc with lastAccessTimeUtc matching t => t.Year == 2000 exactly once,
+						             has recorded a call to File.SetLastAccessTimeUtc with lastAccessTimeUtc matching t => t.Year == 2000 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1913,7 +1913,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetLastAccessTimeUtc with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.SetLastAccessTimeUtc with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1935,7 +1935,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetLastWriteTime with lastWriteTime matching t => t.Year == 2000 exactly once,
+						             has recorded a call to File.SetLastWriteTime with lastWriteTime matching t => t.Year == 2000 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1954,7 +1954,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetLastWriteTime with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.SetLastWriteTime with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1976,7 +1976,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetLastWriteTimeUtc with lastWriteTimeUtc matching t => t.Year == 2000 exactly once,
+						             has recorded a call to File.SetLastWriteTimeUtc with lastWriteTimeUtc matching t => t.Year == 2000 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -1995,7 +1995,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetLastWriteTimeUtc with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.SetLastWriteTimeUtc with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2017,7 +2017,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllBytes with bytes matching _ => true exactly once,
+						             has recorded a call to File.WriteAllBytes with bytes matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2036,7 +2036,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllBytes with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.WriteAllBytes with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2058,7 +2058,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllLines with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.WriteAllLines with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2077,7 +2077,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllLines with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.WriteAllLines with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2100,7 +2100,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllLinesAsync with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.AppendAllLinesAsync with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2119,7 +2119,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllLinesAsync with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.AppendAllLinesAsync with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2180,7 +2180,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllTextAsync with contents matching c => c == "hello" exactly once,
+						             has recorded a call to File.AppendAllTextAsync with contents matching c => c == "hello" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2199,7 +2199,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllTextAsync with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.AppendAllTextAsync with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2218,7 +2218,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.AppendAllTextAsync with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.AppendAllTextAsync with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2257,7 +2257,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.GetUnixFileMode with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.GetUnixFileMode with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2296,7 +2296,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadAllBytesAsync with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.ReadAllBytesAsync with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2333,7 +2333,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadAllLinesAsync with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.ReadAllLinesAsync with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2352,7 +2352,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadAllLinesAsync with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.ReadAllLinesAsync with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2389,7 +2389,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadAllTextAsync with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.ReadAllTextAsync with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2408,7 +2408,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadAllTextAsync with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.ReadAllTextAsync with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2445,7 +2445,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadLinesAsync with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.ReadLinesAsync with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2464,7 +2464,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ReadLinesAsync with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.ReadLinesAsync with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2503,7 +2503,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ResolveLinkTarget with linkPath matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.ResolveLinkTarget with linkPath matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2522,7 +2522,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.ResolveLinkTarget with returnFinalTarget matching b => b exactly once,
+						             has recorded a call to File.ResolveLinkTarget with returnFinalTarget matching b => b exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2578,7 +2578,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetUnixFileMode with mode matching _ => true exactly once,
+						             has recorded a call to File.SetUnixFileMode with mode matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2597,7 +2597,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.SetUnixFileMode with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.SetUnixFileMode with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2672,7 +2672,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllBytesAsync with bytes matching _ => true exactly once,
+						             has recorded a call to File.WriteAllBytesAsync with bytes matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2691,7 +2691,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllBytesAsync with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.WriteAllBytesAsync with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2730,7 +2730,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllLinesAsync with encoding matching e => e == Encoding.UTF8 exactly once,
+						             has recorded a call to File.WriteAllLinesAsync with encoding matching e => e == Encoding.UTF8 exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -2749,7 +2749,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to File.WriteAllLinesAsync with path matching p => p == "foo.txt" exactly once,
+						             has recorded a call to File.WriteAllLinesAsync with path matching p => p == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}

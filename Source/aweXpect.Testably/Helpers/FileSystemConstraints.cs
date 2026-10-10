@@ -40,7 +40,10 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has attribute ", "have attribute ")).Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("has attribute ", "have attribute "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -54,12 +57,16 @@ internal static class FileSystemConstraints
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" was ").Append(_actualAttributes);
+				stringBuilder.Append(It).Append(" was ");
+				Formatter.Format(stringBuilder, _actualAttributes);
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("does not have attribute ", "do not have attribute ")).Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("does not have attribute ", "do not have attribute "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -184,7 +191,10 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has file '", "have file '")).Append(path).Append('\'');
+		{
+			stringBuilder.Append(Grammars.Verb("has file ", "have file "));
+			Formatter.Format(stringBuilder, path);
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -203,7 +213,10 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("does not have file '", "do not have file '")).Append(path).Append('\'');
+		{
+			stringBuilder.Append(Grammars.Verb("does not have file ", "do not have file "));
+			Formatter.Format(stringBuilder, path);
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");
@@ -236,7 +249,10 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has directory '", "have directory '")).Append(path).Append('\'');
+		{
+			stringBuilder.Append(Grammars.Verb("has directory ", "have directory "));
+			Formatter.Format(stringBuilder, path);
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -255,7 +271,10 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("does not have directory '", "do not have directory '")).Append(path).Append('\'');
+		{
+			stringBuilder.Append(Grammars.Verb("does not have directory ", "do not have directory "));
+			Formatter.Format(stringBuilder, path);
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");

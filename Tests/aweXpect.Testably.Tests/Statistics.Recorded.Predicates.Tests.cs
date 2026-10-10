@@ -23,7 +23,7 @@ public sealed partial class Statistics
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
-					             recorded a call to File.WriteAllText with path matching _ => throw new InvalidOperationException("boom") exactly once,
+					             has recorded a call to File.WriteAllText with path matching _ => throw new InvalidOperationException("boom") exactly once,
 					             but the path predicate did throw an InvalidOperationException:
 					               boom
 					             """);
@@ -44,7 +44,7 @@ public sealed partial class Statistics
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
-					             recorded no call to File.WriteAllText with path matching _ => throw new InvalidOperationException("boom"),
+					             has recorded no call to File.WriteAllText with path matching _ => throw new InvalidOperationException("boom"),
 					             but the path predicate did throw an InvalidOperationException:
 					               boom
 					             """)

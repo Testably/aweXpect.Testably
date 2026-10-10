@@ -51,8 +51,11 @@ public sealed partial class FileSystemWatcher
 				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
-					               did not trigger an event,
-					               but it was triggered once in [
+					               has never triggered an event,
+					               but it was triggered once
+
+					               Matching changes:
+					               [
 					                 {{firstEvent}}
 					               ]
 					               """);
@@ -75,7 +78,7 @@ public sealed partial class FileSystemWatcher
 			}
 
 			[Fact]
-			public async Task WhichWithInnerExpectation_WhenMatchingChange_ShouldFail()
+			public async Task MatchingWithInnerExpectation_WhenMatchingChange_ShouldFail()
 			{
 				MockFileSystem fs = new();
 				fs.InitializeIn("/x");
@@ -90,21 +93,24 @@ public sealed partial class FileSystemWatcher
 				async Task Act()
 				{
 					await That(sut).DidNotTrigger()
-						.Which(c => c.HasName("foo.txt"));
+						.Matching(c => c.HasName("foo.txt"));
 				}
 
 				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
-					               did not trigger an event which has name equal to "foo.txt",
-					               but it was triggered once in [
+					               has never triggered an event that has name equal to "foo.txt",
+					               but it was triggered once
+
+					               Matching changes:
+					               [
 					                 {{firstMatch}}
 					               ]
 					               """);
 			}
 
 			[Fact]
-			public async Task WhichWithInnerExpectation_WhenNoMatchingChange_ShouldSucceed()
+			public async Task MatchingWithInnerExpectation_WhenNoMatchingChange_ShouldSucceed()
 			{
 				MockFileSystem fs = new();
 				fs.InitializeIn("/x");
@@ -115,7 +121,7 @@ public sealed partial class FileSystemWatcher
 				async Task Act()
 				{
 					await That(sut).DidNotTrigger()
-						.Which(c => c.HasName("other.txt"))
+						.Matching(c => c.HasName("other.txt"))
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
@@ -123,7 +129,7 @@ public sealed partial class FileSystemWatcher
 			}
 
 			[Fact]
-			public async Task WhichWithNullExpectation_ShouldThrowArgumentNullException()
+			public async Task MatchingWithNullExpectation_ShouldThrowArgumentNullException()
 			{
 				MockFileSystem fs = new();
 				fs.InitializeIn("/x");
@@ -132,7 +138,7 @@ public sealed partial class FileSystemWatcher
 
 				async Task Act()
 				{
-					await That(sut).DidNotTrigger().Which(null!);
+					await That(sut).DidNotTrigger().Matching(null!);
 				}
 
 				await That(Act).Throws<ArgumentNullException>()
@@ -160,8 +166,11 @@ public sealed partial class FileSystemWatcher
 				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
-					               did not trigger an event matching c => c.Name == "foo.txt",
-					               but it was triggered once in [
+					               has never triggered an event matching c => c.Name == "foo.txt",
+					               but it was triggered once
+
+					               Matching changes:
+					               [
 					                 {{firstMatch}}
 					               ]
 					               """);
@@ -204,7 +213,7 @@ public sealed partial class FileSystemWatcher
 				}
 
 				await That(Act).Throws()
-					.WithMessage("*did not trigger an event*but it was triggered*").AsWildcard();
+					.WithMessage("*has never triggered an event*but it was triggered*").AsWildcard();
 			}
 
 			[Fact]

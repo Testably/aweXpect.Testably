@@ -57,7 +57,7 @@ For example, `Expect.That(fileSystem).HasFile("yesterday.txt")` fails with:
 
 ```text title="Failure message"
 Expected that fileSystem
-has file 'yesterday.txt',
+has file "yesterday.txt",
 but it did not exist
 ```
 

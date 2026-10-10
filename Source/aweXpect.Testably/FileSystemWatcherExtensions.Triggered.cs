@@ -111,8 +111,7 @@ public static class FileSystemWatcherExtensions
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new NotificationConstraints.TriggeredNotificationConstraint<IFileSystemWatcher, WatcherChangeDescription>(
 					it, grammars,
-					"triggered an event",
-					"did not trigger an event",
+					"an event",
 					Subscribe,
 					filter, quantifier, options)),
 			subject,
@@ -138,8 +137,7 @@ public static class FileSystemWatcherExtensions
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new NotificationConstraints.TriggeredNotificationConstraint<IFileSystemWatcher, WatcherChangeDescription>(
 					it, grammars,
-					"triggered an event",
-					"did not trigger an event",
+					"an event",
 					Subscribe,
 					filter, quantifier, options).Invert()),
 			subject,

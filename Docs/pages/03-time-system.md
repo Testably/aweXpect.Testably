@@ -36,6 +36,6 @@ fails with:
 
 ```text title="Failure message"
 Expected that timer
-executed at least 3 times within 0:00.100,
+has executed at least 3 times within 0:00.100,
 but it was not executed
 ```

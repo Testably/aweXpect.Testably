@@ -576,12 +576,12 @@ namespace aweXpect.Testably.Results
 {
     public class DidNotTriggerNotificationResult : aweXpect.Results.AndOrResult<Testably.Abstractions.Testing.MockFileSystem, aweXpect.Core.IThat<Testably.Abstractions.Testing.MockFileSystem>, aweXpect.Testably.Results.DidNotTriggerNotificationResult>
     {
-        public aweXpect.Testably.Results.DidNotTriggerNotificationResult Which(System.Action<aweXpect.Core.IThat<Testably.Abstractions.Testing.FileSystem.ChangeDescription>> expectation) { }
+        public aweXpect.Testably.Results.DidNotTriggerNotificationResult Matching(System.Action<aweXpect.Core.IThat<Testably.Abstractions.Testing.FileSystem.ChangeDescription>> expectation) { }
         public aweXpect.Testably.Results.DidNotTriggerNotificationResult Within(System.TimeSpan timeout) { }
     }
     public class DidNotTriggerWatcherResult : aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileSystemWatcher, aweXpect.Core.IThat<System.IO.Abstractions.IFileSystemWatcher>, aweXpect.Testably.Results.DidNotTriggerWatcherResult>
     {
-        public aweXpect.Testably.Results.DidNotTriggerWatcherResult Which(System.Action<aweXpect.Core.IThat<Testably.Abstractions.Testing.FileSystem.WatcherChangeDescription>> expectation) { }
+        public aweXpect.Testably.Results.DidNotTriggerWatcherResult Matching(System.Action<aweXpect.Core.IThat<Testably.Abstractions.Testing.FileSystem.WatcherChangeDescription>> expectation) { }
         public aweXpect.Testably.Results.DidNotTriggerWatcherResult Within(System.TimeSpan timeout) { }
     }
     public class DirectoryResult<TParent> : aweXpect.Results.AndOrResult<TParent, aweXpect.Core.IThat<TParent>>
@@ -636,12 +636,12 @@ namespace aweXpect.Testably.Results
     }
     public class TriggeredNotificationResult : aweXpect.Results.AndOrResult<Testably.Abstractions.Testing.MockFileSystem, aweXpect.Core.IThat<Testably.Abstractions.Testing.MockFileSystem>, aweXpect.Testably.Results.TriggeredNotificationResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>
     {
-        public aweXpect.Testably.Results.TriggeredNotificationResult Which(System.Action<aweXpect.Core.IThat<Testably.Abstractions.Testing.FileSystem.ChangeDescription>> expectation) { }
+        public aweXpect.Testably.Results.TriggeredNotificationResult Matching(System.Action<aweXpect.Core.IThat<Testably.Abstractions.Testing.FileSystem.ChangeDescription>> expectation) { }
         public aweXpect.Testably.Results.TriggeredNotificationResult Within(System.TimeSpan timeout) { }
     }
     public class TriggeredWatcherResult : aweXpect.Results.AndOrResult<System.IO.Abstractions.IFileSystemWatcher, aweXpect.Core.IThat<System.IO.Abstractions.IFileSystemWatcher>, aweXpect.Testably.Results.TriggeredWatcherResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.Quantifier>
     {
-        public aweXpect.Testably.Results.TriggeredWatcherResult Which(System.Action<aweXpect.Core.IThat<Testably.Abstractions.Testing.FileSystem.WatcherChangeDescription>> expectation) { }
+        public aweXpect.Testably.Results.TriggeredWatcherResult Matching(System.Action<aweXpect.Core.IThat<Testably.Abstractions.Testing.FileSystem.WatcherChangeDescription>> expectation) { }
         public aweXpect.Testably.Results.TriggeredWatcherResult Within(System.TimeSpan timeout) { }
     }
 }

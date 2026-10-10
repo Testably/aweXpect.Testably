@@ -41,7 +41,10 @@ public static partial class DriveInfoExtensions
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has total size ").Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("has total size ", "have total size "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -51,12 +54,16 @@ public static partial class DriveInfoExtensions
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" was ").Append(_actualTotalSize);
+				stringBuilder.Append(It).Append(" was ");
+				Formatter.Format(stringBuilder, _actualTotalSize);
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have total size ").Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("does not have total size ", "do not have total size "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

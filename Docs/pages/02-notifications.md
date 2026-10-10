@@ -33,7 +33,7 @@ fails with:
 
 ```text title="Failure message"
 Expected that fileSystem
-triggered a notification matching c => c.Name == "yesterday.txt" at least once within 0:00.100,
+has triggered a notification matching c => c.Name == "yesterday.txt" at least once within 0:00.100,
 but it was not triggered
 ```
 
@@ -51,7 +51,7 @@ notifications received until then decide; a cancellation before that leaves the 
 `Timeout.InfiniteTimeSpan` waits until the quantifier is decided.
 
 Both accept a quantifier (`AtLeast`, `AtMost`, `Exactly`, `Between`, `Never`, `Once`) to verify how often the
-notification was triggered, and a `.Which(c => …)` callback with the
+notification was triggered, and a `.Matching(c => …)` filter with the
 [change description](#change-descriptions) expectations for each notification:
 
 ```csharp
@@ -63,7 +63,7 @@ await Expect.That(fileSystem).TriggeredNotification(c => c.ChangeType == Watcher
 
 await Expect.That(fileSystem)
     .TriggeredNotification()
-    .Which(c => c.HasName("come-together.txt").And.HasChangeType(WatcherChangeTypes.Created))
+    .Matching(c => c.HasName("come-together.txt").And.HasChangeType(WatcherChangeTypes.Created))
     .Exactly(1.Times());
 ```
 
@@ -94,13 +94,13 @@ just completed may not be raised yet. Without `.Within(timeout)`, only the event
 for them. `Triggered()` completes as soon as a matching event is raised, so a generous timeout only costs time when the
 expectation fails.
 
-`Triggered` and `DidNotTrigger` support the same quantifiers, `.Within(timeout)` and `.Which(c => …)` callback as the
+`Triggered` and `DidNotTrigger` support the same quantifiers, `.Within(timeout)` and `.Matching(c => …)` filter as the
 [notification](#file-system-notifications) expectations:
 
 ```csharp
 await Expect.That(watcher)
     .Triggered()
-    .Which(c => c.HasName("let-it-be.txt").And.HasChangeType(WatcherChangeTypes.Created))
+    .Matching(c => c.HasName("let-it-be.txt").And.HasChangeType(WatcherChangeTypes.Created))
     .Exactly(1.Times());
 ```
 
@@ -141,7 +141,7 @@ fails with:
 
 ```text title="Failure message"
 Expected that fileSystem.Statistics
-recorded a call to File.WriteAllText exactly once,
+has recorded a call to File.WriteAllText exactly once,
 but it was recorded 2 times
 ```
 

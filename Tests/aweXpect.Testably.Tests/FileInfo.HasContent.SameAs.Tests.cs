@@ -31,7 +31,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that fileInfo
-						              has the same content as file '{fullExpectedPath}',
+						              has the same content as file {Formatter.Format(fullExpectedPath)},
 						              but it was "baz", which differs at index 2:
 						                   ↓ (actual)
 						                "baz"
@@ -62,8 +62,8 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that fileInfo
-						              has the same content as file '{fullExpectedPath}',
-						              but it did not contain any file at '{fullExpectedPath}'
+						              has the same content as file {Formatter.Format(fullExpectedPath)},
+						              but it did not contain any file at {Formatter.Format(fullExpectedPath)}
 
 						              File content:
 						              baz
@@ -107,7 +107,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that fileInfo
-						              has the same content as file '{fullExpectedPath}',
+						              has the same content as file {Formatter.Format(fullExpectedPath)},
 						              but it did not exist
 						              """);
 				}
@@ -129,7 +129,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that fileInfo
-						              does not have the same content as file '{fullExpectedPath}',
+						              does not have the same content as file {Formatter.Format(fullExpectedPath)},
 						              but it did not exist
 						              """)
 						.Because("a missing file has no content to compare, so the negation fails as well");
@@ -158,7 +158,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that fileInfo
-						              has the same content as file '{fullExpectedPath}',
+						              has the same content as file {Formatter.Format(fullExpectedPath)},
 						              but it did not match:
 						                ↓ (actual)
 						                "baz"
