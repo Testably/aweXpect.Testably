@@ -34,7 +34,14 @@ public sealed class RecordedFileStreamBucket
 	///     Assertions on recorded calls against the <see cref="FileSystemStream" /> instance for <paramref name="path" />.
 	/// </summary>
 	public RecordedFileStreamInstance this[string path]
-		=> new(_subject, path);
+	{
+		get
+		{
+			ThrowHelper.ThrowIfNull(path, nameof(path));
+
+			return new RecordedFileStreamInstance(_subject, path);
+		}
+	}
 
 	/// <summary>
 	///     Recorded calls to <see cref="IFileStreamFactory.New(string, FileMode)" /> and string-path overloads.

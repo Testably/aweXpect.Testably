@@ -8,6 +8,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Options;
 using aweXpect.Results;
+using aweXpect.Testably.Helpers;
 
 namespace aweXpect.Testably.Results;
 
@@ -26,7 +27,10 @@ public class FileInfoContentResult(
 	public AndOrResult<IFileInfo, IThat<IFileInfo>> EqualTo(
 		byte[] expected,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-		=> new(
+	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+
+		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasBinaryContentEqualToConstraint(
 					it,
@@ -34,6 +38,7 @@ public class FileInfoContentResult(
 					expected,
 					doNotPopulateThisValue)),
 			subject);
+	}
 
 	/// <summary>
 	///     …is equal to the <paramref name="expected" /> string.
@@ -59,7 +64,10 @@ public class FileInfoContentResult(
 		byte[] unexpected,
 		[CallerArgumentExpression("unexpected")]
 		string doNotPopulateThisValue = "")
-		=> new(
+	{
+		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
+
+		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasBinaryContentEqualToConstraint(
 						it,
@@ -68,6 +76,7 @@ public class FileInfoContentResult(
 						doNotPopulateThisValue)
 					.Invert()),
 			subject);
+	}
 
 	/// <summary>
 	///     …differs from the <paramref name="unexpected" /> string.
@@ -92,6 +101,8 @@ public class FileInfoContentResult(
 	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> SameAs(
 		string filePath)
 	{
+		ThrowHelper.ThrowIfNull(filePath, nameof(filePath));
+
 		StringEqualityOptions options = new(nameof(filePath));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			expectationBuilder.AddConstraint((it, grammars)
@@ -105,6 +116,8 @@ public class FileInfoContentResult(
 	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> NotSameAs(
 		string filePath)
 	{
+		ThrowHelper.ThrowIfNull(filePath, nameof(filePath));
+
 		StringEqualityOptions options = new(nameof(filePath));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			expectationBuilder.AddConstraint((it, grammars)

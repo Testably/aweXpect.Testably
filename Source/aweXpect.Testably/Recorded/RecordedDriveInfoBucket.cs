@@ -29,7 +29,14 @@ public sealed class RecordedDriveInfoBucket
 	///     Assertions on recorded calls against the <see cref="IDriveInfo" /> instance for <paramref name="driveName" />.
 	/// </summary>
 	public RecordedDriveInfoInstance this[string driveName]
-		=> new(_subject, driveName);
+	{
+		get
+		{
+			ThrowHelper.ThrowIfNull(driveName, nameof(driveName));
+
+			return new RecordedDriveInfoInstance(_subject, driveName);
+		}
+	}
 
 	/// <summary>
 	///     Recorded calls to <see cref="IDriveInfoFactory.GetDrives" />.

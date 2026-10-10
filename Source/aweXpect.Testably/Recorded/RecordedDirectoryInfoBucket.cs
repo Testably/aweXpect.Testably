@@ -29,7 +29,14 @@ public sealed class RecordedDirectoryInfoBucket
 	///     Assertions on recorded calls against the <see cref="IDirectoryInfo" /> instance for <paramref name="path" />.
 	/// </summary>
 	public RecordedDirectoryInfoInstance this[string path]
-		=> new(_subject, path);
+	{
+		get
+		{
+			ThrowHelper.ThrowIfNull(path, nameof(path));
+
+			return new RecordedDirectoryInfoInstance(_subject, path);
+		}
+	}
 
 	/// <summary>
 	///     Recorded calls to <see cref="IDirectoryInfoFactory.New(string)" />.

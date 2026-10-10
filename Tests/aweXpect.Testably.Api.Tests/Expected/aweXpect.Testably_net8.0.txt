@@ -599,7 +599,7 @@ namespace aweXpect.Testably.Results
         where TParent :  class
     {
         public aweXpect.Core.IThat<System.IO.Abstractions.IFileInfo> Which { get; }
-        public aweXpect.Results.StringEqualityTypeResult<TParent, aweXpect.Testably.Results.FileResult<TParent>> WhoseContent(System.Action<aweXpect.Core.IThat<string?>> expectations) { }
+        public aweXpect.Results.AndOrResult<TParent, aweXpect.Testably.Results.FileResult<TParent>> WhoseContent(System.Action<aweXpect.Core.IThat<string?>> expectations) { }
         public aweXpect.Testably.Results.FileResult<TParent>.Content WithContent() { }
         public aweXpect.Results.StringEqualityTypeResult<TParent, aweXpect.Testably.Results.FileResult<TParent>> WithContent(string expected) { }
         public aweXpect.Results.AndOrResult<TParent, aweXpect.Testably.Results.FileResult<TParent>> WithContent(byte[] expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }

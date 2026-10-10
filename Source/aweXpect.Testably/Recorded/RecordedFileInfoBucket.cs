@@ -29,7 +29,14 @@ public sealed class RecordedFileInfoBucket
 	///     Assertions on recorded calls against the <see cref="IFileInfo" /> instance for <paramref name="path" />.
 	/// </summary>
 	public RecordedFileInfoInstance this[string path]
-		=> new(_subject, path);
+	{
+		get
+		{
+			ThrowHelper.ThrowIfNull(path, nameof(path));
+
+			return new RecordedFileInfoInstance(_subject, path);
+		}
+	}
 
 	/// <summary>
 	///     Recorded calls to <see cref="IFileInfoFactory.New(string)" />.

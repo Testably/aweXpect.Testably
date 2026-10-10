@@ -16,6 +16,8 @@ public static partial class DirectoryInfoExtensions
 		this IThat<IDirectoryInfo> source,
 		string expected)
 	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IDirectoryInfo, IThat<IDirectoryInfo>>(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)

@@ -28,8 +28,8 @@ public static partial class ChangeDescriptionExtensions
 	{
 		if (expected == default)
 		{
-			throw new ArgumentException(
-				"The expected change type must include at least one flag.", nameof(expected));
+			throw Tracing.WriteException(new ArgumentException(
+				"The expected change type must include at least one flag.", nameof(expected)));
 		}
 
 		return new AndOrResult<TChange, IThat<TChange>>(
@@ -50,8 +50,8 @@ public static partial class ChangeDescriptionExtensions
 	{
 		if (unexpected == default)
 		{
-			throw new ArgumentException(
-				"The unexpected change type must include at least one flag.", nameof(unexpected));
+			throw Tracing.WriteException(new ArgumentException(
+				"The unexpected change type must include at least one flag.", nameof(unexpected)));
 		}
 
 		return new AndOrResult<TChange, IThat<TChange>>(

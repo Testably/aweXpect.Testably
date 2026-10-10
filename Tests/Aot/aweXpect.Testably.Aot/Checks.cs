@@ -121,6 +121,10 @@ internal static class Checks
 		new("a recorded call passes",
 			() => ShouldPass(async () => await That(CreateFileSystem().Statistics).Recorded()
 				.File.WriteAllText(path: p => p == "a.txt").Once())),
+		new("a recorded call whose predicate throws fails",
+			() => ShouldFail(async () => await That(CreateFileSystem().Statistics).Recorded()
+					.File.WriteAllText(path: _ => throw new InvalidOperationException("boom")).Never(),
+				"but the path predicate did throw an InvalidOperationException", "boom")),
 		new("a call that was not recorded fails",
 			() => ShouldFail(async () => await That(CreateFileSystem().Statistics).Recorded()
 					.File.Delete().Once(),

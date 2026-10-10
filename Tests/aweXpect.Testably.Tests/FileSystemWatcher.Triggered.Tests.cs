@@ -340,7 +340,11 @@ public sealed partial class FileSystemWatcher
 				fs.InitializeIn("/x");
 				using IFileSystemWatcher sut = fs.FileSystemWatcher.New("/x");
 				sut.EnableRaisingEvents = true;
+				using IAwaitableCallback<WatcherChangeDescription> reg = fs.Watcher.OnTriggered(
+					_ => { },
+					c => c.FileSystemWatcher == sut && c.ChangeType == WatcherChangeTypes.Created);
 				fs.File.WriteAllText("foo.txt", "x");
+				_ = reg.Wait(1, TimeSpan.FromSeconds(30));
 
 				async Task Act()
 				{
