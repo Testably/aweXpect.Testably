@@ -24,7 +24,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileInfo.New with fileName matching f => f == "foo.txt" exactly once,
+						             has recorded a call to FileInfo.New with fileName matching f => f == "foo.txt" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -57,7 +57,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to FileInfo.Wrap with fileInfo matching _ => true exactly once,
+						             has recorded a call to FileInfo.Wrap with fileInfo matching _ => true exactly once,
 						             but it was recorded 0 times
 						             """);
 				}

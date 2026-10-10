@@ -135,7 +135,7 @@ public sealed partial class ChangeDescriptionTests
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that change
-					             has change type Created, Deleted,
+					             has change type Created | Deleted,
 					             but it was Created
 					             """);
 			}

@@ -38,7 +38,7 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that sut
-					              has file '{path}',
+					              has file {Formatter.Format(path)},
 					              but it did not exist
 					              """);
 			}
@@ -58,7 +58,7 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that sut
-					              has file '{path}',
+					              has file {Formatter.Format(path)},
 					              but it was a directory
 					              """);
 			}

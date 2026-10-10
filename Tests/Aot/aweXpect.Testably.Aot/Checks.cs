@@ -21,12 +21,12 @@ internal static class Checks
 			() => ShouldPass(async () => await That(CreateFileSystem()).HasFile("a.txt"))),
 		new("a missing file fails",
 			() => ShouldFail(async () => await That(CreateFileSystem()).HasFile("missing.txt"),
-				"has file 'missing.txt'", "but it did not exist")),
+				"has file \"missing.txt\"", "but it did not exist")),
 		new("an existing directory passes",
 			() => ShouldPass(async () => await That(CreateFileSystem()).HasDirectory("dir"))),
 		new("a file instead of a directory fails",
 			() => ShouldFail(async () => await That(CreateFileSystem()).HasDirectory("a.txt"),
-				"has directory 'a.txt'", "but it was a file")),
+				"has directory \"a.txt\"", "but it was a file")),
 		new("an existing drive passes",
 			() => ShouldPass(async () =>
 			{
@@ -39,7 +39,7 @@ internal static class Checks
 			{
 				MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
 				await That(fileSystem).HasDrive("Z:\\");
-			}, "has drive 'Z:\\'", "but it did not exist")),
+			}, "has drive \"Z:\\\\\"", "but it did not exist")),
 		new("an equal string content passes",
 			() => ShouldPass(async () => await That(CreateFileSystem()).HasFile("a.txt")
 				.WithContent("HELLO").IgnoringCase())),
@@ -51,13 +51,13 @@ internal static class Checks
 				.WithContent(Encoding.UTF8.GetBytes("hello")))),
 		new("a differing binary content fails",
 			() => ShouldFail(async () => await That(CreateFileSystem()).HasFile("a.txt").WithContent([1, 2, 3,]),
-				"has file 'a.txt' with content equal to", "but it differed")),
+				"has file \"a.txt\" with content equal to", "but it differed")),
 		new("an expectation on the file bridged with Which passes",
 			() => ShouldPass(async () => await That(CreateFileSystem()).HasFile("a.txt")
 				.Which.HasLength(5).And.HasContent("hello"))),
 		new("a failing expectation on the file bridged with Which fails",
 			() => ShouldFail(async () => await That(CreateFileSystem()).HasFile("a.txt").Which.HasLength(99),
-				"has file 'a.txt' which has length 99", "but it was 5")),
+				"has file \"a.txt\" which has length 99", "but the file was 5")),
 		new("an equal last write time passes",
 			() => ShouldPass(async () =>
 			{
@@ -71,15 +71,20 @@ internal static class Checks
 				MockFileSystem fileSystem = CreateFileSystem();
 				DateTime lastWriteTime = fileSystem.File.GetLastWriteTime("a.txt");
 				await That(fileSystem).HasFile("a.txt").WithLastWriteTime(lastWriteTime.AddDays(1));
-			}, "has file 'a.txt' with last write time equal to", "but it was")),
+			}, "has file \"a.txt\" with last write time equal to", "but it was")),
 		new("a triggered notification passes",
 			() => ShouldPass(async () => await That(CreateFileSystem())
 				.TriggeredNotification(c => c.Name == "a.txt"))),
 		new("a missing notification fails",
 			() => ShouldFail(async () => await That(CreateFileSystem())
 					.TriggeredNotification(c => c.Name == "other.txt").Within(ShortTimeout),
-				"triggered a notification matching c => c.Name == \"other.txt\" at least once within 0:00.100",
+				"has triggered a notification matching c => c.Name == \"other.txt\" at least once within 0:00.100",
 				"but it was not triggered")),
+		new("a notification triggered too often fails with the matching changes",
+			() => ShouldFail(async () => await That(CreateFileSystem())
+					.TriggeredNotification(c => c.Name == "a.txt").Never(),
+				"has never triggered a notification matching c => c.Name == \"a.txt\"", "but it was triggered",
+				"Matching changes:", "a.txt")),
 		new("a triggered watcher passes",
 			() => ShouldPass(async () =>
 			{
@@ -89,7 +94,7 @@ internal static class Checks
 				watcher.EnableRaisingEvents = true;
 				fileSystem.File.WriteAllText("a.txt", "hello");
 				await That(watcher).Triggered()
-					.Which(c => c.HasName("a.txt").And.HasChangeType(WatcherChangeTypes.Created))
+					.Matching(c => c.HasName("a.txt").And.HasChangeType(WatcherChangeTypes.Created))
 					.Exactly(1.Times())
 					.Within(ShortTimeout);
 			})),
@@ -101,7 +106,7 @@ internal static class Checks
 				using IFileSystemWatcher watcher = fileSystem.FileSystemWatcher.New("/watched");
 				watcher.EnableRaisingEvents = true;
 				await That(watcher).Triggered().Within(ShortTimeout);
-			}, "triggered an event at least once within 0:00.100", "but it was not triggered")),
+			}, "has triggered an event at least once within 0:00.100", "but it was not triggered")),
 		new("an executed timer passes",
 			() => ShouldPass(async () =>
 			{
@@ -117,7 +122,7 @@ internal static class Checks
 				using ITimerMock timer = (ITimerMock)timeSystem.Timer.New(
 					_ => { }, null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
 				await That(timer).Executed().Within(ShortTimeout).Exactly(3.Times());
-			}, "executed exactly 3 times within 0:00.100", "but it was not executed")),
+			}, "has executed exactly 3 times within 0:00.100", "but it was not executed")),
 		new("a recorded call passes",
 			() => ShouldPass(async () => await That(CreateFileSystem().Statistics).Recorded()
 				.File.WriteAllText(path: p => p == "a.txt").Once())),
@@ -128,7 +133,7 @@ internal static class Checks
 		new("a call that was not recorded fails",
 			() => ShouldFail(async () => await That(CreateFileSystem().Statistics).Recorded()
 					.File.Delete().Once(),
-				"recorded a call to File.Delete exactly once", "but it was recorded 0 times")),
+				"has recorded a call to File.Delete exactly once", "but it was recorded 0 times")),
 		new("a recorded property access passes",
 			() => ShouldPass(async () =>
 			{

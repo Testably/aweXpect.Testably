@@ -26,7 +26,7 @@ For example, `Expect.That(fileSystem).HasFile("yesterday.txt")` fails with:
 
 ```text title="Failure message"
 Expected that fileSystem
-has file 'yesterday.txt',
+has file "yesterday.txt",
 but it did not exist
 ```
 
@@ -49,7 +49,7 @@ message shows where and includes the file content:
 
 ```text title="Failure message"
 Expected that fileSystem
-has file 'let-it-be.txt' with content equal to "let it go",
+has file "let-it-be.txt" with content equal to "let it go",
 but it was "let it be", which differs at index 7:
           ↓ (actual)
   "let it be"

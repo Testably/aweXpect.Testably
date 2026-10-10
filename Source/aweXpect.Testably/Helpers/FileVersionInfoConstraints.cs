@@ -38,7 +38,7 @@ internal static class FileVersionInfoConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has ").Append(propertyName).Append(' ')
+			=> stringBuilder.Append(Grammars.Verb("has ", "have ")).Append(propertyName).Append(' ')
 				.Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -54,7 +54,7 @@ internal static class FileVersionInfoConstraints
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have ").Append(propertyName).Append(' ')
+			=> stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")).Append(propertyName).Append(' ')
 				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -96,7 +96,10 @@ internal static class FileVersionInfoConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has ").Append(propertyName).Append(' ').Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("has ", "have ")).Append(propertyName).Append(' ');
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -106,12 +109,16 @@ internal static class FileVersionInfoConstraints
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" was ").Append(_actualValue);
+				stringBuilder.Append(It).Append(" was ");
+				Formatter.Format(stringBuilder, _actualValue);
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have ").Append(propertyName).Append(' ').Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")).Append(propertyName).Append(' ');
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

@@ -57,7 +57,7 @@ public sealed partial class DirectoryInfo
 					.WithMessage("""
 					             Expected that rootDirInfo
 					             whose parent is not empty,
-					             but it did throw an InvalidOperationException:
+					             but the parent did throw an InvalidOperationException:
 					               Cannot assert on the parent of a root directory because it has no parent.
 					             """).And
 					.WithInner<InvalidOperationException>(inner => inner
@@ -81,7 +81,7 @@ public sealed partial class DirectoryInfo
 					.WithMessage("""
 					             Expected that dirInfo
 					             has name equal to "src" and whose parent has name equal to "wrong",
-					             but it was "project", which differs at index 0:
+					             but the parent was "project", which differs at index 0:
 					                ↓ (actual)
 					               "project"
 					               "wrong"

@@ -42,7 +42,10 @@ public static partial class DriveInfoExtensions
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has drive type ").Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("has drive type ", "have drive type "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -52,12 +55,16 @@ public static partial class DriveInfoExtensions
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" was ").Append(_actualDriveType);
+				stringBuilder.Append(It).Append(" was ");
+				Formatter.Format(stringBuilder, _actualDriveType);
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have drive type ").Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("does not have drive type ", "do not have drive type "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

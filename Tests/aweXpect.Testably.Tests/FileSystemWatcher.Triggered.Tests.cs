@@ -33,7 +33,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered an event at least once within 0:00.100,
+					             has triggered an event at least once within 0:00.100,
 					             but it was not triggered
 					             """);
 			}
@@ -112,13 +112,13 @@ public sealed partial class FileSystemWatcher
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered an event matching c => c.Name == "other.txt" at least once within 0:00.100,
+					             has triggered an event matching c => c.Name == "other.txt" at least once within 0:00.100,
 					             but it was not triggered
 					             """);
 			}
 
 			[Fact]
-			public async Task WhenLiveEventDoesNotMatchWhich_ShouldFailAfterTimeout()
+			public async Task WhenLiveEventDoesNotMatchFilter_ShouldFailAfterTimeout()
 			{
 				MockFileSystem fs = new();
 				fs.InitializeIn("/x");
@@ -133,14 +133,14 @@ public sealed partial class FileSystemWatcher
 				async Task Act()
 				{
 					await That(sut).Triggered()
-						.Which(c => c.HasName("other.txt"))
+						.Matching(c => c.HasName("other.txt"))
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered an event which has name equal to "other.txt" at least once within 0:00.100,
+					             has triggered an event that has name equal to "other.txt" at least once within 0:00.100,
 					             but it was not triggered
 					             """);
 			}
@@ -168,7 +168,7 @@ public sealed partial class FileSystemWatcher
 			}
 
 			[Fact]
-			public async Task WhenLiveEventMatchesWhich_ShouldSucceedWithinTimeout()
+			public async Task WhenLiveEventMatchesFilter_ShouldSucceedWithinTimeout()
 			{
 				MockFileSystem fs = new();
 				fs.InitializeIn("/x");
@@ -183,7 +183,7 @@ public sealed partial class FileSystemWatcher
 				async Task Act()
 				{
 					await That(sut).Triggered()
-						.Which(c => c.HasName("foo.txt"))
+						.Matching(c => c.HasName("foo.txt"))
 						.Within(TimeSpan.FromSeconds(30));
 				}
 
@@ -206,7 +206,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered an event at least once within 0:00.100,
+					             has triggered an event at least once within 0:00.100,
 					             but it was not triggered
 					             """);
 			}
@@ -255,13 +255,13 @@ public sealed partial class FileSystemWatcher
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered an event at least once within 0:00.010,
+					             has triggered an event at least once within 0:00.010,
 					             but it was <null>
 					             """);
 			}
 
 			[Fact]
-			public async Task WhichWithInnerExpectation_ComposesWithQuantifier()
+			public async Task MatchingWithInnerExpectation_ComposesWithQuantifier()
 			{
 				MockFileSystem fs = new();
 				fs.InitializeIn("/x");
@@ -277,7 +277,7 @@ public sealed partial class FileSystemWatcher
 				async Task Act()
 				{
 					await That(sut).Triggered()
-						.Which(c => c.HasChangeType(WatcherChangeTypes.Created))
+						.Matching(c => c.HasChangeType(WatcherChangeTypes.Created))
 						.Exactly(2.Times())
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
@@ -286,7 +286,7 @@ public sealed partial class FileSystemWatcher
 			}
 
 			[Fact]
-			public async Task WhichWithInnerExpectation_WhenChangeDoesNotMatch_ShouldFail()
+			public async Task MatchingWithInnerExpectation_WhenChangeDoesNotMatch_ShouldFail()
 			{
 				MockFileSystem fs = new();
 				fs.InitializeIn("/x");
@@ -297,20 +297,20 @@ public sealed partial class FileSystemWatcher
 				async Task Act()
 				{
 					await That(sut).Triggered()
-						.Which(c => c.HasName("other.txt"))
+						.Matching(c => c.HasName("other.txt"))
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered an event which has name equal to "other.txt" at least once within 0:00.100,
+					             has triggered an event that has name equal to "other.txt" at least once within 0:00.100,
 					             but it was not triggered
 					             """);
 			}
 
 			[Fact]
-			public async Task WhichWithReason_WhenChangeDoesNotMatch_ShouldIncludeReason()
+			public async Task MatchingWithReason_WhenChangeDoesNotMatch_ShouldIncludeReason()
 			{
 				MockFileSystem fs = new();
 				fs.InitializeIn("/x");
@@ -321,20 +321,20 @@ public sealed partial class FileSystemWatcher
 				async Task Act()
 				{
 					await That(sut).Triggered()
-						.Which(c => c.HasName("other.txt").Because("REASON-R"))
+						.Matching(c => c.HasName("other.txt").Because("REASON-R"))
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered an event which has name equal to "other.txt" at least once within 0:00.100, because REASON-R,
+					             has triggered an event that has name equal to "other.txt" at least once within 0:00.100, because REASON-R,
 					             but it was not triggered
 					             """);
 			}
 
 			[Fact]
-			public async Task WhichWithInnerExpectation_WhenChangeMatches_ShouldSucceed()
+			public async Task MatchingWithInnerExpectation_WhenChangeMatches_ShouldSucceed()
 			{
 				MockFileSystem fs = new();
 				fs.InitializeIn("/x");
@@ -349,14 +349,14 @@ public sealed partial class FileSystemWatcher
 				async Task Act()
 				{
 					await That(sut).Triggered()
-						.Which(c => c.HasName("foo.txt").And.HasChangeType(WatcherChangeTypes.Created));
+						.Matching(c => c.HasName("foo.txt").And.HasChangeType(WatcherChangeTypes.Created));
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
-			public async Task WhichWithNullExpectation_ShouldThrowArgumentNullException()
+			public async Task MatchingWithNullExpectation_ShouldThrowArgumentNullException()
 			{
 				MockFileSystem fs = new();
 				fs.InitializeIn("/x");
@@ -365,7 +365,7 @@ public sealed partial class FileSystemWatcher
 
 				async Task Act()
 				{
-					await That(sut).Triggered().Which(null!);
+					await That(sut).Triggered().Matching(null!);
 				}
 
 				await That(Act).Throws<ArgumentNullException>()
@@ -396,8 +396,11 @@ public sealed partial class FileSystemWatcher
 				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
-					               triggered an event matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
-					               but it was triggered twice in [
+					               has triggered an event matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
+					               but it was triggered twice
+
+					               Matching changes:
+					               [
 					                 {{created[0]}},
 					                 {{created[1]}}
 					               ]
@@ -445,7 +448,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered an event matching c => c.Name == "other.txt" at least once within 0:00.100,
+					             has triggered an event matching c => c.Name == "other.txt" at least once within 0:00.100,
 					             but it was not triggered
 					             """);
 			}
@@ -492,8 +495,11 @@ public sealed partial class FileSystemWatcher
 				await That(Act).Throws()
 					.WithMessage($$"""
 					               Expected that sut
-					               triggered an event matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
-					               but it was triggered 3 times in [
+					               has triggered an event matching c => c.ChangeType == WatcherChangeTypes.Created exactly once within 0:00.100,
+					               but it was triggered 3 times
+
+					               Matching changes:
+					               [
 					                 {{created[0]}},
 					                 {{created[1]}},
 					                 {{created[2]}}
@@ -517,7 +523,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             triggered an event at least once within 0:00,
+					             has triggered an event at least once within 0:00,
 					             but it was not triggered
 					             """);
 			}

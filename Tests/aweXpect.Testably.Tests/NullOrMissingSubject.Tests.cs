@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.IO.Abstractions;
 using System.Text;
 using Testably.Abstractions.Testing;
@@ -369,7 +369,7 @@ public sealed class NullOrMissingSubject
 				=> await That(subject).HasContent().NotSameAs("foo.txt");
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*does not have the same content as file 'foo.txt',*but it was <null>").AsWildcard()
+				.WithMessage("*does not have the same content as file \"foo.txt\",*but it was <null>").AsWildcard()
 				.Because("a null subject fails an expectation that inspects it and its negation alike");
 		}
 
@@ -382,7 +382,7 @@ public sealed class NullOrMissingSubject
 				=> await That(subject).HasContent().SameAs("foo.txt");
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has the same content as file 'foo.txt',*but it was <null>").AsWildcard()
+				.WithMessage("*has the same content as file \"foo.txt\",*but it was <null>").AsWildcard()
 				.Because("a null subject fails an expectation that inspects it and its negation alike");
 		}
 
@@ -503,7 +503,7 @@ public sealed class NullOrMissingSubject
 				=> await That(subject).HasFile("foo.txt").WithContent().NotSameAs("bar.txt");
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*with not the same content as file 'bar.txt',*but it was <null>").AsWildcard()
+				.WithMessage("*with not the same content as file \"bar.txt\",*but it was <null>").AsWildcard()
 				.Because("a null subject fails an expectation that inspects it and its negation alike");
 		}
 
@@ -516,7 +516,7 @@ public sealed class NullOrMissingSubject
 				=> await That(subject).HasFile("foo.txt").WithContent().SameAs("bar.txt");
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*with the same content as file 'bar.txt',*but it was <null>").AsWildcard()
+				.WithMessage("*with the same content as file \"bar.txt\",*but it was <null>").AsWildcard()
 				.Because("a null subject fails an expectation that inspects it and its negation alike");
 		}
 

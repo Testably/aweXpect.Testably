@@ -62,8 +62,11 @@ public sealed class Quantifiers
 			await That(Act).Throws<XunitException>()
 				.WithMessage($$"""
 				               Expected that sut
-				               triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created at most once within 0:00.100,
-				               but it was triggered twice in [
+				               has triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created at most once within 0:00.100,
+				               but it was triggered twice
+
+				               Matching changes:
+				               [
 				                 {{created[0]}},
 				                 {{created[1]}}
 				               ]
@@ -100,8 +103,11 @@ public sealed class Quantifiers
 			await That(Act).Throws<XunitException>()
 				.WithMessage($$"""
 				               Expected that sut
-				               triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created fewer than twice within 0:00.100,
-				               but it was triggered twice in [
+				               has triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created fewer than twice within 0:00.100,
+				               but it was triggered twice
+
+				               Matching changes:
+				               [
 				                 {{created[0]}},
 				                 {{created[1]}}
 				               ]
@@ -155,8 +161,11 @@ public sealed class Quantifiers
 			await That(Act).Throws<XunitException>()
 				.WithMessage($$"""
 				               Expected that sut
-				               triggered an event matching c => c.ChangeType == WatcherChangeTypes.Created at most once within 0:00.100,
-				               but it was triggered twice in [
+				               has triggered an event matching c => c.ChangeType == WatcherChangeTypes.Created at most once within 0:00.100,
+				               but it was triggered twice
+
+				               Matching changes:
+				               [
 				                 {{created[0]}},
 				                 {{created[1]}}
 				               ]
@@ -201,8 +210,11 @@ public sealed class Quantifiers
 			await That(Act).Throws<XunitException>()
 				.WithMessage($$"""
 				               Expected that sut
-				               triggered an event matching c => c.ChangeType == WatcherChangeTypes.Created fewer than twice within 0:00.100,
-				               but it was triggered twice in [
+				               has triggered an event matching c => c.ChangeType == WatcherChangeTypes.Created fewer than twice within 0:00.100,
+				               but it was triggered twice
+
+				               Matching changes:
+				               [
 				                 {{created[0]}},
 				                 {{created[1]}}
 				               ]
@@ -272,7 +284,7 @@ public sealed class Quantifiers
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that sut
-				             executed between 1 and 3 times within 0:00.100,
+				             has executed between 1 and 3 times within 0:00.100,
 				             but it was not executed
 				             """);
 		}
@@ -307,7 +319,7 @@ public sealed class Quantifiers
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that sut
-				             executed more than once within 0:00.100,
+				             has executed more than once within 0:00.100,
 				             but it was not executed
 				             """);
 		}
@@ -335,7 +347,7 @@ public sealed class Quantifiers
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that fileSystem.Statistics
-				             recorded a call to File.WriteAllText at most once,
+				             has recorded a call to File.WriteAllText at most once,
 				             but it was recorded 2 times
 				             """);
 		}
@@ -366,7 +378,7 @@ public sealed class Quantifiers
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that fileSystem.Statistics
-				             recorded a call to File.WriteAllText fewer than twice,
+				             has recorded a call to File.WriteAllText fewer than twice,
 				             but it was recorded 2 times
 				             """);
 		}
@@ -409,7 +421,7 @@ public sealed class Quantifiers
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that fileSystem.Statistics
-				             recorded a get of FileInfo["foo.txt"].IsReadOnly at most once,
+				             has recorded a get of FileInfo["foo.txt"].IsReadOnly at most once,
 				             but it was recorded 2 times
 				             """);
 		}
@@ -442,7 +454,7 @@ public sealed class Quantifiers
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that fileSystem.Statistics
-				             recorded a get of FileInfo["foo.txt"].IsReadOnly fewer than twice,
+				             has recorded a get of FileInfo["foo.txt"].IsReadOnly fewer than twice,
 				             but it was recorded 2 times
 				             """);
 		}

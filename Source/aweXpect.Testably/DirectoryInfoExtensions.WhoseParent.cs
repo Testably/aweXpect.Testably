@@ -16,7 +16,7 @@ public static partial class DirectoryInfoExtensions
 		public IThat<IDirectoryInfo> WhoseParent
 			=> new ThatSubject<IDirectoryInfo>(
 				source.Get().ExpectationBuilder
-					.ForWhich<IDirectoryInfo, IDirectoryInfo>(GetParentOrThrow, " whose parent "));
+					.ForWhich<IDirectoryInfo, IDirectoryInfo>(GetParentOrThrow, " whose parent ", "the parent"));
 	}
 
 	private static IDirectoryInfo GetParentOrThrow(IDirectoryInfo directory)

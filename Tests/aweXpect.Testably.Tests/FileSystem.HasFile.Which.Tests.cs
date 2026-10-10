@@ -39,8 +39,8 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that sut
-						             has file 'a.txt' which has length 99,
-						             but it was 5
+						             has file "a.txt" which has length 99,
+						             but the file was 5
 						             """);
 				}
 

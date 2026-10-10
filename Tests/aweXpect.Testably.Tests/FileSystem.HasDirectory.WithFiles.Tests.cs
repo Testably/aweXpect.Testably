@@ -28,7 +28,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files all are read-only,
+						              has directory {Formatter.Format(path)} whose files all are read-only,
 						              but none of at least 1 were*
 						              """).AsWildcard()
 						.Because("the verb agrees with the plural files");
@@ -51,7 +51,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files all do not exist,
+						              has directory {Formatter.Format(path)} whose files all do not exist,
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the verb agrees with the plural files");
@@ -74,7 +74,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files all have attribute Hidden,
+						              has directory {Formatter.Format(path)} whose files all have attribute Hidden,
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the verb agrees with the plural files");
@@ -98,7 +98,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files all have content equal to "SOME-CONTENT",
+						              has directory {Formatter.Format(path)} whose files all have content equal to "SOME-CONTENT",
 						              but none of at least 1 did
 
 						              Not matching items (files):
@@ -171,7 +171,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files all do not have content equal to "some-content",
+						              has directory {Formatter.Format(path)} whose files all do not have content equal to "some-content",
 						              but none of at least 1 did
 
 						              Not matching items (files):
@@ -208,7 +208,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files all have content equal to "other",
+						              has directory {Formatter.Format(path)} whose files all have content equal to "other",
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the verb agrees with the plural files and is not preceded by an extra space");
@@ -231,7 +231,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files all do not have content equal to "some-content",
+						              has directory {Formatter.Format(path)} whose files all do not have content equal to "some-content",
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the negation belongs to the plural verb only");
@@ -256,7 +256,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files all do not have creation time equal to {Formatter.Format(creationTime)},
+						              has directory {Formatter.Format(path)} whose files all do not have creation time equal to {Formatter.Format(creationTime)},
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the negation belongs to the plural verb only");
@@ -279,7 +279,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files all have extension equal to ".md",
+						              has directory {Formatter.Format(path)} whose files all have extension equal to ".md",
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the verb agrees with the plural files");
@@ -302,7 +302,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files all have length 3,
+						              has directory {Formatter.Format(path)} whose files all have length 3,
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the verb agrees with the plural files");
@@ -325,7 +325,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files all have name equal to "baz.txt",
+						              has directory {Formatter.Format(path)} whose files all have name equal to "baz.txt",
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the verb agrees with the plural files");
@@ -349,7 +349,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files all do not have name equal to "bar.txt",
+						              has directory {Formatter.Format(path)} whose files all do not have name equal to "bar.txt",
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the negation belongs to the plural verb only");
@@ -375,7 +375,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files all have the same content as file '{fullExpectedPath}',
+						              has directory {Formatter.Format(path)} whose files all have the same content as file {Formatter.Format(fullExpectedPath)},
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the verb agrees with the plural files");
@@ -412,7 +412,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose files are empty,
+						              has directory {Formatter.Format(path)} whose files are empty,
 						              but files were [
 						                foo{Path.DirectorySeparatorChar}bar.txt
 						              ]

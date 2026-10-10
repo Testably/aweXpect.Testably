@@ -64,7 +64,7 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that sut
-					             has drive 'Z:\',
+					             has drive "Z:\\",
 					             but it did not exist
 					             """);
 			}

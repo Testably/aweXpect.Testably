@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.IO.Abstractions;
 using System.Text;
 using Testably.Abstractions.Testing;
@@ -48,6 +49,39 @@ public sealed partial class FileInfo
 					             has length 5,
 					             but it was 3
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenCultureHasOtherNegativeSign_ShouldFormatLengthIndependentOfCulture()
+			{
+				MockFileSystem fileSystem = new();
+				// ReSharper disable once MethodHasAsyncOverload
+				fileSystem.File.WriteAllBytes("foo.txt", Encoding.UTF8.GetBytes("baz"));
+				IFileInfo fileInfo = fileSystem.FileInfo.New("foo.txt");
+				CultureInfo culture = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+				culture.NumberFormat.NegativeSign = "~";
+				CultureInfo previousCulture = CultureInfo.CurrentCulture;
+
+				async Task Act()
+				{
+					await That(fileInfo).HasLength(-1);
+				}
+
+				try
+				{
+					CultureInfo.CurrentCulture = culture;
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that fileInfo
+						             has length -1,
+						             but it was 3
+						             """)
+						.Because("numbers are formatted like in the built-in messages, independent of the current culture");
+				}
+				finally
+				{
+					CultureInfo.CurrentCulture = previousCulture;
+				}
 			}
 
 			[Fact]

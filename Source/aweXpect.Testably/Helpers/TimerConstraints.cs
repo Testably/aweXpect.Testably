@@ -72,11 +72,11 @@ internal static class TimerConstraints
 		{
 			if (quantifier.IsNever(false))
 			{
-				stringBuilder.Append(negated ? "executed at least once" : "did not execute");
+				stringBuilder.Append(negated ? "has executed at least once" : "has never executed");
 			}
 			else
 			{
-				stringBuilder.Append(negated ? "did not execute " : "executed ").Append(quantifier);
+				stringBuilder.Append(negated ? "has not executed " : "has executed ").Append(quantifier);
 			}
 
 			stringBuilder.Append(options);

@@ -317,8 +317,10 @@ public partial class FileResult<TParent>
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(isInverted ? "with not the same content as file '" : "with the same content as file '")
-				.Append(_fullExpectedPath ?? expectedPath).Append('\'');
+		{
+			stringBuilder.Append(isInverted ? "with not the same content as file " : "with the same content as file ");
+			Formatter.Format(stringBuilder, _fullExpectedPath ?? expectedPath);
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -328,7 +330,8 @@ public partial class FileResult<TParent>
 			}
 			else if (!_isExpectedFound)
 			{
-				stringBuilder.Append(It).Append(" did not contain any file at '").Append(_fullExpectedPath).Append('\'');
+				stringBuilder.Append(It).Append(" did not contain any file at ");
+				Formatter.Format(stringBuilder, _fullExpectedPath);
 			}
 			else
 			{
@@ -347,7 +350,8 @@ public partial class FileResult<TParent>
 			}
 			else if (!_isExpectedFound)
 			{
-				stringBuilder.Append(It).Append(" did not contain any file at '").Append(_fullExpectedPath).Append('\'');
+				stringBuilder.Append(It).Append(" did not contain any file at ");
+				Formatter.Format(stringBuilder, _fullExpectedPath);
 			}
 			else
 			{

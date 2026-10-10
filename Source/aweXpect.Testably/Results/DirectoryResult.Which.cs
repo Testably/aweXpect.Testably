@@ -11,7 +11,7 @@ public partial class DirectoryResult<TParent>
 	public IThat<IDirectoryInfo> Which
 		=> new ThatSubject<IDirectoryInfo>(
 			_expectationBuilder.ForWhich<TParent, IDirectoryInfo>(
-				ResolveDirectoryInfo, " which "));
+				ResolveDirectoryInfo, " which ", "the directory"));
 
 	private IDirectoryInfo? ResolveDirectoryInfo(TParent source)
 	{

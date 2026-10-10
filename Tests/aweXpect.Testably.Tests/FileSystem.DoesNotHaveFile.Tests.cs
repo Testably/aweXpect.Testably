@@ -24,7 +24,7 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that sut
-					              does not have file '{path}',
+					              does not have file {Formatter.Format(path)},
 					              but it did
 					              """);
 			}

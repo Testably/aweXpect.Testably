@@ -39,7 +39,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that dirInfo
-					             has directory 'bar',
+					             has directory "bar",
 					             but it did not exist
 					             """);
 			}

@@ -90,13 +90,19 @@ public static partial class FileSystemExtensions
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has drive '").Append(driveName).Append('\'');
+		{
+			stringBuilder.Append(Grammars.Verb("has drive ", "have drive "));
+			Formatter.Format(stringBuilder, driveName);
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did not exist");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have drive '").Append(driveName).Append('\'');
+		{
+			stringBuilder.Append(Grammars.Verb("does not have drive ", "do not have drive "));
+			Formatter.Format(stringBuilder, driveName);
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did");

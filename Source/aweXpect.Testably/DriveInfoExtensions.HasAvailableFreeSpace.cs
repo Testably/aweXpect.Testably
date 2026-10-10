@@ -41,7 +41,10 @@ public static partial class DriveInfoExtensions
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has available free space ").Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("has available free space ", "have available free space "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -51,12 +54,16 @@ public static partial class DriveInfoExtensions
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" was ").Append(_actualAvailableFreeSpace);
+				stringBuilder.Append(It).Append(" was ");
+				Formatter.Format(stringBuilder, _actualAvailableFreeSpace);
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have available free space ").Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("does not have available free space ", "do not have available free space "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

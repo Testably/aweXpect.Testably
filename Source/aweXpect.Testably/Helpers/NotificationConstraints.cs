@@ -25,8 +25,7 @@ internal static class NotificationConstraints
 	internal sealed class TriggeredNotificationConstraint<TSubject, TChange>(
 		string it,
 		ExpectationGrammars grammars,
-		string normalExpectation,
-		string negatedExpectation,
+		string change,
 		Func<TSubject, Action<TChange>, IAwaitableCallback<TChange>> subscribe,
 		TriggerNotificationFilter<TChange> filter,
 		Quantifier quantifier,
@@ -168,7 +167,14 @@ internal static class NotificationConstraints
 		{
 			if (_unanswered is { } unanswered)
 			{
+				contexts.Add(new ResultContext.Fixed("Change", Formatter.Format(unanswered.Change)));
 				contexts.Visit(unanswered.Result);
+			}
+			else if (_matches.Count > 0)
+			{
+				TChange[] matches = _matches.ToArray();
+				contexts.Add(new ResultContext.SyncCallback("Matching changes",
+					() => Formatter.Format(matches, FormattingOptions.MultipleLines)));
 			}
 		}
 
@@ -185,11 +191,11 @@ internal static class NotificationConstraints
 		{
 			if (quantifier.IsNever(isNegated))
 			{
-				stringBuilder.Append(negatedExpectation).Append(filter);
+				stringBuilder.Append("has never triggered ").Append(change).Append(filter);
 			}
 			else
 			{
-				stringBuilder.Append(normalExpectation).Append(filter)
+				stringBuilder.Append("has triggered ").Append(change).Append(filter)
 					.Append(' ').Append(quantifier.ToString(isNegated));
 			}
 
@@ -210,7 +216,7 @@ internal static class NotificationConstraints
 
 			if (_unanswered is { } unanswered)
 			{
-				stringBuilder.Append("for change ").Append(unanswered.Change).Append(", ");
+				stringBuilder.Append(It).Append(" triggered ").Append(change).Append(" for which ");
 				unanswered.Result.AppendResult(stringBuilder, indentation);
 				return;
 			}
@@ -224,18 +230,6 @@ internal static class NotificationConstraints
 
 			stringBuilder.Append("triggered ");
 			AppendTimes(stringBuilder, _matches.Count);
-			stringBuilder.Append(" in [");
-			for (int i = 0; i < _matches.Count; i++)
-			{
-				if (i > 0)
-				{
-					stringBuilder.Append(',');
-				}
-
-				stringBuilder.Append(Environment.NewLine).Append("  ").Append(_matches[i]);
-			}
-
-			stringBuilder.Append(Environment.NewLine).Append(']');
 		}
 
 		private static void AppendTimes(StringBuilder stringBuilder, int count)
@@ -327,7 +321,7 @@ internal static class NotificationConstraints
 			firstInGroup = true;
 			foreach (ManualExpectationBuilder<TChange> builder in _asyncFilters)
 			{
-				sb.Append(firstInGroup ? " which " : " and ");
+				sb.Append(firstInGroup ? " that " : " and ");
 				builder.AppendExpectation(sb, "");
 				firstInGroup = false;
 			}
@@ -360,7 +354,10 @@ internal static class NotificationConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has change type ").Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("has change type ", "have change type "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -370,12 +367,16 @@ internal static class NotificationConstraints
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" was ").Append(Actual.ChangeType);
+				stringBuilder.Append(It).Append(" was ");
+				Formatter.Format(stringBuilder, Actual.ChangeType);
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have change type ").Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("does not have change type ", "do not have change type "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -414,7 +415,10 @@ internal static class NotificationConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has file system type ").Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("has file system type ", "have file system type "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -424,12 +428,16 @@ internal static class NotificationConstraints
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" was ").Append(Actual.FileSystemType);
+				stringBuilder.Append(It).Append(" was ");
+				Formatter.Format(stringBuilder, Actual.FileSystemType);
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have file system type ").Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("does not have file system type ", "do not have file system type "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -468,7 +476,10 @@ internal static class NotificationConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has notify filters ").Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("has notify filters ", "have notify filters "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -478,12 +489,16 @@ internal static class NotificationConstraints
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" was ").Append(Actual.NotifyFilters);
+				stringBuilder.Append(It).Append(" was ");
+				Formatter.Format(stringBuilder, Actual.NotifyFilters);
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have notify filters ").Append(expected);
+		{
+			stringBuilder.Append(Grammars.Verb("does not have notify filters ", "do not have notify filters "));
+			Formatter.Format(stringBuilder, expected);
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -527,7 +542,7 @@ internal static class NotificationConstraints
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has ").Append(propertyName).Append(' ')
+			=> stringBuilder.Append(Grammars.Verb("has ", "have ")).Append(propertyName).Append(' ')
 				.Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -543,7 +558,7 @@ internal static class NotificationConstraints
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have ").Append(propertyName).Append(' ')
+			=> stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")).Append(propertyName).Append(' ')
 				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

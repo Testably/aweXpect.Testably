@@ -42,7 +42,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.Combine with path1 matching p => p == "foo" exactly once,
+						             has recorded a call to Path.Combine with path1 matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -61,7 +61,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.Combine with path2 matching p => p == "foo" exactly once,
+						             has recorded a call to Path.Combine with path2 matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -80,7 +80,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.Combine with path3 matching p => p == "foo" exactly once,
+						             has recorded a call to Path.Combine with path3 matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -99,7 +99,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.Combine with path4 matching p => p == "foo" exactly once,
+						             has recorded a call to Path.Combine with path4 matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -170,7 +170,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.GetFileName with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.GetFileName with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -203,7 +203,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.GetFileName exactly once,
+						             has recorded a call to Path.GetFileName exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -226,7 +226,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.GetRelativePath with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.GetRelativePath with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -245,7 +245,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.GetRelativePath with relativeTo matching r => r == "foo" exactly once,
+						             has recorded a call to Path.GetRelativePath with relativeTo matching r => r == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -319,7 +319,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.TrimEndingDirectorySeparator with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.TrimEndingDirectorySeparator with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -375,7 +375,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.ChangeExtension with extension matching e => e == "foo" exactly once,
+						             has recorded a call to Path.ChangeExtension with extension matching e => e == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -394,7 +394,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.ChangeExtension with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.ChangeExtension with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -431,7 +431,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.GetDirectoryName with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.GetDirectoryName with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -468,7 +468,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.GetExtension with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.GetExtension with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -505,7 +505,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.GetFileNameWithoutExtension with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.GetFileNameWithoutExtension with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -542,7 +542,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.GetFullPath with basePath matching b => b == "foo" exactly once,
+						             has recorded a call to Path.GetFullPath with basePath matching b => b == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -561,7 +561,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.GetFullPath with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.GetFullPath with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -615,7 +615,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.GetInvalidPathChars exactly once,
+						             has recorded a call to Path.GetInvalidPathChars exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -652,7 +652,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.GetPathRoot with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.GetPathRoot with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -727,7 +727,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.HasExtension with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.HasExtension with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -764,7 +764,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.IsPathRooted with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.IsPathRooted with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -802,7 +802,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.EndsInDirectorySeparator with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.EndsInDirectorySeparator with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -839,7 +839,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.Exists with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.Exists with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -877,7 +877,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.IsPathFullyQualified with path matching p => p == "foo" exactly once,
+						             has recorded a call to Path.IsPathFullyQualified with path matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -929,7 +929,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.Join with path1 matching p => p == "foo" exactly once,
+						             has recorded a call to Path.Join with path1 matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -948,7 +948,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.Join with path2 matching p => p == "foo" exactly once,
+						             has recorded a call to Path.Join with path2 matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -967,7 +967,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.Join with path3 matching p => p == "foo" exactly once,
+						             has recorded a call to Path.Join with path3 matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}
@@ -986,7 +986,7 @@ public sealed partial class Statistics
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that fileSystem.Statistics
-						             recorded a call to Path.Join with path4 matching p => p == "foo" exactly once,
+						             has recorded a call to Path.Join with path4 matching p => p == "foo" exactly once,
 						             but it was recorded 0 times
 						             """);
 				}

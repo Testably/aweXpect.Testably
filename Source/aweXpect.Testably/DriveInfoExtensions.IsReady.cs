@@ -47,7 +47,7 @@ public static partial class DriveInfoExtensions
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is ready");
+			=> stringBuilder.Append(Grammars.Verb("is ready", "are ready"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -62,7 +62,7 @@ public static partial class DriveInfoExtensions
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("is not ready");
+			=> stringBuilder.Append(Grammars.Verb("is not ready", "are not ready"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

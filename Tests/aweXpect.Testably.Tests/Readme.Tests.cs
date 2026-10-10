@@ -124,7 +124,7 @@ public sealed class Readme
 
 			await That(fileSystem)
 				.TriggeredNotification()
-				.Which(c => c.HasName("come-together.txt").And.HasChangeType(WatcherChangeTypes.Created))
+				.Matching(c => c.HasName("come-together.txt").And.HasChangeType(WatcherChangeTypes.Created))
 				.Exactly(1.Times());
 		}
 
@@ -170,7 +170,7 @@ public sealed class Readme
 
 			await That(watcher)
 				.Triggered()
-				.Which(c => c.HasName("let-it-be.txt").And.HasChangeType(WatcherChangeTypes.Created))
+				.Matching(c => c.HasName("let-it-be.txt").And.HasChangeType(WatcherChangeTypes.Created))
 				.Exactly(1.Times());
 		}
 	}

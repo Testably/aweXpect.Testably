@@ -286,8 +286,10 @@ public class FileInfoContentResult(
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has the same content as file '", "have the same content as file '"))
-				.Append(_fullPath ?? expectedPath).Append('\'');
+		{
+			stringBuilder.Append(Grammars.Verb("has the same content as file ", "have the same content as file "));
+			Formatter.Format(stringBuilder, _fullPath ?? expectedPath);
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -297,7 +299,8 @@ public class FileInfoContentResult(
 			}
 			else if (!_isExpectedFound)
 			{
-				stringBuilder.Append(It).Append(" did not contain any file at '").Append(_fullPath).Append('\'');
+				stringBuilder.Append(It).Append(" did not contain any file at ");
+				Formatter.Format(stringBuilder, _fullPath);
 			}
 			else
 			{
@@ -306,9 +309,10 @@ public class FileInfoContentResult(
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder
-				.Append(Grammars.Verb("does not have the same content as file '", "do not have the same content as file '"))
-				.Append(_fullPath ?? expectedPath).Append('\'');
+		{
+			stringBuilder.Append(Grammars.Verb("does not have the same content as file ", "do not have the same content as file "));
+			Formatter.Format(stringBuilder, _fullPath ?? expectedPath);
+		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -318,7 +322,8 @@ public class FileInfoContentResult(
 			}
 			else if (!_isExpectedFound)
 			{
-				stringBuilder.Append(It).Append(" did not contain any file at '").Append(_fullPath).Append('\'');
+				stringBuilder.Append(It).Append(" did not contain any file at ");
+				Formatter.Format(stringBuilder, _fullPath);
 			}
 			else
 			{

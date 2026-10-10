@@ -31,7 +31,7 @@ public sealed partial class FileSystem
 						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
-							              has file '{path}' with content equal to expected,
+							              has file {Formatter.Format(path)} with content equal to expected,
 							              but it differed
 							              """);
 					}
@@ -72,7 +72,7 @@ public sealed partial class FileSystem
 						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
-							              has file '{path}' with content equal to "bar",
+							              has file {Formatter.Format(path)} with content equal to "bar",
 							              but it was "baz", which differs at index 2:
 							                   ↓ (actual)
 							                "baz"
@@ -120,7 +120,7 @@ public sealed partial class FileSystem
 						await That(Act).Throws()
 							.WithMessage($"""
 							              Expected that sut
-							              has file '{path}' with content matching "b?",
+							              has file {Formatter.Format(path)} with content matching "b?",
 							              but it did not match:
 							                ↓ (actual)
 							                "baz"

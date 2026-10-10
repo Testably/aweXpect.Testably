@@ -28,7 +28,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose subdirectories have exactly 3 items,
+						              has directory {Formatter.Format(path)} whose subdirectories have exactly 3 items,
 						              but subdirectories had only 2 items
 
 						              Collection (subdirectories):
@@ -57,7 +57,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose subdirectories all are empty,
+						              has directory {Formatter.Format(path)} whose subdirectories all are empty,
 						              but none of at least 1 were
 
 						              Not matching items (subdirectories):
@@ -109,7 +109,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose subdirectories all are not empty,
+						              has directory {Formatter.Format(path)} whose subdirectories all are not empty,
 						              but none of at least 1 were
 
 						              Not matching items (subdirectories):
@@ -143,7 +143,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose subdirectories all have directory 'bar',
+						              has directory {Formatter.Format(path)} whose subdirectories all have directory "bar",
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the verb agrees with the plural subdirectories");
@@ -166,7 +166,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose subdirectories all have file 'bar.txt' with content equal to "baz",
+						              has directory {Formatter.Format(path)} whose subdirectories all have file "bar.txt" with content equal to "baz",
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the verb agrees with the plural subdirectories");
@@ -191,7 +191,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose subdirectories all do not have file 'bar.txt' with content equal to "baz",
+						              has directory {Formatter.Format(path)} whose subdirectories all do not have file "bar.txt" with content equal to "baz",
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the negation belongs to the plural verb only");
@@ -214,7 +214,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that sut
-						              has directory '{path}' whose subdirectories all have name equal to "bar",
+						              has directory {Formatter.Format(path)} whose subdirectories all have name equal to "bar",
 						              but none of at least 1 did*
 						              """).AsWildcard()
 						.Because("the verb agrees with the plural subdirectories");

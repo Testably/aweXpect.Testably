@@ -39,8 +39,8 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that sut
-						             has drive 'D:\' which has total size 1024,
-						             but it was 2048
+						             has drive "D:\\" which has total size 1024,
+						             but the drive was 2048
 						             """);
 				}
 
@@ -57,7 +57,7 @@ public sealed partial class FileSystem
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that sut
-						             has drive 'Z:\' which has total size 1024,
+						             has drive "Z:\\" which has total size 1024,
 						             but it did not exist
 						             """);
 				}

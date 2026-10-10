@@ -51,7 +51,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that fileInfo
-						              does not have the same content as file '{fullExpectedPath}',
+						              does not have the same content as file {Formatter.Format(fullExpectedPath)},
 						              but it did match
 
 						              File content:
@@ -76,7 +76,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that fileInfo
-						              does not have the same content as file '{fullExpectedPath}',
+						              does not have the same content as file {Formatter.Format(fullExpectedPath)},
 						              but it did not exist
 						              """)
 						.Because("a missing file has no content that could differ");
@@ -99,7 +99,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that fileInfo
-						              has the same content as file '{fullExpectedPath}',
+						              has the same content as file {Formatter.Format(fullExpectedPath)},
 						              but it did not exist
 						              """);
 				}
@@ -146,7 +146,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that fileInfo
-						              does not have the same content as file '{fullExpectedPath}',
+						              does not have the same content as file {Formatter.Format(fullExpectedPath)},
 						              but it did match
 
 						              File content:
