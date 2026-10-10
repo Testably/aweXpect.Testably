@@ -83,7 +83,7 @@ jobs:
                         9.0.x
                         10.0.3xx
             -   name: Add msbuild to PATH
-                uses: microsoft/setup-msbuild@v3
+                uses: microsoft/setup-msbuild@30375c66a4eea26614e0d39710365f22f8b0af57 # v3.0.0
             -   name: Run mutation tests
                 run: ./build.ps1 MutationTests
             -   name: Upload artifacts
@@ -156,7 +156,7 @@ jobs:
                 with:
                     path: artifacts
             -   name: Publish Test Results
-                uses: EnricoMi/publish-unit-test-result-action@v2
+                uses: EnricoMi/publish-unit-test-result-action@d0a4676d0e0b938bc201470d88276b7c74c712b3 # v2.24.0
                 with:
                     comment_mode: always
                     files: "artifacts/**/**/*.trx"
