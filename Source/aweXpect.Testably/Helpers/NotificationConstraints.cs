@@ -25,7 +25,7 @@ internal static class NotificationConstraints
 	internal sealed class TriggeredNotificationConstraint<TSubject, TChange>(
 		string it,
 		ExpectationGrammars grammars,
-		string change,
+		string changeDescription,
 		Func<TSubject, Action<TChange>, IAwaitableCallback<TChange>> subscribe,
 		TriggerNotificationFilter<TChange> filter,
 		Quantifier quantifier,
@@ -190,11 +190,11 @@ internal static class NotificationConstraints
 		{
 			if (quantifier.IsNever(isNegated))
 			{
-				stringBuilder.Append("has never triggered ").Append(change).Append(filter);
+				stringBuilder.Append("has never triggered ").Append(changeDescription).Append(filter);
 			}
 			else
 			{
-				stringBuilder.Append("has triggered ").Append(change).Append(filter)
+				stringBuilder.Append("has triggered ").Append(changeDescription).Append(filter)
 					.Append(' ').Append(quantifier.ToString(isNegated));
 			}
 
@@ -209,7 +209,7 @@ internal static class NotificationConstraints
 		{
 			if (_unanswered is { } unanswered)
 			{
-				stringBuilder.Append(It).Append(" triggered ").Append(change).Append(" for which ");
+				stringBuilder.Append(It).Append(" triggered ").Append(changeDescription).Append(" for which ");
 				unanswered.Result.AppendResult(stringBuilder, indentation);
 				return;
 			}
