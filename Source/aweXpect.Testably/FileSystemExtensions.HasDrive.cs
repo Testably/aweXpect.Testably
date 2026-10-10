@@ -25,6 +25,8 @@ public static partial class FileSystemExtensions
 		this IThat<TFileSystem> subject, string driveName)
 		where TFileSystem : class, IFileSystem
 	{
+		ThrowHelper.ThrowIfNull(driveName, nameof(driveName));
+
 		Func<TFileSystem, IDriveInfo?> resolver = fs => ResolveDrive(fs, driveName);
 		return new DriveResult<TFileSystem>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -46,6 +48,8 @@ public static partial class FileSystemExtensions
 		this IThat<TFileSystem> subject, string driveName)
 		where TFileSystem : class, IFileSystem
 	{
+		ThrowHelper.ThrowIfNull(driveName, nameof(driveName));
+
 		Func<TFileSystem, IDriveInfo?> resolver = fs => ResolveDrive(fs, driveName);
 		return new AndOrResult<TFileSystem, IThat<TFileSystem>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)

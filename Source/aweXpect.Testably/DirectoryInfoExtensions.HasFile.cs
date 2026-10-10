@@ -18,6 +18,8 @@ public static partial class DirectoryInfoExtensions
 	public static FileResult<IDirectoryInfo> HasFile(
 		this IThat<IDirectoryInfo> subject, string path)
 	{
+		ThrowHelper.ThrowIfNull(path, nameof(path));
+
 		Func<IDirectoryInfo, (IFileSystem fs, string fullPath)> resolver =
 			d => (d.FileSystem, d.FileSystem.Path.Combine(d.FullName, path));
 		return new FileResult<IDirectoryInfo>(
@@ -35,6 +37,8 @@ public static partial class DirectoryInfoExtensions
 	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> DoesNotHaveFile(
 		this IThat<IDirectoryInfo> subject, string path)
 	{
+		ThrowHelper.ThrowIfNull(path, nameof(path));
+
 		Func<IDirectoryInfo, (IFileSystem fs, string fullPath)> resolver =
 			d => (d.FileSystem, d.FileSystem.Path.Combine(d.FullName, path));
 		return new AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>>(

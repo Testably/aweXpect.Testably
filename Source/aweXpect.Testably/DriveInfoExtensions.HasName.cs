@@ -19,6 +19,8 @@ public static partial class DriveInfoExtensions
 	public static StringEqualityTypeResult<IDriveInfo, IThat<IDriveInfo>> HasName(this IThat<IDriveInfo> source,
 		string expected)
 	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IDriveInfo, IThat<IDriveInfo>>(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)

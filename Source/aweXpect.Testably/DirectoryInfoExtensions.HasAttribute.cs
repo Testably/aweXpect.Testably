@@ -20,8 +20,8 @@ public static partial class DirectoryInfoExtensions
 	{
 		if (expected == default)
 		{
-			throw new ArgumentException(
-				"The expected file attributes must include at least one flag.", nameof(expected));
+			throw Tracing.WriteException(new ArgumentException(
+				"The expected file attributes must include at least one flag.", nameof(expected)));
 		}
 
 		return new AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>>(
@@ -41,8 +41,8 @@ public static partial class DirectoryInfoExtensions
 	{
 		if (unexpected == default)
 		{
-			throw new ArgumentException(
-				"The unexpected file attributes must include at least one flag.", nameof(unexpected));
+			throw Tracing.WriteException(new ArgumentException(
+				"The unexpected file attributes must include at least one flag.", nameof(unexpected)));
 		}
 
 		return new AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>>(

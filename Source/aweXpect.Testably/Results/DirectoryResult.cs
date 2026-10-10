@@ -4,6 +4,7 @@ using System.IO.Abstractions;
 using System.Linq;
 using aweXpect.Core;
 using aweXpect.Results;
+using aweXpect.Testably.Helpers;
 
 namespace aweXpect.Testably.Results;
 
@@ -33,6 +34,8 @@ public partial class DirectoryResult<TParent>
 	public DirectoryResult<TParent> WithFiles(
 		Action<IThat<IEnumerable<IFileInfo>>> expectations)
 	{
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
+
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver = _resolver;
 		_expectationBuilder
 			.ForMember(
@@ -56,6 +59,8 @@ public partial class DirectoryResult<TParent>
 	public DirectoryResult<TParent> WithDirectories(
 		Action<IThat<IEnumerable<IDirectoryInfo>>> expectations)
 	{
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
+
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver = _resolver;
 		_expectationBuilder
 			.ForMember(

@@ -29,7 +29,14 @@ public sealed class RecordedFileSystemWatcherBucket
 	///     Assertions on recorded calls against the <see cref="IFileSystemWatcher" /> instance for <paramref name="path" />.
 	/// </summary>
 	public RecordedFileSystemWatcherInstance this[string path]
-		=> new(_subject, path);
+	{
+		get
+		{
+			ThrowHelper.ThrowIfNull(path, nameof(path));
+
+			return new RecordedFileSystemWatcherInstance(_subject, path);
+		}
+	}
 
 	/// <summary>
 	///     Recorded calls to <see cref="IFileSystemWatcherFactory.New()" /> and overloads.

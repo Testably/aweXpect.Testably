@@ -29,7 +29,14 @@ public sealed class RecordedFileVersionInfoBucket
 	///     <paramref name="fileName" />.
 	/// </summary>
 	public RecordedFileVersionInfoInstance this[string fileName]
-		=> new(_subject, fileName);
+	{
+		get
+		{
+			ThrowHelper.ThrowIfNull(fileName, nameof(fileName));
+
+			return new RecordedFileVersionInfoInstance(_subject, fileName);
+		}
+	}
 
 	/// <summary>
 	///     Recorded calls to <see cref="IFileVersionInfoFactory.GetVersionInfo(string)" />.

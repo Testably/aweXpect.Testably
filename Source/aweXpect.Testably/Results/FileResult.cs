@@ -53,20 +53,25 @@ public partial class FileResult<TParent>
 	public AndOrResult<TParent, FileResult<TParent>> WithContent(
 		byte[] expected,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-		=> new(
+	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+
+		return new AndOrResult<TParent, FileResult<TParent>>(
 			_expectationBuilder.And(" ").AddConstraint((it, grammars)
 				=> new HasBinaryContentEqualToConstraint(it, grammars, _resolver, expected, doNotPopulateThisValue)),
 			this);
+	}
 
 	/// <summary>
 	///     Verifies that the string content of the file satisfies the <paramref name="expectations" />.
 	/// </summary>
-	public StringEqualityTypeResult<TParent, FileResult<TParent>> WhoseContent(
+	public AndOrResult<TParent, FileResult<TParent>> WhoseContent(
 		Action<IThat<string?>> expectations)
 	{
-		StringEqualityOptions options = new(nameof(expectations));
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
+
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver = _resolver;
-		return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
+		return new AndOrResult<TParent, FileResult<TParent>>(
 			_expectationBuilder
 				.ForMember(
 					MemberAccessor<TParent, string>.FromFunc(
@@ -78,7 +83,7 @@ public partial class FileResult<TParent>
 						"content "),
 					(member, expectation) => expectation.Append(" whose ").Append(member))
 				.AddExpectations(e => expectations(new ThatSubject<string?>(e))),
-			this, options);
+			this);
 	}
 
 	/// <summary>

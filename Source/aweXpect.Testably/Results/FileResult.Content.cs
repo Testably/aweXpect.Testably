@@ -42,7 +42,10 @@ public partial class FileResult<TParent>
 		public AndOrResult<TParent, FileResult<TParent>> EqualTo(
 			byte[] expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-			=> new(
+		{
+			ThrowHelper.ThrowIfNull(expected, nameof(expected));
+
+			return new AndOrResult<TParent, FileResult<TParent>>(
 				_expectationBuilder.And(" ").AddConstraint((it, grammars)
 					=> new HasBinaryContentEqualToConstraint(
 						it,
@@ -51,6 +54,7 @@ public partial class FileResult<TParent>
 						expected,
 						doNotPopulateThisValue)),
 				_subject);
+		}
 
 		/// <summary>
 		///     …is equal to the <paramref name="expected" /> string.
@@ -77,7 +81,10 @@ public partial class FileResult<TParent>
 			byte[] unexpected,
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
-			=> new(
+		{
+			ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
+
+			return new AndOrResult<TParent, FileResult<TParent>>(
 				_expectationBuilder.And(" ").AddConstraint((it, grammars)
 					=> new HasBinaryContentEqualToConstraint(
 							it,
@@ -88,6 +95,7 @@ public partial class FileResult<TParent>
 							isInverted: true)
 						.Invert()),
 				_subject);
+		}
 
 		/// <summary>
 		///     …differs from the <paramref name="unexpected" /> string.
@@ -114,6 +122,8 @@ public partial class FileResult<TParent>
 		public StringEqualityTypeResult<TParent, FileResult<TParent>> SameAs(
 			string filePath)
 		{
+			ThrowHelper.ThrowIfNull(filePath, nameof(filePath));
+
 			StringEqualityOptions options = new(nameof(filePath));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 				_expectationBuilder.And(" ").AddConstraint((it, grammars)
@@ -127,6 +137,8 @@ public partial class FileResult<TParent>
 		public StringEqualityTypeResult<TParent, FileResult<TParent>> NotSameAs(
 			string filePath)
 		{
+			ThrowHelper.ThrowIfNull(filePath, nameof(filePath));
+
 			StringEqualityOptions options = new(nameof(filePath));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 				_expectationBuilder.And(" ").AddConstraint((it, grammars)

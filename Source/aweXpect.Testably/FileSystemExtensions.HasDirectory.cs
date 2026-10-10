@@ -18,6 +18,8 @@ public static partial class FileSystemExtensions
 		this IThat<TFileSystem> subject, string path)
 		where TFileSystem : class, IFileSystem
 	{
+		ThrowHelper.ThrowIfNull(path, nameof(path));
+
 		Func<TFileSystem, (IFileSystem fs, string fullPath)> resolver = fs => (fs, path);
 		return new DirectoryResult<TFileSystem>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -34,6 +36,8 @@ public static partial class FileSystemExtensions
 		this IThat<TFileSystem> subject, string path)
 		where TFileSystem : class, IFileSystem
 	{
+		ThrowHelper.ThrowIfNull(path, nameof(path));
+
 		Func<TFileSystem, (IFileSystem fs, string fullPath)> resolver = fs => (fs, path);
 		return new AndOrResult<TFileSystem, IThat<TFileSystem>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)

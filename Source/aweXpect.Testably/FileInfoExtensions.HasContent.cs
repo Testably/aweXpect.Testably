@@ -41,10 +41,14 @@ public static partial class FileInfoExtensions
 	public static AndOrResult<IFileInfo, IThat<IFileInfo>> HasContent(this IThat<IFileInfo> source,
 		byte[] expected,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+
+		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasBinaryContentConstraint(
 					it, grammars, expected, doNotPopulateThisValue)),
 			source);
+	}
 
 	/// <summary>
 	///     Verifies that the content of the <see cref="IFileInfo" />…
