@@ -30,7 +30,7 @@ internal static class NotificationConstraints
 		TriggerNotificationFilter<TChange> filter,
 		Quantifier quantifier,
 		RepeatedCheckOptions options)
-		: ConstraintResult.WithValue<TSubject>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TSubject>(it, grammars),
 			IAsyncContextConstraint<TSubject>,
 			IExpectationTextConstraint
 		where TSubject : class
@@ -56,7 +56,6 @@ internal static class NotificationConstraints
 			await filter.PrepareExpectation(context, cancellationToken);
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -208,12 +207,6 @@ internal static class NotificationConstraints
 
 		private void AppendCount(StringBuilder stringBuilder, string? indentation)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-				return;
-			}
-
 			if (_unanswered is { } unanswered)
 			{
 				stringBuilder.Append(It).Append(" triggered ").Append(change).Append(" for which ");
@@ -334,7 +327,7 @@ internal static class NotificationConstraints
 		string it,
 		ExpectationGrammars grammars,
 		WatcherChangeTypes expected)
-		: ConstraintResult.WithValue<TChange>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TChange>(it, grammars),
 			IValueConstraint<TChange>
 		where TChange : ChangeDescription
 	{
@@ -343,7 +336,6 @@ internal static class NotificationConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -361,15 +353,8 @@ internal static class NotificationConstraints
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" was ");
-				Formatter.Format(stringBuilder, Actual.ChangeType);
-			}
+			stringBuilder.Append(It).Append(" was ");
+			Formatter.Format(stringBuilder, Actual!.ChangeType);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -379,23 +364,14 @@ internal static class NotificationConstraints
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" did");
-			}
-		}
+			=> stringBuilder.Append(It).Append(" did");
 	}
 
 	internal sealed class HasFileSystemTypeConstraint<TChange>(
 		string it,
 		ExpectationGrammars grammars,
 		FileSystemTypes expected)
-		: ConstraintResult.WithValue<TChange>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TChange>(it, grammars),
 			IValueConstraint<TChange>
 		where TChange : ChangeDescription
 	{
@@ -404,7 +380,6 @@ internal static class NotificationConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -422,15 +397,8 @@ internal static class NotificationConstraints
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" was ");
-				Formatter.Format(stringBuilder, Actual.FileSystemType);
-			}
+			stringBuilder.Append(It).Append(" was ");
+			Formatter.Format(stringBuilder, Actual!.FileSystemType);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -440,23 +408,14 @@ internal static class NotificationConstraints
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" did");
-			}
-		}
+			=> stringBuilder.Append(It).Append(" did");
 	}
 
 	internal sealed class HasNotifyFiltersConstraint<TChange>(
 		string it,
 		ExpectationGrammars grammars,
 		NotifyFilters expected)
-		: ConstraintResult.WithValue<TChange>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TChange>(it, grammars),
 			IValueConstraint<TChange>
 		where TChange : ChangeDescription
 	{
@@ -465,7 +424,6 @@ internal static class NotificationConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -483,15 +441,8 @@ internal static class NotificationConstraints
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" was ");
-				Formatter.Format(stringBuilder, Actual.NotifyFilters);
-			}
+			stringBuilder.Append(It).Append(" was ");
+			Formatter.Format(stringBuilder, Actual!.NotifyFilters);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -501,16 +452,7 @@ internal static class NotificationConstraints
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" did");
-			}
-		}
+			=> stringBuilder.Append(It).Append(" did");
 	}
 
 	internal sealed class HasStringPropertyConstraint<TChange>(
@@ -520,7 +462,7 @@ internal static class NotificationConstraints
 		StringEqualityOptions options,
 		string? expected,
 		string propertyName)
-		: ConstraintResult.WithValue<TChange>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TChange>(it, grammars),
 			IAsyncConstraint<TChange>
 		where TChange : ChangeDescription
 	{
@@ -532,7 +474,6 @@ internal static class NotificationConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -546,31 +487,13 @@ internal static class NotificationConstraints
 				.Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualValue, expected));
-			}
-		}
+			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualValue, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")).Append(propertyName).Append(' ')
 				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" did");
-			}
-		}
+			=> stringBuilder.Append(It).Append(" did");
 	}
 }

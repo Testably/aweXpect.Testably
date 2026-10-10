@@ -24,7 +24,7 @@ public static partial class FileInfoExtensions
 		}
 
 		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new FileSystemConstraints.HasAttributeConstraint<IFileInfo>(it, grammars, expected)),
 			source);
 	}
@@ -44,7 +44,7 @@ public static partial class FileInfoExtensions
 		}
 
 		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars)
 				=> new FileSystemConstraints.HasAttributeConstraint<IFileInfo>(it, grammars, unexpected).Invert()),
 			source);
 	}

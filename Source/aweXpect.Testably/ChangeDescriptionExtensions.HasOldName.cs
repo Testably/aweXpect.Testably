@@ -23,9 +23,9 @@ public static partial class ChangeDescriptionExtensions
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<TChange, IThat<TChange>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new NotificationConstraints.HasStringPropertyConstraint<TChange>(
-					it, grammars, c => c.OldName, options, expected, "old name")),
+					it, grammars, c => c.OldName, s.options, s.expected, "old name")),
 			source,
 			options);
 	}

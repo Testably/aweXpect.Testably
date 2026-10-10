@@ -3,7 +3,6 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Results;
-using aweXpect.Testably.Helpers;
 
 namespace aweXpect.Testably;
 
@@ -16,12 +15,12 @@ public static partial class FileInfoExtensions
 	public static AndOrResult<IFileInfo, IThat<IFileInfo>> HasLength(this IThat<IFileInfo> source,
 		long expected)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new HasLengthConstraint(it, grammars, expected)),
 			source);
 
 	private sealed class HasLengthConstraint(string it, ExpectationGrammars grammars, long expected)
-		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),
 			IValueConstraint<IFileInfo>
 	{
 		private long _actualLength;
@@ -29,7 +28,12 @@ public static partial class FileInfoExtensions
 		public ConstraintResult IsMetBy(IFileInfo actual)
 		{
 			Actual = actual;
-			if (actual is null || !actual.Exists)
+			if (actual is null)
+			{
+				return this;
+			}
+
+			if (!actual.Exists)
 			{
 				Outcome = Outcome.FailureBothWays;
 				return this;
@@ -48,11 +52,7 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else if (!Actual.Exists)
+			if (!Actual!.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}
@@ -71,11 +71,7 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else if (!Actual.Exists)
+			if (!Actual!.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}

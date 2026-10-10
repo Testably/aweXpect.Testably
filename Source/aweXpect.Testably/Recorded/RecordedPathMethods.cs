@@ -83,49 +83,49 @@ public sealed class RecordedPathMethods
 	public RecordedMethodCallResult EndsInDirectorySeparator(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build("EndsInDirectorySeparator",
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <c>IPath.Exists(string?)</c>.</summary>
 	public RecordedMethodCallResult Exists(
 		Func<string?, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build("Exists",
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IPath.GetDirectoryName(string?)" /> and overloads.</summary>
 	public RecordedMethodCallResult GetDirectoryName(
 		Func<string?, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IPath.GetDirectoryName),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IPath.GetExtension(string?)" /> and overloads.</summary>
 	public RecordedMethodCallResult GetExtension(
 		Func<string?, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IPath.GetExtension),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IPath.GetFileName(string?)" /> and overloads.</summary>
 	public RecordedMethodCallResult GetFileName(
 		Func<string?, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IPath.GetFileName),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IPath.GetFileNameWithoutExtension(string?)" /> and overloads.</summary>
 	public RecordedMethodCallResult GetFileNameWithoutExtension(
 		Func<string?, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IPath.GetFileNameWithoutExtension),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IPath.GetFullPath(string)" /> and overloads.</summary>
 	public RecordedMethodCallResult GetFullPath(
@@ -151,9 +151,9 @@ public sealed class RecordedPathMethods
 	public RecordedMethodCallResult GetPathRoot(
 		Func<string?, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IPath.GetPathRoot),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IPath.GetRandomFileName" />.</summary>
 	public RecordedMethodCallResult GetRandomFileName()
@@ -183,25 +183,25 @@ public sealed class RecordedPathMethods
 	public RecordedMethodCallResult HasExtension(
 		Func<string?, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IPath.HasExtension),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <c>IPath.IsPathFullyQualified(string)</c>.</summary>
 	public RecordedMethodCallResult IsPathFullyQualified(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build("IsPathFullyQualified",
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IPath.IsPathRooted(string?)" /> and overloads.</summary>
 	public RecordedMethodCallResult IsPathRooted(
 		Func<string?, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IPath.IsPathRooted),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <c>IPath.Join(string?, string?)</c> and fixed-arity overloads.</summary>
 	/// <remarks>
@@ -234,18 +234,18 @@ public sealed class RecordedPathMethods
 	public RecordedMethodCallResult TrimEndingDirectorySeparator(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build("TrimEndingDirectorySeparator",
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	private RecordedMethodCallResult Build(string methodName, params ParameterMatcher[] matchers)
 	{
 		Quantifier quantifier = new();
 		return new RecordedMethodCallResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(
-					it, grammars, quantifier,
-					s => s.Path, BucketDescription, methodName, matchers)),
+					it, grammars, state.quantifier,
+					s => s.Path, BucketDescription, state.methodName, state.matchers)),
 			_subject, quantifier);
 	}
 }

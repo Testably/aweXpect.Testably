@@ -19,8 +19,8 @@ public static partial class FileInfoExtensions
 
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new FileSystemConstraints.HasNameConstraint<IFileInfo>(it, grammars, options, expected)),
+			source.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
+				=> new FileSystemConstraints.HasNameConstraint<IFileInfo>(it, grammars, s.options, s.expected)),
 			source,
 			options);
 	}

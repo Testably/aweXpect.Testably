@@ -93,17 +93,17 @@ public sealed class RecordedFileStreamInstance
 	public RecordedMethodCallResult Flush(
 		Func<bool, bool>? flushToDisk = null,
 		[CallerArgumentExpression(nameof(flushToDisk))]
-		string? flushToDiskExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(Stream.Flush),
-			ParameterMatcher.From("flushToDisk", flushToDisk, flushToDiskExpression));
+			ParameterMatcher.From("flushToDisk", flushToDisk, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="Stream.FlushAsync()" /> and overloads.</summary>
 	public RecordedMethodCallResult FlushAsync(
 		Func<CancellationToken, bool>? cancellationToken = null,
 		[CallerArgumentExpression(nameof(cancellationToken))]
-		string? cancellationTokenExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(Stream.FlushAsync),
-			ParameterMatcher.From("cancellationToken", cancellationToken, cancellationTokenExpression));
+			ParameterMatcher.From("cancellationToken", cancellationToken, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="Stream.Read(byte[], int, int)" />.</summary>
 	public RecordedMethodCallResult Read(
@@ -157,9 +157,9 @@ public sealed class RecordedFileStreamInstance
 	public RecordedMethodCallResult SetLength(
 		Func<long, bool>? value = null,
 		[CallerArgumentExpression(nameof(value))]
-		string? valueExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(Stream.SetLength),
-			ParameterMatcher.From("value", value, valueExpression));
+			ParameterMatcher.From("value", value, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="Stream.Write(byte[], int, int)" />.</summary>
 	public RecordedMethodCallResult Write(
@@ -197,9 +197,9 @@ public sealed class RecordedFileStreamInstance
 	public RecordedMethodCallResult WriteByte(
 		Func<byte, bool>? value = null,
 		[CallerArgumentExpression(nameof(value))]
-		string? valueExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(Stream.WriteByte),
-			ParameterMatcher.From("value", value, valueExpression));
+			ParameterMatcher.From("value", value, doNotPopulateThisValue));
 
 	private RecordedProperty Property(string propertyName)
 	{
@@ -213,10 +213,10 @@ public sealed class RecordedFileStreamInstance
 		string path = _path;
 		string bucketDescription = _bucketDescription;
 		return new RecordedMethodCallResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, path, bucketDescription, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(
-					it, grammars, quantifier,
-					s => s.FileStream[path], bucketDescription, methodName, matchers)),
+					it, grammars, state.quantifier,
+					s => s.FileStream[state.path], state.bucketDescription, state.methodName, state.matchers)),
 			_subject, quantifier);
 	}
 }

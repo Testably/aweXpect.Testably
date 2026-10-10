@@ -19,7 +19,7 @@ internal static class FileSystemConstraints
 		string it,
 		ExpectationGrammars grammars,
 		FileAttributes expected)
-		: ConstraintResult.WithValue<TInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TInfo>(it, grammars),
 			IValueConstraint<TInfo>
 		where TInfo : class, IFileSystemInfo
 	{
@@ -28,7 +28,12 @@ internal static class FileSystemConstraints
 		public ConstraintResult IsMetBy(TInfo actual)
 		{
 			Actual = actual;
-			if (actual is null || !actual.Exists)
+			if (actual is null)
+			{
+				return this;
+			}
+
+			if (!actual.Exists)
 			{
 				Outcome = Outcome.FailureBothWays;
 				return this;
@@ -47,11 +52,7 @@ internal static class FileSystemConstraints
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else if (!Actual.Exists)
+			if (!Actual!.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}
@@ -70,11 +71,7 @@ internal static class FileSystemConstraints
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else if (!Actual.Exists)
+			if (!Actual!.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}
@@ -86,7 +83,7 @@ internal static class FileSystemConstraints
 	}
 
 	internal sealed class ExistsConstraint<TInfo>(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<TInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TInfo>(it, grammars),
 			IValueConstraint<TInfo>
 		where TInfo : class, IFileSystemInfo
 	{
@@ -95,7 +92,6 @@ internal static class FileSystemConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -107,13 +103,13 @@ internal static class FileSystemConstraints
 			=> stringBuilder.Append(Grammars.Verb("exists", "exist"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did not");
+			=> stringBuilder.Append(It).Append(" did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not exist", "do not exist"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");
+			=> stringBuilder.Append(It).Append(" did");
 	}
 
 	internal sealed class HasNameConstraint<TInfo>(
@@ -121,7 +117,7 @@ internal static class FileSystemConstraints
 		ExpectationGrammars grammars,
 		StringEqualityOptions options,
 		string expected)
-		: ConstraintResult.WithValue<TInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TInfo>(it, grammars),
 			IAsyncConstraint<TInfo>
 		where TInfo : class, IFileSystemInfo
 	{
@@ -132,7 +128,6 @@ internal static class FileSystemConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -145,23 +140,14 @@ internal static class FileSystemConstraints
 			=> stringBuilder.Append(Grammars.Verb("has name ", "have name ")).Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualName, expected));
-			}
-		}
+			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualName, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have name ", "do not have name "))
 				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");
+			=> stringBuilder.Append(It).Append(" did");
 	}
 
 	internal sealed class HasFileConstraint<TParent>(
@@ -169,7 +155,7 @@ internal static class FileSystemConstraints
 		ExpectationGrammars grammars,
 		string path,
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver)
-		: ConstraintResult.WithValue<TParent>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TParent>(it, grammars),
 			IValueConstraint<TParent>
 		where TParent : class
 	{
@@ -181,7 +167,6 @@ internal static class FileSystemConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -198,11 +183,7 @@ internal static class FileSystemConstraints
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else if (_fs?.Directory.Exists(_fullPath) == true)
+			if (_fs?.Directory.Exists(_fullPath) == true)
 			{
 				stringBuilder.Append(It).Append(" was a directory");
 			}
@@ -219,7 +200,7 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");
+			=> stringBuilder.Append(It).Append(" did");
 	}
 
 	internal sealed class HasDirectoryConstraint<TParent>(
@@ -227,7 +208,7 @@ internal static class FileSystemConstraints
 		ExpectationGrammars grammars,
 		string path,
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver)
-		: ConstraintResult.WithValue<TParent>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TParent>(it, grammars),
 			IValueConstraint<TParent>
 		where TParent : class
 	{
@@ -239,7 +220,6 @@ internal static class FileSystemConstraints
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -256,11 +236,7 @@ internal static class FileSystemConstraints
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else if (_fs?.File.Exists(_fullPath) == true)
+			if (_fs?.File.Exists(_fullPath) == true)
 			{
 				stringBuilder.Append(It).Append(" was a file");
 			}
@@ -277,7 +253,7 @@ internal static class FileSystemConstraints
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Actual is null ? " was <null>" : " did");
+			=> stringBuilder.Append(It).Append(" did");
 	}
 
 	internal sealed class HasTimeConstraint<TActual>(
@@ -289,7 +265,7 @@ internal static class FileSystemConstraints
 		DateTime expected,
 		string expectedString,
 		bool isWithClause)
-		: ConstraintResult.WithValue<TActual>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TActual>(it, grammars),
 			IValueConstraint<TActual>
 		where TActual : class
 	{
@@ -302,7 +278,6 @@ internal static class FileSystemConstraints
 			_missingResult = null;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -342,11 +317,7 @@ internal static class FileSystemConstraints
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else if (_missingResult is not null)
+			if (_missingResult is not null)
 			{
 				stringBuilder.Append(It).Append(_missingResult);
 			}

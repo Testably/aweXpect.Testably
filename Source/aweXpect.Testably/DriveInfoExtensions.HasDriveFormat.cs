@@ -23,8 +23,8 @@ public static partial class DriveInfoExtensions
 
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IDriveInfo, IThat<IDriveInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasDriveFormatConstraint(it, grammars, options, expected)),
+			source.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
+				=> new HasDriveFormatConstraint(it, grammars, s.options, s.expected)),
 			source,
 			options);
 	}
@@ -34,7 +34,7 @@ public static partial class DriveInfoExtensions
 		ExpectationGrammars grammars,
 		StringEqualityOptions options,
 		string expected)
-		: ConstraintResult.WithValue<IDriveInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IDriveInfo>(it, grammars),
 			IAsyncConstraint<IDriveInfo>
 	{
 		private string? _actualDriveFormat;
@@ -44,7 +44,6 @@ public static partial class DriveInfoExtensions
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -57,31 +56,13 @@ public static partial class DriveInfoExtensions
 			=> stringBuilder.Append(Grammars.Verb("has drive format ", "have drive format ")).Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualDriveFormat, expected));
-			}
-		}
+			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualDriveFormat, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have drive format ", "do not have drive format "))
 				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" did");
-			}
-		}
+			=> stringBuilder.Append(It).Append(" did");
 	}
 }

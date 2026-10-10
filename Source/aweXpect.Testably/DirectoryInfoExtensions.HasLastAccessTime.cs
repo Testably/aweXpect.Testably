@@ -22,9 +22,9 @@ public static partial class DirectoryInfoExtensions
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<IDirectoryInfo, IThat<IDirectoryInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint((tolerance, expected), static (s, it, grammars)
 				=> new FileSystemConstraints.HasTimeConstraint<IDirectoryInfo>(it, grammars,
-					d => d.LastAccessTime, FileSystemConstraints.GetMissingResult, tolerance, expected, "last access time",
+					d => d.LastAccessTime, FileSystemConstraints.GetMissingResult, s.tolerance, s.expected, "last access time",
 					isWithClause: false)),
 			source, tolerance);
 	}

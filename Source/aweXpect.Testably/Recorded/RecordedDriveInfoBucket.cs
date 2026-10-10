@@ -50,9 +50,9 @@ public sealed class RecordedDriveInfoBucket
 	public RecordedMethodCallResult New(
 		Func<string, bool>? driveName = null,
 		[CallerArgumentExpression(nameof(driveName))]
-		string? driveNameExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDriveInfoFactory.New),
-			ParameterMatcher.From("driveName", driveName, driveNameExpression));
+			ParameterMatcher.From("driveName", driveName, doNotPopulateThisValue));
 
 	/// <summary>
 	///     Recorded calls to <see cref="IDriveInfoFactory.Wrap(System.IO.DriveInfo)" />.
@@ -60,18 +60,18 @@ public sealed class RecordedDriveInfoBucket
 	public RecordedMethodCallResult Wrap(
 		Func<DriveInfo, bool>? driveInfo = null,
 		[CallerArgumentExpression(nameof(driveInfo))]
-		string? driveInfoExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IDriveInfoFactory.Wrap),
-			ParameterMatcher.From("driveInfo", driveInfo, driveInfoExpression));
+			ParameterMatcher.From("driveInfo", driveInfo, doNotPopulateThisValue));
 
 	private RecordedMethodCallResult Build(string methodName, params ParameterMatcher[] matchers)
 	{
 		Quantifier quantifier = new();
 		return new RecordedMethodCallResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(
-					it, grammars, quantifier,
-					s => s.DriveInfo, BucketDescription, methodName, matchers)),
+					it, grammars, state.quantifier,
+					s => s.DriveInfo, BucketDescription, state.methodName, state.matchers)),
 			_subject, quantifier);
 	}
 }

@@ -58,18 +58,18 @@ public sealed class RecordedFileSystemWatcherBucket
 	public RecordedMethodCallResult Wrap(
 		Func<FileSystemWatcher, bool>? fileSystemWatcher = null,
 		[CallerArgumentExpression(nameof(fileSystemWatcher))]
-		string? fileSystemWatcherExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFileSystemWatcherFactory.Wrap),
-			ParameterMatcher.From("fileSystemWatcher", fileSystemWatcher, fileSystemWatcherExpression));
+			ParameterMatcher.From("fileSystemWatcher", fileSystemWatcher, doNotPopulateThisValue));
 
 	private RecordedMethodCallResult Build(string methodName, params ParameterMatcher[] matchers)
 	{
 		Quantifier quantifier = new();
 		return new RecordedMethodCallResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(
-					it, grammars, quantifier,
-					s => s.FileSystemWatcher, BucketDescription, methodName, matchers)),
+					it, grammars, state.quantifier,
+					s => s.FileSystemWatcher, BucketDescription, state.methodName, state.matchers)),
 			_subject, quantifier);
 	}
 }

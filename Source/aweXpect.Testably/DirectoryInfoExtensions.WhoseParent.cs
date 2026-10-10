@@ -2,7 +2,6 @@
 using System;
 using System.IO.Abstractions;
 using aweXpect.Core;
-using aweXpect.Testably.Helpers;
 
 namespace aweXpect.Testably;
 

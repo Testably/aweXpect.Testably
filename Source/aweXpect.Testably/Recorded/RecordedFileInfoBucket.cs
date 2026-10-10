@@ -44,9 +44,9 @@ public sealed class RecordedFileInfoBucket
 	public RecordedMethodCallResult New(
 		Func<string, bool>? fileName = null,
 		[CallerArgumentExpression(nameof(fileName))]
-		string? fileNameExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFileInfoFactory.New),
-			ParameterMatcher.From("fileName", fileName, fileNameExpression));
+			ParameterMatcher.From("fileName", fileName, doNotPopulateThisValue));
 
 	/// <summary>
 	///     Recorded calls to <see cref="IFileInfoFactory.Wrap(System.IO.FileInfo?)" />.
@@ -54,18 +54,18 @@ public sealed class RecordedFileInfoBucket
 	public RecordedMethodCallResult Wrap(
 		Func<FileInfo?, bool>? fileInfo = null,
 		[CallerArgumentExpression(nameof(fileInfo))]
-		string? fileInfoExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFileInfoFactory.Wrap),
-			ParameterMatcher.From("fileInfo", fileInfo, fileInfoExpression));
+			ParameterMatcher.From("fileInfo", fileInfo, doNotPopulateThisValue));
 
 	private RecordedMethodCallResult Build(string methodName, params ParameterMatcher[] matchers)
 	{
 		Quantifier quantifier = new();
 		return new RecordedMethodCallResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(
-					it, grammars, quantifier,
-					s => s.FileInfo, BucketDescription, methodName, matchers)),
+					it, grammars, state.quantifier,
+					s => s.FileInfo, BucketDescription, state.methodName, state.matchers)),
 			_subject, quantifier);
 	}
 }

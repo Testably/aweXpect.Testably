@@ -15,7 +15,7 @@ public static partial class FileVersionInfoExtensions
 		this IThat<IFileVersionInfo> source,
 		int expected)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new FileVersionInfoConstraints.HasInt32PropertyConstraint(
 					it, grammars, v => v.ProductBuildPart, expected, "product build part")),
 			source);

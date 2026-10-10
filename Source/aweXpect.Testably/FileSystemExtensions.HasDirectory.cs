@@ -22,8 +22,8 @@ public static partial class FileSystemExtensions
 
 		Func<TFileSystem, (IFileSystem fs, string fullPath)> resolver = fs => (fs, path);
 		return new DirectoryResult<TFileSystem>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new FileSystemConstraints.HasDirectoryConstraint<TFileSystem>(it, grammars, path, resolver)),
+			subject.Get().ExpectationBuilder.AddConstraint((path, resolver), static (s, it, grammars)
+				=> new FileSystemConstraints.HasDirectoryConstraint<TFileSystem>(it, grammars, s.path, s.resolver)),
 			subject,
 			resolver);
 	}
@@ -40,8 +40,8 @@ public static partial class FileSystemExtensions
 
 		Func<TFileSystem, (IFileSystem fs, string fullPath)> resolver = fs => (fs, path);
 		return new AndOrResult<TFileSystem, IThat<TFileSystem>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new FileSystemConstraints.HasDirectoryConstraint<TFileSystem>(it, grammars, path, resolver).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint((path, resolver), static (s, it, grammars)
+				=> new FileSystemConstraints.HasDirectoryConstraint<TFileSystem>(it, grammars, s.path, s.resolver).Invert()),
 			subject);
 	}
 }

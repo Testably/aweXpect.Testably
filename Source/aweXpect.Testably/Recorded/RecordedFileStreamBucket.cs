@@ -77,18 +77,18 @@ public sealed class RecordedFileStreamBucket
 	public RecordedMethodCallResult Wrap(
 		Func<FileStream, bool>? fileStream = null,
 		[CallerArgumentExpression(nameof(fileStream))]
-		string? fileStreamExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFileStreamFactory.Wrap),
-			ParameterMatcher.From("fileStream", fileStream, fileStreamExpression));
+			ParameterMatcher.From("fileStream", fileStream, doNotPopulateThisValue));
 
 	private RecordedMethodCallResult Build(string methodName, params ParameterMatcher[] matchers)
 	{
 		Quantifier quantifier = new();
 		return new RecordedMethodCallResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(
-					it, grammars, quantifier,
-					s => s.FileStream, BucketDescription, methodName, matchers)),
+					it, grammars, state.quantifier,
+					s => s.FileStream, BucketDescription, state.methodName, state.matchers)),
 			_subject, quantifier);
 	}
 }

@@ -46,10 +46,10 @@ public sealed class RecordedProperty
 		string bucketDescription = _bucketDescription;
 		string propertyName = _propertyName;
 		return new RecordedPropertyAccessResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, bucketSelector, bucketDescription, propertyName, access), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedPropertyAccessConstraint(
-					it, grammars, quantifier,
-					bucketSelector, bucketDescription, propertyName, access)),
+					it, grammars, state.quantifier,
+					state.bucketSelector, state.bucketDescription, state.propertyName, state.access)),
 			_subject, quantifier);
 	}
 }

@@ -4,7 +4,6 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Results;
-using aweXpect.Testably.Helpers;
 
 namespace aweXpect.Testably;
 
@@ -17,12 +16,12 @@ public static partial class DriveInfoExtensions
 	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> HasDriveType(this IThat<IDriveInfo> source,
 		DriveType expected)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new HasDriveTypeConstraint(it, grammars, expected)),
 			source);
 
 	private sealed class HasDriveTypeConstraint(string it, ExpectationGrammars grammars, DriveType expected)
-		: ConstraintResult.WithValue<IDriveInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IDriveInfo>(it, grammars),
 			IValueConstraint<IDriveInfo>
 	{
 		private DriveType _actualDriveType;
@@ -32,7 +31,6 @@ public static partial class DriveInfoExtensions
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -49,15 +47,8 @@ public static partial class DriveInfoExtensions
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" was ");
-				Formatter.Format(stringBuilder, _actualDriveType);
-			}
+			stringBuilder.Append(It).Append(" was ");
+			Formatter.Format(stringBuilder, _actualDriveType);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -67,15 +58,6 @@ public static partial class DriveInfoExtensions
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" did");
-			}
-		}
+			=> stringBuilder.Append(It).Append(" did");
 	}
 }

@@ -3,7 +3,6 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Results;
-using aweXpect.Testably.Helpers;
 
 namespace aweXpect.Testably;
 
@@ -30,13 +29,18 @@ public static partial class FileInfoExtensions
 			source);
 
 	private sealed class IsReadOnlyConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IFileInfo>(it, grammars),
+		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),
 			IValueConstraint<IFileInfo>
 	{
 		public ConstraintResult IsMetBy(IFileInfo actual)
 		{
 			Actual = actual;
-			if (actual is null || !actual.Exists)
+			if (actual is null)
+			{
+				return this;
+			}
+
+			if (!actual.Exists)
 			{
 				Outcome = Outcome.FailureBothWays;
 				return this;
@@ -51,11 +55,7 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else if (!Actual.Exists)
+			if (!Actual!.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}
@@ -70,11 +70,7 @@ public static partial class FileInfoExtensions
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.Append(It).Append(" was <null>");
-			}
-			else if (!Actual.Exists)
+			if (!Actual!.Exists)
 			{
 				stringBuilder.Append(It).Append(" did not exist");
 			}

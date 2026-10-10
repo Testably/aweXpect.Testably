@@ -46,13 +46,13 @@ public partial class FileResult<TParent>
 			ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
 			return new AndOrResult<TParent, FileResult<TParent>>(
-				_expectationBuilder.And(" ").AddConstraint((it, grammars)
+				_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, expected, doNotPopulateThisValue), static (s, it, grammars)
 					=> new HasBinaryContentEqualToConstraint(
 						it,
 						grammars,
-						_resolver,
-						expected,
-						doNotPopulateThisValue)),
+						s.resolver,
+						s.expected,
+						s.doNotPopulateThisValue)),
 				_subject);
 		}
 
@@ -64,13 +64,13 @@ public partial class FileResult<TParent>
 		{
 			StringEqualityOptions options = new(nameof(expected));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
-				_expectationBuilder.And(" ").AddConstraint((it, grammars)
+				_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, options, expected), static (s, it, grammars)
 					=> new HasStringContentEqualToConstraint(
 						it,
 						grammars,
-						_resolver,
-						options,
-						expected)),
+						s.resolver,
+						s.options,
+						s.expected)),
 				_subject, options);
 		}
 
@@ -85,13 +85,13 @@ public partial class FileResult<TParent>
 			ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
 
 			return new AndOrResult<TParent, FileResult<TParent>>(
-				_expectationBuilder.And(" ").AddConstraint((it, grammars)
+				_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, unexpected, doNotPopulateThisValue), static (s, it, grammars)
 					=> new HasBinaryContentEqualToConstraint(
 							it,
 							grammars,
-							_resolver,
-							unexpected,
-							doNotPopulateThisValue,
+							s.resolver,
+							s.unexpected,
+							s.doNotPopulateThisValue,
 							isInverted: true)
 						.Invert()),
 				_subject);
@@ -105,13 +105,13 @@ public partial class FileResult<TParent>
 		{
 			StringEqualityOptions options = new(nameof(unexpected));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
-				_expectationBuilder.And(" ").AddConstraint((it, grammars)
+				_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, options, unexpected), static (s, it, grammars)
 					=> new HasStringContentEqualToConstraint(
 						it,
 						grammars,
-						_resolver,
-						options,
-						unexpected,
+						s.resolver,
+						s.options,
+						s.unexpected,
 						isInverted: true).Invert()),
 				_subject, options);
 		}
@@ -126,8 +126,8 @@ public partial class FileResult<TParent>
 
 			StringEqualityOptions options = new(nameof(filePath));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
-				_expectationBuilder.And(" ").AddConstraint((it, grammars)
-					=> new HasContentSameAsConstraint(it, grammars, _resolver, options, filePath)),
+				_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, options, filePath), static (s, it, grammars)
+					=> new HasContentSameAsConstraint(it, grammars, s.resolver, s.options, s.filePath)),
 				_subject, options);
 		}
 
@@ -141,8 +141,8 @@ public partial class FileResult<TParent>
 
 			StringEqualityOptions options = new(nameof(filePath));
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
-				_expectationBuilder.And(" ").AddConstraint((it, grammars)
-					=> new HasContentSameAsConstraint(it, grammars, _resolver, options, filePath, isInverted: true)
+				_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, options, filePath), static (s, it, grammars)
+					=> new HasContentSameAsConstraint(it, grammars, s.resolver, s.options, s.filePath, isInverted: true)
 						.Invert()),
 				_subject, options);
 		}

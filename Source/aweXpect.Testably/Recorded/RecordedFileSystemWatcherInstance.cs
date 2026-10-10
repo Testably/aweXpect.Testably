@@ -94,10 +94,10 @@ public sealed class RecordedFileSystemWatcherInstance
 		string path = _path;
 		string bucketDescription = _bucketDescription;
 		return new RecordedMethodCallResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, path, bucketDescription, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(
-					it, grammars, quantifier,
-					s => s.FileSystemWatcher[path], bucketDescription, methodName, matchers)),
+					it, grammars, state.quantifier,
+					s => s.FileSystemWatcher[state.path], state.bucketDescription, state.methodName, state.matchers)),
 			_subject, quantifier);
 	}
 }

@@ -127,9 +127,9 @@ public sealed class RecordedFileMethods
 	public RecordedMethodCallResult AppendText(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.AppendText),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.Copy(string, string)" /> and overloads.</summary>
 	public RecordedMethodCallResult Copy(
@@ -179,105 +179,105 @@ public sealed class RecordedFileMethods
 	public RecordedMethodCallResult CreateText(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.CreateText),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.Decrypt(string)" />.</summary>
 	public RecordedMethodCallResult Decrypt(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.Decrypt),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.Delete(string)" />.</summary>
 	public RecordedMethodCallResult Delete(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.Delete),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.Encrypt(string)" />.</summary>
 	public RecordedMethodCallResult Encrypt(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.Encrypt),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.Exists(string?)" />.</summary>
 	public RecordedMethodCallResult Exists(
 		Func<string?, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.Exists),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.GetAttributes(string)" /> and overloads.</summary>
 	public RecordedMethodCallResult GetAttributes(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.GetAttributes),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.GetCreationTime(string)" /> and overloads.</summary>
 	public RecordedMethodCallResult GetCreationTime(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.GetCreationTime),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.GetCreationTimeUtc(string)" /> and overloads.</summary>
 	public RecordedMethodCallResult GetCreationTimeUtc(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.GetCreationTimeUtc),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.GetLastAccessTime(string)" /> and overloads.</summary>
 	public RecordedMethodCallResult GetLastAccessTime(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.GetLastAccessTime),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.GetLastAccessTimeUtc(string)" /> and overloads.</summary>
 	public RecordedMethodCallResult GetLastAccessTimeUtc(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.GetLastAccessTimeUtc),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.GetLastWriteTime(string)" /> and overloads.</summary>
 	public RecordedMethodCallResult GetLastWriteTime(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.GetLastWriteTime),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.GetLastWriteTimeUtc(string)" /> and overloads.</summary>
 	public RecordedMethodCallResult GetLastWriteTimeUtc(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.GetLastWriteTimeUtc),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 #if NET7_0_OR_GREATER
 	/// <summary>Recorded calls to <c>IFile.GetUnixFileMode(string)</c>.</summary>
 	public RecordedMethodCallResult GetUnixFileMode(
 		Func<string, bool>? path = null,
-		[CallerArgumentExpression(nameof(path))] string? pathExpression = null)
+		[CallerArgumentExpression(nameof(path))] string? doNotPopulateThisValue = null)
 		=> Build("GetUnixFileMode",
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 #endif
 
 	/// <summary>Recorded calls to <see cref="IFile.Move(string, string)" /> and overloads.</summary>
@@ -327,41 +327,41 @@ public sealed class RecordedFileMethods
 	public RecordedMethodCallResult OpenRead(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.OpenRead),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.OpenText(string)" />.</summary>
 	public RecordedMethodCallResult OpenText(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.OpenText),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.OpenWrite(string)" />.</summary>
 	public RecordedMethodCallResult OpenWrite(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.OpenWrite),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.ReadAllBytes(string)" />.</summary>
 	public RecordedMethodCallResult ReadAllBytes(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build(nameof(IFile.ReadAllBytes),
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <c>IFile.ReadAllBytesAsync(string, CancellationToken)</c>.</summary>
 	public RecordedMethodCallResult ReadAllBytesAsync(
 		Func<string, bool>? path = null,
 		[CallerArgumentExpression(nameof(path))]
-		string? pathExpression = null)
+		string? doNotPopulateThisValue = null)
 		=> Build("ReadAllBytesAsync",
-			ParameterMatcher.From("path", path, pathExpression));
+			ParameterMatcher.From("path", path, doNotPopulateThisValue));
 
 	/// <summary>Recorded calls to <see cref="IFile.ReadAllLines(string)" /> and overloads.</summary>
 	public RecordedMethodCallResult ReadAllLines(
@@ -659,10 +659,10 @@ public sealed class RecordedFileMethods
 	{
 		Quantifier quantifier = new();
 		return new RecordedMethodCallResult(
-			_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(
-					it, grammars, quantifier,
-					s => s.File, BucketDescription, methodName, matchers)),
+					it, grammars, state.quantifier,
+					s => s.File, BucketDescription, state.methodName, state.matchers)),
 			_subject, quantifier);
 	}
 }

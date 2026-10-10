@@ -30,7 +30,7 @@ public static partial class ChangeDescriptionExtensions
 		}
 
 		return new AndOrResult<TChange, IThat<TChange>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new NotificationConstraints.HasFileSystemTypeConstraint<TChange>(it, grammars, expected)),
 			source);
 	}
@@ -52,7 +52,7 @@ public static partial class ChangeDescriptionExtensions
 		}
 
 		return new AndOrResult<TChange, IThat<TChange>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			source.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars)
 				=> new NotificationConstraints.HasFileSystemTypeConstraint<TChange>(it, grammars, unexpected).Invert()),
 			source);
 	}
