@@ -69,7 +69,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that fileInfo
-						             has content different from unexpected,
+						             does not have content equal to unexpected,
 						             but it did not exist
 						             """)
 						.Because("a missing file has no content that could differ");
@@ -155,7 +155,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that fileInfo
-						             has content not equal to "bar",
+						             does not have content equal to "bar",
 						             but it did not exist
 						             """)
 						.Because("a missing file has no content that could differ");

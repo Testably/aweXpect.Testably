@@ -89,7 +89,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that fileInfo
-						             has content different from expected,
+						             does not have content equal to expected,
 						             but it did not exist
 						             """)
 						.Because("a missing file has no content to compare, so the negation fails as well");
@@ -160,7 +160,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that fileInfos
-						              has content equal to "abc" for all items,
+						             has content equal to "abc" for all items,
 						             but for the item at index 1, it did not exist
 
 						             Collection:
@@ -205,7 +205,7 @@ public sealed partial class FileInfo
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that fileInfo
-						             has content not equal to "bar",
+						             does not have content equal to "bar",
 						             but it did not exist
 						             """)
 						.Because("a missing file has no content to compare, so the negation fails as well");
