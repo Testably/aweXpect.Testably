@@ -305,7 +305,9 @@ internal static class FileSystemConstraints
 				_actualTime = _actualTime.ToLocalTime();
 			}
 
-			Outcome = IsWithinTolerance(tolerance.Tolerance, _actualTime - expected)
+			TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+			TimeSpan difference = _actualTime - expected;
+			Outcome = difference <= timeTolerance && difference >= timeTolerance.Negate()
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -346,16 +348,5 @@ internal static class FileSystemConstraints
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
-
-		private static bool IsWithinTolerance(TimeSpan? tolerance, TimeSpan difference)
-		{
-			if (tolerance == null)
-			{
-				return difference == TimeSpan.Zero;
-			}
-
-			return difference <= tolerance.Value &&
-			       difference >= tolerance.Value.Negate();
-		}
 	}
 }
