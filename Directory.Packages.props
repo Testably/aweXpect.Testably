@@ -4,7 +4,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageVersion Include="aweXpect" Version="3.0.0-pre.18"/>
-		<PackageVersion Include="aweXpect.Core" Version="3.0.0-pre.22"/>
+		<PackageVersion Include="aweXpect.Core" Version="3.0.0"/>
 		<PackageVersion Include="Testably.Abstractions" Version="10.4.0"/>
 		<PackageVersion Include="Testably.Abstractions.Interface" Version="10.4.0"/>
 		<PackageVersion Include="Testably.Abstractions.Testing" Version="7.1.1"/>
