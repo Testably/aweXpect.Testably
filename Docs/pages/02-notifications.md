@@ -19,8 +19,9 @@ await Expect.That(fileSystem).TriggeredNotification();
 await Expect.That(fileSystem).TriggeredNotification(c => c.Name == "let-it-be.txt");
 ```
 
-With `.Within(timeout)` (default 30 seconds) the expectation waits for asynchronous notifications. If a matching
-notification was already triggered, it completes immediately; otherwise it waits up to the timeout:
+Without `.Within(timeout)`, the expectation checks only the notifications triggered so far and does not wait. With
+`.Within(timeout)` it also waits for asynchronous notifications: it completes as soon as the quantifier is decided,
+otherwise when the timeout elapses, so an upper bound like `.Never()` or `.AtMost(…)` waits for the full timeout:
 
 ```csharp
 _ = Task.Run(() => fileSystem.File.WriteAllText("help.txt", "help"));
@@ -36,12 +37,18 @@ triggered a notification matching c => c.Name == "yesterday.txt" at least once w
 but it was not triggered
 ```
 
-`DidNotTriggerNotification` has the same overloads and fails as soon as a matching notification is triggered:
+`DidNotTriggerNotification` has the same overloads. With `.Within(timeout)` it waits for the full timeout and fails as
+soon as a matching notification is triggered:
 
 ```csharp
-await Expect.That(fileSystem).DidNotTriggerNotification().Within(100.Milliseconds());
 await Expect.That(fileSystem).DidNotTriggerNotification(c => c.Name == "free-as-a-bird.txt");
+await Expect.That(fileSystem).DidNotTriggerNotification(c => c.Name == "free-as-a-bird.txt")
+    .Within(100.Milliseconds());
 ```
+
+A timeout of the evaluation (e.g. `.WithTimeout(…)`) that is not shorter than `.Within(timeout)` lets the
+notifications received until then decide; a cancellation before that leaves the expectation inconclusive.
+`Timeout.InfiniteTimeSpan` waits until the quantifier is decided.
 
 Both accept a quantifier (`AtLeast`, `AtMost`, `Exactly`, `Between`, `Never`, `Once`) to verify how often the
 notification was triggered, and a `.Which(c => …)` callback with the
@@ -76,15 +83,19 @@ using IFileSystemWatcher watcher = fileSystem.FileSystemWatcher.New("/music");
 watcher.EnableRaisingEvents = true;
 fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
 
-await Expect.That(watcher).Triggered();
+await Expect.That(watcher).Triggered().Within(1.Seconds());
 await Expect.That(watcher).Triggered(c => c.Name == "let-it-be.txt");
 
-await Expect.That(watcher).DidNotTrigger().Within(100.Milliseconds());
-await Expect.That(watcher).DidNotTrigger(c => c.Name == "free-as-a-bird.txt");
+await Expect.That(watcher).DidNotTrigger(c => c.Name == "free-as-a-bird.txt").Within(100.Milliseconds());
 ```
 
-`Triggered` and `DidNotTrigger` support the same quantifiers, `.Within(timeout)` (default 30 seconds) and
-`.Which(c => …)` callback as the [notification](#file-system-notifications) expectations:
+The mock raises the events of a watcher asynchronously, like a real `FileSystemWatcher`, so an event of a change that
+just completed may not be raised yet. Without `.Within(timeout)`, only the events raised so far count; use it to wait
+for them. `Triggered()` completes as soon as a matching event is raised, so a generous timeout only costs time when the
+expectation fails.
+
+`Triggered` and `DidNotTrigger` support the same quantifiers, `.Within(timeout)` and `.Which(c => …)` callback as the
+[notification](#file-system-notifications) expectations:
 
 ```csharp
 await Expect.That(watcher)

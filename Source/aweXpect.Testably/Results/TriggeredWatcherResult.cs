@@ -16,14 +16,14 @@ public class TriggeredWatcherResult
 		IOptionsProvider<Quantifier>
 {
 	private readonly NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> _filter;
-	private readonly NotificationTimeoutOptions _options;
+	private readonly RepeatedCheckOptions _options;
 	private readonly Quantifier _quantifier;
 
 	internal TriggeredWatcherResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<IFileSystemWatcher> subject,
 		Quantifier quantifier,
-		NotificationTimeoutOptions options, NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> filter)
+		RepeatedCheckOptions options, NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> filter)
 		: base(expectationBuilder, subject)
 	{
 		_quantifier = quantifier;
@@ -58,6 +58,10 @@ public class TriggeredWatcherResult
 	/// <summary>
 	///     Allows a <paramref name="timeout" /> for waiting for asynchronous events.
 	/// </summary>
+	/// <remarks>
+	///     Without a timeout, only the changes recorded so far are checked. With it, the expectation waits until the
+	///     quantifier is decided or the timeout elapses, so an upper bound like <c>Never()</c> waits for the full timeout.
+	/// </remarks>
 	public TriggeredWatcherResult Within(TimeSpan timeout)
 	{
 		_options.Within(timeout);

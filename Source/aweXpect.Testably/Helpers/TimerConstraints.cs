@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,12 +15,16 @@ internal static class TimerConstraints
 		string it,
 		ExpectationGrammars grammars,
 		Quantifier quantifier,
-		NotificationTimeoutOptions options)
+		RepeatedCheckOptions options)
 		: ConstraintResult.WithValue<ITimerMock>(it, grammars),
 			IAsyncContextConstraint<ITimerMock>
 	{
 		private long _executionCount;
 
+		/// <remarks>
+		///     The checks stop as soon as the quantifier is decided either way, as the execution count only grows;
+		///     otherwise the count of the last check decides, e.g. for <c>Never()</c> at the timeout.
+		/// </remarks>
 		public async ValueTask<ConstraintResult> IsMetBy(ITimerMock actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -33,39 +36,17 @@ internal static class TimerConstraints
 				return this;
 			}
 
-			TimeSpan timeout = options.Timeout;
-			using CancellationTokenSource deadlineCts =
-				CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-			deadlineCts.CancelAfter(timeout);
-			CancellationToken deadlineToken = deadlineCts.Token;
-
-			TimeSpan pollInterval = TimeSpan.FromMilliseconds(10);
-			while (true)
+			Outcome outcome = await options.CheckRepeatedly(_ =>
 			{
 				_executionCount = actual.ExecutionCount;
-				if (quantifier.Check(ToInt(_executionCount), false) is not null)
-				{
-					break;
-				}
-
-				if (deadlineToken.IsCancellationRequested)
-				{
-					break;
-				}
-
-				try
-				{
-					await Task.Delay(pollInterval, deadlineToken).ConfigureAwait(false);
-				}
-				catch (OperationCanceledException)
-				{
-					// deadline hit
-				}
+				return new ValueTask<bool>(quantifier.Check(ToInt(_executionCount), false) is not null);
+			}, context);
+			if (outcome == Outcome.Undecided)
+			{
+				Outcome = Outcome.Undecided;
+				return this;
 			}
 
-			cancellationToken.ThrowIfCancellationRequested();
-
-			_executionCount = actual.ExecutionCount;
 			Outcome = quantifier.Check(ToInt(_executionCount), true) == true
 				? Outcome.Success
 				: Outcome.Failure;

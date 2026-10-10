@@ -16,14 +16,14 @@ public class TriggeredNotificationResult
 		IOptionsProvider<Quantifier>
 {
 	private readonly NotificationConstraints.TriggerNotificationFilter<ChangeDescription> _filter;
-	private readonly NotificationTimeoutOptions _options;
+	private readonly RepeatedCheckOptions _options;
 	private readonly Quantifier _quantifier;
 
 	internal TriggeredNotificationResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<MockFileSystem> subject,
 		Quantifier quantifier,
-		NotificationTimeoutOptions options, NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter)
+		RepeatedCheckOptions options, NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter)
 		: base(expectationBuilder, subject)
 	{
 		_quantifier = quantifier;
@@ -58,6 +58,10 @@ public class TriggeredNotificationResult
 	/// <summary>
 	///     Allows a <paramref name="timeout" /> for waiting for asynchronous notifications.
 	/// </summary>
+	/// <remarks>
+	///     Without a timeout, only the changes recorded so far are checked. With it, the expectation waits until the
+	///     quantifier is decided or the timeout elapses, so an upper bound like <c>Never()</c> waits for the full timeout.
+	/// </remarks>
 	public TriggeredNotificationResult Within(TimeSpan timeout)
 	{
 		_options.Within(timeout);

@@ -186,6 +186,36 @@ public sealed partial class FileSystem
 				await That(Act).Throws()
 					.WithMessage("*did not trigger a notification*but it was triggered*").AsWildcard();
 			}
+
+			[Fact]
+			public async Task WithoutWithin_WhenNoPriorEvent_ShouldSucceedWithoutWaiting()
+			{
+				MockFileSystem sut = new();
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification().WithTimeout(TimeSpan.FromSeconds(5));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("without Within only the notifications triggered so far are checked");
+			}
+
+			[Fact]
+			public async Task WhenTimeoutOfEvaluationEndsWithin_ShouldSucceed()
+			{
+				MockFileSystem sut = new();
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification()
+						.Within(TimeSpan.FromMilliseconds(200))
+						.WithTimeout(TimeSpan.FromMilliseconds(200));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("a timeout of the evaluation at the end of Within lets the received notifications decide");
+			}
 		}
 	}
 }

@@ -359,6 +359,122 @@ public sealed class Timer
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WithoutWithin_WhenNotExecuted_ShouldFailWithoutWaiting()
+			{
+				MockTimeSystem timeSystem = new();
+				using ITimerMock sut = (ITimerMock)timeSystem.Timer.New(
+					_ => { },
+					null,
+					Timeout.InfiniteTimeSpan,
+					Timeout.InfiniteTimeSpan);
+
+				async Task Act()
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					await That(sut).Executed().WithTimeout(TimeSpan.FromSeconds(5));
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that sut
+					             executed at least once,
+					             but it was not executed
+					             """)
+					.Because("without Within the execution count is checked once");
+			}
+
+			[Fact]
+			public async Task WithoutWithin_WhenNeverAndNotExecuted_ShouldSucceedWithoutWaiting()
+			{
+				MockTimeSystem timeSystem = new();
+				using ITimerMock sut = (ITimerMock)timeSystem.Timer.New(
+					_ => { },
+					null,
+					Timeout.InfiniteTimeSpan,
+					Timeout.InfiniteTimeSpan);
+
+				async Task Act()
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					await That(sut).Executed().Never().WithTimeout(TimeSpan.FromSeconds(5));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("without Within the execution count is checked once");
+			}
+
+			[Fact]
+			public async Task WhenNeverAndTimeoutOfEvaluationEndsWithin_ShouldSucceed()
+			{
+				MockTimeSystem timeSystem = new();
+				using ITimerMock sut = (ITimerMock)timeSystem.Timer.New(
+					_ => { },
+					null,
+					Timeout.InfiniteTimeSpan,
+					Timeout.InfiniteTimeSpan);
+
+				async Task Act()
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					await That(sut).Executed().Never()
+						.Within(TimeSpan.FromMilliseconds(200))
+						.WithTimeout(TimeSpan.FromMilliseconds(200));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("a timeout of the evaluation at the end of Within lets the last check decide");
+			}
+
+			[Fact]
+			public async Task WhenExecutionsArriveLater_WithCheckEvery_ShouldSucceed()
+			{
+				MockTimeSystem timeSystem = new();
+				using ITimerMock sut = (ITimerMock)timeSystem.Timer.New(
+					_ => { },
+					null,
+					Timeout.InfiniteTimeSpan,
+					Timeout.InfiniteTimeSpan);
+
+				_ = Task.Run(async () =>
+				{
+					await Task.Delay(20);
+					// ReSharper disable once AccessToDisposedClosure
+					sut.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(5));
+				});
+
+				async Task Act()
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					await That(sut).Executed().AtLeast(2.Times())
+						.Within(TimeSpan.FromSeconds(5))
+						.CheckEvery(TimeSpan.FromMilliseconds(10));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task CheckEvery_WithZeroInterval_ShouldThrowArgumentOutOfRangeException()
+			{
+				MockTimeSystem timeSystem = new();
+				using ITimerMock sut = (ITimerMock)timeSystem.Timer.New(
+					_ => { },
+					null,
+					Timeout.InfiniteTimeSpan,
+					Timeout.InfiniteTimeSpan);
+
+				async Task Act()
+				{
+					// ReSharper disable once AccessToDisposedClosure
+					await That(sut).Executed().Within(TimeSpan.FromSeconds(1)).CheckEvery(TimeSpan.Zero);
+				}
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("interval").And
+					.WithMessage("The interval must be positive.*").AsWildcard();
+			}
 		}
 	}
 }

@@ -150,6 +150,8 @@ public sealed class Readme
 				_ => { }, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(10));
 
 			await That(timer).Executed().AtLeast(3.Times()).Within(TimeSpan.FromSeconds(5));
+			await That(timer).Executed().AtLeast(3.Times()).Within(TimeSpan.FromSeconds(5))
+				.CheckEvery(TimeSpan.FromMilliseconds(10));
 			await That(timer).Executed().AtLeast(2.Times()).Within(TimeSpan.FromMilliseconds(100));
 		}
 
@@ -162,9 +164,9 @@ public sealed class Readme
 			watcher.EnableRaisingEvents = true;
 			fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
 
-			await That(watcher).Triggered();
+			await That(watcher).Triggered().Within(TimeSpan.FromSeconds(1));
 			await That(watcher).Triggered(c => c.Name == "let-it-be.txt");
-			await That(watcher).DidNotTrigger(c => c.Name == "unreleased.txt");
+			await That(watcher).DidNotTrigger(c => c.Name == "unreleased.txt").Within(TimeSpan.FromMilliseconds(100));
 
 			await That(watcher)
 				.Triggered()
