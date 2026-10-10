@@ -97,6 +97,49 @@ public sealed partial class FileSystem
 				}
 
 				[Fact]
+				public async Task WhenFileDoesNotExist_ShouldFail()
+				{
+					MockFileSystem sut = new();
+					DateTime expectedTime = CurrentTime().ToLocalTime();
+					string path = "foo.txt";
+
+					async Task Act()
+					{
+						await That(sut).HasFile(path).WithCreationTime(expectedTime);
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              has file '{path}' with creation time equal to {Formatter.Format(expectedTime)},
+						              but it did not exist
+						              """)
+						.Because("a missing file has no creation time to compare");
+				}
+
+				[Fact]
+				public async Task WhenFileDoesNotExist_WithTolerance_ShouldFail()
+				{
+					MockFileSystem sut = new();
+					DateTime expectedTime = CurrentTime().ToLocalTime();
+					string path = "foo.txt";
+
+					async Task Act()
+					{
+						await That(sut).HasFile(path).WithCreationTime(expectedTime)
+							.Within(TimeSpan.FromSeconds(2));
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              has file '{path}' with creation time equal to {Formatter.Format(expectedTime)} ± 0:02,
+						              but it did not exist
+						              """)
+						.Because("a missing file fails regardless of the tolerance");
+				}
+
+				[Fact]
 				public async Task WhenNegated_WhenCreationTimeMatches_ShouldFail()
 				{
 					MockFileSystem sut = new();
@@ -127,6 +170,36 @@ public sealed partial class FileSystem
 					string path = "foo.txt";
 					sut.File.WriteAllText(path, "");
 					sut.File.SetCreationTime(path, actualTime);
+
+					async Task Act()
+					{
+						await That(sut).DoesNotComplyWith(it => it.HasFile(path).WithCreationTime(expectedTime));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenFileDoesNotExist_ShouldSucceed()
+				{
+					MockFileSystem sut = new();
+					DateTime expectedTime = CurrentTime().ToLocalTime();
+
+					async Task Act()
+					{
+						await That(sut).DoesNotComplyWith(it => it.HasFile("foo.txt").WithCreationTime(expectedTime));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenPathIsADirectory_ShouldSucceed()
+				{
+					MockFileSystem sut = new();
+					DateTime expectedTime = CurrentTime().ToLocalTime();
+					string path = "foo";
+					sut.Directory.CreateDirectory(path);
 
 					async Task Act()
 					{
@@ -186,6 +259,28 @@ public sealed partial class FileSystem
 					}
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenPathIsADirectory_ShouldFail()
+				{
+					MockFileSystem sut = new();
+					DateTime expectedTime = CurrentTime().ToLocalTime();
+					string path = "foo";
+					sut.Directory.CreateDirectory(path);
+
+					async Task Act()
+					{
+						await That(sut).HasFile(path).WithCreationTime(expectedTime);
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              has file '{path}' with creation time equal to {Formatter.Format(expectedTime)},
+						              but it was a directory
+						              """)
+						.Because("the creation time of a directory is not the creation time of a file");
 				}
 			}
 		}

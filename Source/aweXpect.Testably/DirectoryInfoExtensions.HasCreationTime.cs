@@ -24,7 +24,7 @@ public static partial class DirectoryInfoExtensions
 		return new TimeToleranceResult<IDirectoryInfo, IThat<IDirectoryInfo>>(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileSystemConstraints.HasTimeConstraint<IDirectoryInfo>(it, grammars,
-					d => d.CreationTime, d => d.Exists, tolerance, expected, "creation time",
+					d => d.CreationTime, FileSystemConstraints.GetMissingResult, tolerance, expected, "creation time",
 					isWithClause: false)),
 			source, tolerance);
 	}

@@ -13,6 +13,27 @@ public sealed partial class FileSystem
 			public sealed class Tests
 			{
 				[Fact]
+				public async Task WhenFileDoesNotExist_ShouldFail()
+				{
+					MockFileSystem sut = new();
+					DateTime expectedTime = CurrentTime().ToLocalTime();
+					string path = "foo.txt";
+
+					async Task Act()
+					{
+						await That(sut).HasFile(path).WithLastAccessTime(expectedTime);
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              has file '{path}' with last access time equal to {Formatter.Format(expectedTime)},
+						              but it did not exist
+						              """)
+						.Because("a missing file has no last access time to compare");
+				}
+
+				[Fact]
 				public async Task WhenLastAccessTimeDiffers_WithLocalTime_ShouldFail()
 				{
 					MockFileSystem sut = new();
@@ -148,6 +169,20 @@ public sealed partial class FileSystem
 				}
 
 				[Fact]
+				public async Task WhenNegated_WhenFileDoesNotExist_ShouldSucceed()
+				{
+					MockFileSystem sut = new();
+					DateTime expectedTime = CurrentTime().ToLocalTime();
+
+					async Task Act()
+					{
+						await That(sut).DoesNotComplyWith(it => it.HasFile("foo.txt").WithLastAccessTime(expectedTime));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenNegated_WhenLastAccessTimeMatches_ShouldFail()
 				{
 					MockFileSystem sut = new();
@@ -168,6 +203,44 @@ public sealed partial class FileSystem
 						              but it did and was {Formatter.Format(expectedTime)}
 						              """)
 						.Because("the negation belongs to the verb only");
+				}
+
+				[Fact]
+				public async Task WhenNegated_WhenPathIsADirectory_ShouldSucceed()
+				{
+					MockFileSystem sut = new();
+					DateTime expectedTime = CurrentTime().ToLocalTime();
+					string path = "foo";
+					sut.Directory.CreateDirectory(path);
+
+					async Task Act()
+					{
+						await That(sut).DoesNotComplyWith(it => it.HasFile(path).WithLastAccessTime(expectedTime));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenPathIsADirectory_ShouldFail()
+				{
+					MockFileSystem sut = new();
+					DateTime expectedTime = CurrentTime().ToLocalTime();
+					string path = "foo";
+					sut.Directory.CreateDirectory(path);
+
+					async Task Act()
+					{
+						await That(sut).HasFile(path).WithLastAccessTime(expectedTime);
+					}
+
+					await That(Act).Throws()
+						.WithMessage($"""
+						              Expected that sut
+						              has file '{path}' with last access time equal to {Formatter.Format(expectedTime)},
+						              but it was a directory
+						              """)
+						.Because("the last access time of a directory is not the last access time of a file");
 				}
 			}
 		}

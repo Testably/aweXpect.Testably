@@ -81,6 +81,50 @@ public sealed partial class DirectoryInfo
 					             but it did not exist
 					             """);
 			}
+
+			[Fact]
+			public async Task WithCreationTime_WhenFileIsMissing_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.Directory.CreateDirectory("foo");
+				IDirectoryInfo dirInfo = fileSystem.DirectoryInfo.New("foo");
+				DateTime expectedTime = CurrentTime().ToLocalTime();
+
+				async Task Act()
+				{
+					await That(dirInfo).HasFile("bar.txt").WithCreationTime(expectedTime);
+				}
+
+				await That(Act).Throws()
+					.WithMessage($"""
+					              Expected that dirInfo
+					              has file 'bar.txt' with creation time equal to {Formatter.Format(expectedTime)},
+					              but it did not exist
+					              """)
+					.Because("a missing file has no creation time to compare");
+			}
+
+			[Fact]
+			public async Task WithCreationTime_WhenPathIsADirectory_ShouldFail()
+			{
+				MockFileSystem fileSystem = new();
+				fileSystem.Directory.CreateDirectory("foo/bar");
+				IDirectoryInfo dirInfo = fileSystem.DirectoryInfo.New("foo");
+				DateTime expectedTime = CurrentTime().ToLocalTime();
+
+				async Task Act()
+				{
+					await That(dirInfo).HasFile("bar").WithCreationTime(expectedTime);
+				}
+
+				await That(Act).Throws()
+					.WithMessage($"""
+					              Expected that dirInfo
+					              has file 'bar' with creation time equal to {Formatter.Format(expectedTime)},
+					              but it was a directory
+					              """)
+					.Because("the creation time of a directory is not the creation time of a file");
+			}
 		}
 	}
 }

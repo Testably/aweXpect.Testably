@@ -12,6 +12,9 @@ namespace aweXpect.Testably.Helpers;
 
 internal static class FileSystemConstraints
 {
+	internal static string? GetMissingResult(IFileSystemInfo info)
+		=> info.Exists ? null : " did not exist";
+
 	internal sealed class HasAttributeConstraint<TInfo>(
 		string it,
 		ExpectationGrammars grammars,
@@ -262,7 +265,7 @@ internal static class FileSystemConstraints
 		string it,
 		ExpectationGrammars grammars,
 		Func<TActual, DateTime> timeAccessor,
-		Func<TActual, bool>? existsCheck,
+		Func<TActual, string?> getMissingResult,
 		TimeTolerance tolerance,
 		DateTime expected,
 		string expectedString,
@@ -272,21 +275,21 @@ internal static class FileSystemConstraints
 		where TActual : class
 	{
 		private DateTime _actualTime;
-		private bool _existed = true;
+		private string? _missingResult;
 
 		public ConstraintResult IsMetBy(TActual actual)
 		{
 			Actual = actual;
-			_existed = true;
+			_missingResult = null;
 			if (actual is null)
 			{
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
-			if (existsCheck != null && !existsCheck(actual))
+			_missingResult = getMissingResult(actual);
+			if (_missingResult is not null)
 			{
-				_existed = false;
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
@@ -322,9 +325,9 @@ internal static class FileSystemConstraints
 			{
 				stringBuilder.Append(It).Append(" was <null>");
 			}
-			else if (!_existed)
+			else if (_missingResult is not null)
 			{
-				stringBuilder.Append(It).Append(" did not exist");
+				stringBuilder.Append(It).Append(_missingResult);
 			}
 			else
 			{
