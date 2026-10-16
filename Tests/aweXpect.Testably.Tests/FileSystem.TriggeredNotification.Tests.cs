@@ -707,9 +707,10 @@ public sealed partial class FileSystem
 			{
 				MockFileSystem sut = new();
 				Exception? writerException = null;
-				Task writer = Task.Run(async () =>
+				// A dedicated thread, so that a busy thread pool cannot delay the write beyond the timeout.
+				Thread writer = new(() =>
 				{
-					await Task.Delay(20);
+					Thread.Sleep(20);
 					try
 					{
 						sut.File.WriteAllText("foo.txt", "x");
@@ -718,7 +719,11 @@ public sealed partial class FileSystem
 					{
 						writerException = exception;
 					}
-				});
+				})
+				{
+					IsBackground = true,
+				};
+				writer.Start();
 
 				async Task Act()
 				{
@@ -729,7 +734,7 @@ public sealed partial class FileSystem
 
 				await That(Act).DoesNotThrow()
 					.Because("the notification was triggered within the timeout");
-				await writer;
+				writer.Join();
 				await That(writerException).IsNull()
 					.Because("the timeout of the expectation must not cancel the code that raised the notification");
 			}
