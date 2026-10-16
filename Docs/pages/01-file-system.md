@@ -1,25 +1,94 @@
 # File system
 
-You can verify the files, directories and drives of a `MockFileSystem`, either through the `IFileSystem` or directly on
-an `IFileInfo`, `IDirectoryInfo`, `IDriveInfo` or `IFileVersionInfo`.
+Describes the possible expectations for the files, directories and drives of a `MockFileSystem`, either through the
+`IFileSystem` or directly on an `IFileInfo`, `IDirectoryInfo`, `IDriveInfo` or `IFileVersionInfo`.
 
-The samples use the `TimeSpan` helpers (`1.Second()`) from
-[aweXpect.Chronology](https://github.com/Testably/aweXpect.Chronology).
+Expectations for [`IFileSystem`](#files-directories-and-drives):
+
+| Expectation                                     | Negated                | Summary                                                              |
+|-------------------------------------------------|------------------------|----------------------------------------------------------------------|
+| [`HasFile`](#files-directories-and-drives)      | `DoesNotHaveFile`      | contains the file, optionally with its content and timestamps        |
+| [`HasDirectory`](#files-directories-and-drives) | `DoesNotHaveDirectory` | contains the directory, optionally with its files and subdirectories |
+| [`HasDrive`](#files-directories-and-drives)     | `DoesNotHaveDrive`     | contains the drive                                                   |
+
+Expectations for [`IFileInfo`](#file):
+
+| Expectation                  | Negated                   | Summary                                                          |
+|------------------------------|---------------------------|------------------------------------------------------------------|
+| [`Exists`](#file)            | `DoesNotExist`            | the file exists                                                  |
+| [`HasName`](#file)           |                           | has the expected name                                            |
+| [`HasExtension`](#file)      |                           | has the expected extension                                       |
+| [`HasLength`](#file)         |                           | has the expected length                                          |
+| [`HasContent`](#file)        | `HasContent().NotEqualTo` | has the expected string or binary content                        |
+| [`IsReadOnly`](#file)        | `IsNotReadOnly`           | the file is read-only                                            |
+| [`HasAttribute`](#file)      | `DoesNotHaveAttribute`    | has the attribute flag                                           |
+| [`HasCreationTime`](#file)   |                           | has the expected creation time, optionally within a tolerance    |
+| [`HasLastAccessTime`](#file) |                           | has the expected last access time, optionally within a tolerance |
+| [`HasLastWriteTime`](#file)  |                           | has the expected last write time, optionally within a tolerance  |
+| [`WhoseParent`](#file)       |                           | the containing directory meets expectations (.NET 10 or later)   |
+
+Expectations for [`IDirectoryInfo`](#directory):
+
+| Expectation                       | Negated                | Summary                                                          |
+|-----------------------------------|------------------------|------------------------------------------------------------------|
+| [`Exists`](#directory)            | `DoesNotExist`         | the directory exists                                             |
+| [`HasName`](#directory)           |                        | has the expected name                                            |
+| [`IsEmpty`](#directory)           | `IsNotEmpty`           | contains no files or subdirectories                              |
+| [`HasFile`](#directory)           | `DoesNotHaveFile`      | contains the file                                                |
+| [`HasDirectory`](#directory)      | `DoesNotHaveDirectory` | contains the subdirectory                                        |
+| [`HasAttribute`](#directory)      | `DoesNotHaveAttribute` | has the attribute flag                                           |
+| [`HasCreationTime`](#directory)   |                        | has the expected creation time, optionally within a tolerance    |
+| [`HasLastAccessTime`](#directory) |                        | has the expected last access time, optionally within a tolerance |
+| [`HasLastWriteTime`](#directory)  |                        | has the expected last write time, optionally within a tolerance  |
+| [`WhoseParent`](#directory)       |                        | the parent directory meets expectations (.NET 10 or later)       |
+
+Expectations for [`IDriveInfo`](#drive):
+
+| Expectation                       | Negated      | Summary                               |
+|-----------------------------------|--------------|---------------------------------------|
+| [`IsReady`](#drive)               | `IsNotReady` | the drive is ready                    |
+| [`HasName`](#drive)               |              | has the expected name                 |
+| [`HasVolumeLabel`](#drive)        |              | has the expected volume label         |
+| [`HasDriveFormat`](#drive)        |              | has the expected drive format         |
+| [`HasDriveType`](#drive)          |              | has the expected drive type           |
+| [`HasTotalSize`](#drive)          |              | has the expected total size           |
+| [`HasTotalFreeSpace`](#drive)     |              | has the expected total free space     |
+| [`HasAvailableFreeSpace`](#drive) |              | has the expected available free space |
+
+Expectations for [`IFileVersionInfo`](#file-version-info):
+
+| Expectation                                                              | Negated         | Summary                      |
+|--------------------------------------------------------------------------|-----------------|------------------------------|
+| [`HasCompanyName`, `HasFileMajorPart`, `IsDebug`, …](#file-version-info) | `IsNotDebug`, … | one expectation per property |
+
+The samples on this page use the following file system:
+
+```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
+MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
+fileSystem.WithDrive("D:", d => d.SetTotalSize(2048));
+fileSystem.Directory.CreateDirectory("beatles/abbey-road");
+fileSystem.Directory.CreateDirectory("beatles/revolver");
+fileSystem.File.WriteAllText("beatles/abbey-road/something.txt", "something");
+fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
+fileSystem.File.WriteAllText("let-it-be-remastered.txt", "LET IT BE");
+fileSystem.File.WriteAllText("hey-jude.txt", "hey jude");
+fileSystem.File.SetAttributes("hey-jude.txt", FileAttributes.ReadOnly);
+```
 
 ## Files, directories and drives
 
 You can verify that a file, directory or drive exists in an `IFileSystem`, or that it does not:
 
 ```csharp
-IFileSystem fileSystem = new MockFileSystem();
-fileSystem.Directory.CreateDirectory("beatles/abbey-road");
-fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
-
 await Expect.That(fileSystem).HasDirectory("beatles/abbey-road");
 await Expect.That(fileSystem).HasFile("let-it-be.txt");
+await Expect.That(fileSystem).HasDrive("D:\\");
 
 await Expect.That(fileSystem).DoesNotHaveDirectory("beatles/white-album");
 await Expect.That(fileSystem).DoesNotHaveFile("yesterday.txt");
+await Expect.That(fileSystem).DoesNotHaveDrive("E:\\");
 ```
 
 For example, `Expect.That(fileSystem).HasFile("yesterday.txt")` fails with:
@@ -30,22 +99,24 @@ has file "yesterday.txt",
 but it did not exist
 ```
 
+`HasDrive` matches the drive name case-insensitively against `IFileSystem.DriveInfo.GetDrives()`. UNC drives are not
+returned by `GetDrives()` and are therefore not supported by `HasDrive`.
+
 ### File content and timestamps
 
 You can verify the content of the file found by `HasFile(path)`:
 
 ```csharp
-IFileSystem fileSystem = new MockFileSystem();
-fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
-
 await Expect.That(fileSystem).HasFile("let-it-be.txt").WithContent("LET IT BE").IgnoringCase();
 await Expect.That(fileSystem).HasFile("let-it-be.txt").WithContent().NotEqualTo("let it go");
 await Expect.That(fileSystem).HasFile("let-it-be.txt").WithContent(Encoding.UTF8.GetBytes("let it be"));
+await Expect.That(fileSystem).HasFile("let-it-be.txt").WhoseContent(c => c.StartsWith("let it"));
 ```
 
 The string content supports the same options as
-[comparing strings](https://docs.testably.org/aweXpect/values/string#equality). When the content differs, the failure
-message shows where and includes the file content:
+[comparing strings](https://docs.testably.org/aweXpect/values/string#equality), and `WhoseContent` accepts any
+[string expectation](https://docs.testably.org/aweXpect/values/string). When the content differs, the failure message
+shows where and includes the file content:
 
 ```text title="Failure message"
 Expected that fileSystem
@@ -63,9 +134,6 @@ let it be
 You can also compare the content with another file on the same file system:
 
 ```csharp
-fileSystem.File.WriteAllText("let-it-be-remastered.txt", "LET IT BE");
-fileSystem.File.WriteAllText("hey-jude.txt", "hey jude");
-
 await Expect.That(fileSystem).HasFile("let-it-be.txt").WithContent().SameAs("let-it-be-remastered.txt").IgnoringCase();
 await Expect.That(fileSystem).HasFile("let-it-be.txt").WithContent().NotSameAs("hey-jude.txt");
 ```
@@ -83,11 +151,6 @@ await Expect.That(fileSystem).HasFile("let-it-be.txt").WithLastWriteTime(DateTim
 You can verify the files and subdirectories of the directory found by `HasDirectory(path)`:
 
 ```csharp
-IFileSystem fileSystem = new MockFileSystem();
-fileSystem.Directory.CreateDirectory("beatles/abbey-road");
-fileSystem.Directory.CreateDirectory("beatles/revolver");
-fileSystem.File.WriteAllText("beatles/abbey-road/something.txt", "something");
-
 await Expect.That(fileSystem).HasDirectory("beatles").WithDirectories(d => d.HasCount().EqualTo(2));
 await Expect.That(fileSystem).HasDirectory("beatles/abbey-road").WithFiles(f => f
     .All().ComplyWith(x => x.HasContent("SOMETHING").IgnoringCase()));
@@ -110,21 +173,20 @@ You can verify the properties of an `IFileInfo`:
 
 ```csharp
 IFileInfo fileInfo = fileSystem.FileInfo.New("let-it-be.txt");
+IFileInfo readOnlyFileInfo = fileSystem.FileInfo.New("hey-jude.txt");
 
 await Expect.That(fileInfo).Exists();
-await Expect.That(fileInfo).DoesNotExist();
+await Expect.That(fileSystem.FileInfo.New("yesterday.txt")).DoesNotExist();
 
 await Expect.That(fileInfo).HasName("let-it-be.txt");
 await Expect.That(fileInfo).HasExtension(".txt");
 await Expect.That(fileInfo).HasLength(9);
-await Expect.That(fileInfo).HasContent("let it be");
-await Expect.That(fileInfo).HasContent(Encoding.UTF8.GetBytes("let it be"));
 
-await Expect.That(fileInfo).IsReadOnly();
+await Expect.That(readOnlyFileInfo).IsReadOnly();
 await Expect.That(fileInfo).IsNotReadOnly();
 
-await Expect.That(fileInfo).HasAttribute(FileAttributes.ReadOnly);
-await Expect.That(fileInfo).DoesNotHaveAttribute(FileAttributes.Hidden);
+await Expect.That(readOnlyFileInfo).HasAttribute(FileAttributes.ReadOnly);
+await Expect.That(fileInfo).DoesNotHaveAttribute(FileAttributes.ReadOnly);
 
 await Expect.That(fileInfo).HasCreationTime(DateTime.Now).Within(1.Second());
 await Expect.That(fileInfo).HasLastAccessTime(DateTime.Now).Within(1.Second());
@@ -139,16 +201,30 @@ has length 10,
 but it was 9
 ```
 
+You can verify the content of the file, or compare it with another file on the same file system, like with
+[`HasFile`](#file-content-and-timestamps):
+
+```csharp
+await Expect.That(fileInfo).HasContent("let it be");
+await Expect.That(fileInfo).HasContent(Encoding.UTF8.GetBytes("let it be"));
+await Expect.That(fileInfo).HasContent().NotEqualTo("let it go");
+await Expect.That(fileInfo).HasContent().SameAs("let-it-be-remastered.txt").IgnoringCase();
+await Expect.That(fileInfo).HasContent().NotSameAs("hey-jude.txt");
+```
+
 `HasAttribute` and `DoesNotHaveAttribute` check whether the flag is contained, so
 `FileAttributes.ReadOnly | FileAttributes.Hidden` satisfies `HasAttribute(FileAttributes.ReadOnly)`. The empty
 (`default`) value throws an `ArgumentException`, because it would be contained in every value.
 
-On .NET 10 or later, `WhoseParent` continues with the containing directory, so that the
-[directory](#directory) expectations can be used:
+:::note[.NET 10 or later]
+`WhoseParent` continues with the containing directory, so that the [directory](#directory) expectations can be used:
 
 ```csharp
-await Expect.That(fileInfo).WhoseParent.HasName("beatles").And.IsNotEmpty();
+IFileInfo something = fileSystem.FileInfo.New("beatles/abbey-road/something.txt");
+
+await Expect.That(something).WhoseParent.HasName("abbey-road").And.IsNotEmpty();
 ```
+:::
 
 ## Directory
 
@@ -156,13 +232,14 @@ You can verify the properties of an `IDirectoryInfo`:
 
 ```csharp
 IDirectoryInfo dirInfo = fileSystem.DirectoryInfo.New("beatles");
+IDirectoryInfo emptyDirInfo = fileSystem.DirectoryInfo.New("beatles/revolver");
 
 await Expect.That(dirInfo).Exists();
-await Expect.That(dirInfo).DoesNotExist();
+await Expect.That(fileSystem.DirectoryInfo.New("beatles/white-album")).DoesNotExist();
 
 await Expect.That(dirInfo).HasName("beatles");
 
-await Expect.That(dirInfo).IsEmpty();
+await Expect.That(emptyDirInfo).IsEmpty();
 await Expect.That(dirInfo).IsNotEmpty();
 
 await Expect.That(dirInfo).HasFile("abbey-road/something.txt");
@@ -182,20 +259,19 @@ await Expect.That(dirInfo).HasLastWriteTime(DateTime.Now).Within(1.Second());
 [file system](#files-directories-and-drives), so `.WithContent(…)`, `.WithLastWriteTime(…)`, `.Which` etc. work as
 well.
 
-On .NET 10 or later, `WhoseParent` continues with the parent directory:
+:::note[.NET 10 or later]
+`WhoseParent` continues with the parent directory:
 
 ```csharp
-await Expect.That(dirInfo).WhoseParent.HasName("…");
+await Expect.That(emptyDirInfo).WhoseParent.HasName("beatles");
 ```
+:::
 
 ## Drive
 
 You can verify the properties of an `IDriveInfo`:
 
 ```csharp
-MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
-fileSystem.WithDrive("D:", d => d.SetTotalSize(2048));
-
 IDriveInfo driveInfo = fileSystem.DriveInfo.New("D:");
 
 await Expect.That(driveInfo).HasAvailableFreeSpace(2048);
@@ -206,16 +282,12 @@ await Expect.That(driveInfo).HasName(driveInfo.Name).And.HasVolumeLabel(driveInf
 await Expect.That(driveInfo).IsReady();
 ```
 
-`HasDrive` on the file system matches the drive name case-insensitively against `IFileSystem.DriveInfo.GetDrives()`.
-UNC drives are not returned by `GetDrives()` and are therefore not supported by `HasDrive`.
-
 ## File version info
 
 You can verify an `IFileVersionInfo` obtained via `MockFileSystem.FileVersionInfo.GetVersionInfo`. Its values come
 from `MockFileSystem.WithFileVersionInfo(glob, builder)`:
 
 ```csharp
-MockFileSystem fileSystem = new();
 fileSystem.WithFileVersionInfo("*.dll", v => v
     .SetCompanyName("Apple Corps")
     .SetProductName("Abbey Road")
@@ -244,6 +316,9 @@ but it was "Apple Corps", which differs at index 0:
 
 Every `IFileVersionInfo` property has its own expectation: `Has…(string)` for the strings, `Has…(int)` for the version
 parts and an `Is…()` / `IsNot…()` pair for the booleans.
+
+<details>
+<summary>Expectations per property</summary>
 
 | Property             | Expectation                                |
 |----------------------|--------------------------------------------|
@@ -274,3 +349,5 @@ parts and an `Is…()` / `IsNot…()` pair for the booleans.
 | `IsPreRelease`       | `IsPreRelease()` / `IsNotPreRelease()`     |
 | `IsPrivateBuild`     | `IsPrivateBuild()` / `IsNotPrivateBuild()` |
 | `IsSpecialBuild`     | `IsSpecialBuild()` / `IsNotSpecialBuild()` |
+
+</details>

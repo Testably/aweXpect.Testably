@@ -1,90 +1,105 @@
 # Notifications and recorded calls
 
-You can verify which changes the code under test made to a `MockFileSystem`: the notifications it raised, the events
-of a single watcher, and the method calls and property accesses it recorded.
+Describes the possible expectations for the changes the code under test made to a `MockFileSystem`: the notifications
+it raised, the events of a single watcher, and the method calls and property accesses it recorded.
 
-The samples use the `TimeSpan` helpers (`100.Milliseconds()`) from
-[aweXpect.Chronology](https://github.com/Testably/aweXpect.Chronology).
+| Expectation                                           | Negated                     | Summary                                                               |
+|-------------------------------------------------------|-----------------------------|-----------------------------------------------------------------------|
+| [`TriggeredNotification`](#file-system-notifications) | `DidNotTriggerNotification` | the `MockFileSystem` raised a matching notification                   |
+| [`Triggered`](#watcher-events)                        | `DidNotTrigger`             | the `IFileSystemWatcher` raised a matching event                      |
+| [`HasChangeType`](#change-descriptions)               | `DoesNotHaveChangeType`     | the change has the change type flag                                   |
+| [`HasFileSystemType`](#change-descriptions)           | `DoesNotHaveFileSystemType` | the change has the file system type flag                              |
+| [`HasNotifyFilters`](#change-descriptions)            | `DoesNotHaveNotifyFilters`  | the change has the notify filters flag                                |
+| [`HasName`](#change-descriptions)                     |                             | the change has the expected name                                      |
+| [`HasPath`](#change-descriptions)                     |                             | the change has the expected path                                      |
+| [`HasOldName`](#change-descriptions)                  |                             | the renamed change has the expected old name                          |
+| [`HasOldPath`](#change-descriptions)                  |                             | the renamed change has the expected old path                          |
+| [`Recorded`](#recorded-calls)                         | `.Never()`                  | the `IFileSystemStatistics` recorded a method call or property access |
 
-## File-system notifications
-
-A `MockFileSystem` raises notifications when files or directories change. You can verify that the code under test
-triggered a notification:
-
-```csharp
-MockFileSystem fileSystem = new();
-fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
-
-await Expect.That(fileSystem).TriggeredNotification();
-await Expect.That(fileSystem).TriggeredNotification(c => c.Name == "let-it-be.txt");
-```
-
-Without `.Within(timeout)`, the expectation checks only the notifications triggered so far and does not wait. With
-`.Within(timeout)` it also waits for asynchronous notifications: it completes as soon as the quantifier is decided,
-otherwise when the timeout elapses, so an upper bound like `.Never()` or `.AtMost(…)` waits for the full timeout:
+The samples on this page use the following file system and watcher:
 
 ```csharp
-_ = Task.Run(() => fileSystem.File.WriteAllText("help.txt", "help"));
-await Expect.That(fileSystem).TriggeredNotification().Within(100.Milliseconds());
-```
+using aweXpect.Chronology; // from the aweXpect.Chronology package
 
-For example, `Expect.That(fileSystem).TriggeredNotification(c => c.Name == "yesterday.txt").Within(100.Milliseconds())`
-fails with:
-
-```text title="Failure message"
-Expected that fileSystem
-has triggered a notification matching c => c.Name == "yesterday.txt" at least once within 0:00.100,
-but it was not triggered
-```
-
-`DidNotTriggerNotification` has the same overloads. With `.Within(timeout)` it waits for the full timeout and fails as
-soon as a matching notification is triggered:
-
-```csharp
-await Expect.That(fileSystem).DidNotTriggerNotification(c => c.Name == "free-as-a-bird.txt");
-await Expect.That(fileSystem).DidNotTriggerNotification(c => c.Name == "free-as-a-bird.txt")
-    .Within(100.Milliseconds());
-```
-
-A timeout of the evaluation (e.g. `.WithTimeout(…)`) that is not shorter than `.Within(timeout)` lets the
-notifications received until then decide; a cancellation before that leaves the expectation inconclusive.
-`Timeout.InfiniteTimeSpan` waits until the quantifier is decided.
-
-Both accept a quantifier (`AtLeast`, `AtMost`, `Exactly`, `Between`, `Never`, `Once`) to verify how often the
-notification was triggered, and a `.Matching(c => …)` filter with the
-[change description](#change-descriptions) expectations for each notification:
-
-```csharp
-fileSystem.File.WriteAllText("come-together.txt", "come together");
-fileSystem.File.WriteAllText("something.txt", "something");
-
-await Expect.That(fileSystem).TriggeredNotification(c => c.ChangeType == WatcherChangeTypes.Created)
-    .Exactly(2.Times());
-
-await Expect.That(fileSystem)
-    .TriggeredNotification()
-    .Matching(c => c.HasName("come-together.txt").And.HasChangeType(WatcherChangeTypes.Created))
-    .Exactly(1.Times());
-```
-
-> These expectations replay the notification history of the `MockFileSystem`. They throw on a file system created
-> with `new MockFileSystem(o => o.WithoutNotificationHistory())`.
-
-## Watcher events
-
-You can verify the events of a single `IFileSystemWatcher`. The watcher must come from a `MockFileSystem` and have
-`EnableRaisingEvents` set to `true`. Only events of this watcher count; events of other watchers on the same
-`MockFileSystem` are ignored.
-
-```csharp
 MockFileSystem fileSystem = new();
 fileSystem.InitializeIn("/music");
 using IFileSystemWatcher watcher = fileSystem.FileSystemWatcher.New("/music");
 watcher.EnableRaisingEvents = true;
-fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
 
+fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
+fileSystem.File.WriteAllText("scrambled-eggs.txt", "scrambled eggs");
+fileSystem.File.Move("scrambled-eggs.txt", "yesterday.txt");
+```
+
+## File-system notifications
+
+A `MockFileSystem` raises notifications when files or directories change. You can verify that the code under test
+triggered a notification, or that it did not:
+
+```csharp
+await Expect.That(fileSystem).TriggeredNotification();
+await Expect.That(fileSystem).TriggeredNotification(c => c.Name == "let-it-be.txt");
+
+await Expect.That(fileSystem).DidNotTriggerNotification(c => c.Name == "free-as-a-bird.txt");
+```
+
+Both accept a quantifier (`AtLeast`, `AtMost`, `Exactly`, `Between`, `Never`, `Once`; at least once by default) to
+verify how often the notification was triggered, and a `.Matching(c => …)` filter with the
+[change description](#change-descriptions) expectations for each notification:
+
+```csharp
+await Expect.That(fileSystem).TriggeredNotification(c => c.ChangeType == WatcherChangeTypes.Renamed).Once();
+
+await Expect.That(fileSystem)
+    .TriggeredNotification()
+    .Matching(c => c.HasName("let-it-be.txt").And.HasChangeType(WatcherChangeTypes.Created))
+    .Exactly(1.Times());
+```
+
+Without `.Within(timeout)`, the expectations check only the notifications triggered so far and do not wait. With
+`.Within(timeout)`, they also wait for asynchronous notifications, like
+[waiting for events](https://docs.testably.org/aweXpect/how-it-works/time-and-cancellation#events):
+`TriggeredNotification` completes as soon as the quantifier is decided, so only an upper bound like `.Never()` or
+`.AtMost(…)` waits for the full timeout, and `DidNotTriggerNotification` waits for the full timeout and fails as soon as
+a matching notification is triggered. `.Within(Timeout.InfiniteTimeSpan)` waits until the quantifier is decided.
+
+```csharp
+_ = Task.Run(() => fileSystem.File.Delete("let-it-be.txt"));
+
+await Expect.That(fileSystem).TriggeredNotification(c => c.ChangeType == WatcherChangeTypes.Deleted)
+    .Within(100.Milliseconds());
+await Expect.That(fileSystem).DidNotTriggerNotification(c => c.Name == "free-as-a-bird.txt")
+    .Within(100.Milliseconds());
+```
+
+For example, `Expect.That(fileSystem).TriggeredNotification(c => c.Name == "free-as-a-bird.txt").Within(100.Milliseconds())`
+fails with:
+
+```text title="Failure message"
+Expected that fileSystem
+has triggered a notification matching c => c.Name == "free-as-a-bird.txt" at least once within 0:00.100,
+but it was not triggered
+```
+
+A timeout of the evaluation (e.g. `.WithTimeout(…)`) that is not shorter than `.Within(timeout)` lets the notifications
+received until then decide; a cancellation before that leaves the expectation
+[inconclusive](https://docs.testably.org/aweXpect/how-it-works/time-and-cancellation#outcome).
+
+:::warning[Notification history]
+These expectations replay the notification history of the `MockFileSystem`. They throw on a file system created with
+`new MockFileSystem(o => o.WithoutNotificationHistory())`.
+:::
+
+## Watcher events
+
+You can verify the events of a single `IFileSystemWatcher`, similar to the
+[events](https://docs.testably.org/aweXpect/behaviour/events) of any other object. The watcher must come from a
+`MockFileSystem` and have `EnableRaisingEvents` set to `true`. Only events of this watcher count; events of other
+watchers on the same `MockFileSystem` are ignored.
+
+```csharp
 await Expect.That(watcher).Triggered().Within(1.Seconds());
-await Expect.That(watcher).Triggered(c => c.Name == "let-it-be.txt");
+await Expect.That(watcher).Triggered(c => c.Name == "let-it-be.txt").Within(1.Seconds());
 
 await Expect.That(watcher).DidNotTrigger(c => c.Name == "free-as-a-bird.txt").Within(100.Milliseconds());
 ```
@@ -101,22 +116,27 @@ expectation fails.
 await Expect.That(watcher)
     .Triggered()
     .Matching(c => c.HasName("let-it-be.txt").And.HasChangeType(WatcherChangeTypes.Created))
-    .Exactly(1.Times());
+    .Exactly(1.Times())
+    .Within(1.Seconds());
 ```
 
 ## Change descriptions
 
-You can verify a single `ChangeDescription`:
+You can verify a single `ChangeDescription`, e.g. a notification in `.Matching(…)` or the event of a watcher:
 
 ```csharp
-await Expect.That(change).HasChangeType(WatcherChangeTypes.Created);
-await Expect.That(change).DoesNotHaveChangeType(WatcherChangeTypes.Deleted);
+await Expect.That(fileSystem).TriggeredNotification().Matching(change => change
+    .HasChangeType(WatcherChangeTypes.Created).And
+    .DoesNotHaveChangeType(WatcherChangeTypes.Deleted).And
+    .HasFileSystemType(FileSystemTypes.File).And
+    .HasNotifyFilters(NotifyFilters.FileName).And
+    .HasName("let-it-be.txt").And
+    .HasPath(fileSystem.Path.GetFullPath("let-it-be.txt")));
 
-await Expect.That(change).HasFileSystemType(FileSystemTypes.File);
-await Expect.That(change).HasNotifyFilters(NotifyFilters.LastWrite);
-
-await Expect.That(change).HasName("let-it-be.txt").And.HasPath("/music/let-it-be.txt");
-await Expect.That(renamedChange).HasOldName("scrambled-eggs.txt").And.HasOldPath("/music/scrambled-eggs.txt");
+await Expect.That(fileSystem).TriggeredNotification().Matching(renamedChange => renamedChange
+    .HasChangeType(WatcherChangeTypes.Renamed).And
+    .HasOldName("scrambled-eggs.txt").And
+    .HasOldPath(fileSystem.Path.GetFullPath("scrambled-eggs.txt")));
 ```
 
 `HasChangeType`, `HasFileSystemType` and `HasNotifyFilters` check whether the flag is contained, so a
@@ -129,15 +149,12 @@ an `ArgumentException`, because it would be contained in every value.
 under test called with `.Recorded()`, which mirrors the `IFileSystem` API:
 
 ```csharp
-MockFileSystem fileSystem = new();
-fileSystem.File.WriteAllText("help.txt", "help");
-
-await Expect.That(fileSystem.Statistics).Recorded().File.WriteAllText().Once();
-await Expect.That(fileSystem.Statistics).Recorded().File.WriteAllText(path: p => p == "help.txt").Once();
+await Expect.That(fileSystem.Statistics).Recorded().File.WriteAllText().Twice();
+await Expect.That(fileSystem.Statistics).Recorded().File.WriteAllText(path: p => p == "let-it-be.txt").Once();
+await Expect.That(fileSystem.Statistics).Recorded().File.Copy().Never();
 ```
 
-For example, if `help.txt` was written twice, `Expect.That(fileSystem.Statistics).Recorded().File.WriteAllText().Once()`
-fails with:
+For example, `Expect.That(fileSystem.Statistics).Recorded().File.WriteAllText().Once()` fails with:
 
 ```text title="Failure message"
 Expected that fileSystem.Statistics
@@ -148,22 +165,27 @@ but it was recorded 2 times
 The mirror has one entry per `IFileSystem` member (`.File`, `.Directory`, `.FileInfo[path]`, `.DirectoryInfo[path]`,
 `.DriveInfo`, `.FileStream`, `.FileSystemWatcher`, `.FileVersionInfo`, `.Path`), with one method per underlying API and
 an indexer (`[path]`) for the instances of a path. Every result supports the quantifiers `Once`, `Twice`, `Never`,
-`Exactly`, `AtLeast`, `AtMost`, `Between`, …
+`Exactly`, `AtLeast`, `AtMost`, `Between`, … and verifies at least one call without a quantifier.
 
+:::note
 As for every quantifier in this package, only one can be specified: chaining two, e.g. `.Once().Twice()`, throws an
 `InvalidOperationException`; use `Between(minimum).And(maximum)` for a range.
+:::
 
 Property reads and writes are recorded with `.Get()` and `.Set()`:
 
 ```csharp
-fileSystem.FileInfo.New("help.txt").IsReadOnly = true;
+fileSystem.FileInfo.New("yesterday.txt").IsReadOnly = true;
 
-await Expect.That(fileSystem.Statistics).Recorded().FileInfo["help.txt"].IsReadOnly.Set().Once();
-await Expect.That(fileSystem.Statistics).Recorded().DirectoryInfo["beatles"].Exists.Get().AtLeast().Once();
+await Expect.That(fileSystem.Statistics).Recorded().FileInfo["yesterday.txt"].IsReadOnly.Set().Once();
+await Expect.That(fileSystem.Statistics).Recorded().FileInfo["yesterday.txt"].IsReadOnly.Get().Never();
 ```
 
 Each parameter of a mirror method is an optional `Func<T, bool>` predicate that is matched **by position** against the
-recorded arguments:
+recorded arguments.
+
+<details>
+<summary>How the predicates are matched by position</summary>
 
 - Without a predicate (or with `null`) the position is skipped and every overload matches, so `.File.Open()` counts
   _all_ `Open` calls regardless of their arguments.
@@ -175,3 +197,5 @@ recorded arguments:
 A few methods cannot be filtered completely by position, because two of their overloads have different types at the
 same position (`File.Open` / `FileInfo.Open` with `FileStreamOptions`, `FileSystemWatcher.WaitForChanged` with
 `TimeSpan`).
+
+</details>
