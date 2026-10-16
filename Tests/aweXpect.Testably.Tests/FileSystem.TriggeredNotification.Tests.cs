@@ -707,29 +707,46 @@ public sealed partial class FileSystem
 			{
 				MockFileSystem sut = new();
 				Exception? writerException = null;
-				Task writer = Task.Run(async () =>
+				// Not disposed, as the background thread may still wait on it when the test fails.
+				ManualResetEventSlim isEvaluated = new();
+				// A dedicated thread, so that a busy thread pool cannot delay the write beyond the timeout.
+				Thread writer = new(() =>
 				{
-					await Task.Delay(20);
-					try
+					// Repeated, so that notifications are also raised while the expectation is subscribed.
+					do
 					{
-						sut.File.WriteAllText("foo.txt", "x");
-					}
-					catch (Exception exception)
-					{
-						writerException = exception;
-					}
-				});
+						try
+						{
+							sut.File.WriteAllText("foo.txt", "x");
+						}
+						catch (Exception exception)
+						{
+							writerException = exception;
+						}
+					} while (!isEvaluated.Wait(TimeSpan.FromMilliseconds(10)));
+				})
+				{
+					IsBackground = true,
+				};
 
 				async Task Act()
 				{
-					await That(sut).TriggeredNotification()
-						.Matching(c => c.IsAcceptedAfter(token => Task.Delay(1000, token)))
-						.Within(TimeSpan.FromMilliseconds(500));
+					writer.Start();
+					try
+					{
+						await That(sut).TriggeredNotification()
+							.Matching(c => c.IsAcceptedAfter(token => Task.Delay(1000, token)))
+							.Within(TimeSpan.FromMilliseconds(500));
+					}
+					finally
+					{
+						isEvaluated.Set();
+					}
 				}
 
 				await That(Act).DoesNotThrow()
 					.Because("the notification was triggered within the timeout");
-				await writer;
+				writer.Join();
 				await That(writerException).IsNull()
 					.Because("the timeout of the expectation must not cancel the code that raised the notification");
 			}

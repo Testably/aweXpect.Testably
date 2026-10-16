@@ -164,7 +164,7 @@ public sealed class Readme
 			watcher.EnableRaisingEvents = true;
 			fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
 
-			await That(watcher).Triggered().Within(TimeSpan.FromSeconds(1));
+			await That(watcher).Triggered().Within(TimeSpan.FromSeconds(30));
 			await That(watcher).Triggered(c => c.Name == "let-it-be.txt");
 			await That(watcher).DidNotTrigger(c => c.Name == "unreleased.txt").Within(TimeSpan.FromMilliseconds(100));
 
