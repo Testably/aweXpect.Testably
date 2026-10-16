@@ -48,12 +48,18 @@ public sealed partial class FileSystemWatcher
 				using IFileSystemWatcher watcherB = fs.FileSystemWatcher.New("/b");
 				watcherA.EnableRaisingEvents = true;
 				watcherB.EnableRaisingEvents = true;
+				using IAwaitableCallback<WatcherChangeDescription> reg = fs.Watcher.OnTriggered(
+					_ => { },
+					c => (c.FileSystemWatcher == watcherA || c.FileSystemWatcher == watcherB) &&
+					     c.ChangeType == WatcherChangeTypes.Created);
 				foreach (string directory in new[] { "/a", "/b", })
 				{
 					fs.File.WriteAllText($"{directory}/1.txt", "x");
 					fs.File.WriteAllText($"{directory}/2.txt", "x");
 					fs.File.WriteAllText($"{directory}/3.txt", "x");
 				}
+
+				_ = reg.Wait(6, TimeSpan.FromSeconds(30));
 
 				IFileSystemWatcher[] watchers = [watcherA, watcherB,];
 
