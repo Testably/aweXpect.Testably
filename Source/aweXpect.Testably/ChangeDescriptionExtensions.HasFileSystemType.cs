@@ -19,7 +19,7 @@ public static partial class ChangeDescriptionExtensions
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TChange, IThat<TChange>> HasFileSystemType<TChange>(
-		this IThat<TChange> source,
+		this IThat<TChange> subject,
 		FileSystemTypes expected)
 		where TChange : ChangeDescription
 	{
@@ -30,9 +30,9 @@ public static partial class ChangeDescriptionExtensions
 		}
 
 		return new AndOrResult<TChange, IThat<TChange>>(
-			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new NotificationConstraints.HasFileSystemTypeConstraint<TChange>(it, grammars, expected)),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -41,7 +41,7 @@ public static partial class ChangeDescriptionExtensions
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TChange, IThat<TChange>> DoesNotHaveFileSystemType<TChange>(
-		this IThat<TChange> source,
+		this IThat<TChange> subject,
 		FileSystemTypes unexpected)
 		where TChange : ChangeDescription
 	{
@@ -52,8 +52,8 @@ public static partial class ChangeDescriptionExtensions
 		}
 
 		return new AndOrResult<TChange, IThat<TChange>>(
-			source.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars)
 				=> new NotificationConstraints.HasFileSystemTypeConstraint<TChange>(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 	}
 }

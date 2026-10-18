@@ -13,22 +13,22 @@ public static partial class FileVersionInfoExtensions
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> IsPrivateBuild(
-		this IThat<IFileVersionInfo> source)
+		this IThat<IFileVersionInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileVersionInfoConstraints.HasBoolPropertyConstraint(
 					it, grammars, v => v.IsPrivateBuild, "is private build", "is not private build")),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the <see cref="IFileVersionInfo" /> is not a private build.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> IsNotPrivateBuild(
-		this IThat<IFileVersionInfo> source)
+		this IThat<IFileVersionInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileVersionInfoConstraints.HasBoolPropertyConstraint(
 					it, grammars, v => v.IsPrivateBuild, "is private build", "is not private build").Invert()),
-			source);
+			subject);
 }

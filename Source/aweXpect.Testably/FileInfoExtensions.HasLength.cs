@@ -12,12 +12,12 @@ public static partial class FileInfoExtensions
 	///     Verifies that the <see cref="IFileInfo" /> has the <paramref name="expected" /> length in bytes.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IFileInfo, IThat<IFileInfo>> HasLength(this IThat<IFileInfo> source,
+	public static AndOrResult<IFileInfo, IThat<IFileInfo>> HasLength(this IThat<IFileInfo> subject,
 		long expected)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new HasLengthConstraint(it, grammars, expected)),
-			source);
+			subject);
 
 	private sealed class HasLengthConstraint(string it, ExpectationGrammars grammars, long expected)
 		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),

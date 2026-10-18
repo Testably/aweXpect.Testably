@@ -16,16 +16,16 @@ public static partial class DriveInfoExtensions
 	///     Verifies that the <see cref="IDriveInfo" /> has the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IDriveInfo, IThat<IDriveInfo>> HasName(this IThat<IDriveInfo> source,
+	public static StringEqualityTypeResult<IDriveInfo, IThat<IDriveInfo>> HasName(this IThat<IDriveInfo> subject,
 		string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IDriveInfo, IThat<IDriveInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new HasNameConstraint(it, grammars, s.options, s.expected)),
-			source,
+			subject,
 			options);
 	}
 

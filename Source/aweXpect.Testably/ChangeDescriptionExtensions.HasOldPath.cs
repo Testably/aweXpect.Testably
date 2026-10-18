@@ -17,16 +17,16 @@ public static partial class ChangeDescriptionExtensions
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<TChange, IThat<TChange>> HasOldPath<TChange>(
-		this IThat<TChange> source,
+		this IThat<TChange> subject,
 		string? expected)
 		where TChange : ChangeDescription
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<TChange, IThat<TChange>>(
-			source.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new NotificationConstraints.HasStringPropertyConstraint<TChange>(
 					it, grammars, c => c.OldPath, s.options, s.expected, "old path")),
-			source,
+			subject,
 			options);
 	}
 }

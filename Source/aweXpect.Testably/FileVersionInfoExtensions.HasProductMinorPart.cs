@@ -12,11 +12,11 @@ public static partial class FileVersionInfoExtensions
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> HasProductMinorPart(
-		this IThat<IFileVersionInfo> source,
+		this IThat<IFileVersionInfo> subject,
 		int expected)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new FileVersionInfoConstraints.HasInt32PropertyConstraint(
 					it, grammars, v => v.ProductMinorPart, expected, "product minor part")),
-			source);
+			subject);
 }

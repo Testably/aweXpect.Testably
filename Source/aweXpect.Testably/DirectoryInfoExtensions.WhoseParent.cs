@@ -7,14 +7,14 @@ namespace aweXpect.Testably;
 
 public static partial class DirectoryInfoExtensions
 {
-	extension(IThat<IDirectoryInfo> source)
+	extension(IThat<IDirectoryInfo> subject)
 	{
 		/// <summary>
 		///     Further expectations on the parent directory of the <see cref="IDirectoryInfo" />.
 		/// </summary>
 		public IThat<IDirectoryInfo> WhoseParent
 			=> new ThatSubject<IDirectoryInfo>(
-				source.Get().ExpectationBuilder
+				subject.Get().ExpectationBuilder
 					.ForWhich<IDirectoryInfo, IDirectoryInfo>(GetParentOrThrow, " whose parent ", "the parent"));
 	}
 

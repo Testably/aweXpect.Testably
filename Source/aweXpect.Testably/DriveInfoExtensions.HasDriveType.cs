@@ -13,12 +13,12 @@ public static partial class DriveInfoExtensions
 	///     Verifies that the <see cref="IDriveInfo" /> has the <paramref name="expected" /> <see cref="DriveType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> HasDriveType(this IThat<IDriveInfo> source,
+	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> HasDriveType(this IThat<IDriveInfo> subject,
 		DriveType expected)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new HasDriveTypeConstraint(it, grammars, expected)),
-			source);
+			subject);
 
 	private sealed class HasDriveTypeConstraint(string it, ExpectationGrammars grammars, DriveType expected)
 		: ConstraintResult.WithNotNullValue<IDriveInfo>(it, grammars),

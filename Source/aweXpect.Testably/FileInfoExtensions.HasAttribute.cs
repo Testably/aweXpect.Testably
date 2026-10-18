@@ -14,7 +14,7 @@ public static partial class FileInfoExtensions
 	///     Verifies that the <see cref="IFileInfo" /> has the <paramref name="expected" /> <see cref="FileAttributes" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IFileInfo, IThat<IFileInfo>> HasAttribute(this IThat<IFileInfo> source,
+	public static AndOrResult<IFileInfo, IThat<IFileInfo>> HasAttribute(this IThat<IFileInfo> subject,
 		FileAttributes expected)
 	{
 		if (expected == default)
@@ -24,9 +24,9 @@ public static partial class FileInfoExtensions
 		}
 
 		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new FileSystemConstraints.HasAttributeConstraint<IFileInfo>(it, grammars, expected)),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -34,7 +34,7 @@ public static partial class FileInfoExtensions
 	///     <see cref="FileAttributes" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IFileInfo, IThat<IFileInfo>> DoesNotHaveAttribute(this IThat<IFileInfo> source,
+	public static AndOrResult<IFileInfo, IThat<IFileInfo>> DoesNotHaveAttribute(this IThat<IFileInfo> subject,
 		FileAttributes unexpected)
 	{
 		if (unexpected == default)
@@ -44,8 +44,8 @@ public static partial class FileInfoExtensions
 		}
 
 		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars)
 				=> new FileSystemConstraints.HasAttributeConstraint<IFileInfo>(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 	}
 }
