@@ -9,7 +9,7 @@ public sealed partial class Statistics
 		public sealed class DirectoryTwoMatchers
 		{
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WithTwoMatchers_NoMatch_ShouldJoinMatchersWithComma()
 			{
 				MockFileSystem fileSystem = new();
@@ -28,7 +28,7 @@ public sealed partial class Statistics
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithNeverAndMatcher_Matching_ShouldFailIncludingMatcher()
 			{
 				MockFileSystem fileSystem = new();

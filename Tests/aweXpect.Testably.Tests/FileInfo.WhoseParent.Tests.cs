@@ -10,7 +10,7 @@ public sealed partial class FileInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task HasName_WhenParentNameMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -26,7 +26,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsNotEmpty_WhenFileDoesNotExist_ShouldStillEvaluateParent()
 			{
 				MockFileSystem fileSystem = new();
@@ -42,7 +42,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsNotEmpty_WhenFileIsInNonEmptyDirectory_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -58,7 +58,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasName_AndWhoseParentHasName_WhenParentNameDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -83,7 +83,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task OnRootFile_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -95,7 +95,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).WhoseParent.IsNotEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fileInfo
 					             whose parent is not empty,
@@ -120,7 +120,7 @@ public sealed partial class FileInfo
 //     {
 //         public sealed class Tests
 //         {
-//             [Fact]
+//             [Test]
 //             public async Task HasFile_Which_HasLength_And_WhoseParent_IsNotEmpty_ShouldSucceed()
 //             {
 //                 MockFileSystem sut = new();
@@ -134,7 +134,7 @@ public sealed partial class FileInfo
 //                 await That(Act).DoesNotThrow();
 //             }
 //
-//             [Fact]
+//             [Test]
 //             public async Task HasDirectory_Which_HasFile_Which_HasLength_And_WhoseParent_HasName_ShouldSucceed()
 //             {
 //                 MockFileSystem sut = new();
@@ -151,7 +151,7 @@ public sealed partial class FileInfo
 //                 await That(Act).DoesNotThrow();
 //             }
 //
-//             [Fact]
+//             [Test]
 //             public async Task IsNotEmpty_And_WhoseParent_HasName_AfterDirectoryDescent_ShouldSucceed()
 //             {
 //                 MockFileSystem sut = new();

@@ -8,7 +8,7 @@ public sealed partial class Statistics
 	{
 		public sealed class Predicates
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -20,7 +20,7 @@ public sealed partial class Statistics
 						.File.WriteAllText(path: _ => throw new InvalidOperationException("boom")).Once();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
 					             has recorded a call to File.WriteAllText with path matching _ => throw new InvalidOperationException("boom") exactly once,
@@ -29,7 +29,7 @@ public sealed partial class Statistics
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldAlsoFailWithNever()
 			{
 				MockFileSystem fileSystem = new();
@@ -41,7 +41,7 @@ public sealed partial class Statistics
 						.File.WriteAllText(path: _ => throw new InvalidOperationException("boom")).Never();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fileSystem.Statistics
 					             has recorded no call to File.WriteAllText with path matching _ => throw new InvalidOperationException("boom"),

@@ -10,7 +10,7 @@ public sealed partial class Statistics
 		{
 			public sealed class FactoryTests
 			{
-				[Fact]
+				[Test]
 				public async Task GetVersionInfo_WithFileNameFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -29,7 +29,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task GetVersionInfo_WithFileNameFilter_ShouldOnlyCountMatching()
 				{
 					MockFileSystem fileSystem = new();
@@ -50,7 +50,7 @@ public sealed partial class Statistics
 
 			public sealed class PropertyTests
 			{
-				[Fact]
+				[Test]
 				public async Task Comments_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -66,7 +66,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task CompanyName_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -82,7 +82,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task FileBuildPart_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -98,7 +98,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task FileDescription_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -114,7 +114,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task FileMajorPart_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -130,7 +130,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task FileMinorPart_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -146,7 +146,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task FileName_Get_ShouldRecordOnInstance()
 				{
 					MockFileSystem fileSystem = new();
@@ -162,7 +162,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task FilePrivatePart_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -178,7 +178,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task FileVersion_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -194,7 +194,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task InternalName_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -210,7 +210,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task IsDebug_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -226,7 +226,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task IsPatched_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -242,7 +242,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task IsPreRelease_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -258,7 +258,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task IsPrivateBuild_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -274,7 +274,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task IsSpecialBuild_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -290,7 +290,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task Language_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -306,7 +306,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task LegalCopyright_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -322,7 +322,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task LegalTrademarks_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -338,7 +338,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task OriginalFilename_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -354,7 +354,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task PrivateBuild_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -370,7 +370,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ProductBuildPart_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -386,7 +386,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ProductMajorPart_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -402,7 +402,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ProductMinorPart_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -418,7 +418,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ProductName_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -434,7 +434,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ProductPrivatePart_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -450,7 +450,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ProductVersion_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -466,7 +466,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task SpecialBuild_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -482,7 +482,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNotAccessed_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();

@@ -10,7 +10,7 @@ public sealed partial class FileSystem
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task ChainedAnd_HasContent_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -25,7 +25,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task HasLength_WhenLengthDiffers_ShouldFail()
 				{
 					MockFileSystem sut = new();
@@ -44,7 +44,7 @@ public sealed partial class FileSystem
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task HasLength_WhenLengthMatches_ShouldSucceed()
 				{
 					MockFileSystem sut = new();

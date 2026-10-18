@@ -10,7 +10,7 @@ public sealed partial class DirectoryInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAttributeIsAbsent_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -31,7 +31,7 @@ public sealed partial class DirectoryInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAttributeIsPresent_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -47,7 +47,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsDefault_ShouldThrowArgumentException()
 			{
 				MockFileSystem fileSystem = new();

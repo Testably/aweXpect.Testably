@@ -11,7 +11,7 @@ public sealed partial class FileInfo
 		{
 			public sealed class StringTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenContentIsDifferent_ShouldSucceed()
 				{
 					MockFileSystem fileSystem = new();
@@ -30,7 +30,7 @@ public sealed partial class FileInfo
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContentMatches_ShouldFail()
 				{
 					MockFileSystem fileSystem = new();
@@ -59,7 +59,7 @@ public sealed partial class FileInfo
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenFileDoesNotExist_ShouldFail()
 				{
 					MockFileSystem fileSystem = new();
@@ -73,7 +73,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().NotSameAs(expectedPath);
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that fileInfo
 						              does not have the same content as file {Formatter.Format(fullExpectedPath)},
@@ -82,7 +82,7 @@ public sealed partial class FileInfo
 						.Because("a missing file has no content that could differ");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenFileDoesNotExist_ShouldFail()
 				{
 					MockFileSystem fileSystem = new();
@@ -96,7 +96,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).DoesNotComplyWith(it => it.HasContent().NotSameAs(expectedPath));
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that fileInfo
 						              has the same content as file {Formatter.Format(fullExpectedPath)},
@@ -107,7 +107,7 @@ public sealed partial class FileInfo
 
 			public sealed class AsWildcardTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenContentIsDifferent_ShouldSucceed()
 				{
 					MockFileSystem fileSystem = new();
@@ -126,7 +126,7 @@ public sealed partial class FileInfo
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContentMatches_ShouldFail()
 				{
 					MockFileSystem fileSystem = new();

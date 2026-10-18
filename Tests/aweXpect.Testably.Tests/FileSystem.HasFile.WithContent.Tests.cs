@@ -11,7 +11,7 @@ public sealed partial class FileSystem
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenContentIsDifferent_ShouldFail()
 				{
 					string path = "foo.txt";
@@ -39,7 +39,7 @@ public sealed partial class FileSystem
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContentMatches_ShouldSucceed()
 				{
 					string path = "foo.txt";
@@ -56,7 +56,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenFileDoesNotExist_ShouldFail()
 				{
 					string path = "foo.txt";
@@ -76,7 +76,7 @@ public sealed partial class FileSystem
 						.Because("a missing file has no content to read, so it fails instead of throwing");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenContentMatches_ShouldFail()
 				{
 					string path = "foo.txt";
@@ -100,7 +100,7 @@ public sealed partial class FileSystem
 						.Because("the negation belongs to the verb only");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenFileDoesNotExist_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -113,7 +113,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenPathIsADirectory_ShouldFail()
 				{
 					string path = "foo";
@@ -136,7 +136,7 @@ public sealed partial class FileSystem
 
 			public sealed class BinaryTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenContentIsDifferent_ShouldFail()
 				{
 					byte[] content = Encoding.UTF8.GetBytes("baz");
@@ -159,7 +159,7 @@ public sealed partial class FileSystem
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContentMatches_ShouldSucceed()
 				{
 					byte[] content = Encoding.UTF8.GetBytes("baz");
@@ -176,7 +176,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenFileDoesNotExist_ShouldFail()
 				{
 					byte[] expected = Encoding.UTF8.GetBytes("bar");
@@ -197,7 +197,7 @@ public sealed partial class FileSystem
 						.Because("a missing file has no content to read, so it fails instead of throwing");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenContentMatches_ShouldFail()
 				{
 					byte[] content = Encoding.UTF8.GetBytes("baz");
@@ -222,7 +222,7 @@ public sealed partial class FileSystem
 
 			public sealed class AsWildcardTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenContentIsDifferent_ShouldFail()
 				{
 					string path = "foo.txt";
@@ -250,7 +250,7 @@ public sealed partial class FileSystem
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContentMatches_ShouldSucceed()
 				{
 					string path = "foo.txt";

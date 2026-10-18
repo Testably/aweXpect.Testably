@@ -10,7 +10,7 @@ public sealed partial class DriveInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDriveIsReady_ShouldFail()
 			{
 				MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));

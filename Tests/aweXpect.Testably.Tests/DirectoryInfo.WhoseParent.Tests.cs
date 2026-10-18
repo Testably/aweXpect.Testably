@@ -10,7 +10,7 @@ public sealed partial class DirectoryInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task HasName_WhenParentNameMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -26,7 +26,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsNotEmpty_WhenParentIsNonEmpty_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -42,7 +42,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task OnRootDirectory_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -53,7 +53,7 @@ public sealed partial class DirectoryInfo
 					await That(rootDirInfo).WhoseParent.IsNotEmpty();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that rootDirInfo
 					             whose parent is not empty,
@@ -64,7 +64,7 @@ public sealed partial class DirectoryInfo
 						.HasMessage("Cannot assert on the parent of a root directory because it has no parent."));
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasName_AndWhoseParentHasName_WhenParentNameDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();

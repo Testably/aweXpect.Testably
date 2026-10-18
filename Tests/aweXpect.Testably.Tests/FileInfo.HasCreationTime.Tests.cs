@@ -10,7 +10,7 @@ public sealed partial class FileInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDifferenceIsWithinDefaultTolerance_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -33,7 +33,7 @@ public sealed partial class FileInfo
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDifferenceExceedsDefaultTolerance_ShouldFailAndIncludeToleranceInMessage()
 			{
 				MockFileSystem fileSystem = new();
@@ -61,7 +61,7 @@ public sealed partial class FileInfo
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCreationTimeDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -85,7 +85,7 @@ public sealed partial class FileInfo
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCreationTimeIsUnspecified_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -103,7 +103,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCreationTimeMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -121,7 +121,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithinTolerance_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -140,7 +140,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAndCreationTimeMatches_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();

@@ -10,7 +10,7 @@ public sealed partial class FileInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFileIsNotReadOnly_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -31,7 +31,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileDoesNotExist_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -50,7 +50,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileIsReadOnly_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();

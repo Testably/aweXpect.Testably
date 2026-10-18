@@ -9,7 +9,7 @@ public sealed partial class DirectoryInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubdirectoryExists_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -29,7 +29,7 @@ public sealed partial class DirectoryInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubdirectoryMissing_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();

@@ -12,7 +12,7 @@ public sealed partial class FileSystem
 			{
 				public sealed class StringTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenContentIsDifferent_ShouldFail()
 					{
 						MockFileSystem sut = new();
@@ -43,7 +43,7 @@ public sealed partial class FileSystem
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenExpectedFileDoesNotExist_ShouldFail()
 					{
 						MockFileSystem sut = new();
@@ -69,7 +69,7 @@ public sealed partial class FileSystem
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenContentMatches_ShouldSucceed()
 					{
 						MockFileSystem sut = new();
@@ -88,7 +88,7 @@ public sealed partial class FileSystem
 						await That(Act).DoesNotThrow();
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenFileDoesNotExist_ShouldFail()
 					{
 						MockFileSystem sut = new();
@@ -111,7 +111,7 @@ public sealed partial class FileSystem
 							.Because("a missing file has no content to read, so it fails instead of throwing");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenNegated_WhenContentMatches_ShouldFail()
 					{
 						MockFileSystem sut = new();
@@ -141,7 +141,7 @@ public sealed partial class FileSystem
 
 				public sealed class AsWildcardTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenContentIsDifferent_ShouldFail()
 					{
 						MockFileSystem sut = new();
@@ -172,7 +172,7 @@ public sealed partial class FileSystem
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenContentMatches_ShouldSucceed()
 					{
 						MockFileSystem sut = new();

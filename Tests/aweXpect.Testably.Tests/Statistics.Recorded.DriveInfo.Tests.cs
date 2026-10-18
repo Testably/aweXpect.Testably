@@ -10,7 +10,7 @@ public sealed partial class Statistics
 		{
 			public sealed class FactoryTests
 			{
-				[Fact]
+				[Test]
 				public async Task GetDrives_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -25,7 +25,7 @@ public sealed partial class Statistics
 				}
 
 #if NET8_0_OR_GREATER
-				[Fact]
+				[Test]
 				public async Task New_WithDriveNameFilter_ShouldOnlyCountMatching()
 				{
 					MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -41,7 +41,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task New_WithDriveNameFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -60,7 +60,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Wrap_WithDriveInfoFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -84,7 +84,7 @@ public sealed partial class Statistics
 #if NET8_0_OR_GREATER
 			public sealed class NameTests
 			{
-				[Fact]
+				[Test]
 				public async Task Name_Get_ShouldRecordPerDrive()
 				{
 					MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -102,7 +102,7 @@ public sealed partial class Statistics
 
 			public sealed class PropertyTests
 			{
-				[Fact]
+				[Test]
 				public async Task AvailableFreeSpace_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -117,7 +117,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task DriveFormat_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -132,7 +132,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task DriveType_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -147,7 +147,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task IsReady_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -162,7 +162,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task RootDirectory_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -177,7 +177,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task TotalFreeSpace_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -192,7 +192,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task TotalSize_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -207,7 +207,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task VolumeLabel_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -222,7 +222,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNotAccessed_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));

@@ -13,7 +13,7 @@ public sealed partial class FileSystem
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenDifferenceIsWithinDefaultTolerance_ShouldSucceed()
 				{
 					MockFileSystem fileSystem = new();
@@ -35,7 +35,7 @@ public sealed partial class FileSystem
 					}
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDifferenceExceedsDefaultTolerance_ShouldFailAndIncludeToleranceInMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -62,7 +62,7 @@ public sealed partial class FileSystem
 					}
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenFileDoesNotExist_ShouldFail()
 				{
 					MockFileSystem sut = new();
@@ -83,7 +83,7 @@ public sealed partial class FileSystem
 						.Because("a missing file has no last write time to compare");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenLastWriteTimeDiffers_WithLocalTime_ShouldFail()
 				{
 					MockFileSystem sut = new();
@@ -106,7 +106,7 @@ public sealed partial class FileSystem
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenLastWriteTimeDiffers_WithUniversalTime_ShouldFail()
 				{
 					MockFileSystem sut = new();
@@ -129,7 +129,7 @@ public sealed partial class FileSystem
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenLastWriteTimeDiffersWithinTolerance_WithLocalTime_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -148,7 +148,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenLastWriteTimeDiffersWithinTolerance_WithUniversalTime_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -167,7 +167,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenLastWriteTimeIsUnspecified_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -184,7 +184,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenLastWriteTimeMatches_WithLocalTime_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -201,7 +201,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenLastWriteTimeMatches_WithUniversalTime_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -218,7 +218,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenFileDoesNotExist_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -232,7 +232,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenLastWriteTimeMatches_ShouldFail()
 				{
 					MockFileSystem sut = new();
@@ -255,7 +255,7 @@ public sealed partial class FileSystem
 						.Because("the negation belongs to the verb only");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenPathIsADirectory_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -271,7 +271,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenPathIsADirectory_ShouldFail()
 				{
 					MockFileSystem sut = new();

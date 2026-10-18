@@ -10,7 +10,7 @@ public sealed partial class Statistics
 		{
 			public sealed class AltDirectorySeparatorCharTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenRead_ShouldRecordGet()
 				{
 					MockFileSystem fileSystem = new();
@@ -28,7 +28,7 @@ public sealed partial class Statistics
 
 			public sealed class CombineTests
 			{
-				[Fact]
+				[Test]
 				public async Task Combine_WithPath1Filter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -47,7 +47,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Combine_WithPath2Filter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -66,7 +66,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Combine_WithPath3Filter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -85,7 +85,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Combine_WithPath4Filter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -104,7 +104,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task FilterOnPath3_ShouldOnlyMatchThreeArgOverload()
 				{
 					MockFileSystem fileSystem = new();
@@ -120,7 +120,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCombineWithTwoArgs_ShouldMatch()
 				{
 					MockFileSystem fileSystem = new();
@@ -138,7 +138,7 @@ public sealed partial class Statistics
 
 			public sealed class DirectorySeparatorCharTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenRead_ShouldRecordGet()
 				{
 					MockFileSystem fileSystem = new();
@@ -156,7 +156,7 @@ public sealed partial class Statistics
 
 			public sealed class GetFileNameTests
 			{
-				[Fact]
+				[Test]
 				public async Task GetFileName_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -175,7 +175,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -190,7 +190,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNotCalled_ShouldFailWithOnce()
 				{
 					MockFileSystem fileSystem = new();
@@ -212,7 +212,7 @@ public sealed partial class Statistics
 #if NET8_0_OR_GREATER
 			public sealed class GetRelativePathTests
 			{
-				[Fact]
+				[Test]
 				public async Task GetRelativePath_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -231,7 +231,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task GetRelativePath_WithRelativeToFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -250,7 +250,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -269,7 +269,7 @@ public sealed partial class Statistics
 
 			public sealed class GetTempPathTests
 			{
-				[Fact]
+				[Test]
 				public async Task NoArgMethod_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -286,7 +286,7 @@ public sealed partial class Statistics
 
 			public sealed class PathSeparatorTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenRead_ShouldRecordGet()
 				{
 					MockFileSystem fileSystem = new();
@@ -305,7 +305,7 @@ public sealed partial class Statistics
 #if NET8_0_OR_GREATER
 			public sealed class TrimEndingDirectorySeparatorTests
 			{
-				[Fact]
+				[Test]
 				public async Task TrimEndingDirectorySeparator_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -324,7 +324,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -343,7 +343,7 @@ public sealed partial class Statistics
 
 			public sealed class VolumeSeparatorCharTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenRead_ShouldRecordGet()
 				{
 					MockFileSystem fileSystem = new();
@@ -361,7 +361,7 @@ public sealed partial class Statistics
 
 			public sealed class ChangeExtensionTests
 			{
-				[Fact]
+				[Test]
 				public async Task ChangeExtension_WithExtensionFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -380,7 +380,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ChangeExtension_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -399,7 +399,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -417,7 +417,7 @@ public sealed partial class Statistics
 
 			public sealed class GetDirectoryNameTests
 			{
-				[Fact]
+				[Test]
 				public async Task GetDirectoryName_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -436,7 +436,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -454,7 +454,7 @@ public sealed partial class Statistics
 
 			public sealed class GetExtensionTests
 			{
-				[Fact]
+				[Test]
 				public async Task GetExtension_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -473,7 +473,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -491,7 +491,7 @@ public sealed partial class Statistics
 
 			public sealed class GetFileNameWithoutExtensionTests
 			{
-				[Fact]
+				[Test]
 				public async Task GetFileNameWithoutExtension_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -510,7 +510,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -528,7 +528,7 @@ public sealed partial class Statistics
 
 			public sealed class GetFullPathTests
 			{
-				[Fact]
+				[Test]
 				public async Task GetFullPath_WithBasePathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -547,7 +547,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task GetFullPath_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -566,7 +566,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -584,7 +584,7 @@ public sealed partial class Statistics
 
 			public sealed class GetInvalidFileNameCharsTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -602,7 +602,7 @@ public sealed partial class Statistics
 
 			public sealed class GetInvalidPathCharsTests
 			{
-				[Fact]
+				[Test]
 				public async Task GetInvalidPathChars_WhenNotCalled_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -620,7 +620,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -638,7 +638,7 @@ public sealed partial class Statistics
 
 			public sealed class GetPathRootTests
 			{
-				[Fact]
+				[Test]
 				public async Task GetPathRoot_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -657,7 +657,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -675,7 +675,7 @@ public sealed partial class Statistics
 
 			public sealed class GetRandomFileNameTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -693,7 +693,7 @@ public sealed partial class Statistics
 
 			public sealed class GetTempFileNameTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -713,7 +713,7 @@ public sealed partial class Statistics
 
 			public sealed class HasExtensionTests
 			{
-				[Fact]
+				[Test]
 				public async Task HasExtension_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -732,7 +732,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -750,7 +750,7 @@ public sealed partial class Statistics
 
 			public sealed class IsPathRootedTests
 			{
-				[Fact]
+				[Test]
 				public async Task IsPathRooted_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -769,7 +769,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -788,7 +788,7 @@ public sealed partial class Statistics
 #if NET8_0_OR_GREATER
 			public sealed class EndsInDirectorySeparatorTests
 			{
-				[Fact]
+				[Test]
 				public async Task EndsInDirectorySeparator_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -807,7 +807,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -825,7 +825,7 @@ public sealed partial class Statistics
 
 			public sealed class ExistsTests
 			{
-				[Fact]
+				[Test]
 				public async Task Exists_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -844,7 +844,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -863,7 +863,7 @@ public sealed partial class Statistics
 #if NET8_0_OR_GREATER
 			public sealed class IsPathFullyQualifiedTests
 			{
-				[Fact]
+				[Test]
 				public async Task IsPathFullyQualified_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -882,7 +882,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -899,7 +899,7 @@ public sealed partial class Statistics
 
 			public sealed class JoinTests
 			{
-				[Fact]
+				[Test]
 				public async Task FilterOnPath4_ShouldOnlyMatchFourArgOverload()
 				{
 					MockFileSystem fileSystem = new();
@@ -915,7 +915,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task Join_WithPath1Filter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -934,7 +934,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Join_WithPath2Filter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -953,7 +953,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Join_WithPath3Filter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -972,7 +972,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Join_WithPath4Filter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -991,7 +991,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenJoinedTwoArgs_ShouldMatch()
 				{
 					MockFileSystem fileSystem = new();

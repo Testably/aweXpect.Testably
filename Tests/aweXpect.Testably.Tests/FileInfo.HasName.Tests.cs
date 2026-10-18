@@ -9,7 +9,7 @@ public sealed partial class FileInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNameDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -34,7 +34,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNameMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -50,7 +50,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAndCaseInsensitiveNameMatches_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -71,7 +71,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAndNameMatches_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -92,7 +92,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAndWildcardMatches_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();

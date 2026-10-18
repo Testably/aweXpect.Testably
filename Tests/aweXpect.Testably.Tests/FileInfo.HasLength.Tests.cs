@@ -11,7 +11,7 @@ public sealed partial class FileInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFileDoesNotExist_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -30,7 +30,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -51,7 +51,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCultureHasOtherNegativeSign_ShouldFormatLengthIndependentOfCulture()
 			{
 				MockFileSystem fileSystem = new();
@@ -84,7 +84,7 @@ public sealed partial class FileInfo
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();

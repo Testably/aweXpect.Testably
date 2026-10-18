@@ -11,7 +11,7 @@ public sealed partial class FileSystem
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenItemCountDiffers_ShouldFail()
 				{
 					string path = "foo";
@@ -39,7 +39,7 @@ public sealed partial class FileSystem
 						              """).AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllAreEmpty_WhenSubdirectoryIsNotEmpty_ShouldFail()
 				{
 					string path = "foo";
@@ -74,7 +74,7 @@ public sealed partial class FileSystem
 						              """).IgnoringNewlineStyle();
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllAreEmpty_WhenSubdirectoriesAreEmpty_ShouldSucceed()
 				{
 					string path = "foo";
@@ -92,7 +92,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllAreNotEmpty_WhenSubdirectoryIsEmpty_ShouldFail()
 				{
 					string path = "foo";
@@ -126,7 +126,7 @@ public sealed partial class FileSystem
 						              """).IgnoringNewlineStyle();
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveDirectory_WhenDirectoryIsMissing_ShouldFail()
 				{
 					string path = "foo";
@@ -149,7 +149,7 @@ public sealed partial class FileSystem
 						.Because("the verb agrees with the plural subdirectories");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveFile_WhenFileIsMissing_ShouldFail()
 				{
 					string path = "foo";
@@ -172,7 +172,7 @@ public sealed partial class FileSystem
 						.Because("the verb agrees with the plural subdirectories");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveFile_WhenNegated_WhenFileHasTheContent_ShouldFail()
 				{
 					string path = "foo";
@@ -197,7 +197,7 @@ public sealed partial class FileSystem
 						.Because("the negation belongs to the plural verb only");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveName_WhenNameDiffers_ShouldFail()
 				{
 					string path = "foo";
@@ -220,7 +220,7 @@ public sealed partial class FileSystem
 						.Because("the verb agrees with the plural subdirectories");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemCountMatches_ShouldSucceed()
 				{
 					string path = "foo";

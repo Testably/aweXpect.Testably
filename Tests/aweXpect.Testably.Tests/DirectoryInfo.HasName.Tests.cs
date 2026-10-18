@@ -9,7 +9,7 @@ public sealed partial class DirectoryInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNameDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -33,7 +33,7 @@ public sealed partial class DirectoryInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNameMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -48,7 +48,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAndNameMatches_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();

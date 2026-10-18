@@ -9,7 +9,7 @@ public sealed partial class FileVersionInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAndComposition()
 			{
 				MockFileSystem fileSystem = new();
@@ -28,7 +28,7 @@ public sealed partial class FileVersionInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInfoIsNotPatched_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -50,7 +50,7 @@ public sealed partial class FileVersionInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInfoIsPatched_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -67,7 +67,7 @@ public sealed partial class FileVersionInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_AndInfoIsPatched_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -95,7 +95,7 @@ public sealed partial class FileVersionInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAndComposition()
 			{
 				MockFileSystem fileSystem = new();
@@ -114,7 +114,7 @@ public sealed partial class FileVersionInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInfoIsNotPatched_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -131,7 +131,7 @@ public sealed partial class FileVersionInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInfoIsPatched_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -153,7 +153,7 @@ public sealed partial class FileVersionInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_AndInfoIsNotPatched_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();

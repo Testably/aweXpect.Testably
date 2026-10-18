@@ -10,7 +10,7 @@ public sealed partial class DriveInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenVolumeLabelMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -25,7 +25,7 @@ public sealed partial class DriveInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenVolumeLabelDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -44,7 +44,7 @@ public sealed partial class DriveInfo
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_ShouldSucceedIfDiffers()
 			{
 				MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));

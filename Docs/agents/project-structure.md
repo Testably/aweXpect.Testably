@@ -5,8 +5,8 @@
 | Path                                       | Content                                                                  |
 |--------------------------------------------|--------------------------------------------------------------------------|
 | `Source/aweXpect.Testably`                 | The library and only shipped package                                     |
-| `Tests/aweXpect.Testably.Tests`            | Unit tests (xunit v2, `net8.0;net10.0;net48`)                            |
-| `Tests/aweXpect.Testably.Api.Tests`        | Public API snapshots (NUnit, `net10.0`)                                  |
+| `Tests/aweXpect.Testably.Tests`            | Unit tests (TUnit, `net8.0;net10.0;net48`)                               |
+| `Tests/aweXpect.Testably.Api.Tests`        | Public API snapshots (TUnit, `net10.0`)                                  |
 | `Tests/Aot/aweXpect.Testably.Aot`          | Native AOT smoke tests (console app, `net10.0`)                          |
 | `Benchmarks/aweXpect.Testably.Benchmarks`  | BenchmarkDotNet benchmarks                                               |
 | `Pipeline`                                 | Fallout build targets used by `build.ps1` / `build.sh` and CI            |
@@ -15,8 +15,8 @@
 | `.github`                                  | CI workflows, Dependabot and Mergify configuration                       |
 
 Shared MSBuild settings: `Directory.Build.props` (strong naming), `Source/Directory.Build.props` (package metadata,
-target frameworks, warnings, trimming and AOT flags), `Tests/Directory.Build.props` (test frameworks and packages) and
-`Tests/Aot/Directory.Build.props` (AOT publish settings). `Pipeline` has its own `Directory.Build.*` files that stop the
+target frameworks, warnings, trimming and AOT flags), `Tests/Directory.Build.props` (TUnit, target frameworks and
+packages of the unit and API tests) and `Tests/Aot/Directory.Build.props` (AOT publish settings). `Pipeline` has its own `Directory.Build.*` files that stop the
 root ones from applying.
 
 ## Library (`Source/aweXpect.Testably`)
@@ -55,7 +55,8 @@ root ones from applying.
 - `Readme.Tests.cs` runs the examples of `README.md`.
 - `TestTimes.cs` provides a random fixed time per run, so that time-based tests do not rely on special times.
 - The tests use `MockFileSystem` and `MockTimeSystem` from Testably.Abstractions.Testing and assert failure messages
-  with raw string literals.
+  with raw string literals as `Throws<FailException>().WithMessage(...)`; aweXpect throws its own `FailException`
+  under TUnit.
 
 ## Other projects
 

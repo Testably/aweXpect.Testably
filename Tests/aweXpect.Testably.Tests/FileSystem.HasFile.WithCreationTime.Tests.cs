@@ -13,7 +13,7 @@ public sealed partial class FileSystem
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenDifferenceIsWithinDefaultTolerance_ShouldSucceed()
 				{
 					MockFileSystem fileSystem = new();
@@ -35,7 +35,7 @@ public sealed partial class FileSystem
 					}
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDifferenceExceedsDefaultTolerance_ShouldFailAndIncludeToleranceInMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -62,7 +62,7 @@ public sealed partial class FileSystem
 					}
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCreationTimeDiffers_WithLocalTime_ShouldFail()
 				{
 					MockFileSystem sut = new();
@@ -85,7 +85,7 @@ public sealed partial class FileSystem
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCreationTimeDiffers_WithUniversalTime_ShouldFail()
 				{
 					MockFileSystem sut = new();
@@ -108,7 +108,7 @@ public sealed partial class FileSystem
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCreationTimeDiffersWithinTolerance_WithLocalTime_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -127,7 +127,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCreationTimeDiffersWithinTolerance_WithUniversalTime_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -146,7 +146,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenFileDoesNotExist_ShouldFail()
 				{
 					MockFileSystem sut = new();
@@ -167,7 +167,7 @@ public sealed partial class FileSystem
 						.Because("a missing file has no creation time to compare");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenFileDoesNotExist_WithTolerance_ShouldFail()
 				{
 					MockFileSystem sut = new();
@@ -189,7 +189,7 @@ public sealed partial class FileSystem
 						.Because("a missing file fails regardless of the tolerance");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenCreationTimeMatches_ShouldFail()
 				{
 					MockFileSystem sut = new();
@@ -211,7 +211,7 @@ public sealed partial class FileSystem
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenCreationTimeDiffers_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -229,7 +229,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenFileDoesNotExist_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -243,7 +243,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenPathIsADirectory_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -259,7 +259,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCreationTimeIsUnspecified_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -277,7 +277,7 @@ public sealed partial class FileSystem
 				}
 
 
-				[Fact]
+				[Test]
 				public async Task WhenCreationTimeMatches_WithLocalTime_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -294,7 +294,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCreationTimeMatches_WithUniversalTime_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -311,7 +311,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenPathIsADirectory_ShouldFail()
 				{
 					MockFileSystem sut = new();

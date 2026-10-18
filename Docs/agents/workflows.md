@@ -15,16 +15,20 @@ smoke tests and the benchmarks in `Debug`. The pipeline builds `Debug` locally a
 ## Tests
 
 ```powershell
-dotnet test Tests/aweXpect.Testably.Tests
-dotnet test Tests/aweXpect.Testably.Tests --no-build -f net10.0 --filter "FullyQualifiedName~aweXpect.Testably.Tests.FileInfo+HasLength"
-dotnet test Tests/aweXpect.Testably.Tests --no-build -f net48
+dotnet test --project Tests/aweXpect.Testably.Tests
+dotnet test --project Tests/aweXpect.Testably.Tests --no-build -f net10.0 --treenode-filter "/*/*/FileInfo+HasLength+*/*"
+dotnet test --project Tests/aweXpect.Testably.Tests --no-build -f net48
 ```
 
-- The tests use xunit v2 and target `net8.0`, `net10.0` and `net48`. `net48` runs only on Windows.
-- Test classes are nested (`FileInfo` > `HasLength` > `Tests`), so a filter on a nested class uses `+`.
-- `./build.ps1 UnitTests` runs every framework the way CI does: `dotnet test` with coverage for the .NET builds and
-  the xunit console runner for net48 (Windows only). `./build.ps1 CodeCoverage` adds the OpenCover report in
-  `TestResults/reports`.
+- The tests use [TUnit](https://tunit.dev) and target `net8.0`, `net10.0` and `net48`. `net48` runs only on Windows.
+- All test projects are executables of the Microsoft.Testing.Platform, which `global.json` selects for `dotnet test`,
+  so the project is passed with `--project` and a filter with `--treenode-filter`
+  (`/<assembly>/<namespace>/<class>/<test>`). `dotnet run --project Tests/aweXpect.Testably.Tests -f net10.0 -- <options>`
+  starts the same executable.
+- Test classes are nested (`FileInfo` > `HasLength` > `Tests`), so the class name in a filter uses `+`.
+- `./build.ps1 UnitTests` runs every framework the way CI does (`net48` on Windows only), each writing
+  `<project>_<framework>.trx` and `<project>_<framework>.cobertura.xml` to `TestResults`. `./build.ps1 CodeCoverage`
+  adds the SonarQube coverage report in `TestResults/reports`.
 
 ## Public API
 
@@ -33,7 +37,7 @@ The public API of every target framework of the library is stored as a snapshot 
 `aweXpect.Snapshots.PublicApi`.
 
 ```powershell
-dotnet test Tests/aweXpect.Testably.Api.Tests
+dotnet test --project Tests/aweXpect.Testably.Api.Tests
 ./build.ps1 ApiChecks
 ```
 
@@ -42,8 +46,10 @@ dotnet test Tests/aweXpect.Testably.Api.Tests
   all library frameworks.
 - When the API changes, the test fails and writes `*.awexpect-snapshot.pending.txt`. To accept an intended change,
   either rename the pending file to `*.awexpect-snapshot.txt`, run the explicit test `AcceptApiChanges`
-  (`dotnet test Tests/aweXpect.Testably.Api.Tests --filter "Name=AcceptApiChanges"`), or run the tests with
-  `AWEXPECT_ACCEPT_SNAPSHOTS=all`. Commit the snapshots, never the pending files.
+  (`dotnet test --project Tests/aweXpect.Testably.Api.Tests --treenode-filter "/*/*/ApiApprovalTests/AcceptApiChanges"`),
+  or run the tests with `AWEXPECT_ACCEPT_SNAPSHOTS=all`. Commit the snapshots, never the pending files.
+- `AcceptApiChanges` is `[Explicit]`: TUnit runs it only when every test that the filter selects is explicit, so a
+  normal run and CI skip it.
 
 ## AOT smoke tests
 
@@ -76,9 +82,11 @@ files per expectation; list them with `-- --list flat`). The pipeline target wri
 ```
 
 Runs [Stryker.NET](https://stryker-mutator.io/docs/stryker-net/introduction/) on `Source/aweXpect.Testably` against
-`Tests/aweXpect.Testably.Tests` (net10.0, mutation level `Advanced`) and writes reports to `Artifacts/Stryker`. Off
-`main` only code changed since `main` is mutated. CI runs it on `windows-latest`; it takes long, so do not run it
-locally unless asked. `MutationTestDashboard` uploads the report to the Stryker dashboard and comments on the PR.
+`Tests/aweXpect.Testably.Tests` and `Tests/aweXpect.Testably.Api.Tests` (net10.0, mutation level `Advanced`) with
+Stryker's runner for the Microsoft.Testing.Platform (`--test-runner mtp`) and writes reports to `Artifacts/Stryker`.
+The Stryker version is the `PackageDownload` of `dotnet-stryker` in `Pipeline/Build.csproj`. Off `main` only code
+changed since `main` is mutated. CI runs it on `windows-latest`; it takes long, so do not run it locally unless asked.
+`MutationTestsDashboard` uploads the report to the Stryker dashboard and `MutationTestsComment` comments on the PR.
 
 ## Documentation
 
@@ -103,7 +111,8 @@ locally unless asked. `MutationTestDashboard` uploads the report to the Stryker 
 | `Benchmarks`            | Run the benchmarks and log the report                                            |
 | `BenchmarkComment`      | Post the benchmark results to the PR (CI only)                                   |
 | `MutationTests`         | Stryker run and PR comment body                                                  |
-| `MutationTestDashboard` | Upload the mutation report and comment on the PR (CI only)                       |
+| `MutationTestsDashboard` | Upload the mutation report to the Stryker dashboard (CI only)                    |
+| `MutationTestsComment`  | Post the mutation results to the PR (CI only)                                    |
 | `CodeAnalysis`          | SonarCloud analysis around `Compile` and `CodeCoverage` (needs a token)          |
 | `Pack`                  | Build and collect the `.nupkg` / `.snupkg` into `Artifacts/Packages`             |
 

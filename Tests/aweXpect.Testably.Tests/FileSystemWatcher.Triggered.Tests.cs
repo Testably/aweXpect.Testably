@@ -13,7 +13,7 @@ public sealed partial class FileSystemWatcher
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAnotherWatcherFires_ShouldNotCountTowardThisWatcher()
 			{
 				MockFileSystem fs = new();
@@ -38,7 +38,7 @@ public sealed partial class FileSystemWatcher
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEvaluatedForMultipleWatchers_ShouldCountEachWatcherSeparately()
 			{
 				MockFileSystem fs = new();
@@ -75,7 +75,7 @@ public sealed partial class FileSystemWatcher
 					.Because("each watcher triggered exactly three created events");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventArrivesAsynchronously_ShouldSucceedWithinTimeout()
 			{
 				MockFileSystem fs = new();
@@ -96,7 +96,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLiveEventDoesNotMatchPredicate_ShouldFailAfterTimeout()
 			{
 				MockFileSystem fs = new();
@@ -123,7 +123,7 @@ public sealed partial class FileSystemWatcher
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLiveEventDoesNotMatchFilter_ShouldFailAfterTimeout()
 			{
 				MockFileSystem fs = new();
@@ -151,7 +151,7 @@ public sealed partial class FileSystemWatcher
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLiveEventMatchesPredicate_ShouldSucceedWithinTimeout()
 			{
 				MockFileSystem fs = new();
@@ -173,7 +173,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLiveEventMatchesFilter_ShouldSucceedWithinTimeout()
 			{
 				MockFileSystem fs = new();
@@ -196,7 +196,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoEvent_ShouldFailAfterTimeout()
 			{
 				MockFileSystem fs = new();
@@ -217,7 +217,7 @@ public sealed partial class FileSystemWatcher
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPriorEventExists_ShouldSucceedSynchronously()
 			{
 				MockFileSystem fs = new();
@@ -234,7 +234,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotFromMockFileSystem_ShouldThrowInvalidOperationException()
 			{
 				RealFileSystem realFs = new();
@@ -248,7 +248,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).Throws<InvalidOperationException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IFileSystemWatcher? sut = null;
@@ -266,7 +266,7 @@ public sealed partial class FileSystemWatcher
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithInnerExpectation_ComposesWithQuantifier()
 			{
 				MockFileSystem fs = new();
@@ -291,7 +291,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithInnerExpectation_WhenChangeDoesNotMatch_ShouldFail()
 			{
 				MockFileSystem fs = new();
@@ -315,7 +315,7 @@ public sealed partial class FileSystemWatcher
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithReason_WhenChangeDoesNotMatch_ShouldIncludeReason()
 			{
 				MockFileSystem fs = new();
@@ -339,7 +339,7 @@ public sealed partial class FileSystemWatcher
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithInnerExpectation_WhenChangeMatches_ShouldSucceed()
 			{
 				MockFileSystem fs = new();
@@ -361,7 +361,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithNullExpectation_ShouldThrowArgumentNullException()
 			{
 				MockFileSystem fs = new();
@@ -378,7 +378,7 @@ public sealed partial class FileSystemWatcher
 					.WithParamName("expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExactlyOnce_WhenTriggeredTwice_ShouldFail()
 			{
 				MockFileSystem fs = new();
@@ -413,7 +413,7 @@ public sealed partial class FileSystemWatcher
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_NarrowsAssertion()
 			{
 				MockFileSystem fs = new();
@@ -436,7 +436,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenPriorEventDoesNotMatch_ShouldFail()
 			{
 				MockFileSystem fs = new();
@@ -459,7 +459,7 @@ public sealed partial class FileSystemWatcher
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenPriorEventMatches_ShouldSucceed()
 			{
 				MockFileSystem fs = new();
@@ -476,7 +476,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExactlyOnce_WhenTriggeredThreeTimes_ShouldFailWithCountInMessage()
 			{
 				MockFileSystem fs = new();
@@ -513,7 +513,7 @@ public sealed partial class FileSystemWatcher
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithZeroTimeout_WhenNoEvent_ShouldFailWithTimeoutMessage()
 			{
 				MockFileSystem fs = new();
@@ -534,7 +534,7 @@ public sealed partial class FileSystemWatcher
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithNegativeTimeout_ShouldThrowArgumentOutOfRangeException()
 			{
 				MockFileSystem fs = new();

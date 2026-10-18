@@ -10,7 +10,7 @@ public sealed partial class Statistics
 		{
 			public sealed class FactoryTests
 			{
-				[Fact]
+				[Test]
 				public async Task New_WithFileNameFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -29,7 +29,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenFactoryCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -43,7 +43,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task Wrap_WithFileInfoFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();

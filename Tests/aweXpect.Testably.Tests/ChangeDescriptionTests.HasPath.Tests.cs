@@ -8,7 +8,7 @@ public sealed partial class ChangeDescriptionTests
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPathDiffers_ShouldFail()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
@@ -22,7 +22,7 @@ public sealed partial class ChangeDescriptionTests
 					.WithMessage("*has path equal to \"totally-different-path\"*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPathMatches_ShouldSucceed()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));

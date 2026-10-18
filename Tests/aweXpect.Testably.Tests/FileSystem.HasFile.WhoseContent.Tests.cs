@@ -10,7 +10,7 @@ public sealed partial class FileSystem
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenContentIsDifferent_ShouldFail()
 				{
 					string path = "foo.txt";
@@ -31,7 +31,7 @@ public sealed partial class FileSystem
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContentMatches_ShouldSucceed()
 				{
 					string path = "foo.txt";

@@ -9,7 +9,7 @@ public sealed partial class DirectoryInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ChainedWhich_HasLength_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -25,7 +25,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ChainedWhich_HasLength_WhenFails_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -46,7 +46,7 @@ public sealed partial class DirectoryInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileExists_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -62,7 +62,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileIsMissing_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -82,7 +82,7 @@ public sealed partial class DirectoryInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCreationTime_WhenFileIsMissing_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -104,7 +104,7 @@ public sealed partial class DirectoryInfo
 					.Because("a missing file has no creation time to compare");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCreationTime_WhenPathIsADirectory_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();

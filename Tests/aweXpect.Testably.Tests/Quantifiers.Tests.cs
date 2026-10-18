@@ -14,7 +14,7 @@ public sealed class Quantifiers
 {
 	public sealed class ChainedCountTests
 	{
-		[Fact]
+		[Test]
 		public async Task RecordedMethodCall_WhenCountsAreChained_ShouldThrowInvalidOperationException()
 		{
 			MockFileSystem fileSystem = new();
@@ -29,7 +29,7 @@ public sealed class Quantifiers
 				.Because("each option can only be specified once in v3, so a later count no longer replaces an earlier one");
 		}
 
-		[Fact]
+		[Test]
 		public async Task TriggeredNotification_WhenCountsAreChained_ShouldThrowInvalidOperationException()
 		{
 			MockFileSystem sut = new();
@@ -47,7 +47,7 @@ public sealed class Quantifiers
 
 	public sealed class TriggeredNotificationTests
 	{
-		[Fact]
+		[Test]
 		public async Task AtMost_WhenTriggeredMoreOften_ShouldFail()
 		{
 			MockFileSystem sut = new();
@@ -59,7 +59,7 @@ public sealed class Quantifiers
 					.AtMost(1.Times()).Within(TimeSpan.FromMilliseconds(100));
 			}
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($$"""
 				               Expected that sut
 				               has triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created at most once within 0:00.100,
@@ -73,7 +73,7 @@ public sealed class Quantifiers
 				               """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenTriggeredWithinRange_ShouldSucceed()
 		{
 			MockFileSystem sut = new();
@@ -88,7 +88,7 @@ public sealed class Quantifiers
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task LessThan_WhenTriggeredAsOften_ShouldFail()
 		{
 			MockFileSystem sut = new();
@@ -100,7 +100,7 @@ public sealed class Quantifiers
 					.LessThan(2.Times()).Within(TimeSpan.FromMilliseconds(100));
 			}
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($$"""
 				               Expected that sut
 				               has triggered a notification matching c => c.ChangeType == WatcherChangeTypes.Created fewer than twice within 0:00.100,
@@ -114,7 +114,7 @@ public sealed class Quantifiers
 				               """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task MoreThan_WhenTriggeredMoreOften_ShouldSucceed()
 		{
 			MockFileSystem sut = new();
@@ -142,7 +142,7 @@ public sealed class Quantifiers
 
 	public sealed class TriggeredWatcherTests
 	{
-		[Fact]
+		[Test]
 		public async Task AtMost_WhenTriggeredMoreOften_ShouldFail()
 		{
 			MockFileSystem fileSystem = new();
@@ -158,7 +158,7 @@ public sealed class Quantifiers
 					.AtMost(1.Times()).Within(TimeSpan.FromMilliseconds(100));
 			}
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($$"""
 				               Expected that sut
 				               has triggered an event matching c => c.ChangeType == WatcherChangeTypes.Created at most once within 0:00.100,
@@ -172,7 +172,7 @@ public sealed class Quantifiers
 				               """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenTriggeredWithinRange_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
@@ -191,7 +191,7 @@ public sealed class Quantifiers
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task LessThan_WhenTriggeredAsOften_ShouldFail()
 		{
 			MockFileSystem fileSystem = new();
@@ -207,7 +207,7 @@ public sealed class Quantifiers
 					.LessThan(2.Times()).Within(TimeSpan.FromMilliseconds(100));
 			}
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($$"""
 				               Expected that sut
 				               has triggered an event matching c => c.ChangeType == WatcherChangeTypes.Created fewer than twice within 0:00.100,
@@ -221,7 +221,7 @@ public sealed class Quantifiers
 				               """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task MoreThan_WhenTriggeredMoreOften_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
@@ -254,7 +254,7 @@ public sealed class Quantifiers
 
 	public sealed class TimerExecutedTests
 	{
-		[Fact]
+		[Test]
 		public async Task AtMost_WhenNotExecuted_ShouldSucceed()
 		{
 			MockTimeSystem timeSystem = new();
@@ -269,7 +269,7 @@ public sealed class Quantifiers
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenNotExecuted_ShouldFail()
 		{
 			MockTimeSystem timeSystem = new();
@@ -281,7 +281,7 @@ public sealed class Quantifiers
 				await That(sut).Executed().Between(1).And(3.Times()).Within(TimeSpan.FromMilliseconds(100));
 			}
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             has executed between 1 and 3 times within 0:00.100,
@@ -289,7 +289,7 @@ public sealed class Quantifiers
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task LessThan_WhenNotExecuted_ShouldSucceed()
 		{
 			MockTimeSystem timeSystem = new();
@@ -304,7 +304,7 @@ public sealed class Quantifiers
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task MoreThan_WhenNotExecuted_ShouldFail()
 		{
 			MockTimeSystem timeSystem = new();
@@ -316,7 +316,7 @@ public sealed class Quantifiers
 				await That(sut).Executed().MoreThan(1.Times()).Within(TimeSpan.FromMilliseconds(100));
 			}
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             has executed more than once within 0:00.100,
@@ -334,7 +334,7 @@ public sealed class Quantifiers
 
 	public sealed class RecordedMethodCallTests
 	{
-		[Fact]
+		[Test]
 		public async Task AtMost_WhenCalledMoreOften_ShouldFail()
 		{
 			MockFileSystem fileSystem = CreateWithTwoWrites();
@@ -344,7 +344,7 @@ public sealed class Quantifiers
 				await That(fileSystem.Statistics).Recorded().File.WriteAllText().AtMost(1.Times());
 			}
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that fileSystem.Statistics
 				             has recorded a call to File.WriteAllText at most once,
@@ -352,7 +352,7 @@ public sealed class Quantifiers
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenCalledWithinRange_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = CreateWithTwoWrites();
@@ -365,7 +365,7 @@ public sealed class Quantifiers
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task LessThan_WhenCalledAsOften_ShouldFail()
 		{
 			MockFileSystem fileSystem = CreateWithTwoWrites();
@@ -375,7 +375,7 @@ public sealed class Quantifiers
 				await That(fileSystem.Statistics).Recorded().File.WriteAllText().LessThan(2.Times());
 			}
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that fileSystem.Statistics
 				             has recorded a call to File.WriteAllText fewer than twice,
@@ -383,7 +383,7 @@ public sealed class Quantifiers
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task MoreThan_WhenCalledMoreOften_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = CreateWithTwoWrites();
@@ -407,7 +407,7 @@ public sealed class Quantifiers
 
 	public sealed class RecordedPropertyAccessTests
 	{
-		[Fact]
+		[Test]
 		public async Task AtMost_WhenAccessedMoreOften_ShouldFail()
 		{
 			MockFileSystem fileSystem = CreateWithTwoReads();
@@ -418,7 +418,7 @@ public sealed class Quantifiers
 					.FileInfo["foo.txt"].IsReadOnly.Get().AtMost(1.Times());
 			}
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that fileSystem.Statistics
 				             has recorded a get of FileInfo["foo.txt"].IsReadOnly at most once,
@@ -426,7 +426,7 @@ public sealed class Quantifiers
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenAccessedWithinRange_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = CreateWithTwoReads();
@@ -440,7 +440,7 @@ public sealed class Quantifiers
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task LessThan_WhenAccessedAsOften_ShouldFail()
 		{
 			MockFileSystem fileSystem = CreateWithTwoReads();
@@ -451,7 +451,7 @@ public sealed class Quantifiers
 					.FileInfo["foo.txt"].IsReadOnly.Get().LessThan(2.Times());
 			}
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that fileSystem.Statistics
 				             has recorded a get of FileInfo["foo.txt"].IsReadOnly fewer than twice,
@@ -459,7 +459,7 @@ public sealed class Quantifiers
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task MoreThan_WhenAccessedMoreOften_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = CreateWithTwoReads();
