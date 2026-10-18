@@ -8,7 +8,7 @@ public sealed partial class ChangeDescriptionTests
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNameDiffers_ShouldFail()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
@@ -30,7 +30,7 @@ public sealed partial class ChangeDescriptionTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNameMatches_ShouldSucceed()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
@@ -43,7 +43,7 @@ public sealed partial class ChangeDescriptionTests
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAndNameMatches_ShouldFail()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
@@ -61,7 +61,7 @@ public sealed partial class ChangeDescriptionTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				ChangeDescription? change = null;

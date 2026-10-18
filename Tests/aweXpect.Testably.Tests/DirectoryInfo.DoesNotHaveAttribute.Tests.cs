@@ -10,7 +10,7 @@ public sealed partial class DirectoryInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAttributeIsAbsent_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -26,7 +26,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAttributeIsPresent_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -47,7 +47,7 @@ public sealed partial class DirectoryInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDirectoryDoesNotExist_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -58,7 +58,7 @@ public sealed partial class DirectoryInfo
 					await That(dirInfo).DoesNotHaveAttribute(FileAttributes.Directory);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that dirInfo
 					             does not have attribute Directory,
@@ -67,7 +67,7 @@ public sealed partial class DirectoryInfo
 					.Because("a missing directory cannot be inspected, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsDefault_ShouldThrowArgumentException()
 			{
 				MockFileSystem fileSystem = new();

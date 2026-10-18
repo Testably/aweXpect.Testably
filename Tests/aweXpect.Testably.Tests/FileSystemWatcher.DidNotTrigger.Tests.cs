@@ -10,7 +10,7 @@ public sealed partial class FileSystemWatcher
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAnotherWatcherFires_ShouldStillSucceed()
 			{
 				MockFileSystem fs = new();
@@ -30,7 +30,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventFired_ShouldFail()
 			{
 				MockFileSystem fs = new();
@@ -61,7 +61,7 @@ public sealed partial class FileSystemWatcher
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoEvent_ShouldSucceed()
 			{
 				MockFileSystem fs = new();
@@ -77,7 +77,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithInnerExpectation_WhenMatchingChange_ShouldFail()
 			{
 				MockFileSystem fs = new();
@@ -109,7 +109,7 @@ public sealed partial class FileSystemWatcher
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithInnerExpectation_WhenNoMatchingChange_ShouldSucceed()
 			{
 				MockFileSystem fs = new();
@@ -128,7 +128,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithNullExpectation_ShouldThrowArgumentNullException()
 			{
 				MockFileSystem fs = new();
@@ -145,7 +145,7 @@ public sealed partial class FileSystemWatcher
 					.WithParamName("expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenMatchingEvent_ShouldFail()
 			{
 				MockFileSystem fs = new();
@@ -176,7 +176,7 @@ public sealed partial class FileSystemWatcher
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenNoMatchingEvent_ShouldSucceed()
 			{
 				MockFileSystem fs = new();
@@ -194,7 +194,7 @@ public sealed partial class FileSystemWatcher
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventArrivesAsynchronouslyWithinTimeout_ShouldFail()
 			{
 				MockFileSystem fs = new();
@@ -216,7 +216,7 @@ public sealed partial class FileSystemWatcher
 					.WithMessage("*has never triggered an event*but it was triggered*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithoutWithin_WhenNoEvent_ShouldSucceedWithoutWaiting()
 			{
 				MockFileSystem fs = new();

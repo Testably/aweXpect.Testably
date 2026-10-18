@@ -13,7 +13,7 @@ public sealed partial class FileSystem
 			{
 				public sealed class BinaryTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenContentIsDifferent_ShouldSucceed()
 					{
 						byte[] content = Encoding.UTF8.GetBytes("baz");
@@ -31,7 +31,7 @@ public sealed partial class FileSystem
 						await That(Act).DoesNotThrow();
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenContentMatches_ShouldFail()
 					{
 						string path = "foo.txt";
@@ -53,7 +53,7 @@ public sealed partial class FileSystem
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenFileDoesNotExist_ShouldFail()
 					{
 						byte[] unexpected = Encoding.UTF8.GetBytes("bar");
@@ -74,7 +74,7 @@ public sealed partial class FileSystem
 							.Because("a missing file has no content to read, so it fails instead of throwing");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenNegated_WhenContentIsDifferent_ShouldFail()
 					{
 						byte[] content = Encoding.UTF8.GetBytes("baz");
@@ -100,7 +100,7 @@ public sealed partial class FileSystem
 
 				public sealed class StringTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenContentIsDifferent_ShouldSucceed()
 					{
 						string path = "foo.txt";
@@ -116,7 +116,7 @@ public sealed partial class FileSystem
 						await That(Act).DoesNotThrow();
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenContentMatches_ShouldFail()
 					{
 						string path = "foo.txt";
@@ -141,7 +141,7 @@ public sealed partial class FileSystem
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenFileDoesNotExist_ShouldFail()
 					{
 						string path = "foo.txt";
@@ -161,7 +161,7 @@ public sealed partial class FileSystem
 							.Because("a missing file has no content to read, so it fails instead of throwing");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenNegated_WhenContentIsDifferent_ShouldFail()
 					{
 						string path = "foo.txt";
@@ -192,7 +192,7 @@ public sealed partial class FileSystem
 
 				public sealed class WildcardTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenContentIsDifferent_ShouldSucceed()
 					{
 						string path = "foo.txt";
@@ -208,7 +208,7 @@ public sealed partial class FileSystem
 						await That(Act).DoesNotThrow();
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenContentMatches_ShouldFail()
 					{
 						string path = "foo.txt";

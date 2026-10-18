@@ -8,7 +8,7 @@ public sealed partial class Statistics
 	{
 		public sealed class DirectoryNegated
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNegatingNeverAndCalled_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -23,7 +23,7 @@ public sealed partial class Statistics
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatingNeverAndNotCalled_ShouldFailWithAtLeastOneWording()
 			{
 				MockFileSystem fileSystem = new();
@@ -42,7 +42,7 @@ public sealed partial class Statistics
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatingNeverWithMatcherAndNotCalled_ShouldIncludeMatcher()
 			{
 				MockFileSystem fileSystem = new();
@@ -61,7 +61,7 @@ public sealed partial class Statistics
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatingExactlyAndMatching_ShouldFailWithDidNotRecordWording()
 			{
 				MockFileSystem fileSystem = new();

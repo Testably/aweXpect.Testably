@@ -12,7 +12,7 @@ public sealed partial class FileInfo
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenContentIsDifferent_ShouldSucceed()
 				{
 					byte[] content = Encoding.UTF8.GetBytes("baz");
@@ -31,7 +31,7 @@ public sealed partial class FileInfo
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContentMatches_ShouldFail()
 				{
 					byte[] content = Encoding.UTF8.GetBytes("baz");

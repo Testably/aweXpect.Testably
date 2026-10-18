@@ -13,7 +13,7 @@ public sealed class Readme
 {
 	public sealed class Tests
 	{
-		[Fact]
+		[Test]
 		public async Task DirectoryChain_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
@@ -27,7 +27,7 @@ public sealed class Readme
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task Drive_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -44,7 +44,7 @@ public sealed class Readme
 		}
 #endif
 
-		[Fact]
+		[Test]
 		public async Task FileChain_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
@@ -65,7 +65,7 @@ public sealed class Readme
 			await That(fileSystem).HasFile("let-it-be.txt").WithLastWriteTime(DateTime.Now).Within(TimeSpan.FromSeconds(1));
 		}
 
-		[Fact]
+		[Test]
 		public async Task FileSystem_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
@@ -79,7 +79,7 @@ public sealed class Readme
 			await That(fileSystem).DoesNotHaveFile("yesterday.txt");
 		}
 
-		[Fact]
+		[Test]
 		public async Task FileVersionInfo_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
@@ -97,7 +97,7 @@ public sealed class Readme
 			await That(info).IsDebug().And.IsNotPreRelease();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Notifications_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
@@ -112,7 +112,7 @@ public sealed class Readme
 			await That(fileSystem).DidNotTriggerNotification(c => c.Name == "unreleased.txt");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotificationsWithQuantifier_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
@@ -128,7 +128,7 @@ public sealed class Readme
 				.Exactly(1.Times());
 		}
 
-		[Fact]
+		[Test]
 		public async Task RecordedCalls_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();
@@ -142,7 +142,7 @@ public sealed class Readme
 			await That(fileSystem.Statistics).Recorded().FileInfo["help.txt"].IsReadOnly.Set().Once();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Timer_ShouldSucceed()
 		{
 			MockTimeSystem timeSystem = new();
@@ -155,7 +155,7 @@ public sealed class Readme
 			await That(timer).Executed().AtLeast(2.Times()).Within(TimeSpan.FromMilliseconds(100));
 		}
 
-		[Fact]
+		[Test]
 		public async Task Watcher_ShouldSucceed()
 		{
 			MockFileSystem fileSystem = new();

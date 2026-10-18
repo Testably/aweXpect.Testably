@@ -11,7 +11,7 @@ public sealed partial class FileSystem
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task IsReady_WhenDriveIsReady_ShouldSucceed()
 				{
 					MockFileSystem sut = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -25,7 +25,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task HasTotalSize_WhenSizeDiffers_ShouldFail()
 				{
 					MockFileSystem sut = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -44,7 +44,7 @@ public sealed partial class FileSystem
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDriveIsMissing_ChainedExpectation_ShouldFailWithoutNullReference()
 				{
 					MockFileSystem sut = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -62,7 +62,7 @@ public sealed partial class FileSystem
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ChainedAnd_HasTotalSize_And_IsReady_ShouldSucceed()
 				{
 					MockFileSystem sut = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));

@@ -10,7 +10,7 @@ public sealed partial class FileSystem
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task HasFile_WhenFileExists_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -25,7 +25,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task IsEmpty_WhenEmpty_ShouldSucceed()
 				{
 					MockFileSystem sut = new();
@@ -39,7 +39,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task IsEmpty_WhenNotEmpty_ShouldFail()
 				{
 					MockFileSystem sut = new();

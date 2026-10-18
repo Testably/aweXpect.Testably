@@ -39,11 +39,13 @@ Correctness is a must. The other goals are strong defaults and win in this order
 
 ## Validation
 
-- Run the tests that cover your change before pushing: `dotnet test Tests/aweXpect.Testably.Tests` (add
-  `-f net10.0` and a `--filter` for a quick loop, but run net48 too when you touch language features).
-- Public API: `dotnet test Tests/aweXpect.Testably.Api.Tests`. For an intended change, accept the snapshots (see
-  [workflows](Docs/agents/workflows.md#public-api)) and commit the updated `*.awexpect-snapshot.txt` files, never a
-  `*.awexpect-snapshot.pending.txt`.
+- All tests run on TUnit and the Microsoft.Testing.Platform, which `global.json` selects for `dotnet test`: pass the
+  project with `--project` and filter with `--treenode-filter`.
+- Run the tests that cover your change before pushing: `dotnet test --project Tests/aweXpect.Testably.Tests` (add
+  `-f net10.0` and a `--treenode-filter` for a quick loop, but run net48 too when you touch language features).
+- Public API: `dotnet test --project Tests/aweXpect.Testably.Api.Tests`. For an intended change, accept the snapshots
+  (see [workflows](Docs/agents/workflows.md#public-api)) and commit the updated `*.awexpect-snapshot.txt` files, never
+  a `*.awexpect-snapshot.pending.txt`.
 - AOT: `./build.ps1 AotSmokeTests` runs the smoke tests under the JIT and as a Native AOT publish.
 - `Readme.Tests.cs` mirrors the examples in `README.md`; change both together. `Docs/pages/` is published to the
   docs site, so keep it in sync with the API.

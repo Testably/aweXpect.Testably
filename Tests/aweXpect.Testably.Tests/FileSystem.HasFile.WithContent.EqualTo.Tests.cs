@@ -13,7 +13,7 @@ public sealed partial class FileSystem
 			{
 				public sealed class BinaryTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenContentIsDifferent_ShouldFail()
 					{
 						byte[] content = Encoding.UTF8.GetBytes("baz");
@@ -36,7 +36,7 @@ public sealed partial class FileSystem
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenContentMatches_ShouldSucceed()
 					{
 						byte[] content = Encoding.UTF8.GetBytes("baz");
@@ -56,7 +56,7 @@ public sealed partial class FileSystem
 
 				public sealed class StringTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenContentIsDifferent_ShouldFail()
 					{
 						string path = "foo.txt";
@@ -84,7 +84,7 @@ public sealed partial class FileSystem
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenContentMatches_ShouldSucceed()
 					{
 						string path = "foo.txt";
@@ -104,7 +104,7 @@ public sealed partial class FileSystem
 
 				public sealed class AsWildcardTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenContentIsDifferent_ShouldFail()
 					{
 						string path = "foo.txt";
@@ -132,7 +132,7 @@ public sealed partial class FileSystem
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenContentMatches_ShouldSucceed()
 					{
 						string path = "foo.txt";

@@ -12,7 +12,7 @@ public sealed partial class FileSystem
 			{
 				public sealed class StringTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenContentIsDifferent_ShouldSucceed()
 					{
 						MockFileSystem sut = new();
@@ -30,7 +30,7 @@ public sealed partial class FileSystem
 						await That(Act).DoesNotThrow();
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenContentMatches_ShouldFail()
 					{
 						MockFileSystem sut = new();
@@ -58,7 +58,7 @@ public sealed partial class FileSystem
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenNegated_WhenContentIsDifferent_ShouldFail()
 					{
 						MockFileSystem sut = new();
@@ -92,7 +92,7 @@ public sealed partial class FileSystem
 
 				public sealed class AsWildcardTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenContentIsDifferent_ShouldSucceed()
 					{
 						MockFileSystem sut = new();
@@ -110,7 +110,7 @@ public sealed partial class FileSystem
 						await That(Act).DoesNotThrow();
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenContentMatches_ShouldFail()
 					{
 						MockFileSystem sut = new();

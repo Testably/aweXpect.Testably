@@ -12,7 +12,7 @@ public sealed partial class Statistics
 		{
 			public sealed class FactoryTests
 			{
-				[Fact]
+				[Test]
 				public async Task New_WithFilterFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -31,7 +31,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task New_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -50,7 +50,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task New_WithPathFilter_ShouldOnlyCountMatching()
 				{
 					MockFileSystem fileSystem = new();
@@ -68,7 +68,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task Wrap_WithFileSystemWatcherFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -90,7 +90,7 @@ public sealed partial class Statistics
 
 			public sealed class BeginInitTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -110,7 +110,7 @@ public sealed partial class Statistics
 
 			public sealed class FilterPropertyTests
 			{
-				[Fact]
+				[Test]
 				public async Task Filter_Set_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -130,7 +130,7 @@ public sealed partial class Statistics
 
 			public sealed class EndInitTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -151,7 +151,7 @@ public sealed partial class Statistics
 
 			public sealed class WaitForChangedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WaitForChanged_WithChangeTypeFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -171,7 +171,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WaitForChanged_WithTimeoutFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -191,7 +191,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalledWithTimeout_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -212,7 +212,7 @@ public sealed partial class Statistics
 
 			public sealed class EnableRaisingEventsTests
 			{
-				[Fact]
+				[Test]
 				public async Task Set_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -233,7 +233,7 @@ public sealed partial class Statistics
 #if NET8_0_OR_GREATER
 			public sealed class FiltersTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -254,7 +254,7 @@ public sealed partial class Statistics
 
 			public sealed class IncludeSubdirectoriesTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -274,7 +274,7 @@ public sealed partial class Statistics
 
 			public sealed class InternalBufferSizeTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -294,7 +294,7 @@ public sealed partial class Statistics
 
 			public sealed class NotifyFilterTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -314,7 +314,7 @@ public sealed partial class Statistics
 
 			public sealed class PathTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -334,7 +334,7 @@ public sealed partial class Statistics
 
 			public sealed class SiteTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -354,7 +354,7 @@ public sealed partial class Statistics
 
 			public sealed class SynchronizingObjectTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -374,7 +374,7 @@ public sealed partial class Statistics
 
 			public sealed class FailureMessageTests
 			{
-				[Fact]
+				[Test]
 				public async Task EnableRaisingEvents_Set_WhenNotCalled_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -394,7 +394,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task EndInit_WhenNotCalled_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -414,7 +414,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Path_Get_WhenNotAccessed_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -434,7 +434,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WaitForChanged_WithFilter_WhenNotCalled_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();

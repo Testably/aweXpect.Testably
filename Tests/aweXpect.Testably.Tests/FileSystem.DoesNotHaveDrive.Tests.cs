@@ -9,7 +9,7 @@ public sealed partial class FileSystem
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDriveExists_ShouldFail()
 			{
 				MockFileSystem sut = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -28,7 +28,7 @@ public sealed partial class FileSystem
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDriveIsMissing_ShouldSucceed()
 			{
 				MockFileSystem sut = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));

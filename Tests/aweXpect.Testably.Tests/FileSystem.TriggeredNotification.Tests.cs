@@ -17,7 +17,7 @@ public sealed partial class FileSystem
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventArrivesAsynchronously_ShouldSucceedWithinTimeout()
 			{
 				MockFileSystem sut = new();
@@ -35,7 +35,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLiveEventDoesNotMatchPredicate_ShouldFailAfterTimeout()
 			{
 				MockFileSystem sut = new();
@@ -59,7 +59,7 @@ public sealed partial class FileSystem
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLiveEventDoesNotMatchFilter_ShouldFailAfterTimeout()
 			{
 				MockFileSystem sut = new();
@@ -84,7 +84,7 @@ public sealed partial class FileSystem
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLiveEventMatchesPredicate_ShouldSucceedWithinTimeout()
 			{
 				MockFileSystem sut = new();
@@ -103,7 +103,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLiveEventMatchesFilter_ShouldSucceedWithinTimeout()
 			{
 				MockFileSystem sut = new();
@@ -123,7 +123,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoPriorEvent_ShouldFailAfterTimeout()
 			{
 				MockFileSystem sut = new();
@@ -141,7 +141,7 @@ public sealed partial class FileSystem
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPriorEventExists_ShouldSucceedSynchronously()
 			{
 				MockFileSystem sut = new();
@@ -155,7 +155,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				MockFileSystem? sut = null;
@@ -173,7 +173,7 @@ public sealed partial class FileSystem
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithInnerExpectation_ComposesWithQuantifier()
 			{
 				MockFileSystem sut = new();
@@ -195,7 +195,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithInnerExpectation_WhenChangeDoesNotMatch_ShouldFail()
 			{
 				MockFileSystem sut = new();
@@ -216,7 +216,7 @@ public sealed partial class FileSystem
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithReason_WhenChangeDoesNotMatch_ShouldIncludeReason()
 			{
 				MockFileSystem sut = new();
@@ -237,7 +237,7 @@ public sealed partial class FileSystem
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithNegatedInnerExpectation_WhenNoChange_ShouldDescribeNegation()
 			{
 				MockFileSystem sut = new();
@@ -257,7 +257,7 @@ public sealed partial class FileSystem
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingTwice_WhenChangeDoesNotMatch_ShouldJoinFiltersWithAnd()
 			{
 				MockFileSystem sut = new();
@@ -275,7 +275,7 @@ public sealed partial class FileSystem
 					.WithMessage("*that has name equal to \"foo.txt\" and has change type Deleted*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithInnerExpectation_WhenChangeMatches_ShouldSucceed()
 			{
 				MockFileSystem sut = new();
@@ -290,7 +290,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithNullExpectation_ShouldThrowArgumentNullException()
 			{
 				MockFileSystem sut = new();
@@ -305,7 +305,7 @@ public sealed partial class FileSystem
 					.WithMessage("The 'expectation' cannot be null.*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithNullPredicate_ShouldThrowArgumentNullException()
 			{
 				MockFileSystem sut = new();
@@ -320,7 +320,7 @@ public sealed partial class FileSystem
 					.WithMessage("The 'predicate' cannot be null.*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithinTwice_ShouldThrowInvalidOperationException()
 			{
 				MockFileSystem sut = new();
@@ -337,7 +337,7 @@ public sealed partial class FileSystem
 					.Because("each option can only be specified once in v3 instead of the last one silently winning");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExactlyOnce_WhenTriggeredTwice_ShouldFail()
 			{
 				MockFileSystem sut = new();
@@ -369,7 +369,7 @@ public sealed partial class FileSystem
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_NarrowsAssertion()
 			{
 				MockFileSystem sut = new();
@@ -389,7 +389,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenPriorEventDoesNotMatch_ShouldFail()
 			{
 				MockFileSystem sut = new();
@@ -409,7 +409,7 @@ public sealed partial class FileSystem
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenPriorEventMatches_ShouldSucceed()
 			{
 				MockFileSystem sut = new();
@@ -423,7 +423,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithExactlyOnce_WhenTriggeredThreeTimes_ShouldFailWithCountInMessage()
 			{
 				MockFileSystem sut = new();
@@ -457,7 +457,7 @@ public sealed partial class FileSystem
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithZeroTimeout_WhenNoPriorEvent_ShouldFailWithTimeoutMessage()
 			{
 				MockFileSystem sut = new();
@@ -475,7 +475,7 @@ public sealed partial class FileSystem
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithNegativeTimeout_ShouldThrowArgumentOutOfRangeException()
 			{
 				MockFileSystem sut = new();
@@ -490,7 +490,7 @@ public sealed partial class FileSystem
 					.WithMessage("The timeout must not be negative.*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithInfiniteTimeout_WhenPriorEventExists_ShouldSucceed()
 			{
 				MockFileSystem sut = new();
@@ -504,7 +504,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithoutWithin_WhenNoPriorEvent_ShouldFailWithoutWaiting()
 			{
 				MockFileSystem sut = new();
@@ -523,7 +523,7 @@ public sealed partial class FileSystem
 					.Because("without Within only the notifications triggered so far are checked");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutOfEvaluationEndsWithin_ShouldFailWithTheReceivedNotifications()
 			{
 				MockFileSystem sut = new();
@@ -544,7 +544,7 @@ public sealed partial class FileSystem
 					.Because("a timeout of the evaluation at the end of Within lets the received notifications decide");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedWithAtLeast_ShouldDescribeNegatedQuantifier()
 			{
 				MockFileSystem sut = new();
@@ -577,7 +577,7 @@ public sealed partial class FileSystem
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedWithTwice_ShouldDescribeNegatedQuantifier()
 			{
 				MockFileSystem sut = new();
@@ -610,7 +610,7 @@ public sealed partial class FileSystem
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithNever_WhenTriggered_ShouldFail()
 			{
 				MockFileSystem sut = new();
@@ -638,7 +638,7 @@ public sealed partial class FileSystem
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEvaluatedForMultipleFileSystems_ShouldCountEachFileSystemSeparately()
 			{
 				MockFileSystem[] fileSystems = [new(), new(),];
@@ -661,7 +661,7 @@ public sealed partial class FileSystem
 					.Because("each file system triggered exactly three created notifications");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotificationIsRaisedOnThreadWithSingleThreadedContext_ShouldNotBlockIt()
 			{
 				MockFileSystem sut = new();
@@ -702,7 +702,7 @@ public sealed partial class FileSystem
 					.Because("the nested expectation must not be evaluated synchronously on the notifying thread");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedExpectationOutlastsTheTimeout_ShouldNotThrowIntoNotifyingCode()
 			{
 				MockFileSystem sut = new();
@@ -751,7 +751,7 @@ public sealed partial class FileSystem
 					.Because("the timeout of the expectation must not cancel the code that raised the notification");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFailWithoutThrowingIntoNotifyingCode()
 			{
 				MockFileSystem sut = new();
@@ -775,7 +775,7 @@ public sealed partial class FileSystem
 						.Within(TimeSpan.FromSeconds(5));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that sut
 					             has triggered a notification matching _ => throw new InvalidOperationException("boom") at least once within 0:05,

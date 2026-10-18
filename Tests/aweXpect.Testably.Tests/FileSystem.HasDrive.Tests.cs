@@ -9,7 +9,7 @@ public sealed partial class FileSystem
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDriveExists_ShouldSucceed()
 			{
 				MockFileSystem sut = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -23,7 +23,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDriveNameDiffersInCase_ShouldSucceed()
 			{
 				MockFileSystem sut = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -37,7 +37,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDriveNameMissesTrailingSeparator_ShouldSucceed()
 			{
 				MockFileSystem sut = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
@@ -51,7 +51,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDriveIsMissing_ShouldFail()
 			{
 				MockFileSystem sut = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));

@@ -9,7 +9,7 @@ public sealed partial class FileSystem
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNoPriorEvent_ShouldSucceed()
 			{
 				MockFileSystem sut = new();
@@ -22,7 +22,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPriorEventExists_ShouldFailSynchronously()
 			{
 				MockFileSystem sut = new();
@@ -48,7 +48,7 @@ public sealed partial class FileSystem
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithInnerExpectation_WhenMatchingChange_ShouldFail()
 			{
 				MockFileSystem sut = new();
@@ -75,7 +75,7 @@ public sealed partial class FileSystem
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithInnerExpectation_WhenNoMatchingChange_ShouldSucceed()
 			{
 				MockFileSystem sut = new();
@@ -91,7 +91,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithInnerExpectation_WhenItThrows_ShouldFail()
 			{
 				MockFileSystem sut = new();
@@ -106,7 +106,7 @@ public sealed partial class FileSystem
 						.Within(TimeSpan.FromMilliseconds(100));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that sut
 					               has never triggered a notification that satisfies _ => throw new InvalidOperationException("boom") within 0:00.100,
@@ -119,7 +119,7 @@ public sealed partial class FileSystem
 					.Because("a change that the inner expectation could not answer fails the negated expectation as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MatchingWithNullExpectation_ShouldThrowArgumentNullException()
 			{
 				MockFileSystem sut = new();
@@ -133,7 +133,7 @@ public sealed partial class FileSystem
 					.WithParamName("expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenMatchingPriorEvent_ShouldFail()
 			{
 				MockFileSystem sut = new();
@@ -165,7 +165,7 @@ public sealed partial class FileSystem
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPredicate_WhenNoMatchingPriorEvent_ShouldSucceed()
 			{
 				MockFileSystem sut = new();
@@ -180,7 +180,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventArrivesAsynchronouslyWithinTimeout_ShouldFail()
 			{
 				MockFileSystem sut = new();
@@ -199,7 +199,7 @@ public sealed partial class FileSystem
 					.WithMessage("*has never triggered a notification*but it was triggered*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithoutWithin_WhenNoPriorEvent_ShouldSucceedWithoutWaiting()
 			{
 				MockFileSystem sut = new();
@@ -213,7 +213,7 @@ public sealed partial class FileSystem
 					.Because("without Within only the notifications triggered so far are checked");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutOfEvaluationEndsWithin_ShouldSucceed()
 			{
 				MockFileSystem sut = new();

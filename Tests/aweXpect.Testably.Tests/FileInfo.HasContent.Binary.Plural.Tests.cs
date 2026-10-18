@@ -12,7 +12,7 @@ public sealed partial class FileInfo
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenContentDiffers_ShouldFail()
 				{
 					byte[] expected = Encoding.UTF8.GetBytes("bar");
@@ -46,7 +46,7 @@ public sealed partial class FileInfo
 						              """).IgnoringNewlineStyle();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContentMatches_ShouldSucceed()
 				{
 					byte[] content = Encoding.UTF8.GetBytes("baz");
@@ -63,7 +63,7 @@ public sealed partial class FileInfo
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenContentDiffers_ShouldSucceed()
 				{
 					byte[] expected = Encoding.UTF8.GetBytes("bar");
@@ -81,7 +81,7 @@ public sealed partial class FileInfo
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenContentMatches_ShouldFail()
 				{
 					byte[] content = Encoding.UTF8.GetBytes("baz");

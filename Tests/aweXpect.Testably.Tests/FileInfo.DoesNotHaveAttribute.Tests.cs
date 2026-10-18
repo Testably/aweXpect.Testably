@@ -10,7 +10,7 @@ public sealed partial class FileInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAttributeIsAbsent_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -26,7 +26,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAttributeIsPresent_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -48,7 +48,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileDoesNotExist_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -59,7 +59,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).DoesNotHaveAttribute(FileAttributes.ReadOnly);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fileInfo
 					             does not have attribute ReadOnly,
@@ -68,7 +68,7 @@ public sealed partial class FileInfo
 					.Because("a missing file cannot be inspected, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsDefault_ShouldThrowArgumentException()
 			{
 				MockFileSystem fileSystem = new();

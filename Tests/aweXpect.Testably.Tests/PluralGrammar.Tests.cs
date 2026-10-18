@@ -10,7 +10,7 @@ public sealed class PluralGrammar
 {
 	public sealed class Tests
 	{
-		[Fact]
+		[Test]
 		public async Task ChangeDescription_HasChangeType_ShouldUsePluralVerb()
 		{
 			ChangeDescription[] changes = [ChangeDescriptionTests.Capture(fs => fs.File.WriteAllText("foo.txt", "")),];
@@ -24,7 +24,7 @@ public sealed class PluralGrammar
 				.WithMessage("*whose Items have change type Deleted for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ChangeDescription_HasFileSystemType_ShouldUsePluralVerb()
 		{
 			ChangeDescription[] changes = [ChangeDescriptionTests.Capture(fs => fs.File.WriteAllText("foo.txt", "")),];
@@ -38,7 +38,7 @@ public sealed class PluralGrammar
 				.WithMessage("*whose Items do not have file system type File for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ChangeDescription_HasName_ShouldUsePluralVerb()
 		{
 			ChangeDescription[] changes = [ChangeDescriptionTests.Capture(fs => fs.File.WriteAllText("foo.txt", "")),];
@@ -52,7 +52,7 @@ public sealed class PluralGrammar
 				.WithMessage("*whose Items have name equal to \"bar.txt\" for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ChangeDescription_HasNotifyFilters_ShouldUsePluralVerb()
 		{
 			ChangeDescription[] changes = [ChangeDescriptionTests.Capture(fs => fs.File.WriteAllText("foo.txt", "")),];
@@ -66,7 +66,7 @@ public sealed class PluralGrammar
 				.WithMessage("*whose Items have notify filters Security for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task FileVersionInfo_HasInt32Property_ShouldUsePluralVerb()
 		{
 			IFileVersionInfo[] infos = [CreateFileVersionInfo(),];
@@ -80,7 +80,7 @@ public sealed class PluralGrammar
 				.WithMessage("*whose Items do not have file build part 0 for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task FileVersionInfo_HasStringProperty_ShouldUsePluralVerb()
 		{
 			IFileVersionInfo[] infos = [CreateFileVersionInfo(),];
@@ -95,7 +95,7 @@ public sealed class PluralGrammar
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task FileSystem_HasDrive_ShouldUsePluralVerb()
 		{
 			MockFileSystem[] fileSystems = [new(o => o.SimulatingOperatingSystem(SimulationMode.Windows)),];
@@ -109,7 +109,7 @@ public sealed class PluralGrammar
 				.WithMessage("*whose Items have drive \"Z:\\\\\" for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DriveInfo_HasAvailableFreeSpace_ShouldUsePluralVerb()
 		{
 			IDriveInfo[] drives = [CreateDriveInfo(),];
@@ -123,7 +123,7 @@ public sealed class PluralGrammar
 				.WithMessage("*whose Items have available free space 99 for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DriveInfo_HasDriveFormat_ShouldUsePluralVerb()
 		{
 			IDriveInfo[] drives = [CreateDriveInfo(),];
@@ -137,7 +137,7 @@ public sealed class PluralGrammar
 				.WithMessage("*whose Items have drive format equal to \"FAT32\" for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DriveInfo_HasDriveType_ShouldUsePluralVerb()
 		{
 			IDriveInfo[] drives = [CreateDriveInfo(),];
@@ -151,7 +151,7 @@ public sealed class PluralGrammar
 				.WithMessage("*whose Items have drive type Network for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DriveInfo_HasName_ShouldUsePluralVerb()
 		{
 			IDriveInfo[] drives = [CreateDriveInfo(),];
@@ -165,7 +165,7 @@ public sealed class PluralGrammar
 				.WithMessage("*whose Items have name equal to \"Z:\\\\\" for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DriveInfo_HasTotalFreeSpace_ShouldUsePluralVerb()
 		{
 			IDriveInfo[] drives = [CreateDriveInfo(),];
@@ -179,7 +179,7 @@ public sealed class PluralGrammar
 				.WithMessage("*whose Items have total free space 99 for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DriveInfo_HasTotalSize_ShouldUsePluralVerb()
 		{
 			IDriveInfo[] drives = [CreateDriveInfo(),];
@@ -193,7 +193,7 @@ public sealed class PluralGrammar
 				.WithMessage("*whose Items do not have total size 2048 for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DriveInfo_HasVolumeLabel_ShouldUsePluralVerb()
 		{
 			IDriveInfo[] drives = [CreateDriveInfo(),];
@@ -207,7 +207,7 @@ public sealed class PluralGrammar
 				.WithMessage("*whose Items have volume label equal to \"Abbey Road\" for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DriveInfo_IsReady_ShouldUsePluralVerb()
 		{
 			IDriveInfo[] drives = [CreateDriveInfo(),];

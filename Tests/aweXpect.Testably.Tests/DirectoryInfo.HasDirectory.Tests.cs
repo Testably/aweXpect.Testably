@@ -9,7 +9,7 @@ public sealed partial class DirectoryInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubdirectoryExists_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -24,7 +24,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubdirectoryMissing_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -55,7 +55,7 @@ public sealed partial class DirectoryInfo
 	// {
 	//     public sealed class Tests
 	//     {
-	//         [Fact]
+	//         [Test]
 	//         public async Task DeeplyNested_ShouldSucceed()
 	//         {
 	//             MockFileSystem fileSystem = new();

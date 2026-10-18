@@ -10,7 +10,7 @@ public sealed partial class FileInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenChainedWithAnd_ShouldKeepTheAnd()
 			{
 				MockFileSystem fileSystem = new();
@@ -22,7 +22,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).Exists().And.HasContent().EqualTo("baz");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fileInfo
 					             exists and has content equal to "baz",
@@ -37,7 +37,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EqualTo_WhenUsedForAllItems_ShouldNotStartWithASpace()
 			{
 				MockFileSystem fileSystem = new();
@@ -49,7 +49,7 @@ public sealed partial class FileInfo
 					await That(fileInfos).All().ComplyWith(f => f.HasContent().EqualTo("baz"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fileInfos
 					             has content equal to "baz" for all items,
@@ -70,7 +70,7 @@ public sealed partial class FileInfo
 					             """).IgnoringNewlineStyle();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -82,7 +82,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).HasContent("bar");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fileInfo
 					             has content equal to "bar",
@@ -94,7 +94,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -109,7 +109,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileDoesNotExist_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -120,7 +120,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).HasContent("bar");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fileInfo
 					             has content equal to "bar",
@@ -128,7 +128,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEvaluatedForMultipleItems_ShouldNotShowContentOfPreviousItem()
 			{
 				MockFileSystem fileSystem = new();
@@ -140,12 +140,12 @@ public sealed partial class FileInfo
 					await That(fileInfos).All().ComplyWith(f => f.HasContent("abc"));
 				}
 
-				XunitException exception = await That(Act).Throws<XunitException>();
+				FailException exception = await That(Act).Throws<FailException>();
 				await That(exception.Message).DoesNotContain("File content")
 					.Because("the missing file has no content, so the content of the previous item must not leak into it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenIgnoringCase_ShouldMentionTheOptionOnce()
 			{
 				MockFileSystem fileSystem = new();
@@ -157,7 +157,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).HasContent("BAZ").IgnoringCase();
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fileInfo
 					             has content equal to "BAZ" ignoring case,
@@ -172,7 +172,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_WhenContentMatches_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -184,7 +184,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).DoesNotComplyWith(it => it.HasContent("bar"));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fileInfo
 					             does not have content equal to "bar",
@@ -200,7 +200,7 @@ public sealed partial class FileInfo
 
 		public sealed class BinaryTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenContentIsDifferent_ShouldFail()
 			{
 				byte[] content = Encoding.UTF8.GetBytes("baz");
@@ -224,7 +224,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentMatches_ShouldSucceed()
 			{
 				byte[] content = Encoding.UTF8.GetBytes("baz");
@@ -242,7 +242,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileDoesNotExist_ShouldFail()
 			{
 				byte[] expected = Encoding.UTF8.GetBytes("bar");
@@ -265,7 +265,7 @@ public sealed partial class FileInfo
 
 		public sealed class AsWildcardTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenContentIsDifferent_ShouldFail()
 			{
 				string path = "foo.txt";
@@ -294,7 +294,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenContentMatches_ShouldSucceed()
 			{
 				string path = "foo.txt";

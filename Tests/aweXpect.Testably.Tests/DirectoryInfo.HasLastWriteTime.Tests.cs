@@ -10,7 +10,7 @@ public sealed partial class DirectoryInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDifferenceIsWithinDefaultTolerance_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -32,7 +32,7 @@ public sealed partial class DirectoryInfo
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDifferenceExceedsDefaultTolerance_ShouldFailAndIncludeToleranceInMessage()
 			{
 				MockFileSystem fileSystem = new();
@@ -59,7 +59,7 @@ public sealed partial class DirectoryInfo
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLastWriteTimeDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -82,7 +82,7 @@ public sealed partial class DirectoryInfo
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLastWriteTimeMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -99,7 +99,7 @@ public sealed partial class DirectoryInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAndLastWriteTimeMatches_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();

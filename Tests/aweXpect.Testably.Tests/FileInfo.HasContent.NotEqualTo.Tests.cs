@@ -12,7 +12,7 @@ public sealed partial class FileInfo
 		{
 			public sealed class BinaryTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenContentIsDifferent_ShouldSucceed()
 				{
 					byte[] content = Encoding.UTF8.GetBytes("baz");
@@ -31,7 +31,7 @@ public sealed partial class FileInfo
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContentMatches_ShouldFail()
 				{
 					string path = "foo.txt";
@@ -54,7 +54,7 @@ public sealed partial class FileInfo
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenFileDoesNotExist_ShouldFail()
 				{
 					byte[] unexpected = Encoding.UTF8.GetBytes("bar");
@@ -66,7 +66,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().NotEqualTo(unexpected);
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that fileInfo
 						             does not have content equal to unexpected,
@@ -75,7 +75,7 @@ public sealed partial class FileInfo
 						.Because("a missing file has no content that could differ");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenFileDoesNotExist_ShouldFail()
 				{
 					byte[] unexpected = Encoding.UTF8.GetBytes("bar");
@@ -87,7 +87,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).DoesNotComplyWith(it => it.HasContent().NotEqualTo(unexpected));
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that fileInfo
 						             has content equal to unexpected,
@@ -98,7 +98,7 @@ public sealed partial class FileInfo
 
 			public sealed class StringTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenContentIsDifferent_ShouldSucceed()
 				{
 					string path = "foo.txt";
@@ -115,7 +115,7 @@ public sealed partial class FileInfo
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContentMatches_ShouldFail()
 				{
 					string path = "foo.txt";
@@ -141,7 +141,7 @@ public sealed partial class FileInfo
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenFileDoesNotExist_ShouldFail()
 				{
 					MockFileSystem fileSystem = new();
@@ -152,7 +152,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).HasContent().NotEqualTo("bar");
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that fileInfo
 						             does not have content equal to "bar",
@@ -161,7 +161,7 @@ public sealed partial class FileInfo
 						.Because("a missing file has no content that could differ");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_WhenFileDoesNotExist_ShouldFail()
 				{
 					MockFileSystem fileSystem = new();
@@ -172,7 +172,7 @@ public sealed partial class FileInfo
 						await That(fileInfo).DoesNotComplyWith(it => it.HasContent().NotEqualTo("bar"));
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that fileInfo
 						             has content equal to "bar",
@@ -183,7 +183,7 @@ public sealed partial class FileInfo
 
 			public sealed class WildcardTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenContentIsDifferent_ShouldSucceed()
 				{
 					string path = "foo.txt";
@@ -200,7 +200,7 @@ public sealed partial class FileInfo
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContentMatches_ShouldFail()
 				{
 					string path = "foo.txt";

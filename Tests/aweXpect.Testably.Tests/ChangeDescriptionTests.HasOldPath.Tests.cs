@@ -10,7 +10,7 @@ public sealed partial class ChangeDescriptionTests
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenOldPathDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -35,7 +35,7 @@ public sealed partial class ChangeDescriptionTests
 					.WithMessage("*has old path equal to \"totally-different-path\"*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOldPathIsNull_AndExpectedIsNotNull_ShouldFail()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
@@ -49,7 +49,7 @@ public sealed partial class ChangeDescriptionTests
 					.WithMessage("*has old path equal to \"foo.txt\"*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOldPathMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();

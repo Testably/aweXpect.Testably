@@ -10,7 +10,7 @@ public sealed partial class ChangeDescriptionTests
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenOldNameDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -35,7 +35,7 @@ public sealed partial class ChangeDescriptionTests
 					.WithMessage("*has old name equal to \"other-name.txt\"*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOldNameIsNull_AndExpectedIsNotNull_ShouldFail()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
@@ -49,7 +49,7 @@ public sealed partial class ChangeDescriptionTests
 					.WithMessage("*has old name equal to \"foo.txt\"*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOldNameMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();

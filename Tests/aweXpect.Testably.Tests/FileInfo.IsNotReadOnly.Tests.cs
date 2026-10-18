@@ -10,7 +10,7 @@ public sealed partial class FileInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFileIsNotReadOnly_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -26,7 +26,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileIsReadOnly_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();

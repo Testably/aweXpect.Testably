@@ -9,7 +9,7 @@ public sealed partial class FileInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFileDoesNotExist_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -23,7 +23,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileExists_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();

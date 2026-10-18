@@ -9,7 +9,7 @@ public sealed partial class ChangeDescriptionTests
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task DoesNotHaveFileSystemType_WhenItDiffers_ShouldSucceed()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
@@ -22,7 +22,7 @@ public sealed partial class ChangeDescriptionTests
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotHaveFileSystemType_WhenItMatches_ShouldFail()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
@@ -40,7 +40,7 @@ public sealed partial class ChangeDescriptionTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotHaveFileSystemType_WhenUnexpectedIsDefault_ShouldThrowArgumentException()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
@@ -56,7 +56,7 @@ public sealed partial class ChangeDescriptionTests
 					.WithMessage("The unexpected file system type must include at least one flag.*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsDefault_ShouldThrowArgumentException()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
@@ -72,7 +72,7 @@ public sealed partial class ChangeDescriptionTests
 					.WithMessage("The expected file system type must include at least one flag.*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileSystemTypeDiffers_ShouldFail()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
@@ -90,7 +90,7 @@ public sealed partial class ChangeDescriptionTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileSystemTypeMatches_ShouldSucceed()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));
@@ -103,7 +103,7 @@ public sealed partial class ChangeDescriptionTests
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				ChangeDescription? change = null;
@@ -121,7 +121,7 @@ public sealed partial class ChangeDescriptionTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedPartiallyOverlapsActual_ShouldFail()
 			{
 				ChangeDescription change = Capture(fs => fs.File.WriteAllText("foo.txt", ""));

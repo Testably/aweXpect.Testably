@@ -10,7 +10,7 @@ public sealed partial class FileInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDifferenceIsWithinDefaultTolerance_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -33,7 +33,7 @@ public sealed partial class FileInfo
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDifferenceExceedsDefaultTolerance_ShouldFailAndIncludeToleranceInMessage()
 			{
 				MockFileSystem fileSystem = new();
@@ -61,7 +61,7 @@ public sealed partial class FileInfo
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLastAccessTimeDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -85,7 +85,7 @@ public sealed partial class FileInfo
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLastAccessTimeMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -103,7 +103,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAndLastAccessTimeMatches_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();

@@ -9,7 +9,7 @@ public sealed partial class Statistics
 	{
 		public sealed class FileInfoPropertyAccess
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNeverAccessed_NeverGet_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -24,7 +24,7 @@ public sealed partial class Statistics
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAccessed_NeverGet_ShouldFailWithNoGetWording()
 			{
 				MockFileSystem fileSystem = new();
@@ -46,7 +46,7 @@ public sealed partial class Statistics
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSet_NeverSet_ShouldFailWithNoSetWording()
 			{
 				MockFileSystem fileSystem = new();
@@ -68,7 +68,7 @@ public sealed partial class Statistics
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatingNeverGetAndAccessed_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -85,7 +85,7 @@ public sealed partial class Statistics
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatingNeverGetAndNotAccessed_ShouldFailWithAtLeastOneGetWording()
 			{
 				MockFileSystem fileSystem = new();
@@ -105,7 +105,7 @@ public sealed partial class Statistics
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatingNeverSetAndNotAccessed_ShouldFailWithAtLeastOneSetWording()
 			{
 				MockFileSystem fileSystem = new();
@@ -125,7 +125,7 @@ public sealed partial class Statistics
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatingExactlyGetAndAccessed_ShouldFailWithDidNotRecordGetWording()
 			{
 				MockFileSystem fileSystem = new();

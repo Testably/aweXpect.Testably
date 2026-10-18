@@ -9,7 +9,7 @@ public sealed partial class FileVersionInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAndComposition()
 			{
 				MockFileSystem fileSystem = new();
@@ -28,7 +28,7 @@ public sealed partial class FileVersionInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilePrivatePartDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -50,7 +50,7 @@ public sealed partial class FileVersionInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFilePrivatePartMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();

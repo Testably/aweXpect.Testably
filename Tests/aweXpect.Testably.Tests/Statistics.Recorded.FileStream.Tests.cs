@@ -12,7 +12,7 @@ public sealed partial class Statistics
 		{
 			public sealed class FactoryTests
 			{
-				[Fact]
+				[Test]
 				public async Task New_WithAccessFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -31,7 +31,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task New_WithBufferSizeFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -50,7 +50,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task New_WithModeFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -69,7 +69,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task New_WithModeFilter_ShouldOnlyCountMatching()
 				{
 					MockFileSystem fileSystem = new();
@@ -87,7 +87,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task New_WithPathFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -106,7 +106,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task New_WithShareFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -125,7 +125,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Wrap_WithFileStreamFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -147,7 +147,7 @@ public sealed partial class Statistics
 
 			public sealed class WriteByteTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -165,7 +165,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WriteByte_WithValueFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -187,7 +187,7 @@ public sealed partial class Statistics
 
 			public sealed class LengthTests
 			{
-				[Fact]
+				[Test]
 				public async Task Length_Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -206,7 +206,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task Length_Get_WhenNotAccessed_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -228,7 +228,7 @@ public sealed partial class Statistics
 
 			public sealed class CloseTests
 			{
-				[Fact]
+				[Test]
 				public async Task Close_WhenNotCalled_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -247,7 +247,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -266,7 +266,7 @@ public sealed partial class Statistics
 
 			public sealed class CopyToTests
 			{
-				[Fact]
+				[Test]
 				public async Task CopyTo_WithBufferSizeFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -285,7 +285,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task CopyTo_WithDestinationFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -304,7 +304,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -327,7 +327,7 @@ public sealed partial class Statistics
 
 			public sealed class CopyToAsyncTests
 			{
-				[Fact]
+				[Test]
 				public async Task CopyToAsync_WithBufferSizeFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -346,7 +346,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task CopyToAsync_WithDestinationFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -365,7 +365,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -388,7 +388,7 @@ public sealed partial class Statistics
 
 			public sealed class FlushTests
 			{
-				[Fact]
+				[Test]
 				public async Task Flush_WithFlushToDiskFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -407,7 +407,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -428,7 +428,7 @@ public sealed partial class Statistics
 
 			public sealed class FlushAsyncTests
 			{
-				[Fact]
+				[Test]
 				public async Task FlushAsync_WithCancellationTokenFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -447,7 +447,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -468,7 +468,7 @@ public sealed partial class Statistics
 
 			public sealed class ReadTests
 			{
-				[Fact]
+				[Test]
 				public async Task Read_WithBufferFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -487,7 +487,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Read_WithCountFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -506,7 +506,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Read_WithOffsetFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -525,7 +525,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -548,7 +548,7 @@ public sealed partial class Statistics
 
 			public sealed class ReadAsyncTests
 			{
-				[Fact]
+				[Test]
 				public async Task ReadAsync_WithBufferFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -567,7 +567,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ReadAsync_WithCountFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -586,7 +586,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ReadAsync_WithOffsetFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -605,7 +605,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -628,7 +628,7 @@ public sealed partial class Statistics
 
 			public sealed class ReadByteTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -650,7 +650,7 @@ public sealed partial class Statistics
 
 			public sealed class SeekTests
 			{
-				[Fact]
+				[Test]
 				public async Task Seek_WithOffsetFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -669,7 +669,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Seek_WithOriginFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -688,7 +688,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -710,7 +710,7 @@ public sealed partial class Statistics
 
 			public sealed class SetLengthTests
 			{
-				[Fact]
+				[Test]
 				public async Task SetLength_WithValueFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -729,7 +729,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -750,7 +750,7 @@ public sealed partial class Statistics
 
 			public sealed class WriteTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -772,7 +772,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task Write_WithBufferFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -791,7 +791,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Write_WithCountFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -810,7 +810,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Write_WithOffsetFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -832,7 +832,7 @@ public sealed partial class Statistics
 
 			public sealed class WriteAsyncTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenCalled_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -854,7 +854,7 @@ public sealed partial class Statistics
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WriteAsync_WithBufferFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -873,7 +873,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WriteAsync_WithCountFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -892,7 +892,7 @@ public sealed partial class Statistics
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WriteAsync_WithOffsetFilter_NoMatch_ShouldFailWithMessage()
 				{
 					MockFileSystem fileSystem = new();
@@ -914,7 +914,7 @@ public sealed partial class Statistics
 
 			public sealed class CanReadTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -936,7 +936,7 @@ public sealed partial class Statistics
 
 			public sealed class CanSeekTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -958,7 +958,7 @@ public sealed partial class Statistics
 
 			public sealed class CanTimeoutTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -980,7 +980,7 @@ public sealed partial class Statistics
 
 			public sealed class CanWriteTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -1002,7 +1002,7 @@ public sealed partial class Statistics
 
 			public sealed class IsAsyncTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -1024,7 +1024,7 @@ public sealed partial class Statistics
 
 			public sealed class NameTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -1046,7 +1046,7 @@ public sealed partial class Statistics
 
 			public sealed class PositionTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -1068,7 +1068,7 @@ public sealed partial class Statistics
 
 			public sealed class ReadTimeoutTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();
@@ -1091,7 +1091,7 @@ public sealed partial class Statistics
 
 			public sealed class WriteTimeoutTests
 			{
-				[Fact]
+				[Test]
 				public async Task Get_ShouldRecord()
 				{
 					MockFileSystem fileSystem = new();

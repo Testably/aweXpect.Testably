@@ -9,7 +9,7 @@ public sealed partial class FileVersionInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAndComposition()
 			{
 				MockFileSystem fileSystem = new();
@@ -28,7 +28,7 @@ public sealed partial class FileVersionInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportNegatedAndComposition()
 			{
 				MockFileSystem fileSystem = new();
@@ -52,7 +52,7 @@ public sealed partial class FileVersionInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCommentsDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -78,7 +78,7 @@ public sealed partial class FileVersionInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCommentsMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -95,7 +95,7 @@ public sealed partial class FileVersionInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAndCommentsMatches_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();

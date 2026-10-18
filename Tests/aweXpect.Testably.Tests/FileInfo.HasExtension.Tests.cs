@@ -9,7 +9,7 @@ public sealed partial class FileInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExtensionDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -34,7 +34,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExtensionMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -50,7 +50,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAndExtensionMatches_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();

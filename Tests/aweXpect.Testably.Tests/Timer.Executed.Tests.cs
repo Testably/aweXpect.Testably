@@ -13,7 +13,7 @@ public sealed class Timer
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAutoAdvanceTriggersExecutions_ShouldSucceedSynchronously()
 			{
 				MockTimeSystem timeSystem = new();
@@ -32,7 +32,7 @@ public sealed class Timer
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExecutionCountReachesThreshold_ShouldSucceed()
 			{
 				MockTimeSystem timeSystem = new();
@@ -52,7 +52,7 @@ public sealed class Timer
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInsufficientExecutions_ShouldFailAfterTimeout()
 			{
 				MockTimeSystem timeSystem = new();
@@ -76,7 +76,7 @@ public sealed class Timer
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLiveExecutionsArriveDuringWithin_ShouldSucceed()
 			{
 				MockTimeSystem timeSystem = new();
@@ -102,7 +102,7 @@ public sealed class Timer
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_AndExecuted_ShouldFail()
 			{
 				MockTimeSystem timeSystem = new();
@@ -128,7 +128,7 @@ public sealed class Timer
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedWithAtLeastQuantifier_ShouldIncludeQuantifierInMessage()
 			{
 				MockTimeSystem timeSystem = new();
@@ -154,7 +154,7 @@ public sealed class Timer
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedWithNeverQuantifier_AndNotExecuted_ShouldFail()
 			{
 				MockTimeSystem timeSystem = new();
@@ -179,7 +179,7 @@ public sealed class Timer
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithinTwice_ShouldThrowInvalidOperationException()
 			{
 				MockTimeSystem timeSystem = new();
@@ -202,7 +202,7 @@ public sealed class Timer
 					.Because("each option can only be specified once in v3 instead of the last one silently winning");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				ITimerMock? sut = null;
@@ -220,7 +220,7 @@ public sealed class Timer
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNeverQuantifier_AndExecutedOnce_ShouldFailWithDidNotExecuteWording()
 			{
 				MockTimeSystem timeSystem = new(o => o.DisableAutoAdvance());
@@ -250,7 +250,7 @@ public sealed class Timer
 						""");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExecutedOnce_AndExpectingExactlyTwice_ShouldRenderOnce()
 			{
 				MockTimeSystem timeSystem = new(o => o.DisableAutoAdvance());
@@ -280,7 +280,7 @@ public sealed class Timer
 						""");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExecutedTwice_AndExpectingExactlyThrice_ShouldRenderTwice()
 			{
 				MockTimeSystem timeSystem = new(o => o.DisableAutoAdvance());
@@ -310,7 +310,7 @@ public sealed class Timer
 						""");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExecutedThreeTimes_AndExpectingMore_ShouldRenderTimes()
 			{
 				MockTimeSystem timeSystem = new(o => o.DisableAutoAdvance());
@@ -340,7 +340,7 @@ public sealed class Timer
 						""");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithoutQuantifier_WhenExecutedAtLeastOnce_ShouldSucceed()
 			{
 				MockTimeSystem timeSystem = new();
@@ -360,7 +360,7 @@ public sealed class Timer
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithoutWithin_WhenNotExecuted_ShouldFailWithoutWaiting()
 			{
 				MockTimeSystem timeSystem = new();
@@ -385,7 +385,7 @@ public sealed class Timer
 					.Because("without Within the execution count is checked once");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithoutWithin_WhenNeverAndNotExecuted_ShouldSucceedWithoutWaiting()
 			{
 				MockTimeSystem timeSystem = new();
@@ -405,7 +405,7 @@ public sealed class Timer
 					.Because("without Within the execution count is checked once");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNeverAndTimeoutOfEvaluationEndsWithin_ShouldSucceed()
 			{
 				MockTimeSystem timeSystem = new();
@@ -427,7 +427,7 @@ public sealed class Timer
 					.Because("a timeout of the evaluation at the end of Within lets the last check decide");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExecutionsArriveLater_WithCheckEvery_ShouldSucceed()
 			{
 				MockTimeSystem timeSystem = new();
@@ -455,7 +455,7 @@ public sealed class Timer
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task CheckEvery_WithZeroInterval_ShouldThrowArgumentOutOfRangeException()
 			{
 				MockTimeSystem timeSystem = new();

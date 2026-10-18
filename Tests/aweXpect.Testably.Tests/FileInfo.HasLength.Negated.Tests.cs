@@ -10,7 +10,7 @@ public sealed partial class FileInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenLengthDiffers_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
@@ -26,7 +26,7 @@ public sealed partial class FileInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthMatches_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -47,7 +47,7 @@ public sealed partial class FileInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileDoesNotExist_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -58,7 +58,7 @@ public sealed partial class FileInfo
 					await That(fileInfo).DoesNotComplyWith(it => it.HasLength(0));
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that fileInfo
 					             does not have length 0,

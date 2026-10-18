@@ -9,7 +9,7 @@ public sealed partial class DirectoryInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDirectoryDoesNotExist_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -28,7 +28,7 @@ public sealed partial class DirectoryInfo
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDirectoryExists_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();

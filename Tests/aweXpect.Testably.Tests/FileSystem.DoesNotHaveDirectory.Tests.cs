@@ -8,7 +8,7 @@ public sealed partial class FileSystem
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDirectoryExists_ShouldFail()
 			{
 				string path = "foo";
@@ -28,7 +28,7 @@ public sealed partial class FileSystem
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDirectoryIsMissing_ShouldSucceed()
 			{
 				string path = "foo";
@@ -42,7 +42,7 @@ public sealed partial class FileSystem
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPathIsFile_ShouldSucceed()
 			{
 				string path = "foo";

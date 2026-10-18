@@ -11,7 +11,7 @@ public sealed partial class FileSystem
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task AllAreReadOnly_WhenFileIsNotReadOnly_ShouldFail()
 				{
 					string path = "foo";
@@ -34,7 +34,7 @@ public sealed partial class FileSystem
 						.Because("the verb agrees with the plural files");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllDoNotExist_WhenFileExists_ShouldFail()
 				{
 					string path = "foo";
@@ -57,7 +57,7 @@ public sealed partial class FileSystem
 						.Because("the verb agrees with the plural files");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveAttribute_WhenAttributeIsMissing_ShouldFail()
 				{
 					string path = "foo";
@@ -80,7 +80,7 @@ public sealed partial class FileSystem
 						.Because("the verb agrees with the plural files");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveContent_WhenContentIsDifferent_ShouldFail()
 				{
 					string path = "foo";
@@ -118,7 +118,7 @@ public sealed partial class FileSystem
 						              """).IgnoringNewlineStyle();
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveContent_WhenContentMatches_ShouldSucceed()
 				{
 					string path = "foo";
@@ -135,7 +135,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveContent_WhenNegated_WhenContentIsDifferent_ShouldSucceed()
 				{
 					string path = "foo";
@@ -153,7 +153,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveContent_WhenNegated_WhenContentMatches_ShouldFail()
 				{
 					string path = "foo";
@@ -191,7 +191,7 @@ public sealed partial class FileSystem
 						              """).IgnoringNewlineStyle();
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveContentEqualTo_WhenContentIsDifferent_ShouldFail()
 				{
 					string path = "foo";
@@ -214,7 +214,7 @@ public sealed partial class FileSystem
 						.Because("the verb agrees with the plural files and is not preceded by an extra space");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveContentNotEqualTo_WhenContentMatches_ShouldFail()
 				{
 					string path = "foo";
@@ -237,7 +237,7 @@ public sealed partial class FileSystem
 						.Because("the negation belongs to the plural verb only");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveCreationTime_WhenNegated_WhenCreationTimeMatches_ShouldFail()
 				{
 					string path = "foo";
@@ -262,7 +262,7 @@ public sealed partial class FileSystem
 						.Because("the negation belongs to the plural verb only");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveExtension_WhenExtensionDiffers_ShouldFail()
 				{
 					string path = "foo";
@@ -285,7 +285,7 @@ public sealed partial class FileSystem
 						.Because("the verb agrees with the plural files");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveLength_WhenLengthDiffers_ShouldFail()
 				{
 					string path = "foo";
@@ -308,7 +308,7 @@ public sealed partial class FileSystem
 						.Because("the verb agrees with the plural files");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveName_WhenNameDiffers_ShouldFail()
 				{
 					string path = "foo";
@@ -331,7 +331,7 @@ public sealed partial class FileSystem
 						.Because("the verb agrees with the plural files");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveName_WhenNegated_WhenNameMatches_ShouldFail()
 				{
 					string path = "foo";
@@ -355,7 +355,7 @@ public sealed partial class FileSystem
 						.Because("the negation belongs to the plural verb only");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AllHaveSameContentAs_WhenContentIsDifferent_ShouldFail()
 				{
 					string path = "foo";
@@ -381,7 +381,7 @@ public sealed partial class FileSystem
 						.Because("the verb agrees with the plural files");
 				}
 
-				[Fact]
+				[Test]
 				public async Task BeEmpty_WhenDirectoryIsEmpty_ShouldSucceed()
 				{
 					string path = "foo";
@@ -396,7 +396,7 @@ public sealed partial class FileSystem
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task BeEmpty_WhenDirectoryIsNotEmpty_ShouldFail()
 				{
 					string path = "foo";

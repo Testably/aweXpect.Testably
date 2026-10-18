@@ -9,7 +9,7 @@ public sealed partial class FileVersionInfo
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldSupportAndComposition()
 			{
 				MockFileSystem fileSystem = new();
@@ -26,7 +26,7 @@ public sealed partial class FileVersionInfo
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileNameDiffers_ShouldFail()
 			{
 				MockFileSystem fileSystem = new();
@@ -44,7 +44,7 @@ public sealed partial class FileVersionInfo
 					.WithMessage("*has file name equal to \"Other.dll\"*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFileNameMatches_ShouldSucceed()
 			{
 				MockFileSystem fileSystem = new();
