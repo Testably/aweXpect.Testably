@@ -143,7 +143,7 @@ jobs:
                         9.0.x
                         10.0.3xx
             -   name: Upload to mutation dashboard
-                run: ./build.sh MutationTestDashboard
+                run: ./build.sh MutationTestsDashboard
                 env:
                     GithubToken: ${{ secrets.GITHUB_TOKEN }}
                     WorkflowRunId: ${{ github.run_id }}
