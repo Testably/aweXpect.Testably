@@ -12,19 +12,19 @@ public static partial class DirectoryInfoExtensions
 	///     Verifies that the <see cref="IDirectoryInfo" /> exists.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> Exists(this IThat<IDirectoryInfo> source)
+	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> Exists(this IThat<IDirectoryInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileSystemConstraints.ExistsConstraint<IDirectoryInfo>(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the <see cref="IDirectoryInfo" /> does not exist.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> DoesNotExist(this IThat<IDirectoryInfo> source)
+	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> DoesNotExist(this IThat<IDirectoryInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileSystemConstraints.ExistsConstraint<IDirectoryInfo>(it, grammars).Invert()),
-			source);
+			subject);
 }

@@ -13,15 +13,15 @@ public static partial class FileVersionInfoExtensions
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IFileVersionInfo, IThat<IFileVersionInfo>> HasComments(
-		this IThat<IFileVersionInfo> source,
+		this IThat<IFileVersionInfo> subject,
 		string? expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IFileVersionInfo, IThat<IFileVersionInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new FileVersionInfoConstraints.HasStringPropertyConstraint(
 					it, grammars, v => v.Comments, s.options, s.expected, "comments")),
-			source,
+			subject,
 			options);
 	}
 }

@@ -13,22 +13,22 @@ public static partial class FileVersionInfoExtensions
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> IsSpecialBuild(
-		this IThat<IFileVersionInfo> source)
+		this IThat<IFileVersionInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileVersionInfoConstraints.HasBoolPropertyConstraint(
 					it, grammars, v => v.IsSpecialBuild, "is special build", "is not special build")),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the <see cref="IFileVersionInfo" /> is not a special build.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> IsNotSpecialBuild(
-		this IThat<IFileVersionInfo> source)
+		this IThat<IFileVersionInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileVersionInfoConstraints.HasBoolPropertyConstraint(
 					it, grammars, v => v.IsSpecialBuild, "is special build", "is not special build").Invert()),
-			source);
+			subject);
 }

@@ -12,12 +12,12 @@ public static partial class DriveInfoExtensions
 	///     Verifies that the <see cref="IDriveInfo" /> has the <paramref name="expected" /> available free space in bytes.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> HasAvailableFreeSpace(this IThat<IDriveInfo> source,
+	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> HasAvailableFreeSpace(this IThat<IDriveInfo> subject,
 		long expected)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new HasAvailableFreeSpaceConstraint(it, grammars, expected)),
-			source);
+			subject);
 
 	private sealed class HasAvailableFreeSpaceConstraint(string it, ExpectationGrammars grammars, long expected)
 		: ConstraintResult.WithNotNullValue<IDriveInfo>(it, grammars),

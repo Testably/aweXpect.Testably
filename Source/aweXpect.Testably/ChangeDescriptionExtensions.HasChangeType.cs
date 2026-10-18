@@ -22,7 +22,7 @@ public static partial class ChangeDescriptionExtensions
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<TChange, IThat<TChange>> HasChangeType<TChange>(
-		this IThat<TChange> source,
+		this IThat<TChange> subject,
 		WatcherChangeTypes expected)
 		where TChange : ChangeDescription
 	{
@@ -33,9 +33,9 @@ public static partial class ChangeDescriptionExtensions
 		}
 
 		return new AndOrResult<TChange, IThat<TChange>>(
-			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new NotificationConstraints.HasChangeTypeConstraint<TChange>(it, grammars, expected)),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -44,7 +44,7 @@ public static partial class ChangeDescriptionExtensions
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TChange, IThat<TChange>> DoesNotHaveChangeType<TChange>(
-		this IThat<TChange> source,
+		this IThat<TChange> subject,
 		WatcherChangeTypes unexpected)
 		where TChange : ChangeDescription
 	{
@@ -55,8 +55,8 @@ public static partial class ChangeDescriptionExtensions
 		}
 
 		return new AndOrResult<TChange, IThat<TChange>>(
-			source.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars)
 				=> new NotificationConstraints.HasChangeTypeConstraint<TChange>(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 	}
 }

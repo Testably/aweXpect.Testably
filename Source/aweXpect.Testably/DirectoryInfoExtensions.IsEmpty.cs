@@ -13,21 +13,21 @@ public static partial class DirectoryInfoExtensions
 	///     Verifies that the <see cref="IDirectoryInfo" /> is empty (no files and no subdirectories).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> IsEmpty(this IThat<IDirectoryInfo> source)
+	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> IsEmpty(this IThat<IDirectoryInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEmptyConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the <see cref="IDirectoryInfo" /> is not empty.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> IsNotEmpty(this IThat<IDirectoryInfo> source)
+	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> IsNotEmpty(this IThat<IDirectoryInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEmptyConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsEmptyConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<IDirectoryInfo>(it, grammars),

@@ -12,21 +12,21 @@ public static partial class FileInfoExtensions
 	///     Verifies that the <see cref="IFileInfo" /> is read-only.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IFileInfo, IThat<IFileInfo>> IsReadOnly(this IThat<IFileInfo> source)
+	public static AndOrResult<IFileInfo, IThat<IFileInfo>> IsReadOnly(this IThat<IFileInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsReadOnlyConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the <see cref="IFileInfo" /> is not read-only.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IFileInfo, IThat<IFileInfo>> IsNotReadOnly(this IThat<IFileInfo> source)
+	public static AndOrResult<IFileInfo, IThat<IFileInfo>> IsNotReadOnly(this IThat<IFileInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsReadOnlyConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsReadOnlyConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),

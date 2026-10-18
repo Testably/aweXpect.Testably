@@ -12,19 +12,19 @@ public static partial class FileInfoExtensions
 	///     Verifies that the <see cref="IFileInfo" /> exists.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IFileInfo, IThat<IFileInfo>> Exists(this IThat<IFileInfo> source)
+	public static AndOrResult<IFileInfo, IThat<IFileInfo>> Exists(this IThat<IFileInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileSystemConstraints.ExistsConstraint<IFileInfo>(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the <see cref="IFileInfo" /> does not exist.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IFileInfo, IThat<IFileInfo>> DoesNotExist(this IThat<IFileInfo> source)
+	public static AndOrResult<IFileInfo, IThat<IFileInfo>> DoesNotExist(this IThat<IFileInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileSystemConstraints.ExistsConstraint<IFileInfo>(it, grammars).Invert()),
-			source);
+			subject);
 }

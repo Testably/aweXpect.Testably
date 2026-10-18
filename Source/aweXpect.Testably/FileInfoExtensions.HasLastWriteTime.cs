@@ -18,14 +18,14 @@ public static partial class FileInfoExtensions
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static TimeToleranceResult<IFileInfo, IThat<IFileInfo>> HasLastWriteTime(
-		this IThat<IFileInfo> source, DateTime expected)
+		this IThat<IFileInfo> subject, DateTime expected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<IFileInfo, IThat<IFileInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((tolerance, expected), static (s, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((tolerance, expected), static (s, it, grammars)
 				=> new FileSystemConstraints.HasTimeConstraint<IFileInfo>(it, grammars,
 					f => f.LastWriteTime, FileSystemConstraints.GetMissingResult, s.tolerance, s.expected, "last write time",
 					isWithClause: false)),
-			source, tolerance);
+			subject, tolerance);
 	}
 }

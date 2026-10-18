@@ -18,14 +18,14 @@ public static partial class DirectoryInfoExtensions
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static TimeToleranceResult<IDirectoryInfo, IThat<IDirectoryInfo>> HasLastAccessTime(
-		this IThat<IDirectoryInfo> source, DateTime expected)
+		this IThat<IDirectoryInfo> subject, DateTime expected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<IDirectoryInfo, IThat<IDirectoryInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((tolerance, expected), static (s, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((tolerance, expected), static (s, it, grammars)
 				=> new FileSystemConstraints.HasTimeConstraint<IDirectoryInfo>(it, grammars,
 					d => d.LastAccessTime, FileSystemConstraints.GetMissingResult, s.tolerance, s.expected, "last access time",
 					isWithClause: false)),
-			source, tolerance);
+			subject, tolerance);
 	}
 }

@@ -16,16 +16,16 @@ public static partial class FileInfoExtensions
 	///     Verifies that the <see cref="IFileInfo" /> has the <paramref name="expected" /> extension.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> HasExtension(this IThat<IFileInfo> source,
+	public static StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> HasExtension(this IThat<IFileInfo> subject,
 		string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new HasExtensionConstraint(it, grammars, s.options, s.expected)),
-			source,
+			subject,
 			options);
 	}
 

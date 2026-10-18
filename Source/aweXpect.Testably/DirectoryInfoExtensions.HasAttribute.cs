@@ -15,7 +15,7 @@ public static partial class DirectoryInfoExtensions
 	///     <see cref="FileAttributes" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> HasAttribute(this IThat<IDirectoryInfo> source,
+	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> HasAttribute(this IThat<IDirectoryInfo> subject,
 		FileAttributes expected)
 	{
 		if (expected == default)
@@ -25,9 +25,9 @@ public static partial class DirectoryInfoExtensions
 		}
 
 		return new AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new FileSystemConstraints.HasAttributeConstraint<IDirectoryInfo>(it, grammars, expected)),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -36,7 +36,7 @@ public static partial class DirectoryInfoExtensions
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>> DoesNotHaveAttribute(
-		this IThat<IDirectoryInfo> source,
+		this IThat<IDirectoryInfo> subject,
 		FileAttributes unexpected)
 	{
 		if (unexpected == default)
@@ -46,8 +46,8 @@ public static partial class DirectoryInfoExtensions
 		}
 
 		return new AndOrResult<IDirectoryInfo, IThat<IDirectoryInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpected, it, grammars)
 				=> new FileSystemConstraints.HasAttributeConstraint<IDirectoryInfo>(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 	}
 }

@@ -13,16 +13,16 @@ public static partial class DirectoryInfoExtensions
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IDirectoryInfo, IThat<IDirectoryInfo>> HasName(
-		this IThat<IDirectoryInfo> source,
+		this IThat<IDirectoryInfo> subject,
 		string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IDirectoryInfo, IThat<IDirectoryInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new FileSystemConstraints.HasNameConstraint<IDirectoryInfo>(it, grammars, s.options, s.expected)),
-			source,
+			subject,
 			options);
 	}
 }

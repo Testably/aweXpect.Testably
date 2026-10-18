@@ -13,22 +13,22 @@ public static partial class FileVersionInfoExtensions
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> IsPreRelease(
-		this IThat<IFileVersionInfo> source)
+		this IThat<IFileVersionInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileVersionInfoConstraints.HasBoolPropertyConstraint(
 					it, grammars, v => v.IsPreRelease, "is pre-release", "is not pre-release")),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the <see cref="IFileVersionInfo" /> is not a pre-release.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IFileVersionInfo, IThat<IFileVersionInfo>> IsNotPreRelease(
-		this IThat<IFileVersionInfo> source)
+		this IThat<IFileVersionInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new FileVersionInfoConstraints.HasBoolPropertyConstraint(
 					it, grammars, v => v.IsPreRelease, "is pre-release", "is not pre-release").Invert()),
-			source);
+			subject);
 }

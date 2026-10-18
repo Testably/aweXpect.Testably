@@ -21,15 +21,15 @@ public static partial class FileInfoExtensions
 	///     the <paramref name="expected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> HasContent(this IThat<IFileInfo> source,
+	public static StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> HasContent(this IThat<IFileInfo> subject,
 		string? expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			source.Get().ExpectationBuilder.AddConstraint((expected, options), static (s, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((expected, options), static (s, it, grammars)
 				=> new HasContentValueConstraint(
 					it, grammars, s.expected, s.options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -38,24 +38,24 @@ public static partial class FileInfoExtensions
 	///     the <paramref name="expected" /> binary content.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IFileInfo, IThat<IFileInfo>> HasContent(this IThat<IFileInfo> source,
+	public static AndOrResult<IFileInfo, IThat<IFileInfo>> HasContent(this IThat<IFileInfo> subject,
 		byte[] expected,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
-		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(source.Get().ExpectationBuilder.AddConstraint((expected, doNotPopulateThisValue), static (s, it, grammars)
+		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(subject.Get().ExpectationBuilder.AddConstraint((expected, doNotPopulateThisValue), static (s, it, grammars)
 				=> new HasBinaryContentConstraint(
 					it, grammars, s.expected, s.doNotPopulateThisValue)),
-			source);
+			subject);
 	}
 
 	/// <summary>
 	///     Verifies that the content of the <see cref="IFileInfo" />…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FileInfoContentResult HasContent(this IThat<IFileInfo> source)
-		=> new(source.Get().ExpectationBuilder, source);
+	public static FileInfoContentResult HasContent(this IThat<IFileInfo> subject)
+		=> new(subject.Get().ExpectationBuilder, subject);
 
 	private sealed class HasContentValueConstraint(
 		string it,

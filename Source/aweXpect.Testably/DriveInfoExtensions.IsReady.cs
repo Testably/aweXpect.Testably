@@ -12,21 +12,21 @@ public static partial class DriveInfoExtensions
 	///     Verifies that the <see cref="IDriveInfo" /> is ready.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> IsReady(this IThat<IDriveInfo> source)
+	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> IsReady(this IThat<IDriveInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsReadyConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the <see cref="IDriveInfo" /> is not ready.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> IsNotReady(this IThat<IDriveInfo> source)
+	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> IsNotReady(this IThat<IDriveInfo> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsReadyConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsReadyConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<IDriveInfo>(it, grammars),

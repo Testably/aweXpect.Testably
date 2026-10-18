@@ -12,12 +12,12 @@ public static partial class DriveInfoExtensions
 	///     Verifies that the <see cref="IDriveInfo" /> has the <paramref name="expected" /> total size in bytes.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> HasTotalSize(this IThat<IDriveInfo> source,
+	public static AndOrResult<IDriveInfo, IThat<IDriveInfo>> HasTotalSize(this IThat<IDriveInfo> subject,
 		long expected)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(expected, static (expected, it, grammars)
 				=> new HasTotalSizeConstraint(it, grammars, expected)),
-			source);
+			subject);
 
 	private sealed class HasTotalSizeConstraint(string it, ExpectationGrammars grammars, long expected)
 		: ConstraintResult.WithNotNullValue<IDriveInfo>(it, grammars),
