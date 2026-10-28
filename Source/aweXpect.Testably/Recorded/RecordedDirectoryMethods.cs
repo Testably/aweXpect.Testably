@@ -17,9 +17,9 @@ public sealed class RecordedDirectoryMethods
 {
 	private const string BucketDescription = "Directory";
 
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedDirectoryMethods(IThat<IFileSystemStatistics> subject)
+	internal RecordedDirectoryMethods(IThat<IFileSystemStatistics?> subject)
 	{
 		_subject = subject;
 	}

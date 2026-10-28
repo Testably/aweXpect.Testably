@@ -17,9 +17,9 @@ public sealed class RecordedFileSystemWatcherInstance
 {
 	private readonly string _bucketDescription;
 	private readonly string _path;
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedFileSystemWatcherInstance(IThat<IFileSystemStatistics> subject, string path)
+	internal RecordedFileSystemWatcherInstance(IThat<IFileSystemStatistics?> subject, string path)
 	{
 		_subject = subject;
 		_path = path;

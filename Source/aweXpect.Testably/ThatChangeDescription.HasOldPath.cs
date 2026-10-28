@@ -1,0 +1,32 @@
+using aweXpect.Core;
+using aweXpect.Options;
+using aweXpect.Results;
+using aweXpect.Testably.Helpers;
+using Testably.Abstractions.Testing.FileSystem;
+
+namespace aweXpect;
+
+public static partial class ThatChangeDescription
+{
+	/// <summary>
+	///     Verifies that the <see cref="ChangeDescription" /> has the <paramref name="expected" /> old path.
+	/// </summary>
+	/// <remarks>
+	///     The old path is only set on a <see cref="System.IO.WatcherChangeTypes.Renamed" /> change,
+	///     so <see cref="ChangeDescription.OldPath" /> is nullable and <paramref name="expected" /> is too.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static StringEqualityTypeResult<TChange, IThat<TChange?>> HasOldPath<TChange>(
+		this IThat<TChange?> subject,
+		string? expected)
+		where TChange : ChangeDescription
+	{
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
+		return new StringEqualityTypeResult<TChange, IThat<TChange?>>(
+			subject.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
+				=> new NotificationConstraints.HasStringPropertyConstraint<TChange>(
+					it, grammars, c => c.OldPath, s.options, s.expected, "old path")),
+			subject,
+			options);
+	}
+}

@@ -17,9 +17,9 @@ public sealed class RecordedDirectoryInfoInstance
 {
 	private readonly string _bucketDescription;
 	private readonly string _path;
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedDirectoryInfoInstance(IThat<IFileSystemStatistics> subject, string path)
+	internal RecordedDirectoryInfoInstance(IThat<IFileSystemStatistics?> subject, string path)
 	{
 		_subject = subject;
 		_path = path;

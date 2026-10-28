@@ -13,7 +13,7 @@ public sealed class PluralGrammar
 		[Test]
 		public async Task ChangeDescription_HasChangeType_ShouldUsePluralVerb()
 		{
-			ChangeDescription[] changes = [ChangeDescriptionTests.Capture(fs => fs.File.WriteAllText("foo.txt", "")),];
+			ChangeDescription[] changes = [ThatChangeDescription.Capture(fs => fs.File.WriteAllText("foo.txt", "")),];
 
 			async Task Act()
 			{
@@ -27,7 +27,7 @@ public sealed class PluralGrammar
 		[Test]
 		public async Task ChangeDescription_HasFileSystemType_ShouldUsePluralVerb()
 		{
-			ChangeDescription[] changes = [ChangeDescriptionTests.Capture(fs => fs.File.WriteAllText("foo.txt", "")),];
+			ChangeDescription[] changes = [ThatChangeDescription.Capture(fs => fs.File.WriteAllText("foo.txt", "")),];
 
 			async Task Act()
 			{
@@ -41,7 +41,7 @@ public sealed class PluralGrammar
 		[Test]
 		public async Task ChangeDescription_HasName_ShouldUsePluralVerb()
 		{
-			ChangeDescription[] changes = [ChangeDescriptionTests.Capture(fs => fs.File.WriteAllText("foo.txt", "")),];
+			ChangeDescription[] changes = [ThatChangeDescription.Capture(fs => fs.File.WriteAllText("foo.txt", "")),];
 
 			async Task Act()
 			{
@@ -55,7 +55,7 @@ public sealed class PluralGrammar
 		[Test]
 		public async Task ChangeDescription_HasNotifyFilters_ShouldUsePluralVerb()
 		{
-			ChangeDescription[] changes = [ChangeDescriptionTests.Capture(fs => fs.File.WriteAllText("foo.txt", "")),];
+			ChangeDescription[] changes = [ThatChangeDescription.Capture(fs => fs.File.WriteAllText("foo.txt", "")),];
 
 			async Task Act()
 			{

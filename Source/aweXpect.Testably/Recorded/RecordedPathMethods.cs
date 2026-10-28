@@ -21,9 +21,9 @@ public sealed class RecordedPathMethods
 {
 	private const string BucketDescription = "Path";
 
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedPathMethods(IThat<IFileSystemStatistics> subject)
+	internal RecordedPathMethods(IThat<IFileSystemStatistics?> subject)
 	{
 		_subject = subject;
 	}

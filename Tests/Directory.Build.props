@@ -14,7 +14,8 @@
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
 		<SignAssembly>False</SignAssembly>
-		<NoWarn>701;1702;CA1845</NoWarn>
+		<!-- aweXpect5001: WithTimeSystem(…) is experimental; the tests use it for the VirtualTimeSystem. -->
+		<NoWarn>701;1702;CA1845;aweXpect5001</NoWarn>
 	</PropertyGroup>
 
 	<!-- The tests run on TUnit as executables of the Microsoft.Testing.Platform. -->

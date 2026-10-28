@@ -22,9 +22,9 @@ public sealed class RecordedFileMethods
 {
 	private const string BucketDescription = "File";
 
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedFileMethods(IThat<IFileSystemStatistics> subject)
+	internal RecordedFileMethods(IThat<IFileSystemStatistics?> subject)
 	{
 		_subject = subject;
 	}

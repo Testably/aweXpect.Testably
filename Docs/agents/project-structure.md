@@ -21,9 +21,10 @@ root ones from applying.
 
 ## Library (`Source/aweXpect.Testably`)
 
-- Expectations are extension methods on `IThat<T>`, grouped by subject in `public static partial class
-  <Subject>Extensions`, with one file per expectation and its negation: `<Subject>Extensions.<Expectation>.cs`
-  (for example `FileInfoExtensions.HasLength.cs` holds `HasLength` and its constraint). The subjects are
+- Expectations are extension methods on `IThat<T?>`, grouped by subject in `public static partial class
+  That<Subject>` in the `aweXpect` namespace, with one file per expectation and its negation:
+  `That<Subject>.<Expectation>.cs` (for example `ThatFileInfo.HasLength.cs` holds `HasLength` and its constraint).
+  The subjects are
   `IFileSystem`, `IFileInfo`, `IDirectoryInfo`, `IDriveInfo`, `IFileVersionInfo`, `ChangeDescription` (notifications),
   `IFileSystemWatcher`, `ITimerMock` and `IFileSystemStatistics`.
 - A constraint is usually a private nested class deriving from `ConstraintResult.WithNotNullValue<T>` (aweXpect.Core)
@@ -35,7 +36,7 @@ root ones from applying.
 - `Results/`: result types returned by expectations with follow-ups, such as `FileResult` (`.WithContent(...)`,
   `.Which`), `DirectoryResult`, `DriveResult`, the triggered and not-triggered notification and watcher results, and
   the recorded call results.
-- `Recorded/`: the `aweXpect.Testably.Recorded` namespace. `StatisticsExtensions.Recorded()` returns
+- `Recorded/`: the `aweXpect.Testably.Recorded` namespace. `ThatFileSystemStatistics.Recorded()` returns
   `RecordedFileSystemStatistics`, a mirror of `IFileSystemStatistics` whose methods and properties
   (`.File.WriteAllText()`, `.FileInfo["foo.txt"].IsReadOnly.Set()`) match the recorded calls by position. The remarks
   on `Recorded()` describe the matching rules.
@@ -44,10 +45,14 @@ root ones from applying.
 
 ## Tests (`Tests/aweXpect.Testably.Tests`)
 
-- The tests mirror the subjects: a (usually partial) class per subject (`FileInfo`, `DirectoryInfo`, `FileSystem`, `DriveInfo`,
-  `FileVersionInfo`, `ChangeDescriptionTests`, `FileSystemWatcher`, `Statistics`, `Timer`), a nested class per
-  expectation and a nested `Tests` class, in files named `<Subject>.<Expectation>.Tests.cs`. Shared helpers of a
-  subject sit in `<Subject>.cs`.
+- The tests mirror the source: a (usually partial) class per `That<Subject>` class (`ThatFileInfo`,
+  `ThatDirectoryInfo`, `ThatFileSystem`, `ThatDriveInfo`, `ThatFileVersionInfo`, `ThatChangeDescription`,
+  `ThatFileSystemWatcher`, `ThatFileSystemStatistics`, `ThatTimerMock`), a nested class per expectation and a nested
+  `Tests` class, in files named `That<Subject>.<Expectation>.Tests.cs`. Shared helpers of a subject sit in
+  `That<Subject>.cs`.
+- Test conventions follow aweXpect: methods sorted alphabetically within their class, no comments in tests (the
+  reasoning goes into `.Because(...)`), never a bare `Throws<T>()` without `.WithMessage(...)`, and tests that only
+  wait for a timeout to pass run on the `VirtualTimeSystem` (`.WithTimeSystem(new VirtualTimeSystem())`).
 - Cross-cutting tests that a new expectation usually needs an entry in: `ArgumentValidation.Tests.cs` (null
   arguments), `NullOrMissingSubject.Tests.cs` (null and missing subjects, including negation), `PluralGrammar.Tests.cs`
   (messages inside `ThatAll`) and `Quantifiers.Tests.cs` (counts such as `Once()` or `AtLeast(...)` on recorded calls,

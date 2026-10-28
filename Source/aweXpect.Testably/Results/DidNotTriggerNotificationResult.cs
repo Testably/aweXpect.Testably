@@ -9,17 +9,17 @@ using Testably.Abstractions.Testing.FileSystem;
 namespace aweXpect.Testably.Results;
 
 /// <summary>
-///     The result for <see cref="FileSystemExtensions.DidNotTriggerNotification(aweXpect.Core.IThat{MockFileSystem})" />.
+///     The result for <see cref="ThatFileSystem.DidNotTriggerNotification(aweXpect.Core.IThat{MockFileSystem})" />.
 /// </summary>
 public class DidNotTriggerNotificationResult
-	: AndOrResult<MockFileSystem, IThat<MockFileSystem>, DidNotTriggerNotificationResult>
+	: AndOrResult<MockFileSystem, IThat<MockFileSystem?>, DidNotTriggerNotificationResult>
 {
 	private readonly NotificationConstraints.TriggerNotificationFilter<ChangeDescription> _filter;
 	private readonly OptionsHolder<RepeatedCheckOptions> _options;
 
 	internal DidNotTriggerNotificationResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<MockFileSystem> subject,
+		IThat<MockFileSystem?> subject,
 		OptionsHolder<RepeatedCheckOptions> options, NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter)
 		: base(expectationBuilder, subject)
 	{
@@ -32,13 +32,13 @@ public class DidNotTriggerNotificationResult
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="expectation" /> is applied as an additional per-change filter, so any
-	///     assertions from <see cref="ChangeDescriptionExtensions" /> (e.g. <c>.HasName(...)</c>,
+	///     assertions from <see cref="ThatChangeDescription" /> (e.g. <c>.HasName(...)</c>,
 	///     <c>.HasChangeType(...)</c>) compose naturally (the assertion fails if any notification
 	///     satisfies all of them). The expectation text is taken from the inner expectation builder,
 	///     so it reads like <c>that has name equal to "foo.txt"</c> rather than the raw lambda
 	///     source.
 	/// </remarks>
-	public DidNotTriggerNotificationResult Matching(Action<IThat<ChangeDescription>> expectation)
+	public DidNotTriggerNotificationResult Matching(Action<IThatSubject<ChangeDescription>> expectation)
 	{
 		ThrowHelper.ThrowIfNull(expectation, nameof(expectation));
 

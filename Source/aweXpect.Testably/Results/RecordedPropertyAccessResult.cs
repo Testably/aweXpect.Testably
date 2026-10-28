@@ -13,14 +13,14 @@ namespace aweXpect.Testably.Results;
 ///     <c>AtLeast</c>, <c>AtMost</c>, …) from <see cref="QuantifierExtensions" />.
 /// </remarks>
 public sealed class RecordedPropertyAccessResult
-	: AndOrResult<IFileSystemStatistics, IThat<IFileSystemStatistics>, RecordedPropertyAccessResult>,
+	: AndOrResult<IFileSystemStatistics, IThat<IFileSystemStatistics?>, RecordedPropertyAccessResult>,
 		IOptionsProvider<Quantifier>
 {
 	private readonly OptionsHolder<Quantifier> _quantifier;
 
 	internal RecordedPropertyAccessResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<IFileSystemStatistics> subject,
+		IThat<IFileSystemStatistics?> subject,
 		OptionsHolder<Quantifier> quantifier)
 		: base(expectationBuilder, subject)
 	{

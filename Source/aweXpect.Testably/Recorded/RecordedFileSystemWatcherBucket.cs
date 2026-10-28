@@ -18,9 +18,9 @@ public sealed class RecordedFileSystemWatcherBucket
 {
 	private const string BucketDescription = "FileSystemWatcher";
 
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedFileSystemWatcherBucket(IThat<IFileSystemStatistics> subject)
+	internal RecordedFileSystemWatcherBucket(IThat<IFileSystemStatistics?> subject)
 	{
 		_subject = subject;
 	}

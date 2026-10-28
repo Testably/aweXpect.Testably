@@ -12,9 +12,9 @@ public sealed class RecordedDriveInfoInstance
 {
 	private readonly string _bucketDescription;
 	private readonly string _driveName;
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedDriveInfoInstance(IThat<IFileSystemStatistics> subject, string driveName)
+	internal RecordedDriveInfoInstance(IThat<IFileSystemStatistics?> subject, string driveName)
 	{
 		_subject = subject;
 		_driveName = driveName;

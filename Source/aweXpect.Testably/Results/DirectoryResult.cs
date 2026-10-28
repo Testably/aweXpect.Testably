@@ -11,17 +11,17 @@ namespace aweXpect.Testably.Results;
 /// <summary>
 ///     The result for additional verifications on a directory.
 /// </summary>
-public partial class DirectoryResult<TParent>
-	: AndOrResult<TParent, IThat<TParent>>
-	where TParent : class
+public partial class DirectoryResult<TType, TThat>
+	: AndOrResult<TType, TThat>
+	where TType : class
 {
 	private readonly ExpectationBuilder _expectationBuilder;
-	private readonly Func<TParent, (IFileSystem fs, string fullPath)> _resolver;
+	private readonly Func<TType, (IFileSystem fs, string fullPath)> _resolver;
 
 	internal DirectoryResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TParent> subject,
-		Func<TParent, (IFileSystem fs, string fullPath)> resolver)
+		TThat subject,
+		Func<TType, (IFileSystem fs, string fullPath)> resolver)
 		: base(expectationBuilder, subject)
 	{
 		_expectationBuilder = expectationBuilder;
@@ -31,15 +31,15 @@ public partial class DirectoryResult<TParent>
 	/// <summary>
 	///     Verifies that the files of the directory satisfy the <paramref name="expectations" />.
 	/// </summary>
-	public DirectoryResult<TParent> WithFiles(
-		Action<IThat<IEnumerable<IFileInfo>>> expectations)
+	public DirectoryResult<TType, TThat> WithFiles(
+		Action<IThatSubject<IEnumerable<IFileInfo>>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 
-		Func<TParent, (IFileSystem fs, string fullPath)> resolver = _resolver;
+		Func<TType, (IFileSystem fs, string fullPath)> resolver = _resolver;
 		_expectationBuilder
 			.ForMember(
-				MemberAccessor<TParent, IEnumerable<IFileInfo>>.FromFuncWithName(
+				MemberAccessor<TType, IEnumerable<IFileInfo>>.FromFuncWithName(
 					p =>
 					{
 						(IFileSystem fs, string fullPath) = resolver(p);
@@ -56,15 +56,15 @@ public partial class DirectoryResult<TParent>
 	/// <summary>
 	///     Verifies that the subdirectories of the directory satisfy the <paramref name="expectations" />.
 	/// </summary>
-	public DirectoryResult<TParent> WithDirectories(
-		Action<IThat<IEnumerable<IDirectoryInfo>>> expectations)
+	public DirectoryResult<TType, TThat> WithDirectories(
+		Action<IThatSubject<IEnumerable<IDirectoryInfo>>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 
-		Func<TParent, (IFileSystem fs, string fullPath)> resolver = _resolver;
+		Func<TType, (IFileSystem fs, string fullPath)> resolver = _resolver;
 		_expectationBuilder
 			.ForMember(
-				MemberAccessor<TParent, IEnumerable<IDirectoryInfo>>.FromFuncWithName(
+				MemberAccessor<TType, IEnumerable<IDirectoryInfo>>.FromFuncWithName(
 					p =>
 					{
 						(IFileSystem fs, string fullPath) = resolver(p);

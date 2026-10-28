@@ -11,17 +11,17 @@ namespace aweXpect.Testably.Results;
 /// <summary>
 ///     The result for additional verifications on a file.
 /// </summary>
-public partial class FileResult<TParent>
-	: AndOrResult<TParent, IThat<TParent>>
-	where TParent : class
+public partial class FileResult<TType, TThat>
+	: AndOrResult<TType, TThat>
+	where TType : class
 {
 	private readonly ExpectationBuilder _expectationBuilder;
-	private readonly Func<TParent, (IFileSystem fs, string fullPath)> _resolver;
+	private readonly Func<TType, (IFileSystem fs, string fullPath)> _resolver;
 
 	internal FileResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<TParent> subject,
-		Func<TParent, (IFileSystem fs, string fullPath)> resolver)
+		TThat subject,
+		Func<TType, (IFileSystem fs, string fullPath)> resolver)
 		: base(expectationBuilder, subject)
 	{
 		_expectationBuilder = expectationBuilder;
@@ -37,11 +37,11 @@ public partial class FileResult<TParent>
 	/// <summary>
 	///     Verifies that the file has the <paramref name="expected" /> string content.
 	/// </summary>
-	public StringEqualityTypeResult<TParent, FileResult<TParent>> WithContent(
+	public StringEqualityTypeResult<TType, FileResult<TType, TThat>> WithContent(
 		string expected)
 	{
 		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
+		return new StringEqualityTypeResult<TType, FileResult<TType, TThat>>(
 			_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, options, expected), static (s, it, grammar)
 				=> new HasStringContentEqualToConstraint(it, grammar, s.resolver, s.options, s.expected, nameof(expected))),
 			this, options);
@@ -50,13 +50,13 @@ public partial class FileResult<TParent>
 	/// <summary>
 	///     Verifies that the file has the <paramref name="expected" /> binary content.
 	/// </summary>
-	public AndOrResult<TParent, FileResult<TParent>> WithContent(
+	public AndOrResult<TType, FileResult<TType, TThat>> WithContent(
 		byte[] expected,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
-		return new AndOrResult<TParent, FileResult<TParent>>(
+		return new AndOrResult<TType, FileResult<TType, TThat>>(
 			_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, expected, doNotPopulateThisValue), static (s, it, grammars)
 				=> new HasBinaryContentEqualToConstraint(it, grammars, s.resolver, s.expected, s.doNotPopulateThisValue)),
 			this);
@@ -65,16 +65,16 @@ public partial class FileResult<TParent>
 	/// <summary>
 	///     Verifies that the string content of the file satisfies the <paramref name="expectations" />.
 	/// </summary>
-	public AndOrResult<TParent, FileResult<TParent>> WhoseContent(
-		Action<IThat<string?>> expectations)
+	public AndOrResult<TType, FileResult<TType, TThat>> WhoseContent(
+		Action<IThatSubject<string?>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 
-		Func<TParent, (IFileSystem fs, string fullPath)> resolver = _resolver;
-		return new AndOrResult<TParent, FileResult<TParent>>(
+		Func<TType, (IFileSystem fs, string fullPath)> resolver = _resolver;
+		return new AndOrResult<TType, FileResult<TType, TThat>>(
 			_expectationBuilder
 				.ForMember(
-					MemberAccessor<TParent, string>.FromFuncWithName(
+					MemberAccessor<TType, string>.FromFuncWithName(
 						p =>
 						{
 							(IFileSystem fs, string fullPath) = resolver(p);
@@ -93,7 +93,7 @@ public partial class FileResult<TParent>
 	///     Uses <see cref="IFileSystemInfo.CreationTime" /> or <see cref="IFileSystemInfo.CreationTimeUtc" /> depending
 	///     on the <see cref="DateTime.Kind" /> property of the <paramref name="expected" /> value.
 	/// </remarks>
-	public TimeToleranceResult<TParent, FileResult<TParent>> WithCreationTime(
+	public TimeToleranceResult<TType, FileResult<TType, TThat>> WithCreationTime(
 		DateTime expected)
 		=> AddTimeConstraint(p => GetInfo(p).CreationTime, expected, "creation time");
 
@@ -104,7 +104,7 @@ public partial class FileResult<TParent>
 	///     Uses <see cref="IFileSystemInfo.LastAccessTime" /> or <see cref="IFileSystemInfo.LastAccessTimeUtc" /> depending
 	///     on the <see cref="DateTime.Kind" /> property of the <paramref name="expected" /> value.
 	/// </remarks>
-	public TimeToleranceResult<TParent, FileResult<TParent>> WithLastAccessTime(
+	public TimeToleranceResult<TType, FileResult<TType, TThat>> WithLastAccessTime(
 		DateTime expected)
 		=> AddTimeConstraint(p => GetInfo(p).LastAccessTime, expected, "last access time");
 
@@ -115,17 +115,17 @@ public partial class FileResult<TParent>
 	///     Uses <see cref="IFileSystemInfo.LastWriteTime" /> or <see cref="IFileSystemInfo.LastWriteTimeUtc" /> depending
 	///     on the <see cref="DateTime.Kind" /> property of the <paramref name="expected" /> value.
 	/// </remarks>
-	public TimeToleranceResult<TParent, FileResult<TParent>> WithLastWriteTime(
+	public TimeToleranceResult<TType, FileResult<TType, TThat>> WithLastWriteTime(
 		DateTime expected)
 		=> AddTimeConstraint(p => GetInfo(p).LastWriteTime, expected, "last write time");
 
-	private TimeToleranceResult<TParent, FileResult<TParent>> AddTimeConstraint(
-		Func<TParent, DateTime> timeAccessor, DateTime expected, string expectedString)
+	private TimeToleranceResult<TType, FileResult<TType, TThat>> AddTimeConstraint(
+		Func<TType, DateTime> timeAccessor, DateTime expected, string expectedString)
 	{
 		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
-		return new TimeToleranceResult<TParent, FileResult<TParent>>(
+		return new TimeToleranceResult<TType, FileResult<TType, TThat>>(
 			_expectationBuilder.And(" ").AddConstraint((timeAccessor, resolver: _resolver, tolerance, expected, expectedString), static (s, it, grammars)
-				=> new FileSystemConstraints.HasTimeConstraint<TParent>(it, grammars,
+				=> new FileSystemConstraints.HasTimeConstraint<TType>(it, grammars,
 					s.timeAccessor, p =>
 					{
 						(IFileSystem fs, string fullPath) = s.resolver(p);
@@ -135,7 +135,7 @@ public partial class FileResult<TParent>
 			this, tolerance);
 	}
 
-	private IFileSystemInfo GetInfo(TParent source)
+	private IFileSystemInfo GetInfo(TType source)
 	{
 		(IFileSystem fs, string fullPath) = _resolver(source);
 		return fs.FileInfo.New(fullPath);

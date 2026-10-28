@@ -1,0 +1,233 @@
+using Testably.Abstractions.Testing;
+using Testably.Abstractions.Testing.FileSystem;
+
+namespace aweXpect.Testably.Tests;
+
+public sealed partial class ThatFileSystem
+{
+	public sealed class DidNotTriggerNotification
+	{
+		public sealed class Tests
+		{
+			[Test]
+			public async Task MatchingWithInnerExpectation_WhenItThrows_ShouldFail()
+			{
+				MockFileSystem sut = new();
+				ChangeDescription? firstEvent = null;
+				using IAwaitableCallback<ChangeDescription> reg = sut.Notify.OnEvent(c => firstEvent ??= c);
+				sut.File.WriteAllText("foo.txt", "x");
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification()
+						.Matching(c => c.Satisfies(_ => throw new InvalidOperationException("boom")))
+						.Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($$"""
+					               Expected that sut
+					               has never triggered a notification that satisfies _ => throw new InvalidOperationException("boom") within 0:00.100,
+					               but it triggered a notification for which the predicate did throw an InvalidOperationException:
+					                 boom
+
+					               Change:
+					               {{firstEvent}}
+					               """)
+					.Because("a change that the inner expectation could not answer fails the negated expectation as well");
+			}
+
+			[Test]
+			public async Task MatchingWithInnerExpectation_WhenMatchingChange_ShouldFail()
+			{
+				MockFileSystem sut = new();
+				ChangeDescription? firstEvent = null;
+				using IAwaitableCallback<ChangeDescription> reg = sut.Notify.OnEvent(c => firstEvent ??= c);
+				sut.File.WriteAllText("foo.txt", "x");
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification()
+						.Matching(c => c.HasName("foo.txt"));
+				}
+
+				await That(Act).Throws()
+					.WithMessage($$"""
+					               Expected that sut
+					               has never triggered a notification that has name equal to "foo.txt",
+					               but it was triggered once
+
+					               Matching changes:
+					               [
+					                 {{firstEvent}}
+					               ]
+					               """);
+			}
+
+			[Test]
+			public async Task MatchingWithInnerExpectation_WhenNoMatchingChange_ShouldSucceed()
+			{
+				MockFileSystem sut = new();
+				sut.File.WriteAllText("foo.txt", "x");
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification()
+						.Matching(c => c.HasName("other.txt"))
+						.Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task MatchingWithNullExpectation_ShouldThrowArgumentNullException()
+			{
+				MockFileSystem sut = new();
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification().Matching(null!);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectation");
+			}
+
+			[Test]
+			public async Task WhenEventArrivesAsynchronouslyWithinTimeout_ShouldFail()
+			{
+				MockFileSystem sut = new();
+				_ = Task.Run(async () =>
+				{
+					await Task.Delay(20);
+					sut.File.WriteAllText("foo.txt", "x");
+				});
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification().Within(TimeSpan.FromSeconds(30));
+				}
+
+				await That(Act).Throws()
+					.WithMessage("*has never triggered a notification*but it was triggered*").AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenNoPriorEvent_ShouldSucceed()
+			{
+				MockFileSystem sut = new();
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification().Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenPriorEventExists_ShouldFailSynchronously()
+			{
+				MockFileSystem sut = new();
+				ChangeDescription? firstEvent = null;
+				using IAwaitableCallback<ChangeDescription> reg = sut.Notify.OnEvent(c => firstEvent ??= c);
+				sut.File.WriteAllText("foo.txt", "x");
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification();
+				}
+
+				await That(Act).Throws()
+					.WithMessage($$"""
+					               Expected that sut
+					               has never triggered a notification,
+					               but it was triggered once
+
+					               Matching changes:
+					               [
+					                 {{firstEvent}}
+					               ]
+					               """);
+			}
+
+			[Test]
+			public async Task WhenTimeoutOfEvaluationEndsWithin_ShouldSucceed()
+			{
+				MockFileSystem sut = new();
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification()
+						.Within(TimeSpan.FromMilliseconds(200))
+						.WithTimeout(TimeSpan.FromMilliseconds(200));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("a timeout of the evaluation at the end of Within lets the received notifications decide");
+			}
+
+			[Test]
+			public async Task WithoutWithin_WhenNoPriorEvent_ShouldSucceedWithoutWaiting()
+			{
+				MockFileSystem sut = new();
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification().WithTimeout(TimeSpan.FromSeconds(5));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("without Within only the notifications triggered so far are checked");
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenMatchingPriorEvent_ShouldFail()
+			{
+				MockFileSystem sut = new();
+				ChangeDescription? firstMatch = null;
+				using IAwaitableCallback<ChangeDescription> reg = sut.Notify.OnEvent(c =>
+				{
+					if (c.Name == "foo.txt")
+					{
+						firstMatch ??= c;
+					}
+				});
+				sut.File.WriteAllText("foo.txt", "x");
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification(c => c.Name == "foo.txt");
+				}
+
+				await That(Act).Throws()
+					.WithMessage($$"""
+					               Expected that sut
+					               has never triggered a notification matching c => c.Name == "foo.txt",
+					               but it was triggered once
+
+					               Matching changes:
+					               [
+					                 {{firstMatch}}
+					               ]
+					               """);
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenNoMatchingPriorEvent_ShouldSucceed()
+			{
+				MockFileSystem sut = new();
+				sut.File.WriteAllText("foo.txt", "x");
+
+				async Task Act()
+				{
+					await That(sut).DidNotTriggerNotification(c => c.Name == "other.txt")
+						.Within(TimeSpan.FromMilliseconds(100));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+	}
+}
