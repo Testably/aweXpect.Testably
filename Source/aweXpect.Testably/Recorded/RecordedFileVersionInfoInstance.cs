@@ -12,9 +12,9 @@ public sealed class RecordedFileVersionInfoInstance
 {
 	private readonly string _bucketDescription;
 	private readonly string _fileName;
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedFileVersionInfoInstance(IThat<IFileSystemStatistics> subject, string fileName)
+	internal RecordedFileVersionInfoInstance(IThat<IFileSystemStatistics?> subject, string fileName)
 	{
 		_subject = subject;
 		_fileName = fileName;

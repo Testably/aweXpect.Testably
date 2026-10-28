@@ -7,10 +7,10 @@ using Testably.Abstractions.Testing.TimeSystem;
 namespace aweXpect.Testably.Results;
 
 /// <summary>
-///     The result for <see cref="TimerExtensions.Executed(aweXpect.Core.IThat{ITimerMock})" />.
+///     The result for <see cref="ThatTimerMock.Executed(aweXpect.Core.IThat{ITimerMock})" />.
 /// </summary>
 public class TimerExecutedResult
-	: AndOrResult<ITimerMock, IThat<ITimerMock>, TimerExecutedResult>,
+	: AndOrResult<ITimerMock, IThat<ITimerMock?>, TimerExecutedResult>,
 		IOptionsProvider<Quantifier>
 {
 	private readonly OptionsHolder<RepeatedCheckOptions> _options;
@@ -18,7 +18,7 @@ public class TimerExecutedResult
 
 	internal TimerExecutedResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<ITimerMock> subject,
+		IThat<ITimerMock?> subject,
 		OptionsHolder<Quantifier> quantifier,
 		OptionsHolder<RepeatedCheckOptions> options)
 		: base(expectationBuilder, subject)

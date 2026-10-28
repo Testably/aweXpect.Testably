@@ -8,9 +8,9 @@ namespace aweXpect.Testably.Recorded;
 /// </summary>
 public sealed class RecordedFileSystemStatistics
 {
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedFileSystemStatistics(IThat<IFileSystemStatistics> subject)
+	internal RecordedFileSystemStatistics(IThat<IFileSystemStatistics?> subject)
 	{
 		_subject = subject;
 	}

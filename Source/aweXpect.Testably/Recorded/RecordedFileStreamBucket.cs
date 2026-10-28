@@ -23,9 +23,9 @@ public sealed class RecordedFileStreamBucket
 {
 	private const string BucketDescription = "FileStream";
 
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedFileStreamBucket(IThat<IFileSystemStatistics> subject)
+	internal RecordedFileStreamBucket(IThat<IFileSystemStatistics?> subject)
 	{
 		_subject = subject;
 	}

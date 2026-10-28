@@ -11,7 +11,7 @@ public sealed class ArgumentValidation
 	private static readonly IDirectoryInfo Directory = FileSystem.DirectoryInfo.New("dir");
 	private static readonly IFileInfo File = FileSystem.FileInfo.New("file.txt");
 	private static readonly IDriveInfo Drive = FileSystem.DriveInfo.GetDrives()[0];
-	private static readonly ChangeDescription Change = ChangeDescriptionTests.Capture(fs => fs.File.WriteAllText("foo.txt", ""));
+	private static readonly ChangeDescription Change = ThatChangeDescription.Capture(fs => fs.File.WriteAllText("foo.txt", ""));
 
 	[Test]
 	public async Task ChangeDescription_HasPath_WhenExpectedIsNull_ShouldThrow()
@@ -56,10 +56,6 @@ public sealed class ArgumentValidation
 		=> await ThatThrowsArgumentNullException(() => That(Drive).HasName(null!), "expected");
 
 	[Test]
-	public async Task FileInfo_HasContent_WhenExpectedBytesAreNull_ShouldThrow()
-		=> await ThatThrowsArgumentNullException(() => That(File).HasContent((byte[])null!), "expected");
-
-	[Test]
 	public async Task FileInfo_HasContent_EqualTo_WhenExpectedBytesAreNull_ShouldThrow()
 		=> await ThatThrowsArgumentNullException(() => That(File).HasContent().EqualTo((byte[])null!), "expected");
 
@@ -75,6 +71,10 @@ public sealed class ArgumentValidation
 	[Test]
 	public async Task FileInfo_HasContent_SameAs_WhenFilePathIsNull_ShouldThrow()
 		=> await ThatThrowsArgumentNullException(() => That(File).HasContent().SameAs(null!), "filePath");
+
+	[Test]
+	public async Task FileInfo_HasContent_WhenExpectedBytesAreNull_ShouldThrow()
+		=> await ThatThrowsArgumentNullException(() => That(File).HasContent((byte[])null!), "expected");
 
 	[Test]
 	public async Task FileInfo_HasExtension_WhenExpectedIsNull_ShouldThrow()

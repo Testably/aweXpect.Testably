@@ -18,9 +18,9 @@ public sealed class RecordedDirectoryInfoBucket
 {
 	private const string BucketDescription = "DirectoryInfo";
 
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedDirectoryInfoBucket(IThat<IFileSystemStatistics> subject)
+	internal RecordedDirectoryInfoBucket(IThat<IFileSystemStatistics?> subject)
 	{
 		_subject = subject;
 	}

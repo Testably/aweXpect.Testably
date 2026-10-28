@@ -2,6 +2,7 @@ using System.IO;
 using System.IO.Abstractions;
 using System.Threading;
 using aweXpect.Core;
+using aweXpect.Core.Internal;
 using Testably.Abstractions.Testing;
 using Testably.Abstractions.Testing.FileSystem;
 using Testably.Abstractions.Testing.TimeSystem;
@@ -263,7 +264,8 @@ public sealed class Quantifiers
 			async Task Act()
 			{
 				// ReSharper disable once AccessToDisposedClosure
-				await That(sut).Executed().AtMost(1.Times()).Within(TimeSpan.FromMilliseconds(100));
+				await That(sut).Executed().AtMost(1.Times()).Within(TimeSpan.FromMilliseconds(100))
+					.WithTimeSystem(new VirtualTimeSystem());
 			}
 
 			await That(Act).DoesNotThrow();
@@ -278,7 +280,8 @@ public sealed class Quantifiers
 			async Task Act()
 			{
 				// ReSharper disable once AccessToDisposedClosure
-				await That(sut).Executed().Between(1).And(3.Times()).Within(TimeSpan.FromMilliseconds(100));
+				await That(sut).Executed().Between(1).And(3.Times()).Within(TimeSpan.FromMilliseconds(100))
+					.WithTimeSystem(new VirtualTimeSystem());
 			}
 
 			await That(Act).Throws<FailException>()
@@ -298,7 +301,8 @@ public sealed class Quantifiers
 			async Task Act()
 			{
 				// ReSharper disable once AccessToDisposedClosure
-				await That(sut).Executed().LessThan(2.Times()).Within(TimeSpan.FromMilliseconds(100));
+				await That(sut).Executed().LessThan(2.Times()).Within(TimeSpan.FromMilliseconds(100))
+					.WithTimeSystem(new VirtualTimeSystem());
 			}
 
 			await That(Act).DoesNotThrow();
@@ -313,7 +317,8 @@ public sealed class Quantifiers
 			async Task Act()
 			{
 				// ReSharper disable once AccessToDisposedClosure
-				await That(sut).Executed().MoreThan(1.Times()).Within(TimeSpan.FromMilliseconds(100));
+				await That(sut).Executed().MoreThan(1.Times()).Within(TimeSpan.FromMilliseconds(100))
+					.WithTimeSystem(new VirtualTimeSystem());
 			}
 
 			await That(Act).Throws<FailException>()

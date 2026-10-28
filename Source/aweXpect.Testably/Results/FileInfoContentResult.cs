@@ -15,116 +15,123 @@ namespace aweXpect.Testably.Results;
 /// <summary>
 ///     The result for additional verifications on the content of a <see cref="IFileInfo" />.
 /// </summary>
-public class FileInfoContentResult(
-	ExpectationBuilder expectationBuilder,
-	IThat<IFileInfo> subject)
+public class FileInfoContentResult
 {
 	private const string FileContentContext = "File content";
+
+	private readonly ExpectationBuilder _expectationBuilder;
+	private readonly IThat<IFileInfo?> _subject;
+
+	internal FileInfoContentResult(ExpectationBuilder expectationBuilder, IThat<IFileInfo?> subject)
+	{
+		_expectationBuilder = expectationBuilder;
+		_subject = subject;
+	}
 
 	/// <summary>
 	///     …is equal to the <paramref name="expected" /> binary.
 	/// </summary>
-	public AndOrResult<IFileInfo, IThat<IFileInfo>> EqualTo(
+	public AndOrResult<IFileInfo, IThat<IFileInfo?>> EqualTo(
 		byte[] expected,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
-		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.AddConstraint((expected, doNotPopulateThisValue), static (s, it, grammars)
+		return new AndOrResult<IFileInfo, IThat<IFileInfo?>>(
+			_expectationBuilder.AddConstraint((expected, doNotPopulateThisValue), static (s, it, grammars)
 				=> new HasBinaryContentEqualToConstraint(
 					it,
 					grammars,
 					s.expected,
 					s.doNotPopulateThisValue)),
-			subject);
+			_subject);
 	}
 
 	/// <summary>
 	///     …is equal to the <paramref name="expected" /> string.
 	/// </summary>
-	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> EqualTo(
+	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo?>> EqualTo(
 		string expected)
 	{
 		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
+		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo?>>(
+			_expectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new HasStringContentEqualToConstraint(
 					it,
 					grammars,
 					s.options,
 					s.expected,
 					nameof(expected))),
-			subject, options);
+			_subject, options);
 	}
 
 	/// <summary>
 	///     …differs from the <paramref name="unexpected" /> binary.
 	/// </summary>
-	public AndOrResult<IFileInfo, IThat<IFileInfo>> NotEqualTo(
+	public AndOrResult<IFileInfo, IThat<IFileInfo?>> NotEqualTo(
 		byte[] unexpected,
 		[CallerArgumentExpression("unexpected")]
 		string doNotPopulateThisValue = "")
 	{
 		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
 
-		return new AndOrResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.AddConstraint((unexpected, doNotPopulateThisValue), static (s, it, grammars)
+		return new AndOrResult<IFileInfo, IThat<IFileInfo?>>(
+			_expectationBuilder.AddConstraint((unexpected, doNotPopulateThisValue), static (s, it, grammars)
 				=> new HasBinaryContentEqualToConstraint(
 						it,
 						grammars,
 						s.unexpected,
 						s.doNotPopulateThisValue)
 					.Invert()),
-			subject);
+			_subject);
 	}
 
 	/// <summary>
 	///     …differs from the <paramref name="unexpected" /> string.
 	/// </summary>
-	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> NotEqualTo(
+	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo?>> NotEqualTo(
 		string unexpected)
 	{
 		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.AddConstraint((options, unexpected), static (s, it, grammars)
+		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo?>>(
+			_expectationBuilder.AddConstraint((options, unexpected), static (s, it, grammars)
 				=> new HasStringContentEqualToConstraint(
 					it,
 					grammars,
 					s.options,
 					s.unexpected,
 					nameof(unexpected)).Invert()),
-			subject, options);
+			_subject, options);
 	}
 
 	/// <summary>
 	///     …has the same content as the file on the <paramref name="filePath" />.
 	/// </summary>
-	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> SameAs(
+	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo?>> SameAs(
 		string filePath)
 	{
 		ThrowHelper.ThrowIfNull(filePath, nameof(filePath));
 
 		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.AddConstraint((options, filePath), static (s, it, grammars)
+		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo?>>(
+			_expectationBuilder.AddConstraint((options, filePath), static (s, it, grammars)
 				=> new HasContentSameAsConstraint(it, grammars, s.options, s.filePath, nameof(filePath))),
-			subject, options);
+			_subject, options);
 	}
 
 	/// <summary>
 	///     …does not have the same content as the file on the <paramref name="filePath" />.
 	/// </summary>
-	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> NotSameAs(
+	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo?>> NotSameAs(
 		string filePath)
 	{
 		ThrowHelper.ThrowIfNull(filePath, nameof(filePath));
 
 		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
-		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
-			expectationBuilder.AddConstraint((options, filePath), static (s, it, grammars)
+		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo?>>(
+			_expectationBuilder.AddConstraint((options, filePath), static (s, it, grammars)
 				=> new HasContentSameAsConstraint(it, grammars, s.options, s.filePath, nameof(filePath)).Invert()),
-			subject, options);
+			_subject, options);
 	}
 
 	private sealed class HasBinaryContentEqualToConstraint(

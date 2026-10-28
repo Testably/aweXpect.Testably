@@ -31,8 +31,12 @@ Correctness is a must. The other goals are strong defaults and win in this order
 - AOT and trimming: net8.0+ builds set `IsTrimmable` and `IsAotCompatible`, so trim and AOT analyzer warnings fail the
   build. Avoid reflection; annotate it where it cannot be avoided. Behaviour under Native AOT is checked by
   `Tests/Aot/aweXpect.Testably.Aot`; add a check to its `Checks.cs` when an expectation adds a new kind of code path.
-- Public API: everything public lives in the `aweXpect.Testably` namespace (statistics mirrors in
-  `aweXpect.Testably.Recorded`). Each public expectation has XML docs and `[GuaranteesNotNull]`, validates arguments
+- Public API: the entry points are `That<Subject>` classes in the `aweXpect` namespace, so they need no extra
+  `using`; results live in `aweXpect.Testably.Results` and the statistics mirrors in `aweXpect.Testably.Recorded`.
+  Subjects are nullable (`IThat<IFileInfo?>`), nested expectations take an `Action<IThatSubject<T>>`, result
+  constructors are internal and generic results start with `<TType, TThat>`, as the
+  [aweXpect design goals](https://github.com/aweXpect/aweXpect/blob/main/Docs/agents/design-goals.md#extension-packages)
+  ask of extension packages. Each public expectation has XML docs and `[GuaranteesNotNull]`, validates arguments
   with `ThrowHelper.ThrowIfNull` and calls user delegates through `UserCode.Invoke`. Any public API change shows up in
   the snapshots of `Tests/aweXpect.Testably.Api.Tests` and is reviewed with the PR.
 - Failure messages follow the aweXpect conventions; tests pin the complete message with `.WithMessage(...)`.

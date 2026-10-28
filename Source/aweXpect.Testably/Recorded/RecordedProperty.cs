@@ -15,10 +15,10 @@ public sealed class RecordedProperty
 	private readonly string _bucketDescription;
 	private readonly Func<IFileSystemStatistics, IStatistics> _bucketSelector;
 	private readonly string _propertyName;
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
 	internal RecordedProperty(
-		IThat<IFileSystemStatistics> subject,
+		IThat<IFileSystemStatistics?> subject,
 		Func<IFileSystemStatistics, IStatistics> bucketSelector,
 		string bucketDescription,
 		string propertyName)

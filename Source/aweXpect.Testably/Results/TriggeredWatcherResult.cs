@@ -9,10 +9,10 @@ using Testably.Abstractions.Testing.FileSystem;
 namespace aweXpect.Testably.Results;
 
 /// <summary>
-///     The result for <see cref="FileSystemWatcherExtensions.Triggered(aweXpect.Core.IThat{IFileSystemWatcher})" />.
+///     The result for <see cref="ThatFileSystemWatcher.Triggered(aweXpect.Core.IThat{IFileSystemWatcher})" />.
 /// </summary>
 public class TriggeredWatcherResult
-	: AndOrResult<IFileSystemWatcher, IThat<IFileSystemWatcher>, TriggeredWatcherResult>,
+	: AndOrResult<IFileSystemWatcher, IThat<IFileSystemWatcher?>, TriggeredWatcherResult>,
 		IOptionsProvider<Quantifier>
 {
 	private readonly NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> _filter;
@@ -21,7 +21,7 @@ public class TriggeredWatcherResult
 
 	internal TriggeredWatcherResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<IFileSystemWatcher> subject,
+		IThat<IFileSystemWatcher?> subject,
 		OptionsHolder<Quantifier> quantifier,
 		OptionsHolder<RepeatedCheckOptions> options, NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> filter)
 		: base(expectationBuilder, subject)
@@ -36,13 +36,13 @@ public class TriggeredWatcherResult
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="expectation" /> is applied as an additional per-event filter, so any
-	///     assertions from <see cref="ChangeDescriptionExtensions" /> (e.g. <c>.HasName(...)</c>,
+	///     assertions from <see cref="ThatChangeDescription" /> (e.g. <c>.HasName(...)</c>,
 	///     <c>.HasChangeType(...)</c>) compose naturally (only events that satisfy all of them
 	///     count toward the quantifier). The expectation text is taken from the inner expectation
 	///     builder, so it reads like <c>that has name equal to "foo.txt"</c> rather than the raw
 	///     lambda source.
 	/// </remarks>
-	public TriggeredWatcherResult Matching(Action<IThat<WatcherChangeDescription>> expectation)
+	public TriggeredWatcherResult Matching(Action<IThatSubject<WatcherChangeDescription>> expectation)
 	{
 		ThrowHelper.ThrowIfNull(expectation, nameof(expectation));
 

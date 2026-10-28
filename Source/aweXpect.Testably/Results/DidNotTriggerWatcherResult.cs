@@ -9,17 +9,17 @@ using Testably.Abstractions.Testing.FileSystem;
 namespace aweXpect.Testably.Results;
 
 /// <summary>
-///     The result for <see cref="FileSystemWatcherExtensions.DidNotTrigger(aweXpect.Core.IThat{IFileSystemWatcher})" />.
+///     The result for <see cref="ThatFileSystemWatcher.DidNotTrigger(aweXpect.Core.IThat{IFileSystemWatcher})" />.
 /// </summary>
 public class DidNotTriggerWatcherResult
-	: AndOrResult<IFileSystemWatcher, IThat<IFileSystemWatcher>, DidNotTriggerWatcherResult>
+	: AndOrResult<IFileSystemWatcher, IThat<IFileSystemWatcher?>, DidNotTriggerWatcherResult>
 {
 	private readonly NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> _filter;
 	private readonly OptionsHolder<RepeatedCheckOptions> _options;
 
 	internal DidNotTriggerWatcherResult(
 		ExpectationBuilder expectationBuilder,
-		IThat<IFileSystemWatcher> subject,
+		IThat<IFileSystemWatcher?> subject,
 		OptionsHolder<RepeatedCheckOptions> options, NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> filter)
 		: base(expectationBuilder, subject)
 	{
@@ -32,13 +32,13 @@ public class DidNotTriggerWatcherResult
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="expectation" /> is applied as an additional per-event filter, so any
-	///     assertions from <see cref="ChangeDescriptionExtensions" /> (e.g. <c>.HasName(...)</c>,
+	///     assertions from <see cref="ThatChangeDescription" /> (e.g. <c>.HasName(...)</c>,
 	///     <c>.HasChangeType(...)</c>) compose naturally. The assertion fails if any event
 	///     satisfies all of them. The expectation text is taken from the inner expectation builder,
 	///     so it reads like <c>that has name equal to "foo.txt"</c> rather than the raw lambda
 	///     source.
 	/// </remarks>
-	public DidNotTriggerWatcherResult Matching(Action<IThat<WatcherChangeDescription>> expectation)
+	public DidNotTriggerWatcherResult Matching(Action<IThatSubject<WatcherChangeDescription>> expectation)
 	{
 		ThrowHelper.ThrowIfNull(expectation, nameof(expectation));
 

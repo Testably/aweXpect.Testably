@@ -25,9 +25,9 @@ When goals conflict, the earlier one wins.
 
 - **Modern C#.** Use current language features and APIs where the target frameworks allow them, with polyfills for netstandard2.0 and net48 instead of avoiding a feature. Check that the oldest target framework still compiles.
 - **Async.**
-  - Use `ValueTask` for operations that often complete synchronously.
+  - Use `ValueTask` for operations on the happy path that often complete synchronously, like the evaluation of a constraint. An API that only runs while a failure is built may return `Task`, as it does not run when the expectation succeeds.
   - Pass the `CancellationToken` through every async path.
-  - Use `ConfigureAwait(false)` on every `await` in library code, so that callers who block on a result cannot deadlock on a single-threaded synchronization context. Existing code does not follow this everywhere yet; new and changed code does.
+  - Do not use `ConfigureAwait(false)` in library code. Expectations run user code after their own awaits (predicates, nested expectations, custom comparers and formatters), and this code must run on the synchronization context of the caller, for example on the UI thread of a WPF or WinForms test.
   - Do not block on async code (`.Result`, `.Wait()`, `.GetAwaiter().GetResult()`), except at a deliberate synchronous API boundary, and complete synchronously there where possible.
   - Do not use `Task.Run` to make code look asynchronous; use it only where the real counterpart does work in the background.
 - **Avoid.**

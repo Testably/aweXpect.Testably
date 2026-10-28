@@ -1,0 +1,59 @@
+using System.IO.Abstractions;
+using System.Text;
+using aweXpect.Core;
+using aweXpect.Core.Constraints;
+using aweXpect.Results;
+
+namespace aweXpect;
+
+public static partial class ThatDriveInfo
+{
+	/// <summary>
+	///     Verifies that the <see cref="IDriveInfo" /> is ready.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<IDriveInfo, IThat<IDriveInfo?>> IsReady(this IThat<IDriveInfo?> subject)
+		=> new(
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new IsReadyConstraint(it, grammars)),
+			subject);
+
+	/// <summary>
+	///     Verifies that the <see cref="IDriveInfo" /> is not ready.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<IDriveInfo, IThat<IDriveInfo?>> IsNotReady(this IThat<IDriveInfo?> subject)
+		=> new(
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new IsReadyConstraint(it, grammars).Invert()),
+			subject);
+
+	private sealed class IsReadyConstraint(string it, ExpectationGrammars grammars)
+		: ConstraintResult.WithNotNullValue<IDriveInfo>(it, grammars),
+			IValueConstraint<IDriveInfo>
+	{
+		public ConstraintResult IsMetBy(IDriveInfo actual)
+		{
+			Actual = actual;
+			if (actual is null)
+			{
+				return this;
+			}
+
+			Outcome = actual.IsReady ? Outcome.Success : Outcome.Failure;
+			return this;
+		}
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(Grammars.Verb("is ready", "are ready"));
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" was not");
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(Grammars.Verb("is not ready", "are not ready"));
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" was");
+	}
+}

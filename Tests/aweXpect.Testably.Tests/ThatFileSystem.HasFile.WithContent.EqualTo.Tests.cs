@@ -1,0 +1,154 @@
+﻿using System.Text;
+using Testably.Abstractions.Testing;
+
+namespace aweXpect.Testably.Tests;
+
+public sealed partial class ThatFileSystem
+{
+	public sealed partial class HasFile
+	{
+		public sealed partial class WithContent
+		{
+			public class EqualTo
+			{
+				public sealed class BinaryTests
+				{
+					[Test]
+					public async Task WhenContentIsDifferent_ShouldFail()
+					{
+						byte[] content = Encoding.UTF8.GetBytes("baz");
+						byte[] expected = Encoding.UTF8.GetBytes("bar");
+						string path = "foo.txt";
+						MockFileSystem sut = new();
+						// ReSharper disable once MethodHasAsyncOverload
+						sut.File.WriteAllBytes(path, content);
+
+						async Task Act()
+						{
+							await That(sut).HasFile(path).WithContent().EqualTo(expected);
+						}
+
+						await That(Act).Throws()
+							.WithMessage($"""
+							              Expected that sut
+							              has file {Formatter.Format(path)} with content equal to expected,
+							              but it differed
+							              """);
+					}
+
+					[Test]
+					public async Task WhenContentMatches_ShouldSucceed()
+					{
+						byte[] content = Encoding.UTF8.GetBytes("baz");
+						string path = "foo.txt";
+						MockFileSystem sut = new();
+						// ReSharper disable once MethodHasAsyncOverload
+						sut.File.WriteAllBytes(path, content);
+
+						async Task Act()
+						{
+							await That(sut).HasFile(path).WithContent().EqualTo(content);
+						}
+
+						await That(Act).DoesNotThrow();
+					}
+				}
+
+				public sealed class StringTests
+				{
+					[Test]
+					public async Task WhenContentIsDifferent_ShouldFail()
+					{
+						string path = "foo.txt";
+						MockFileSystem sut = new();
+						// ReSharper disable once MethodHasAsyncOverload
+						sut.File.WriteAllText(path, "baz");
+
+						async Task Act()
+						{
+							await That(sut).HasFile(path).WithContent().EqualTo("bar");
+						}
+
+						await That(Act).Throws()
+							.WithMessage($"""
+							              Expected that sut
+							              has file {Formatter.Format(path)} with content equal to "bar",
+							              but it was "baz", which differs at index 2:
+							                   ↓ (actual)
+							                "baz"
+							                "bar"
+							                   ↑ (expected)
+
+							              File content:
+							              baz
+							              """);
+					}
+
+					[Test]
+					public async Task WhenContentMatches_ShouldSucceed()
+					{
+						string path = "foo.txt";
+						string content = "bar";
+						MockFileSystem sut = new();
+						// ReSharper disable once MethodHasAsyncOverload
+						sut.File.WriteAllText(path, content);
+
+						async Task Act()
+						{
+							await That(sut).HasFile(path).WithContent().EqualTo(content);
+						}
+
+						await That(Act).DoesNotThrow();
+					}
+				}
+
+				public sealed class AsWildcardTests
+				{
+					[Test]
+					public async Task WhenContentIsDifferent_ShouldFail()
+					{
+						string path = "foo.txt";
+						MockFileSystem sut = new();
+						// ReSharper disable once MethodHasAsyncOverload
+						sut.File.WriteAllText(path, "baz");
+
+						async Task Act()
+						{
+							await That(sut).HasFile(path).WithContent().EqualTo("b?").AsWildcard();
+						}
+
+						await That(Act).Throws()
+							.WithMessage($"""
+							              Expected that sut
+							              has file {Formatter.Format(path)} with content matching "b?",
+							              but it did not match:
+							                ↓ (actual)
+							                "baz"
+							                "b?"
+							                ↑ (wildcard pattern)
+
+							              File content:
+							              baz
+							              """);
+					}
+
+					[Test]
+					public async Task WhenContentMatches_ShouldSucceed()
+					{
+						string path = "foo.txt";
+						MockFileSystem sut = new();
+						// ReSharper disable once MethodHasAsyncOverload
+						sut.File.WriteAllText(path, "bar");
+
+						async Task Act()
+						{
+							await That(sut).HasFile(path).WithContent().EqualTo("ba?").AsWildcard();
+						}
+
+						await That(Act).DoesNotThrow();
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,196 @@
+﻿using Testably.Abstractions.Testing;
+
+namespace aweXpect.Testably.Tests;
+
+public sealed partial class ThatFileSystem
+{
+	public sealed partial class HasFile
+	{
+		public sealed partial class WithContent
+		{
+			public class SameAs
+			{
+				public sealed class StringTests
+				{
+					[Test]
+					public async Task WhenContentIsDifferent_ShouldFail()
+					{
+						MockFileSystem sut = new();
+						string path = "foo.txt";
+						string expectedPath = "bar.txt";
+						string fullExpectedPath = sut.Path.GetFullPath(expectedPath);
+						// ReSharper disable once MethodHasAsyncOverload
+						sut.File.WriteAllText(path, "baz");
+						sut.File.WriteAllText(expectedPath, "bar");
+
+						async Task Act()
+						{
+							await That(sut).HasFile(path).WithContent().SameAs(expectedPath);
+						}
+
+						await That(Act).Throws()
+							.WithMessage($"""
+							              Expected that sut
+							              has file {Formatter.Format(path)} with the same content as file {Formatter.Format(fullExpectedPath)},
+							              but it was "baz", which differs at index 2:
+							                   ↓ (actual)
+							                "baz"
+							                "bar"
+							                   ↑ (expected)
+
+							              File content:
+							              baz
+							              """);
+					}
+
+					[Test]
+					public async Task WhenContentMatches_ShouldSucceed()
+					{
+						MockFileSystem sut = new();
+						string path = "foo.txt";
+						string expectedPath = "bar.txt";
+						string content = "bar";
+						// ReSharper disable once MethodHasAsyncOverload
+						sut.File.WriteAllText(path, content);
+						sut.File.WriteAllText(expectedPath, content);
+
+						async Task Act()
+						{
+							await That(sut).HasFile(path).WithContent().SameAs(expectedPath);
+						}
+
+						await That(Act).DoesNotThrow();
+					}
+
+					[Test]
+					public async Task WhenExpectedFileDoesNotExist_ShouldFail()
+					{
+						MockFileSystem sut = new();
+						string path = "foo.txt";
+						string expectedPath = "bar.txt";
+						string fullExpectedPath = sut.Path.GetFullPath(expectedPath);
+						// ReSharper disable once MethodHasAsyncOverload
+						sut.File.WriteAllText(path, "baz");
+
+						async Task Act()
+						{
+							await That(sut).HasFile(path).WithContent().SameAs(expectedPath);
+						}
+
+						await That(Act).Throws()
+							.WithMessage($"""
+							              Expected that sut
+							              has file {Formatter.Format(path)} with the same content as file {Formatter.Format(fullExpectedPath)},
+							              but it did not contain any file at {Formatter.Format(fullExpectedPath)}
+
+							              File content:
+							              baz
+							              """);
+					}
+
+					[Test]
+					public async Task WhenFileDoesNotExist_ShouldFail()
+					{
+						MockFileSystem sut = new();
+						string path = "foo.txt";
+						string expectedPath = "bar.txt";
+						string fullExpectedPath = sut.Path.GetFullPath(expectedPath);
+						sut.File.WriteAllText(expectedPath, "bar");
+
+						async Task Act()
+						{
+							await That(sut).HasFile(path).WithContent().SameAs(expectedPath);
+						}
+
+						await That(Act).Throws()
+							.WithMessage($"""
+							              Expected that sut
+							              has file {Formatter.Format(path)} with the same content as file {Formatter.Format(fullExpectedPath)},
+							              but it did not exist
+							              """)
+							.Because("a missing file has no content to read, so it fails instead of throwing");
+					}
+
+					[Test]
+					public async Task WhenNegated_WhenContentMatches_ShouldFail()
+					{
+						MockFileSystem sut = new();
+						string path = "foo.txt";
+						string expectedPath = "bar.txt";
+						string fullExpectedPath = sut.Path.GetFullPath(expectedPath);
+						sut.File.WriteAllText(path, "bar");
+						sut.File.WriteAllText(expectedPath, "bar");
+
+						async Task Act()
+						{
+							await That(sut).DoesNotComplyWith(it => it.HasFile(path).WithContent().SameAs(expectedPath));
+						}
+
+						await That(Act).Throws()
+							.WithMessage($"""
+							              Expected that sut
+							              does not have file {Formatter.Format(path)} with the same content as file {Formatter.Format(fullExpectedPath)},
+							              but it did and did match
+
+							              File content:
+							              bar
+							              """)
+							.Because("the negation belongs to the verb only");
+					}
+				}
+
+				public sealed class AsWildcardTests
+				{
+					[Test]
+					public async Task WhenContentIsDifferent_ShouldFail()
+					{
+						MockFileSystem sut = new();
+						string path = "foo.txt";
+						string expectedPath = "bar.txt";
+						string fullExpectedPath = sut.Path.GetFullPath(expectedPath);
+						// ReSharper disable once MethodHasAsyncOverload
+						sut.File.WriteAllText(path, "baz");
+						sut.File.WriteAllText(expectedPath, "b?");
+
+						async Task Act()
+						{
+							await That(sut).HasFile(path).WithContent().SameAs(expectedPath).AsWildcard();
+						}
+
+						await That(Act).Throws()
+							.WithMessage($"""
+							              Expected that sut
+							              has file {Formatter.Format(path)} with the same content as file {Formatter.Format(fullExpectedPath)},
+							              but it did not match:
+							                ↓ (actual)
+							                "baz"
+							                "b?"
+							                ↑ (wildcard pattern)
+
+							              File content:
+							              baz
+							              """);
+					}
+
+					[Test]
+					public async Task WhenContentMatches_ShouldSucceed()
+					{
+						MockFileSystem sut = new();
+						string path = "foo.txt";
+						string expectedPath = "bar.txt";
+						// ReSharper disable once MethodHasAsyncOverload
+						sut.File.WriteAllText(path, "bar");
+						sut.File.WriteAllText(expectedPath, "ba?");
+
+						async Task Act()
+						{
+							await That(sut).HasFile(path).WithContent().SameAs(expectedPath).AsWildcard();
+						}
+
+						await That(Act).DoesNotThrow();
+					}
+				}
+			}
+		}
+	}
+}

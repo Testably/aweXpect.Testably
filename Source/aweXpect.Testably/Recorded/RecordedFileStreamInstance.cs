@@ -22,9 +22,9 @@ public sealed class RecordedFileStreamInstance
 {
 	private readonly string _bucketDescription;
 	private readonly string _path;
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedFileStreamInstance(IThat<IFileSystemStatistics> subject, string path)
+	internal RecordedFileStreamInstance(IThat<IFileSystemStatistics?> subject, string path)
 	{
 		_subject = subject;
 		_path = path;

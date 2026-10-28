@@ -17,9 +17,9 @@ public sealed class RecordedFileVersionInfoBucket
 {
 	private const string BucketDescription = "FileVersionInfo";
 
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedFileVersionInfoBucket(IThat<IFileSystemStatistics> subject)
+	internal RecordedFileVersionInfoBucket(IThat<IFileSystemStatistics?> subject)
 	{
 		_subject = subject;
 	}

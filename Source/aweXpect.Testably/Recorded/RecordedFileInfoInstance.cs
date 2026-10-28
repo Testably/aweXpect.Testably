@@ -17,9 +17,9 @@ public sealed class RecordedFileInfoInstance
 {
 	private readonly string _bucketDescription;
 	private readonly string _path;
-	private readonly IThat<IFileSystemStatistics> _subject;
+	private readonly IThat<IFileSystemStatistics?> _subject;
 
-	internal RecordedFileInfoInstance(IThat<IFileSystemStatistics> subject, string path)
+	internal RecordedFileInfoInstance(IThat<IFileSystemStatistics?> subject, string path)
 	{
 		_subject = subject;
 		_path = path;
