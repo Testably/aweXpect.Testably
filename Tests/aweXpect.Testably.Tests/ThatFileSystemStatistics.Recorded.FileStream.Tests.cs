@@ -613,7 +613,11 @@ public sealed partial class ThatFileSystemStatistics
 					using (FileSystemStream s = fileSystem.FileStream.New("a.txt", FileMode.Open, FileAccess.Read))
 					{
 						byte[] buffer = new byte[5];
+#if NET8_0_OR_GREATER
+						_ = await s.ReadAsync(buffer.AsMemory());
+#else
 						_ = await s.ReadAsync(buffer, 0, buffer.Length);
+#endif
 					}
 
 					async Task Act()
@@ -842,7 +846,11 @@ public sealed partial class ThatFileSystemStatistics
 						{
 							1, 2, 3,
 						};
+#if NET8_0_OR_GREATER
+						await s.WriteAsync(buffer.AsMemory());
+#else
 						await s.WriteAsync(buffer, 0, buffer.Length);
+#endif
 					}
 
 					async Task Act()
