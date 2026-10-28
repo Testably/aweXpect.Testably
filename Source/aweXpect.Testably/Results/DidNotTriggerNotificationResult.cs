@@ -15,12 +15,12 @@ public class DidNotTriggerNotificationResult
 	: AndOrResult<MockFileSystem, IThat<MockFileSystem>, DidNotTriggerNotificationResult>
 {
 	private readonly NotificationConstraints.TriggerNotificationFilter<ChangeDescription> _filter;
-	private readonly RepeatedCheckOptions _options;
+	private readonly OptionsHolder<RepeatedCheckOptions> _options;
 
 	internal DidNotTriggerNotificationResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<MockFileSystem> subject,
-		RepeatedCheckOptions options, NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter)
+		OptionsHolder<RepeatedCheckOptions> options, NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter)
 		: base(expectationBuilder, subject)
 	{
 		_options = options;

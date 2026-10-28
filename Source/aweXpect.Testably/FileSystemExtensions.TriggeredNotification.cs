@@ -82,8 +82,8 @@ public static partial class FileSystemExtensions
 		Func<ChangeDescription, bool>? predicate,
 		string predicateExpression)
 	{
-		Quantifier quantifier = new();
-		RepeatedCheckOptions options = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter = new();
 		if (predicate is not null)
 		{
@@ -108,8 +108,8 @@ public static partial class FileSystemExtensions
 		Func<ChangeDescription, bool>? predicate,
 		string predicateExpression)
 	{
-		Quantifier quantifier = new();
-		RepeatedCheckOptions options = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter = new();
 		if (predicate is not null)
 		{

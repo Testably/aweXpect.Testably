@@ -41,7 +41,7 @@ public sealed class RecordedProperty
 
 	private RecordedPropertyAccessResult Build(PropertyAccess access)
 	{
-		Quantifier quantifier = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		Func<IFileSystemStatistics, IStatistics> bucketSelector = _bucketSelector;
 		string bucketDescription = _bucketDescription;
 		string propertyName = _propertyName;

@@ -18,7 +18,7 @@
     <File Path=".editorconfig" />
     <File Path=".gitattributes" />
     <File Path=".gitignore" />
-    <File Path="aweXpect.Testably.slnx.DotSettings" />
+    <File Path="aweXpect.Testably.sln.DotSettings" />
     <File Path="CODE_OF_CONDUCT.md" />
     <File Path="CONTRIBUTING.md" />
     <File Path="Directory.Build.props" />

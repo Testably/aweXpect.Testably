@@ -18,7 +18,7 @@ public static partial class DriveInfoExtensions
 	public static StringEqualityTypeResult<IDriveInfo, IThat<IDriveInfo>> HasVolumeLabel(this IThat<IDriveInfo> subject,
 		string? expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IDriveInfo, IThat<IDriveInfo>>(
 			subject.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new HasVolumeLabelConstraint(it, grammars, s.options, s.expected)),
@@ -29,11 +29,12 @@ public static partial class DriveInfoExtensions
 	private sealed class HasVolumeLabelConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		StringEqualityOptions options,
+		OptionsHolder<StringEqualityOptions> options,
 		string? expected)
 		: ConstraintResult.WithNotNullValue<IDriveInfo>(it, grammars),
 			IAsyncConstraint<IDriveInfo>
 	{
+		private MatchResult _matchResult;
 		private string? _actualVolumeLabel;
 
 		public async ValueTask<ConstraintResult> IsMetBy(IDriveInfo actual, CancellationToken cancellationToken)
@@ -45,19 +46,20 @@ public static partial class DriveInfoExtensions
 			}
 
 			_actualVolumeLabel = actual.VolumeLabel;
-			Outcome = await options.AreConsideredEqual(_actualVolumeLabel, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.Value.MatchWithExplanation(_actualVolumeLabel, expected, nameof(expected));
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has volume label ", "have volume label ")).Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append(Grammars.Verb("has volume label ", "have volume label ")).Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualVolumeLabel, expected));
+			=> stringBuilder.Append(options.Value.GetExtendedFailure(It,Grammars, _actualVolumeLabel, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have volume label ", "do not have volume label "))
-				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
+				.Append(options.Value.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did");

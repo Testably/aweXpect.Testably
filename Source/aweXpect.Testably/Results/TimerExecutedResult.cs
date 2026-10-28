@@ -13,14 +13,14 @@ public class TimerExecutedResult
 	: AndOrResult<ITimerMock, IThat<ITimerMock>, TimerExecutedResult>,
 		IOptionsProvider<Quantifier>
 {
-	private readonly RepeatedCheckOptions _options;
-	private readonly Quantifier _quantifier;
+	private readonly OptionsHolder<RepeatedCheckOptions> _options;
+	private readonly OptionsHolder<Quantifier> _quantifier;
 
 	internal TimerExecutedResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<ITimerMock> subject,
-		Quantifier quantifier,
-		RepeatedCheckOptions options)
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<RepeatedCheckOptions> options)
 		: base(expectationBuilder, subject)
 	{
 		_quantifier = quantifier;
@@ -28,7 +28,7 @@ public class TimerExecutedResult
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
 
 	/// <summary>
 	///     Allows a <paramref name="timeout" /> for waiting for asynchronous timer executions.

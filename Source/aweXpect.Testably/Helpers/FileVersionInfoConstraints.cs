@@ -15,12 +15,13 @@ internal static class FileVersionInfoConstraints
 		string it,
 		ExpectationGrammars grammars,
 		Func<IFileVersionInfo, string?> selector,
-		StringEqualityOptions options,
+		OptionsHolder<StringEqualityOptions> options,
 		string? expected,
 		string propertyName)
 		: ConstraintResult.WithNotNullValue<IFileVersionInfo>(it, grammars),
 			IAsyncConstraint<IFileVersionInfo>
 	{
+		private MatchResult _matchResult;
 		private string? _actualValue;
 
 		public async ValueTask<ConstraintResult> IsMetBy(IFileVersionInfo actual, CancellationToken cancellationToken)
@@ -32,20 +33,21 @@ internal static class FileVersionInfoConstraints
 			}
 
 			_actualValue = selector(actual);
-			Outcome = await options.AreConsideredEqual(_actualValue, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.Value.MatchWithExplanation(_actualValue, expected, nameof(expected));
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has ", "have ")).Append(propertyName).Append(' ')
-				.Append(options.GetExpectation(expected, Grammars));
+				.Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualValue, expected));
+			=> stringBuilder.Append(options.Value.GetExtendedFailure(It,Grammars, _actualValue, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")).Append(propertyName).Append(' ')
-				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
+				.Append(options.Value.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did");

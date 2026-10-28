@@ -115,12 +115,13 @@ internal static class FileSystemConstraints
 	internal sealed class HasNameConstraint<TInfo>(
 		string it,
 		ExpectationGrammars grammars,
-		StringEqualityOptions options,
+		OptionsHolder<StringEqualityOptions> options,
 		string expected)
 		: ConstraintResult.WithNotNullValue<TInfo>(it, grammars),
 			IAsyncConstraint<TInfo>
 		where TInfo : class, IFileSystemInfo
 	{
+		private MatchResult _matchResult;
 		private string? _actualName;
 
 		public async ValueTask<ConstraintResult> IsMetBy(TInfo actual, CancellationToken cancellationToken)
@@ -132,19 +133,20 @@ internal static class FileSystemConstraints
 			}
 
 			_actualName = actual.Name;
-			Outcome = await options.AreConsideredEqual(_actualName, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.Value.MatchWithExplanation(_actualName, expected, nameof(expected));
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has name ", "have name ")).Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append(Grammars.Verb("has name ", "have name ")).Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualName, expected));
+			=> stringBuilder.Append(options.Value.GetExtendedFailure(It,Grammars, _actualName, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have name ", "do not have name "))
-				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
+				.Append(options.Value.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did");
@@ -261,7 +263,7 @@ internal static class FileSystemConstraints
 		ExpectationGrammars grammars,
 		Func<TActual, DateTime> timeAccessor,
 		Func<TActual, string?> getMissingResult,
-		TimeTolerance tolerance,
+		OptionsHolder<TimeTolerance> tolerance,
 		DateTime expected,
 		string expectedString,
 		bool isWithClause)
@@ -299,7 +301,7 @@ internal static class FileSystemConstraints
 				_actualTime = _actualTime.ToLocalTime();
 			}
 
-			TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
+			TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
 			TimeSpan difference = _actualTime - expected;
 			Outcome = difference <= timeTolerance && difference >= timeTolerance.Negate()
 				? Outcome.Success

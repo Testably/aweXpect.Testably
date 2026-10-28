@@ -99,8 +99,8 @@ public static class FileSystemWatcherExtensions
 		Func<WatcherChangeDescription, bool>? predicate,
 		string predicateExpression)
 	{
-		Quantifier quantifier = new();
-		RepeatedCheckOptions options = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> filter = new();
 		if (predicate is not null)
 		{
@@ -125,8 +125,8 @@ public static class FileSystemWatcherExtensions
 		Func<WatcherChangeDescription, bool>? predicate,
 		string predicateExpression)
 	{
-		Quantifier quantifier = new();
-		RepeatedCheckOptions options = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> filter = new();
 		if (predicate is not null)
 		{

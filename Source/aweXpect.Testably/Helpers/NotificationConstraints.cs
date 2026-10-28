@@ -28,8 +28,8 @@ internal static class NotificationConstraints
 		string changeDescription,
 		Func<TSubject, Action<TChange>, IAwaitableCallback<TChange>> subscribe,
 		TriggerNotificationFilter<TChange> filter,
-		Quantifier quantifier,
-		RepeatedCheckOptions options)
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<RepeatedCheckOptions> options)
 		: ConstraintResult.WithNotNullValue<TSubject>(it, grammars),
 			IAsyncContextConstraint<TSubject>,
 			IExpectationTextConstraint
@@ -73,7 +73,7 @@ internal static class NotificationConstraints
 				// Without Within, the timeout is zero, so only the replayed changes are checked.
 				using CancellationTokenSource deadline =
 					CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-				deadline.CancelAfter(options.Timeout);
+				deadline.CancelAfter(options.Value.Timeout);
 				while (true)
 				{
 					if (await IsDetermined(changes, context, cancellationToken))
@@ -97,7 +97,7 @@ internal static class NotificationConstraints
 			}
 
 			if (cancellationToken.IsCancellationRequested &&
-			    !context.Cancellation.HasWaitElapsed(options.Timeout, context.GetElapsedTime(startTimestamp)))
+			    !context.Cancellation.HasWaitElapsed(options.Value.Timeout, context.GetElapsedTime(startTimestamp)))
 			{
 				Outcome = Outcome.Undecided;
 				return this;
@@ -105,7 +105,7 @@ internal static class NotificationConstraints
 
 			if (!await IsDetermined(changes, context, cancellationToken))
 			{
-				Outcome = quantifier.Check(_matches.Count, true) == true ? Outcome.Success : Outcome.Failure;
+				Outcome = quantifier.Value.Check(_matches.Count, true) == true ? Outcome.Success : Outcome.Failure;
 			}
 
 			return this;
@@ -144,14 +144,14 @@ internal static class NotificationConstraints
 				}
 
 				_matches.Add(change);
-				if (quantifier.Check(_matches.Count, false) == true)
+				if (quantifier.Value.Check(_matches.Count, false) == true)
 				{
 					Outcome = Outcome.Success;
 					return true;
 				}
 			}
 
-			if (quantifier.Check(_matches.Count, false) == false)
+			if (quantifier.Value.Check(_matches.Count, false) == false)
 			{
 				Outcome = Outcome.Failure;
 				return true;
@@ -188,17 +188,17 @@ internal static class NotificationConstraints
 
 		private void AppendExpectation(StringBuilder stringBuilder, bool isNegated)
 		{
-			if (quantifier.IsNever(isNegated))
+			if (quantifier.Value.IsNever(isNegated))
 			{
 				stringBuilder.Append("has never triggered ").Append(changeDescription).Append(filter);
 			}
 			else
 			{
 				stringBuilder.Append("has triggered ").Append(changeDescription).Append(filter)
-					.Append(' ').Append(quantifier.ToString(isNegated));
+					.Append(' ').Append(quantifier.Value.ToString(isNegated));
 			}
 
-			stringBuilder.Append(options);
+			stringBuilder.Append(options.Value);
 			filter.AppendReasons(stringBuilder);
 		}
 
@@ -459,13 +459,14 @@ internal static class NotificationConstraints
 		string it,
 		ExpectationGrammars grammars,
 		Func<TChange, string?> selector,
-		StringEqualityOptions options,
+		OptionsHolder<StringEqualityOptions> options,
 		string? expected,
 		string propertyName)
 		: ConstraintResult.WithNotNullValue<TChange>(it, grammars),
 			IAsyncConstraint<TChange>
 		where TChange : ChangeDescription
 	{
+		private MatchResult _matchResult;
 		private string? _actualValue;
 
 		public async ValueTask<ConstraintResult> IsMetBy(TChange actual,
@@ -478,20 +479,21 @@ internal static class NotificationConstraints
 			}
 
 			_actualValue = selector(actual);
-			Outcome = await options.AreConsideredEqual(_actualValue, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.Value.MatchWithExplanation(_actualValue, expected, nameof(expected));
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has ", "have ")).Append(propertyName).Append(' ')
-				.Append(options.GetExpectation(expected, Grammars));
+				.Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualValue, expected));
+			=> stringBuilder.Append(options.Value.GetExtendedFailure(It,Grammars, _actualValue, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have ", "do not have ")).Append(propertyName).Append(' ')
-				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
+				.Append(options.Value.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did");

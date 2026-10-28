@@ -16,14 +16,14 @@ public class TriggeredNotificationResult
 		IOptionsProvider<Quantifier>
 {
 	private readonly NotificationConstraints.TriggerNotificationFilter<ChangeDescription> _filter;
-	private readonly RepeatedCheckOptions _options;
-	private readonly Quantifier _quantifier;
+	private readonly OptionsHolder<RepeatedCheckOptions> _options;
+	private readonly OptionsHolder<Quantifier> _quantifier;
 
 	internal TriggeredNotificationResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<MockFileSystem> subject,
-		Quantifier quantifier,
-		RepeatedCheckOptions options, NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter)
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<RepeatedCheckOptions> options, NotificationConstraints.TriggerNotificationFilter<ChangeDescription> filter)
 		: base(expectationBuilder, subject)
 	{
 		_quantifier = quantifier;
@@ -53,7 +53,7 @@ public class TriggeredNotificationResult
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
 
 	/// <summary>
 	///     Allows a <paramref name="timeout" /> for waiting for asynchronous notifications.

@@ -15,12 +15,12 @@ public class DidNotTriggerWatcherResult
 	: AndOrResult<IFileSystemWatcher, IThat<IFileSystemWatcher>, DidNotTriggerWatcherResult>
 {
 	private readonly NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> _filter;
-	private readonly RepeatedCheckOptions _options;
+	private readonly OptionsHolder<RepeatedCheckOptions> _options;
 
 	internal DidNotTriggerWatcherResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<IFileSystemWatcher> subject,
-		RepeatedCheckOptions options, NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> filter)
+		OptionsHolder<RepeatedCheckOptions> options, NotificationConstraints.TriggerNotificationFilter<WatcherChangeDescription> filter)
 		: base(expectationBuilder, subject)
 	{
 		_options = options;

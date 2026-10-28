@@ -24,7 +24,7 @@ public static partial class FileInfoExtensions
 	public static StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> HasContent(this IThat<IFileInfo> subject,
 		string? expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			subject.Get().ExpectationBuilder.AddConstraint((expected, options), static (s, it, grammars)
 				=> new HasContentValueConstraint(
@@ -61,10 +61,11 @@ public static partial class FileInfoExtensions
 		string it,
 		ExpectationGrammars grammars,
 		string? expected,
-		StringEqualityOptions options)
+		OptionsHolder<StringEqualityOptions> options)
 		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),
 			IAsyncConstraint<IFileInfo>
 	{
+		private MatchResult _matchResult;
 		private string? _fileContent;
 
 		public async ValueTask<ConstraintResult> IsMetBy(IFileInfo actual, CancellationToken cancellationToken)
@@ -90,7 +91,8 @@ public static partial class FileInfoExtensions
 			_fileContent = await reader.ReadToEndAsync();
 			cancellationToken.ThrowIfCancellationRequested();
 #endif
-			Outcome = await options.AreConsideredEqual(_fileContent, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.Value.MatchWithExplanation(_fileContent, expected, nameof(expected));
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -113,7 +115,7 @@ public static partial class FileInfoExtensions
 				stringBuilder.Append("has content ");
 			}
 
-			stringBuilder.Append(options.GetExpectation(expected, Grammars));
+			stringBuilder.Append(options.Value.GetExpectation(expected, Grammars));
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -124,13 +126,13 @@ public static partial class FileInfoExtensions
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, expected));
+				stringBuilder.Append(options.Value.GetExtendedFailure(It,Grammars, _fileContent, expected, _matchResult));
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have content ", "do not have content "))
-				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
+				.Append(options.Value.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

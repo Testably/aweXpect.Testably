@@ -46,14 +46,15 @@ public class FileInfoContentResult(
 	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> EqualTo(
 		string expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			expectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new HasStringContentEqualToConstraint(
 					it,
 					grammars,
 					s.options,
-					s.expected)),
+					s.expected,
+					nameof(expected))),
 			subject, options);
 	}
 
@@ -84,14 +85,15 @@ public class FileInfoContentResult(
 	public StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>> NotEqualTo(
 		string unexpected)
 	{
-		StringEqualityOptions options = new(nameof(unexpected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			expectationBuilder.AddConstraint((options, unexpected), static (s, it, grammars)
 				=> new HasStringContentEqualToConstraint(
 					it,
 					grammars,
 					s.options,
-					s.unexpected).Invert()),
+					s.unexpected,
+					nameof(unexpected)).Invert()),
 			subject, options);
 	}
 
@@ -103,10 +105,10 @@ public class FileInfoContentResult(
 	{
 		ThrowHelper.ThrowIfNull(filePath, nameof(filePath));
 
-		StringEqualityOptions options = new(nameof(filePath));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			expectationBuilder.AddConstraint((options, filePath), static (s, it, grammars)
-				=> new HasContentSameAsConstraint(it, grammars, s.options, s.filePath)),
+				=> new HasContentSameAsConstraint(it, grammars, s.options, s.filePath, nameof(filePath))),
 			subject, options);
 	}
 
@@ -118,10 +120,10 @@ public class FileInfoContentResult(
 	{
 		ThrowHelper.ThrowIfNull(filePath, nameof(filePath));
 
-		StringEqualityOptions options = new(nameof(filePath));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			expectationBuilder.AddConstraint((options, filePath), static (s, it, grammars)
-				=> new HasContentSameAsConstraint(it, grammars, s.options, s.filePath).Invert()),
+				=> new HasContentSameAsConstraint(it, grammars, s.options, s.filePath, nameof(filePath)).Invert()),
 			subject, options);
 	}
 
@@ -174,11 +176,13 @@ public class FileInfoContentResult(
 	private sealed class HasStringContentEqualToConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		StringEqualityOptions options,
-		string expected)
+		OptionsHolder<StringEqualityOptions> options,
+		string expected,
+		string parameterName)
 		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),
 			IAsyncConstraint<IFileInfo>
 	{
+		private MatchResult _matchResult;
 		private string? _fileContent;
 
 		/// <inheritdoc />
@@ -198,7 +202,8 @@ public class FileInfoContentResult(
 			}
 
 			_fileContent = actual.FileSystem.File.ReadAllText(actual.FullName);
-			Outcome = await options.AreConsideredEqual(_fileContent, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.Value.MatchWithExplanation(_fileContent, expected, parameterName);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -212,7 +217,7 @@ public class FileInfoContentResult(
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has content ", "have content "))
-				.Append(options.GetExpectation(expected, Grammars));
+				.Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -222,13 +227,13 @@ public class FileInfoContentResult(
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, expected));
+				stringBuilder.Append(options.Value.GetExtendedFailure(It,Grammars, _fileContent, expected, _matchResult));
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have content ", "do not have content "))
-				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
+				.Append(options.Value.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(_fileContent is null ? " did not exist" : " did match");
@@ -237,11 +242,13 @@ public class FileInfoContentResult(
 	private sealed class HasContentSameAsConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		StringEqualityOptions options,
-		string expectedPath)
+		OptionsHolder<StringEqualityOptions> options,
+		string expectedPath,
+		string parameterName)
 		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),
 			IAsyncConstraint<IFileInfo>
 	{
+		private MatchResult _matchResult;
 		private string? _expectedContent;
 		private string? _fileContent;
 		private string? _fullPath;
@@ -273,7 +280,8 @@ public class FileInfoContentResult(
 			}
 
 			_expectedContent = actual.FileSystem.File.ReadAllText(expectedPath);
-			Outcome = await options.AreConsideredEqual(_fileContent, _expectedContent) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.Value.MatchWithExplanation(_fileContent, _expectedContent, parameterName);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -304,7 +312,7 @@ public class FileInfoContentResult(
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, _expectedContent));
+				stringBuilder.Append(options.Value.GetExtendedFailure(It,Grammars, _fileContent, _expectedContent, _matchResult));
 			}
 		}
 

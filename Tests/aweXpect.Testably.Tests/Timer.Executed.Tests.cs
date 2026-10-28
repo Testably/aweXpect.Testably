@@ -180,7 +180,7 @@ public sealed class Timer
 			}
 
 			[Test]
-			public async Task WithinTwice_ShouldThrowInvalidOperationException()
+			public async Task WithinTwice_ShouldUseLastTimeout()
 			{
 				MockTimeSystem timeSystem = new();
 				using ITimerMock sut = (ITimerMock)timeSystem.Timer.New(
@@ -197,9 +197,13 @@ public sealed class Timer
 						.Within(TimeSpan.FromMilliseconds(20));
 				}
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Within cannot be specified more than once.")
-					.Because("each option can only be specified once in v3 instead of the last one silently winning");
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that sut
+					             has executed at least once within 0:00.020,
+					             but it was not executed
+					             """)
+					.Because("a repeated option replaces the earlier one since aweXpect v4");
 			}
 
 			[Test]

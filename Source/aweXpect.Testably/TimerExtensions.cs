@@ -23,8 +23,8 @@ public static class TimerExtensions
 	public static TimerExecutedResult Executed(
 		this IThat<ITimerMock> subject)
 	{
-		Quantifier quantifier = new();
-		RepeatedCheckOptions options = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new TimerExecutedResult(
 			subject.Get().ExpectationBuilder.AddConstraint((quantifier, options), static (s, it, grammars)
 				=> new TimerConstraints.TimerExecutedConstraint(it, grammars, s.quantifier, s.options)),

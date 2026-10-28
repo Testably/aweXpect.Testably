@@ -21,7 +21,7 @@ public static partial class DriveInfoExtensions
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IDriveInfo, IThat<IDriveInfo>>(
 			subject.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new HasDriveFormatConstraint(it, grammars, s.options, s.expected)),
@@ -32,11 +32,12 @@ public static partial class DriveInfoExtensions
 	private sealed class HasDriveFormatConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		StringEqualityOptions options,
+		OptionsHolder<StringEqualityOptions> options,
 		string expected)
 		: ConstraintResult.WithNotNullValue<IDriveInfo>(it, grammars),
 			IAsyncConstraint<IDriveInfo>
 	{
+		private MatchResult _matchResult;
 		private string? _actualDriveFormat;
 
 		public async ValueTask<ConstraintResult> IsMetBy(IDriveInfo actual, CancellationToken cancellationToken)
@@ -48,19 +49,20 @@ public static partial class DriveInfoExtensions
 			}
 
 			_actualDriveFormat = actual.DriveFormat;
-			Outcome = await options.AreConsideredEqual(_actualDriveFormat, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.Value.MatchWithExplanation(_actualDriveFormat, expected, nameof(expected));
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has drive format ", "have drive format ")).Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append(Grammars.Verb("has drive format ", "have drive format ")).Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualDriveFormat, expected));
+			=> stringBuilder.Append(options.Value.GetExtendedFailure(It,Grammars, _actualDriveFormat, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have drive format ", "do not have drive format "))
-				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
+				.Append(options.Value.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did");

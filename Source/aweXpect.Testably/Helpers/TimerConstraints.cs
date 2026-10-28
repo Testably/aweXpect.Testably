@@ -14,8 +14,8 @@ internal static class TimerConstraints
 	internal sealed class TimerExecutedConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		Quantifier quantifier,
-		RepeatedCheckOptions options)
+		OptionsHolder<Quantifier> quantifier,
+		OptionsHolder<RepeatedCheckOptions> options)
 		: ConstraintResult.WithNotNullValue<ITimerMock>(it, grammars),
 			IAsyncContextConstraint<ITimerMock>
 	{
@@ -35,10 +35,10 @@ internal static class TimerConstraints
 				return this;
 			}
 
-			Outcome outcome = await options.CheckRepeatedly(_ =>
+			Outcome outcome = await options.Value.CheckRepeatedly(_ =>
 			{
 				_executionCount = actual.ExecutionCount;
-				return new ValueTask<bool>(quantifier.Check(ToInt(_executionCount), false) is not null);
+				return new ValueTask<bool>(quantifier.Value.Check(ToInt(_executionCount), false) is not null);
 			}, context);
 			if (outcome == Outcome.Undecided)
 			{
@@ -46,7 +46,7 @@ internal static class TimerConstraints
 				return this;
 			}
 
-			Outcome = quantifier.Check(ToInt(_executionCount), true) == true
+			Outcome = quantifier.Value.Check(ToInt(_executionCount), true) == true
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -69,16 +69,16 @@ internal static class TimerConstraints
 
 		private void AppendExpectation(StringBuilder stringBuilder, bool negated)
 		{
-			if (quantifier.IsNever(false))
+			if (quantifier.Value.IsNever(false))
 			{
 				stringBuilder.Append(negated ? "has executed at least once" : "has never executed");
 			}
 			else
 			{
-				stringBuilder.Append(negated ? "has not executed " : "has executed ").Append(quantifier);
+				stringBuilder.Append(negated ? "has not executed " : "has executed ").Append(quantifier.Value);
 			}
 
-			stringBuilder.Append(options);
+			stringBuilder.Append(options.Value);
 		}
 
 		private void AppendCount(StringBuilder stringBuilder)
