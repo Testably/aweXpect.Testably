@@ -294,7 +294,7 @@ public sealed class RecordedFileInfoInstance
 
 	private RecordedMethodCallResult Build(string methodName, params ParameterMatcher[] matchers)
 	{
-		Quantifier quantifier = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		string path = _path;
 		string bucketDescription = _bucketDescription;
 		return new RecordedMethodCallResult(

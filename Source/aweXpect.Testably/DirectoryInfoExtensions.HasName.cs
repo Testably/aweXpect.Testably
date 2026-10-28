@@ -18,7 +18,7 @@ public static partial class DirectoryInfoExtensions
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IDirectoryInfo, IThat<IDirectoryInfo>>(
 			subject.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new FileSystemConstraints.HasNameConstraint<IDirectoryInfo>(it, grammars, s.options, s.expected)),

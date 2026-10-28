@@ -20,7 +20,7 @@ public static partial class FileInfoExtensions
 	public static TimeToleranceResult<IFileInfo, IThat<IFileInfo>> HasLastWriteTime(
 		this IThat<IFileInfo> subject, DateTime expected)
 	{
-		TimeTolerance tolerance = new();
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<IFileInfo, IThat<IFileInfo>>(
 			subject.Get().ExpectationBuilder.AddConstraint((tolerance, expected), static (s, it, grammars)
 				=> new FileSystemConstraints.HasTimeConstraint<IFileInfo>(it, grammars,

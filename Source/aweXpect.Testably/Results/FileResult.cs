@@ -40,10 +40,10 @@ public partial class FileResult<TParent>
 	public StringEqualityTypeResult<TParent, FileResult<TParent>> WithContent(
 		string expected)
 	{
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 			_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, options, expected), static (s, it, grammar)
-				=> new HasStringContentEqualToConstraint(it, grammar, s.resolver, s.options, s.expected)),
+				=> new HasStringContentEqualToConstraint(it, grammar, s.resolver, s.options, s.expected, nameof(expected))),
 			this, options);
 	}
 
@@ -74,7 +74,7 @@ public partial class FileResult<TParent>
 		return new AndOrResult<TParent, FileResult<TParent>>(
 			_expectationBuilder
 				.ForMember(
-					MemberAccessor<TParent, string>.FromFunc(
+					MemberAccessor<TParent, string>.FromFuncWithName(
 						p =>
 						{
 							(IFileSystem fs, string fullPath) = resolver(p);
@@ -122,7 +122,7 @@ public partial class FileResult<TParent>
 	private TimeToleranceResult<TParent, FileResult<TParent>> AddTimeConstraint(
 		Func<TParent, DateTime> timeAccessor, DateTime expected, string expectedString)
 	{
-		TimeTolerance tolerance = new();
+		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Default);
 		return new TimeToleranceResult<TParent, FileResult<TParent>>(
 			_expectationBuilder.And(" ").AddConstraint((timeAccessor, resolver: _resolver, tolerance, expected, expectedString), static (s, it, grammars)
 				=> new FileSystemConstraints.HasTimeConstraint<TParent>(it, grammars,

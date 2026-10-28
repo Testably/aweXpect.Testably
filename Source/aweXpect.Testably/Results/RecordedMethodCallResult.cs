@@ -16,17 +16,17 @@ public sealed class RecordedMethodCallResult
 	: AndOrResult<IFileSystemStatistics, IThat<IFileSystemStatistics>, RecordedMethodCallResult>,
 		IOptionsProvider<Quantifier>
 {
-	private readonly Quantifier _quantifier;
+	private readonly OptionsHolder<Quantifier> _quantifier;
 
 	internal RecordedMethodCallResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<IFileSystemStatistics> subject,
-		Quantifier quantifier)
+		OptionsHolder<Quantifier> quantifier)
 		: base(expectationBuilder, subject)
 	{
 		_quantifier = quantifier;
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => _quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
 }

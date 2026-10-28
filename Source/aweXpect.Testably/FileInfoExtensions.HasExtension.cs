@@ -21,7 +21,7 @@ public static partial class FileInfoExtensions
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			subject.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new HasExtensionConstraint(it, grammars, s.options, s.expected)),
@@ -32,11 +32,12 @@ public static partial class FileInfoExtensions
 	private sealed class HasExtensionConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		StringEqualityOptions options,
+		OptionsHolder<StringEqualityOptions> options,
 		string expected)
 		: ConstraintResult.WithNotNullValue<IFileInfo>(it, grammars),
 			IAsyncConstraint<IFileInfo>
 	{
+		private MatchResult _matchResult;
 		private string? _actualExtension;
 
 		public async ValueTask<ConstraintResult> IsMetBy(IFileInfo actual, CancellationToken cancellationToken)
@@ -48,19 +49,20 @@ public static partial class FileInfoExtensions
 			}
 
 			_actualExtension = actual.Extension;
-			Outcome = await options.AreConsideredEqual(_actualExtension, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.Value.MatchWithExplanation(_actualExtension, expected, nameof(expected));
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("has extension ", "have extension ")).Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append(Grammars.Verb("has extension ", "have extension ")).Append(options.Value.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _actualExtension, expected));
+			=> stringBuilder.Append(options.Value.GetExtendedFailure(It,Grammars, _actualExtension, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have extension ", "do not have extension "))
-				.Append(options.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
+				.Append(options.Value.GetExpectation(expected, Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did");

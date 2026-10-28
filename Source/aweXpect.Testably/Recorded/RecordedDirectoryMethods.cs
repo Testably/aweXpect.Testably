@@ -477,7 +477,7 @@ public sealed class RecordedDirectoryMethods
 
 	private RecordedMethodCallResult Build(string methodName, params ParameterMatcher[] matchers)
 	{
-		Quantifier quantifier = new();
+		OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 		return new RecordedMethodCallResult(
 			_subject.Get().ExpectationBuilder.AddConstraint((quantifier, methodName, matchers), static (state, it, grammars)
 				=> new StatisticsConstraints.RecordedMethodCallConstraint(

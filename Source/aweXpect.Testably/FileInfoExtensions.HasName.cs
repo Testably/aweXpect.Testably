@@ -17,7 +17,7 @@ public static partial class FileInfoExtensions
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 
-		StringEqualityOptions options = new(nameof(expected));
+		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IFileInfo, IThat<IFileInfo>>(
 			subject.Get().ExpectationBuilder.AddConstraint((options, expected), static (s, it, grammars)
 				=> new FileSystemConstraints.HasNameConstraint<IFileInfo>(it, grammars, s.options, s.expected)),

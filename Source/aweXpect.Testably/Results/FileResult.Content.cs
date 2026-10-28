@@ -62,7 +62,7 @@ public partial class FileResult<TParent>
 		public StringEqualityTypeResult<TParent, FileResult<TParent>> EqualTo(
 			string expected)
 		{
-			StringEqualityOptions options = new(nameof(expected));
+			OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 				_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, options, expected), static (s, it, grammars)
 					=> new HasStringContentEqualToConstraint(
@@ -70,7 +70,8 @@ public partial class FileResult<TParent>
 						grammars,
 						s.resolver,
 						s.options,
-						s.expected)),
+						s.expected,
+						nameof(expected))),
 				_subject, options);
 		}
 
@@ -103,7 +104,7 @@ public partial class FileResult<TParent>
 		public StringEqualityTypeResult<TParent, FileResult<TParent>> NotEqualTo(
 			string unexpected)
 		{
-			StringEqualityOptions options = new(nameof(unexpected));
+			OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 				_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, options, unexpected), static (s, it, grammars)
 					=> new HasStringContentEqualToConstraint(
@@ -112,6 +113,7 @@ public partial class FileResult<TParent>
 						s.resolver,
 						s.options,
 						s.unexpected,
+						nameof(unexpected),
 						isInverted: true).Invert()),
 				_subject, options);
 		}
@@ -124,10 +126,10 @@ public partial class FileResult<TParent>
 		{
 			ThrowHelper.ThrowIfNull(filePath, nameof(filePath));
 
-			StringEqualityOptions options = new(nameof(filePath));
+			OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 				_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, options, filePath), static (s, it, grammars)
-					=> new HasContentSameAsConstraint(it, grammars, s.resolver, s.options, s.filePath)),
+					=> new HasContentSameAsConstraint(it, grammars, s.resolver, s.options, s.filePath, nameof(filePath))),
 				_subject, options);
 		}
 
@@ -139,10 +141,10 @@ public partial class FileResult<TParent>
 		{
 			ThrowHelper.ThrowIfNull(filePath, nameof(filePath));
 
-			StringEqualityOptions options = new(nameof(filePath));
+			OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 			return new StringEqualityTypeResult<TParent, FileResult<TParent>>(
 				_expectationBuilder.And(" ").AddConstraint((resolver: _resolver, options, filePath), static (s, it, grammars)
-					=> new HasContentSameAsConstraint(it, grammars, s.resolver, s.options, s.filePath, isInverted: true)
+					=> new HasContentSameAsConstraint(it, grammars, s.resolver, s.options, s.filePath, nameof(filePath), isInverted: true)
 						.Invert()),
 				_subject, options);
 		}
@@ -199,12 +201,14 @@ public partial class FileResult<TParent>
 		string it,
 		ExpectationGrammars grammars,
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver,
-		StringEqualityOptions options,
+		OptionsHolder<StringEqualityOptions> options,
 		string expected,
+		string parameterName,
 		bool isInverted = false)
 		: ConstraintResult.WithNotNullValue<TParent>(it, grammars),
 			IAsyncConstraint<TParent>
 	{
+		private MatchResult _matchResult;
 		private string? _fileContent;
 		private string? _missingFileResult;
 
@@ -226,7 +230,8 @@ public partial class FileResult<TParent>
 			}
 
 			_fileContent = fs.File.ReadAllText(fullPath);
-			Outcome = await options.AreConsideredEqual(_fileContent, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.Value.MatchWithExplanation(_fileContent, expected, parameterName);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -239,7 +244,7 @@ public partial class FileResult<TParent>
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("with content ").Append(options.GetExpectation(expected,
+			=> stringBuilder.Append("with content ").Append(options.Value.GetExpectation(expected,
 				isInverted ? Grammars | ExpectationGrammars.Negated : Grammars & ~ExpectationGrammars.Negated));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -250,7 +255,7 @@ public partial class FileResult<TParent>
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, expected));
+				stringBuilder.Append(options.Value.GetExtendedFailure(It,Grammars, _fileContent, expected, _matchResult));
 			}
 		}
 
@@ -265,12 +270,14 @@ public partial class FileResult<TParent>
 		string it,
 		ExpectationGrammars grammars,
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver,
-		StringEqualityOptions options,
+		OptionsHolder<StringEqualityOptions> options,
 		string expectedPath,
+		string parameterName,
 		bool isInverted = false)
 		: ConstraintResult.WithNotNullValue<TParent>(it, grammars),
 			IAsyncConstraint<TParent>
 	{
+		private MatchResult _matchResult;
 		private string? _expectedContent;
 		private string? _fileContent;
 		private string? _fullExpectedPath;
@@ -304,7 +311,8 @@ public partial class FileResult<TParent>
 			}
 
 			_expectedContent = fs.File.ReadAllText(expectedPath);
-			Outcome = await options.AreConsideredEqual(_fileContent, _expectedContent) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.Value.MatchWithExplanation(_fileContent, _expectedContent, parameterName);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -335,7 +343,7 @@ public partial class FileResult<TParent>
 			}
 			else
 			{
-				stringBuilder.Append(options.GetExtendedFailure(It,Grammars, _fileContent, _expectedContent));
+				stringBuilder.Append(options.Value.GetExtendedFailure(It,Grammars, _fileContent, _expectedContent, _matchResult));
 			}
 		}
 

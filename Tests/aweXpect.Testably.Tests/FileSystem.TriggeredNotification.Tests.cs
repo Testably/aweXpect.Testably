@@ -321,7 +321,7 @@ public sealed partial class FileSystem
 			}
 
 			[Test]
-			public async Task WithinTwice_ShouldThrowInvalidOperationException()
+			public async Task WithinTwice_ShouldUseLastTimeout()
 			{
 				MockFileSystem sut = new();
 
@@ -332,9 +332,13 @@ public sealed partial class FileSystem
 						.Within(TimeSpan.FromMilliseconds(20));
 				}
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("Within cannot be specified more than once.")
-					.Because("each option can only be specified once in v3 instead of the last one silently winning");
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that sut
+					             has triggered a notification at least once within 0:00.020,
+					             but it was not triggered
+					             """)
+					.Because("a repeated option replaces the earlier one since aweXpect v4");
 			}
 
 			[Test]

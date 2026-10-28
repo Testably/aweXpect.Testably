@@ -39,7 +39,7 @@ public partial class DirectoryResult<TParent>
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver = _resolver;
 		_expectationBuilder
 			.ForMember(
-				MemberAccessor<TParent, IEnumerable<IFileInfo>>.FromFunc(
+				MemberAccessor<TParent, IEnumerable<IFileInfo>>.FromFuncWithName(
 					p =>
 					{
 						(IFileSystem fs, string fullPath) = resolver(p);
@@ -64,7 +64,7 @@ public partial class DirectoryResult<TParent>
 		Func<TParent, (IFileSystem fs, string fullPath)> resolver = _resolver;
 		_expectationBuilder
 			.ForMember(
-				MemberAccessor<TParent, IEnumerable<IDirectoryInfo>>.FromFunc(
+				MemberAccessor<TParent, IEnumerable<IDirectoryInfo>>.FromFuncWithName(
 					p =>
 					{
 						(IFileSystem fs, string fullPath) = resolver(p);

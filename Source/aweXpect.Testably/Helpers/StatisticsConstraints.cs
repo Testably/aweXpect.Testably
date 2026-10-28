@@ -12,7 +12,7 @@ internal static class StatisticsConstraints
 	internal sealed class RecordedMethodCallConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		Quantifier quantifier,
+		OptionsHolder<Quantifier> quantifier,
 		Func<IFileSystemStatistics, IStatistics> bucketSelector,
 		string bucketDescription,
 		string methodName,
@@ -46,7 +46,7 @@ internal static class StatisticsConstraints
 				_matchCount++;
 			}
 
-			Outcome = quantifier.Check(_matchCount, true) == true
+			Outcome = quantifier.Value.Check(_matchCount, true) == true
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -89,7 +89,7 @@ internal static class StatisticsConstraints
 
 		private void AppendExpectation(StringBuilder stringBuilder, bool negated)
 		{
-			if (quantifier.IsNever(false))
+			if (quantifier.Value.IsNever(false))
 			{
 				stringBuilder.Append(negated ? "has recorded at least one call to " : "has recorded no call to ")
 					.Append(bucketDescription).Append('.').Append(methodName);
@@ -100,7 +100,7 @@ internal static class StatisticsConstraints
 				stringBuilder.Append(negated ? "has not recorded a call to " : "has recorded a call to ")
 					.Append(bucketDescription).Append('.').Append(methodName);
 				AppendMatcherDescription(stringBuilder);
-				stringBuilder.Append(' ').Append(quantifier);
+				stringBuilder.Append(' ').Append(quantifier.Value);
 			}
 		}
 
@@ -138,7 +138,7 @@ internal static class StatisticsConstraints
 	internal sealed class RecordedPropertyAccessConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		Quantifier quantifier,
+		OptionsHolder<Quantifier> quantifier,
 		Func<IFileSystemStatistics, IStatistics> bucketSelector,
 		string bucketDescription,
 		string propertyName,
@@ -165,7 +165,7 @@ internal static class StatisticsConstraints
 				}
 			}
 
-			Outcome = quantifier.Check(_matchCount, true) == true
+			Outcome = quantifier.Value.Check(_matchCount, true) == true
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -186,7 +186,7 @@ internal static class StatisticsConstraints
 		private void AppendExpectation(StringBuilder stringBuilder, bool negated)
 		{
 			string accessVerb = access == PropertyAccess.Get ? "get of " : "set of ";
-			if (quantifier.IsNever(false))
+			if (quantifier.Value.IsNever(false))
 			{
 				stringBuilder.Append(negated ? "has recorded at least one " : "has recorded no ").Append(accessVerb)
 					.Append(bucketDescription).Append('.').Append(propertyName);
@@ -195,7 +195,7 @@ internal static class StatisticsConstraints
 			{
 				stringBuilder.Append(negated ? "has not recorded a " : "has recorded a ").Append(accessVerb)
 					.Append(bucketDescription).Append('.').Append(propertyName)
-					.Append(' ').Append(quantifier);
+					.Append(' ').Append(quantifier.Value);
 			}
 		}
 
