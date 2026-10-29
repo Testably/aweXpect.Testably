@@ -1,6 +1,5 @@
 using System.Threading;
 using aweXpect.Core;
-using aweXpect.Core.Internal;
 using Testably.Abstractions.Testing;
 using Testably.Abstractions.Testing.TimeSystem;
 
@@ -203,7 +202,7 @@ public sealed class ThatTimerMock
 				{
 					// ReSharper disable once AccessToDisposedClosure
 					await That(sut).Executed().Within(TimeSpan.FromMilliseconds(100)).Exactly(3.Times())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 				}
 
 				await That(Act).Throws()
@@ -307,7 +306,7 @@ public sealed class ThatTimerMock
 					// ReSharper disable once AccessToDisposedClosure
 					await That(sut).DoesNotComplyWith(it
 						=> it.Executed().Never().Within(TimeSpan.FromMilliseconds(100)))
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 				}
 
 				await That(Act).Throws()
@@ -334,7 +333,7 @@ public sealed class ThatTimerMock
 					await That(sut).Executed().Never()
 						.Within(TimeSpan.FromMilliseconds(200))
 						.WithTimeout(TimeSpan.FromMilliseconds(200))
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 				}
 
 				await That(Act).DoesNotThrow()
@@ -404,7 +403,7 @@ public sealed class ThatTimerMock
 					await That(sut).Executed()
 						.Within(TimeSpan.FromMilliseconds(10))
 						.Within(TimeSpan.FromMilliseconds(20))
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 				}
 
 				await That(Act).Throws()
