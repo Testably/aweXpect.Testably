@@ -52,7 +52,7 @@ root ones from applying.
   `That<Subject>.cs`.
 - Test conventions follow aweXpect: methods sorted alphabetically within their class, no comments in tests (the
   reasoning goes into `.Because(...)`), never a bare `Throws<T>()` without `.WithMessage(...)`, and tests that only
-  wait for a timeout to pass run on the `VirtualTimeSystem` (`.WithTimeSystem(new VirtualTimeSystem())`).
+  wait for a timeout to pass run on the `VirtualTimeProvider` (`.WithTimeProvider(new VirtualTimeProvider())`).
 - Cross-cutting tests that a new expectation usually needs an entry in: `ArgumentValidation.Tests.cs` (null
   arguments), `NullOrMissingSubject.Tests.cs` (null and missing subjects, including negation), `PluralGrammar.Tests.cs`
   (messages inside `ThatAll`) and `Quantifiers.Tests.cs` (counts such as `Once()` or `AtLeast(...)` on recorded calls,
