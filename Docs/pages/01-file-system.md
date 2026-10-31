@@ -141,9 +141,9 @@ await Expect.That(fileSystem).HasFile("let-it-be.txt").WithContent().NotSameAs("
 You can verify the timestamps of the file, and widen the comparison to a window with `.Within(tolerance)`:
 
 ```csharp
-await Expect.That(fileSystem).HasFile("let-it-be.txt").WithCreationTime(DateTime.Now).Within(1.Second());
-await Expect.That(fileSystem).HasFile("let-it-be.txt").WithLastAccessTime(DateTime.Now).Within(1.Second());
-await Expect.That(fileSystem).HasFile("let-it-be.txt").WithLastWriteTime(DateTime.Now).Within(1.Second());
+await Expect.That(fileSystem).HasFile("let-it-be.txt").WithCreationTime(DateTime.Now).Within(1.Seconds());
+await Expect.That(fileSystem).HasFile("let-it-be.txt").WithLastAccessTime(DateTime.Now).Within(1.Seconds());
+await Expect.That(fileSystem).HasFile("let-it-be.txt").WithLastWriteTime(DateTime.Now).Within(1.Seconds());
 ```
 
 ### Directory content
@@ -188,9 +188,9 @@ await Expect.That(fileInfo).IsNotReadOnly();
 await Expect.That(readOnlyFileInfo).HasAttribute(FileAttributes.ReadOnly);
 await Expect.That(fileInfo).DoesNotHaveAttribute(FileAttributes.ReadOnly);
 
-await Expect.That(fileInfo).HasCreationTime(DateTime.Now).Within(1.Second());
-await Expect.That(fileInfo).HasLastAccessTime(DateTime.Now).Within(1.Second());
-await Expect.That(fileInfo).HasLastWriteTime(DateTime.Now).Within(1.Second());
+await Expect.That(fileInfo).HasCreationTime(DateTime.Now).Within(1.Seconds());
+await Expect.That(fileInfo).HasLastAccessTime(DateTime.Now).Within(1.Seconds());
+await Expect.That(fileInfo).HasLastWriteTime(DateTime.Now).Within(1.Seconds());
 ```
 
 For example, `Expect.That(fileInfo).HasLength(10)` fails with:
@@ -250,9 +250,9 @@ await Expect.That(dirInfo).DoesNotHaveDirectory("white-album");
 await Expect.That(dirInfo).HasAttribute(FileAttributes.Directory);
 await Expect.That(dirInfo).DoesNotHaveAttribute(FileAttributes.Hidden);
 
-await Expect.That(dirInfo).HasCreationTime(DateTime.Now).Within(1.Second());
-await Expect.That(dirInfo).HasLastAccessTime(DateTime.Now).Within(1.Second());
-await Expect.That(dirInfo).HasLastWriteTime(DateTime.Now).Within(1.Second());
+await Expect.That(dirInfo).HasCreationTime(DateTime.Now).Within(1.Seconds());
+await Expect.That(dirInfo).HasLastAccessTime(DateTime.Now).Within(1.Seconds());
+await Expect.That(dirInfo).HasLastWriteTime(DateTime.Now).Within(1.Seconds());
 ```
 
 `HasFile` and `HasDirectory` resolve the path relative to the directory and continue like on the
