@@ -90,8 +90,9 @@ changed since `main` is mutated. CI runs it on `windows-latest`; it takes long, 
 
 ## Documentation
 
-- `README.md` is the package readme and is embedded into `Docs/pages/00-index.md` through `{README}`. `Pack` and
-  `UpdateReadme` write a release copy with versioned badges to `Artifacts/README.md`.
+- `README.md` is the package readme. `Pack` and `UpdateReadme` write a release copy with versioned badges to
+  `Artifacts/README.md`. `Docs/pages/00-index.md` is the docs landing page and is maintained separately; keep its
+  overview tables in sync with the README.
 - `Docs/pages/*.md` is the user documentation, published to the Testably docs site: after a successful `Build` on
   `main`, `notify-docs-site.yml` triggers a rebuild of `Testably/Testably.Site`. The code blocks are not compiled; the
   README examples are covered by `Tests/aweXpect.Testably.Tests/Readme.Tests.cs`.

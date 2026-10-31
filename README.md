@@ -10,6 +10,15 @@ Expectations for the file system and time system mocks from
 [Testably.Abstractions](https://github.com/Testably/Testably.Abstractions) for
 [aweXpect](https://github.com/Testably/aweXpect).
 
+## Installation
+
+```shell
+dotnet add package aweXpect.Testably
+```
+
+The package adds its expectations to aweXpect, so the test project also needs the
+[`aweXpect`](https://www.nuget.org/packages/aweXpect) package.
+
 ## At a glance
 
 ```csharp
