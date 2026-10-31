@@ -9,7 +9,7 @@
 		<Copyright>Copyright (c) 2024 Valentin Breuß</Copyright>
 		<RepositoryUrl>https://github.com/Testably/aweXpect.Testably.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Testably</PackageProjectUrl>
+		<PackageProjectUrl>https://docs.testably.org/aweXpect/extensions/aweXpect.Testably</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageIcon>Docs/logo.png</PackageIcon>
 		<PackageReadmeFile>Docs/README.md</PackageReadmeFile>
