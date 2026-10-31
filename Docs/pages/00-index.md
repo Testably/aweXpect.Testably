@@ -12,7 +12,7 @@ import PackageInstall from '@site/src/components/PackageInstall';
 
 <PackageInstall package="aweXpect.Testably" />
 
-The package adds its expectations to aweXpect, so the test project also needs the [`aweXpect`](/aweXpect/getting-started) package.
+It does not include [`aweXpect`](/aweXpect/getting-started) itself.
 
 ## At a glance
 
