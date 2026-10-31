@@ -23,29 +23,30 @@ The package adds its expectations to aweXpect, so the test project also needs th
 
 ```csharp
 using aweXpect.Chronology; // from the aweXpect.Chronology package
+using static aweXpect.Expect;
 
 MockFileSystem fileSystem = new();
 fileSystem.File.WriteAllText("let-it-be.txt", "let it be");
 
 // verify that a file exists, together with its content
-await Expect.That(fileSystem).HasFile("let-it-be.txt").WithContent("LET IT BE").IgnoringCase();
+await That(fileSystem).HasFile("let-it-be.txt").WithContent("LET IT BE").IgnoringCase();
 
 // verify the properties of the found file
-await Expect.That(fileSystem).HasFile("let-it-be.txt").Which.HasLength(9);
+await That(fileSystem).HasFile("let-it-be.txt").Which.HasLength(9);
 
 // verify that a file does not exist
-await Expect.That(fileSystem).DoesNotHaveFile("yesterday.txt");
+await That(fileSystem).DoesNotHaveFile("yesterday.txt");
 
 // verify the notifications the file system raised
-await Expect.That(fileSystem).TriggeredNotification(c => c.Name == "let-it-be.txt");
+await That(fileSystem).TriggeredNotification(c => c.Name == "let-it-be.txt");
 
 // verify the method calls the file system recorded
-await Expect.That(fileSystem.Statistics).Recorded().File.WriteAllText().Once();
+await That(fileSystem.Statistics).Recorded().File.WriteAllText().Once();
 
 // verify how often the callback of a timer from a MockTimeSystem was executed
 MockTimeSystem timeSystem = new();
 ITimerMock timer = (ITimerMock)timeSystem.Timer.New(_ => { }, null, TimeSpan.Zero, 10.Milliseconds());
-await Expect.That(timer).Executed().AtLeast(3.Times()).Within(5.Seconds());
+await That(timer).Executed().AtLeast(3.Times()).Within(5.Seconds());
 ```
 
 A failing expectation on the file system names the path it looked for. If the file was never written,
