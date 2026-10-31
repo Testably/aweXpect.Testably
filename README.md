@@ -50,107 +50,107 @@ but it did not exist
 
 ## Overview
 
-Expectations for [`IFileSystem`](Docs/pages/01-file-system.md#files-directories-and-drives):
+Expectations for [`IFileSystem`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#files-directories-and-drives):
 
 | Expectation                                                                 | Negated                | Summary                                                              |
 |-----------------------------------------------------------------------------|------------------------|----------------------------------------------------------------------|
-| [`HasFile`](Docs/pages/01-file-system.md#files-directories-and-drives)      | `DoesNotHaveFile`      | contains the file, optionally with its content and timestamps        |
-| [`HasDirectory`](Docs/pages/01-file-system.md#files-directories-and-drives) | `DoesNotHaveDirectory` | contains the directory, optionally with its files and subdirectories |
-| [`HasDrive`](Docs/pages/01-file-system.md#files-directories-and-drives)     | `DoesNotHaveDrive`     | contains the drive                                                   |
+| [`HasFile`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#files-directories-and-drives)      | `DoesNotHaveFile`      | contains the file, optionally with its content and timestamps        |
+| [`HasDirectory`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#files-directories-and-drives) | `DoesNotHaveDirectory` | contains the directory, optionally with its files and subdirectories |
+| [`HasDrive`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#files-directories-and-drives)     | `DoesNotHaveDrive`     | contains the drive                                                   |
 
-Expectations for [`IFileInfo`](Docs/pages/01-file-system.md#file):
+Expectations for [`IFileInfo`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file):
 
 | Expectation                                              | Negated                   | Summary                                                          |
 |----------------------------------------------------------|---------------------------|------------------------------------------------------------------|
-| [`Exists`](Docs/pages/01-file-system.md#file)            | `DoesNotExist`            | the file exists                                                  |
-| [`HasName`](Docs/pages/01-file-system.md#file)           |                           | has the expected name                                            |
-| [`HasExtension`](Docs/pages/01-file-system.md#file)      |                           | has the expected extension                                       |
-| [`HasLength`](Docs/pages/01-file-system.md#file)         |                           | has the expected length                                          |
-| [`HasContent`](Docs/pages/01-file-system.md#file)        | `HasContent().NotEqualTo` | has the expected string or binary content                        |
-| [`IsReadOnly`](Docs/pages/01-file-system.md#file)        | `IsNotReadOnly`           | the file is read-only                                            |
-| [`HasAttribute`](Docs/pages/01-file-system.md#file)      | `DoesNotHaveAttribute`    | has the attribute flag                                           |
-| [`HasCreationTime`](Docs/pages/01-file-system.md#file)   |                           | has the expected creation time, optionally within a tolerance    |
-| [`HasLastAccessTime`](Docs/pages/01-file-system.md#file) |                           | has the expected last access time, optionally within a tolerance |
-| [`HasLastWriteTime`](Docs/pages/01-file-system.md#file)  |                           | has the expected last write time, optionally within a tolerance  |
-| [`WhoseParent`](Docs/pages/01-file-system.md#file)       |                           | the containing directory meets expectations (.NET 10 or later)   |
+| [`Exists`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file)            | `DoesNotExist`            | the file exists                                                  |
+| [`HasName`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file)           |                           | has the expected name                                            |
+| [`HasExtension`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file)      |                           | has the expected extension                                       |
+| [`HasLength`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file)         |                           | has the expected length                                          |
+| [`HasContent`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file)        | `HasContent().NotEqualTo` | has the expected string or binary content                        |
+| [`IsReadOnly`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file)        | `IsNotReadOnly`           | the file is read-only                                            |
+| [`HasAttribute`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file)      | `DoesNotHaveAttribute`    | has the attribute flag                                           |
+| [`HasCreationTime`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file)   |                           | has the expected creation time, optionally within a tolerance    |
+| [`HasLastAccessTime`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file) |                           | has the expected last access time, optionally within a tolerance |
+| [`HasLastWriteTime`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file)  |                           | has the expected last write time, optionally within a tolerance  |
+| [`WhoseParent`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file)       |                           | the containing directory meets expectations (.NET 10 or later)   |
 
-Expectations for [`IDirectoryInfo`](Docs/pages/01-file-system.md#directory):
+Expectations for [`IDirectoryInfo`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#directory):
 
 | Expectation                                                   | Negated                | Summary                                                          |
 |---------------------------------------------------------------|------------------------|------------------------------------------------------------------|
-| [`Exists`](Docs/pages/01-file-system.md#directory)            | `DoesNotExist`         | the directory exists                                             |
-| [`HasName`](Docs/pages/01-file-system.md#directory)           |                        | has the expected name                                            |
-| [`IsEmpty`](Docs/pages/01-file-system.md#directory)           | `IsNotEmpty`           | contains no files or subdirectories                              |
-| [`HasFile`](Docs/pages/01-file-system.md#directory)           | `DoesNotHaveFile`      | contains the file                                                |
-| [`HasDirectory`](Docs/pages/01-file-system.md#directory)      | `DoesNotHaveDirectory` | contains the subdirectory                                        |
-| [`HasAttribute`](Docs/pages/01-file-system.md#directory)      | `DoesNotHaveAttribute` | has the attribute flag                                           |
-| [`HasCreationTime`](Docs/pages/01-file-system.md#directory)   |                        | has the expected creation time, optionally within a tolerance    |
-| [`HasLastAccessTime`](Docs/pages/01-file-system.md#directory) |                        | has the expected last access time, optionally within a tolerance |
-| [`HasLastWriteTime`](Docs/pages/01-file-system.md#directory)  |                        | has the expected last write time, optionally within a tolerance  |
-| [`WhoseParent`](Docs/pages/01-file-system.md#directory)       |                        | the parent directory meets expectations (.NET 10 or later)       |
+| [`Exists`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#directory)            | `DoesNotExist`         | the directory exists                                             |
+| [`HasName`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#directory)           |                        | has the expected name                                            |
+| [`IsEmpty`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#directory)           | `IsNotEmpty`           | contains no files or subdirectories                              |
+| [`HasFile`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#directory)           | `DoesNotHaveFile`      | contains the file                                                |
+| [`HasDirectory`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#directory)      | `DoesNotHaveDirectory` | contains the subdirectory                                        |
+| [`HasAttribute`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#directory)      | `DoesNotHaveAttribute` | has the attribute flag                                           |
+| [`HasCreationTime`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#directory)   |                        | has the expected creation time, optionally within a tolerance    |
+| [`HasLastAccessTime`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#directory) |                        | has the expected last access time, optionally within a tolerance |
+| [`HasLastWriteTime`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#directory)  |                        | has the expected last write time, optionally within a tolerance  |
+| [`WhoseParent`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#directory)       |                        | the parent directory meets expectations (.NET 10 or later)       |
 
-Expectations for [`IDriveInfo`](Docs/pages/01-file-system.md#drive):
+Expectations for [`IDriveInfo`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#drive):
 
 | Expectation                                                   | Negated      | Summary                               |
 |---------------------------------------------------------------|--------------|---------------------------------------|
-| [`IsReady`](Docs/pages/01-file-system.md#drive)               | `IsNotReady` | the drive is ready                    |
-| [`HasName`](Docs/pages/01-file-system.md#drive)               |              | has the expected name                 |
-| [`HasVolumeLabel`](Docs/pages/01-file-system.md#drive)        |              | has the expected volume label         |
-| [`HasDriveFormat`](Docs/pages/01-file-system.md#drive)        |              | has the expected drive format         |
-| [`HasDriveType`](Docs/pages/01-file-system.md#drive)          |              | has the expected drive type           |
-| [`HasTotalSize`](Docs/pages/01-file-system.md#drive)          |              | has the expected total size           |
-| [`HasTotalFreeSpace`](Docs/pages/01-file-system.md#drive)     |              | has the expected total free space     |
-| [`HasAvailableFreeSpace`](Docs/pages/01-file-system.md#drive) |              | has the expected available free space |
+| [`IsReady`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#drive)               | `IsNotReady` | the drive is ready                    |
+| [`HasName`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#drive)               |              | has the expected name                 |
+| [`HasVolumeLabel`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#drive)        |              | has the expected volume label         |
+| [`HasDriveFormat`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#drive)        |              | has the expected drive format         |
+| [`HasDriveType`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#drive)          |              | has the expected drive type           |
+| [`HasTotalSize`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#drive)          |              | has the expected total size           |
+| [`HasTotalFreeSpace`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#drive)     |              | has the expected total free space     |
+| [`HasAvailableFreeSpace`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#drive) |              | has the expected available free space |
 
-Expectations for [`IFileVersionInfo`](Docs/pages/01-file-system.md#file-version-info):
+Expectations for [`IFileVersionInfo`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file-version-info):
 
 | Expectation                                                                                          | Negated         | Summary                      |
 |------------------------------------------------------------------------------------------------------|-----------------|------------------------------|
-| [`HasCompanyName`, `HasFileMajorPart`, `IsDebug`, …](Docs/pages/01-file-system.md#file-version-info) | `IsNotDebug`, … | one expectation per property |
+| [`HasCompanyName`, `HasFileMajorPart`, `IsDebug`, …](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system#file-version-info) | `IsNotDebug`, … | one expectation per property |
 
-Expectations for [`MockFileSystem`](Docs/pages/02-notifications.md#file-system-notifications):
+Expectations for [`MockFileSystem`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#file-system-notifications):
 
 | Expectation                                                                         | Negated                     | Summary                                        |
 |-------------------------------------------------------------------------------------|-----------------------------|------------------------------------------------|
-| [`TriggeredNotification`](Docs/pages/02-notifications.md#file-system-notifications) | `DidNotTriggerNotification` | the file system raised a matching notification |
+| [`TriggeredNotification`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#file-system-notifications) | `DidNotTriggerNotification` | the file system raised a matching notification |
 
-Expectations for [`IFileSystemWatcher`](Docs/pages/02-notifications.md#watcher-events):
+Expectations for [`IFileSystemWatcher`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#watcher-events):
 
 | Expectation                                                  | Negated         | Summary                             |
 |--------------------------------------------------------------|-----------------|-------------------------------------|
-| [`Triggered`](Docs/pages/02-notifications.md#watcher-events) | `DidNotTrigger` | the watcher raised a matching event |
+| [`Triggered`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#watcher-events) | `DidNotTrigger` | the watcher raised a matching event |
 
-Expectations for [`ChangeDescription`](Docs/pages/02-notifications.md#change-descriptions):
+Expectations for [`ChangeDescription`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#change-descriptions):
 
 | Expectation                                                               | Negated                     | Summary                                                  |
 |---------------------------------------------------------------------------|-----------------------------|----------------------------------------------------------|
-| [`HasChangeType`](Docs/pages/02-notifications.md#change-descriptions)     | `DoesNotHaveChangeType`     | has the change type flag                                 |
-| [`HasFileSystemType`](Docs/pages/02-notifications.md#change-descriptions) | `DoesNotHaveFileSystemType` | has the file system type flag                            |
-| [`HasNotifyFilters`](Docs/pages/02-notifications.md#change-descriptions)  | `DoesNotHaveNotifyFilters`  | has the notify filters flag                              |
-| [`HasName`](Docs/pages/02-notifications.md#change-descriptions)           |                             | has the expected name                                    |
-| [`HasPath`](Docs/pages/02-notifications.md#change-descriptions)           |                             | has the expected path                                    |
-| [`HasOldName`](Docs/pages/02-notifications.md#change-descriptions)        |                             | has the expected old name of a renamed file or directory |
-| [`HasOldPath`](Docs/pages/02-notifications.md#change-descriptions)        |                             | has the expected old path of a renamed file or directory |
+| [`HasChangeType`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#change-descriptions)     | `DoesNotHaveChangeType`     | has the change type flag                                 |
+| [`HasFileSystemType`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#change-descriptions) | `DoesNotHaveFileSystemType` | has the file system type flag                            |
+| [`HasNotifyFilters`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#change-descriptions)  | `DoesNotHaveNotifyFilters`  | has the notify filters flag                              |
+| [`HasName`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#change-descriptions)           |                             | has the expected name                                    |
+| [`HasPath`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#change-descriptions)           |                             | has the expected path                                    |
+| [`HasOldName`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#change-descriptions)        |                             | has the expected old name of a renamed file or directory |
+| [`HasOldPath`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#change-descriptions)        |                             | has the expected old path of a renamed file or directory |
 
-Expectations for [`IFileSystemStatistics`](Docs/pages/02-notifications.md#recorded-calls):
+Expectations for [`IFileSystemStatistics`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#recorded-calls):
 
 | Expectation                                                 | Negated    | Summary                                        |
 |-------------------------------------------------------------|------------|------------------------------------------------|
-| [`Recorded`](Docs/pages/02-notifications.md#recorded-calls) | `.Never()` | a method was called or a property was accessed |
+| [`Recorded`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications#recorded-calls) | `.Never()` | a method was called or a property was accessed |
 
-Expectations for [`ITimerMock`](Docs/pages/03-time-system.md#timer):
+Expectations for [`ITimerMock`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/time-system#timer):
 
 | Expectation                                      | Negated    | Summary                         |
 |--------------------------------------------------|------------|---------------------------------|
-| [`Executed`](Docs/pages/03-time-system.md#timer) | `.Never()` | the timer callback was executed |
+| [`Executed`](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/time-system#timer) | `.Never()` | the timer callback was executed |
 
 ## Documentation
 
 The full documentation is available at
 [docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/):
 
-- [File system](Docs/pages/01-file-system.md): files, directories and drives of an `IFileSystem`, and the expectations
+- [File system](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/file-system): files, directories and drives of an `IFileSystem`, and the expectations
   on `IFileInfo`, `IDirectoryInfo`, `IDriveInfo` and `IFileVersionInfo`
-- [Notifications and recorded calls](Docs/pages/02-notifications.md): file-system notifications, watcher events,
+- [Notifications and recorded calls](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/notifications): file-system notifications, watcher events,
   change descriptions and the calls recorded in `IFileSystemStatistics`
-- [Time system](Docs/pages/03-time-system.md): the execution of `ITimerMock` timers
+- [Time system](https://docs.testably.org/aweXpect/extensions/aweXpect.Testably/time-system): the execution of `ITimerMock` timers
