@@ -16,8 +16,7 @@ Expectations for the file system and time system mocks from
 dotnet add package aweXpect.Testably
 ```
 
-The package adds its expectations to aweXpect, so the test project also needs the
-[`aweXpect`](https://www.nuget.org/packages/aweXpect) package.
+It does not include [`aweXpect`](https://www.nuget.org/packages/aweXpect) itself.
 
 ## At a glance
 
