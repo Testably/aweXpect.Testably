@@ -1,3 +1,7 @@
+---
+description: Verify the files, directories and drives of a MockFileSystem, and the properties of IFileInfo, IDirectoryInfo, IDriveInfo and IFileVersionInfo.
+---
+
 # File system
 
 Describes the possible expectations for the files, directories and drives of a `MockFileSystem`, either through the
@@ -65,6 +69,7 @@ The samples on this page use the following file system:
 
 ```csharp
 using aweXpect.Chronology; // from the aweXpect.Chronology package
+using static aweXpect.Expect;
 
 MockFileSystem fileSystem = new(o => o.SimulatingOperatingSystem(SimulationMode.Windows));
 fileSystem.WithDrive("D:", d => d.SetTotalSize(2048));
@@ -82,16 +87,16 @@ fileSystem.File.SetAttributes("hey-jude.txt", FileAttributes.ReadOnly);
 You can verify that a file, directory or drive exists in an `IFileSystem`, or that it does not:
 
 ```csharp
-await Expect.That(fileSystem).HasDirectory("beatles/abbey-road");
-await Expect.That(fileSystem).HasFile("let-it-be.txt");
-await Expect.That(fileSystem).HasDrive("D:\\");
+await That(fileSystem).HasDirectory("beatles/abbey-road");
+await That(fileSystem).HasFile("let-it-be.txt");
+await That(fileSystem).HasDrive("D:\\");
 
-await Expect.That(fileSystem).DoesNotHaveDirectory("beatles/white-album");
-await Expect.That(fileSystem).DoesNotHaveFile("yesterday.txt");
-await Expect.That(fileSystem).DoesNotHaveDrive("E:\\");
+await That(fileSystem).DoesNotHaveDirectory("beatles/white-album");
+await That(fileSystem).DoesNotHaveFile("yesterday.txt");
+await That(fileSystem).DoesNotHaveDrive("E:\\");
 ```
 
-For example, `Expect.That(fileSystem).HasFile("yesterday.txt")` fails with:
+For example, `That(fileSystem).HasFile("yesterday.txt")` fails with:
 
 ```text title="Failure message"
 Expected that fileSystem
@@ -107,16 +112,13 @@ returned by `GetDrives()` and are therefore not supported by `HasDrive`.
 You can verify the content of the file found by `HasFile(path)`:
 
 ```csharp
-await Expect.That(fileSystem).HasFile("let-it-be.txt").WithContent("LET IT BE").IgnoringCase();
-await Expect.That(fileSystem).HasFile("let-it-be.txt").WithContent().NotEqualTo("let it go");
-await Expect.That(fileSystem).HasFile("let-it-be.txt").WithContent(Encoding.UTF8.GetBytes("let it be"));
-await Expect.That(fileSystem).HasFile("let-it-be.txt").WhoseContent(c => c.StartsWith("let it"));
+await That(fileSystem).HasFile("let-it-be.txt").WithContent("LET IT BE").IgnoringCase();
+await That(fileSystem).HasFile("let-it-be.txt").WithContent().NotEqualTo("let it go");
+await That(fileSystem).HasFile("let-it-be.txt").WithContent(Encoding.UTF8.GetBytes("let it be"));
+await That(fileSystem).HasFile("let-it-be.txt").WhoseContent(c => c.StartsWith("let it"));
 ```
 
-The string content supports the same options as
-[comparing strings](https://docs.testably.org/aweXpect/values/string#equality), and `WhoseContent` accepts any
-[string expectation](https://docs.testably.org/aweXpect/values/string). When the content differs, the failure message
-shows where and includes the file content:
+The string content supports the same options as [comparing strings](/aweXpect/values/string#equality), and `WhoseContent` accepts any [string expectation](/aweXpect/values/string). When the content differs, the failure message shows where and includes the file content:
 
 ```text title="Failure message"
 Expected that fileSystem
@@ -134,16 +136,16 @@ let it be
 You can also compare the content with another file on the same file system:
 
 ```csharp
-await Expect.That(fileSystem).HasFile("let-it-be.txt").WithContent().SameAs("let-it-be-remastered.txt").IgnoringCase();
-await Expect.That(fileSystem).HasFile("let-it-be.txt").WithContent().NotSameAs("hey-jude.txt");
+await That(fileSystem).HasFile("let-it-be.txt").WithContent().SameAs("let-it-be-remastered.txt").IgnoringCase();
+await That(fileSystem).HasFile("let-it-be.txt").WithContent().NotSameAs("hey-jude.txt");
 ```
 
 You can verify the timestamps of the file, and widen the comparison to a window with `.Within(tolerance)`:
 
 ```csharp
-await Expect.That(fileSystem).HasFile("let-it-be.txt").WithCreationTime(DateTime.Now).Within(1.Seconds());
-await Expect.That(fileSystem).HasFile("let-it-be.txt").WithLastAccessTime(DateTime.Now).Within(1.Seconds());
-await Expect.That(fileSystem).HasFile("let-it-be.txt").WithLastWriteTime(DateTime.Now).Within(1.Seconds());
+await That(fileSystem).HasFile("let-it-be.txt").WithCreationTime(DateTime.Now).Within(1.Seconds());
+await That(fileSystem).HasFile("let-it-be.txt").WithLastAccessTime(DateTime.Now).Within(1.Seconds());
+await That(fileSystem).HasFile("let-it-be.txt").WithLastWriteTime(DateTime.Now).Within(1.Seconds());
 ```
 
 ### Directory content
@@ -151,8 +153,8 @@ await Expect.That(fileSystem).HasFile("let-it-be.txt").WithLastWriteTime(DateTim
 You can verify the files and subdirectories of the directory found by `HasDirectory(path)`:
 
 ```csharp
-await Expect.That(fileSystem).HasDirectory("beatles").WithDirectories(d => d.HasCount().EqualTo(2));
-await Expect.That(fileSystem).HasDirectory("beatles/abbey-road").WithFiles(f => f
+await That(fileSystem).HasDirectory("beatles").WithDirectories(d => d.HasCount().EqualTo(2));
+await That(fileSystem).HasDirectory("beatles/abbey-road").WithFiles(f => f
     .All().ComplyWith(x => x.HasContent("SOMETHING").IgnoringCase()));
 ```
 
@@ -162,9 +164,9 @@ await Expect.That(fileSystem).HasDirectory("beatles/abbey-road").WithFiles(f => 
 `IDirectoryInfo` or `IDriveInfo`, so that the expectations of the following sections can be used in the same chain:
 
 ```csharp
-await Expect.That(fileSystem).HasFile("let-it-be.txt").Which.HasLength(9).And.HasContent("let it be");
-await Expect.That(fileSystem).HasDirectory("beatles/revolver").Which.IsEmpty();
-await Expect.That(fileSystem).HasDrive("D:\\").Which.IsReady().And.HasDriveFormat("NTFS");
+await That(fileSystem).HasFile("let-it-be.txt").Which.HasLength(9).And.HasContent("let it be");
+await That(fileSystem).HasDirectory("beatles/revolver").Which.IsEmpty();
+await That(fileSystem).HasDrive("D:\\").Which.IsReady().And.HasDriveFormat("NTFS");
 ```
 
 ## File
@@ -175,25 +177,25 @@ You can verify the properties of an `IFileInfo`:
 IFileInfo fileInfo = fileSystem.FileInfo.New("let-it-be.txt");
 IFileInfo readOnlyFileInfo = fileSystem.FileInfo.New("hey-jude.txt");
 
-await Expect.That(fileInfo).Exists();
-await Expect.That(fileSystem.FileInfo.New("yesterday.txt")).DoesNotExist();
+await That(fileInfo).Exists();
+await That(fileSystem.FileInfo.New("yesterday.txt")).DoesNotExist();
 
-await Expect.That(fileInfo).HasName("let-it-be.txt");
-await Expect.That(fileInfo).HasExtension(".txt");
-await Expect.That(fileInfo).HasLength(9);
+await That(fileInfo).HasName("let-it-be.txt");
+await That(fileInfo).HasExtension(".txt");
+await That(fileInfo).HasLength(9);
 
-await Expect.That(readOnlyFileInfo).IsReadOnly();
-await Expect.That(fileInfo).IsNotReadOnly();
+await That(readOnlyFileInfo).IsReadOnly();
+await That(fileInfo).IsNotReadOnly();
 
-await Expect.That(readOnlyFileInfo).HasAttribute(FileAttributes.ReadOnly);
-await Expect.That(fileInfo).DoesNotHaveAttribute(FileAttributes.ReadOnly);
+await That(readOnlyFileInfo).HasAttribute(FileAttributes.ReadOnly);
+await That(fileInfo).DoesNotHaveAttribute(FileAttributes.ReadOnly);
 
-await Expect.That(fileInfo).HasCreationTime(DateTime.Now).Within(1.Seconds());
-await Expect.That(fileInfo).HasLastAccessTime(DateTime.Now).Within(1.Seconds());
-await Expect.That(fileInfo).HasLastWriteTime(DateTime.Now).Within(1.Seconds());
+await That(fileInfo).HasCreationTime(DateTime.Now).Within(1.Seconds());
+await That(fileInfo).HasLastAccessTime(DateTime.Now).Within(1.Seconds());
+await That(fileInfo).HasLastWriteTime(DateTime.Now).Within(1.Seconds());
 ```
 
-For example, `Expect.That(fileInfo).HasLength(10)` fails with:
+For example, `That(fileInfo).HasLength(10)` fails with:
 
 ```text title="Failure message"
 Expected that fileInfo
@@ -205,24 +207,24 @@ You can verify the content of the file, or compare it with another file on the s
 [`HasFile`](#file-content-and-timestamps):
 
 ```csharp
-await Expect.That(fileInfo).HasContent("let it be");
-await Expect.That(fileInfo).HasContent(Encoding.UTF8.GetBytes("let it be"));
-await Expect.That(fileInfo).HasContent().NotEqualTo("let it go");
-await Expect.That(fileInfo).HasContent().SameAs("let-it-be-remastered.txt").IgnoringCase();
-await Expect.That(fileInfo).HasContent().NotSameAs("hey-jude.txt");
+await That(fileInfo).HasContent("let it be");
+await That(fileInfo).HasContent(Encoding.UTF8.GetBytes("let it be"));
+await That(fileInfo).HasContent().NotEqualTo("let it go");
+await That(fileInfo).HasContent().SameAs("let-it-be-remastered.txt").IgnoringCase();
+await That(fileInfo).HasContent().NotSameAs("hey-jude.txt");
 ```
 
 `HasAttribute` and `DoesNotHaveAttribute` check whether the flag is contained, so
 `FileAttributes.ReadOnly | FileAttributes.Hidden` satisfies `HasAttribute(FileAttributes.ReadOnly)`. The empty
 (`default`) value throws an `ArgumentException`, because it would be contained in every value.
 
-:::note[.NET 10 or later]
+:::info[.NET 10 or later]
 `WhoseParent` continues with the containing directory, so that the [directory](#directory) expectations can be used:
 
 ```csharp
 IFileInfo something = fileSystem.FileInfo.New("beatles/abbey-road/something.txt");
 
-await Expect.That(something).WhoseParent.HasName("abbey-road").And.IsNotEmpty();
+await That(something).WhoseParent.HasName("abbey-road").And.IsNotEmpty();
 ```
 :::
 
@@ -234,36 +236,36 @@ You can verify the properties of an `IDirectoryInfo`:
 IDirectoryInfo dirInfo = fileSystem.DirectoryInfo.New("beatles");
 IDirectoryInfo emptyDirInfo = fileSystem.DirectoryInfo.New("beatles/revolver");
 
-await Expect.That(dirInfo).Exists();
-await Expect.That(fileSystem.DirectoryInfo.New("beatles/white-album")).DoesNotExist();
+await That(dirInfo).Exists();
+await That(fileSystem.DirectoryInfo.New("beatles/white-album")).DoesNotExist();
 
-await Expect.That(dirInfo).HasName("beatles");
+await That(dirInfo).HasName("beatles");
 
-await Expect.That(emptyDirInfo).IsEmpty();
-await Expect.That(dirInfo).IsNotEmpty();
+await That(emptyDirInfo).IsEmpty();
+await That(dirInfo).IsNotEmpty();
 
-await Expect.That(dirInfo).HasFile("abbey-road/something.txt");
-await Expect.That(dirInfo).DoesNotHaveFile("abbey-road/yesterday.txt");
-await Expect.That(dirInfo).HasDirectory("abbey-road").Which.HasFile("something.txt");
-await Expect.That(dirInfo).DoesNotHaveDirectory("white-album");
+await That(dirInfo).HasFile("abbey-road/something.txt");
+await That(dirInfo).DoesNotHaveFile("abbey-road/yesterday.txt");
+await That(dirInfo).HasDirectory("abbey-road").Which.HasFile("something.txt");
+await That(dirInfo).DoesNotHaveDirectory("white-album");
 
-await Expect.That(dirInfo).HasAttribute(FileAttributes.Directory);
-await Expect.That(dirInfo).DoesNotHaveAttribute(FileAttributes.Hidden);
+await That(dirInfo).HasAttribute(FileAttributes.Directory);
+await That(dirInfo).DoesNotHaveAttribute(FileAttributes.Hidden);
 
-await Expect.That(dirInfo).HasCreationTime(DateTime.Now).Within(1.Seconds());
-await Expect.That(dirInfo).HasLastAccessTime(DateTime.Now).Within(1.Seconds());
-await Expect.That(dirInfo).HasLastWriteTime(DateTime.Now).Within(1.Seconds());
+await That(dirInfo).HasCreationTime(DateTime.Now).Within(1.Seconds());
+await That(dirInfo).HasLastAccessTime(DateTime.Now).Within(1.Seconds());
+await That(dirInfo).HasLastWriteTime(DateTime.Now).Within(1.Seconds());
 ```
 
 `HasFile` and `HasDirectory` resolve the path relative to the directory and continue like on the
 [file system](#files-directories-and-drives), so `.WithContent(…)`, `.WithLastWriteTime(…)`, `.Which` etc. work as
 well.
 
-:::note[.NET 10 or later]
+:::info[.NET 10 or later]
 `WhoseParent` continues with the parent directory:
 
 ```csharp
-await Expect.That(emptyDirInfo).WhoseParent.HasName("beatles");
+await That(emptyDirInfo).WhoseParent.HasName("beatles");
 ```
 :::
 
@@ -274,12 +276,12 @@ You can verify the properties of an `IDriveInfo`:
 ```csharp
 IDriveInfo driveInfo = fileSystem.DriveInfo.New("D:");
 
-await Expect.That(driveInfo).HasAvailableFreeSpace(2048);
-await Expect.That(driveInfo).HasTotalSize(2048).And.HasTotalFreeSpace(2048);
-await Expect.That(driveInfo).HasDriveFormat("NTFS");
-await Expect.That(driveInfo).HasDriveType(DriveType.Fixed);
-await Expect.That(driveInfo).HasName(driveInfo.Name).And.HasVolumeLabel(driveInfo.VolumeLabel);
-await Expect.That(driveInfo).IsReady();
+await That(driveInfo).HasAvailableFreeSpace(2048);
+await That(driveInfo).HasTotalSize(2048).And.HasTotalFreeSpace(2048);
+await That(driveInfo).HasDriveFormat("NTFS");
+await That(driveInfo).HasDriveType(DriveType.Fixed);
+await That(driveInfo).HasName(driveInfo.Name).And.HasVolumeLabel(driveInfo.VolumeLabel);
+await That(driveInfo).IsReady();
 ```
 
 ## File version info
@@ -297,12 +299,12 @@ fileSystem.File.WriteAllText("AbbeyRoad.dll", "");
 
 IFileVersionInfo info = fileSystem.FileVersionInfo.GetVersionInfo("AbbeyRoad.dll");
 
-await Expect.That(info).HasCompanyName("Apple Corps").And.HasProductName("Abbey Road");
-await Expect.That(info).HasFileVersion("1.9.6.9").And.HasFileMajorPart(1);
-await Expect.That(info).IsDebug().And.IsNotPreRelease();
+await That(info).HasCompanyName("Apple Corps").And.HasProductName("Abbey Road");
+await That(info).HasFileVersion("1.9.6.9").And.HasFileMajorPart(1);
+await That(info).IsDebug().And.IsNotPreRelease();
 ```
 
-For example, `Expect.That(info).HasCompanyName("EMI")` fails with:
+For example, `That(info).HasCompanyName("EMI")` fails with:
 
 ```text title="Failure message"
 Expected that info
