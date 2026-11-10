@@ -33,7 +33,7 @@ dotnet test --project Tests/aweXpect.Testably.Tests --no-build -f net48
 ## Public API
 
 The public API of every target framework of the library is stored as a snapshot in `Tests/aweXpect.Testably.Api.Tests`
-(`ApiApprovalTests.aweXpect%2ETestably.<framework>.awexpect-snapshot.txt`), compared with
+(`ApiApprovalTests/aweXpect.Testably/<framework>.awexpect-snapshot.cs`), compared with
 `aweXpect.Snapshots.PublicApi`.
 
 ```powershell
@@ -44,8 +44,8 @@ dotnet test --project Tests/aweXpect.Testably.Api.Tests
 - The tests read `Source/aweXpect.Testably/bin/<Configuration>/<framework>/aweXpect.Testably.dll` for each framework in
   `Source/Directory.Build.props`, so they test the build of the same configuration. Building the API test project builds
   all library frameworks.
-- When the API changes, the test fails and writes `*.awexpect-snapshot.pending.txt`. To accept an intended change,
-  either rename the pending file to `*.awexpect-snapshot.txt`, run the explicit test `AcceptApiChanges`
+- When the API changes, the test fails and writes `*.awexpect-snapshot.pending.cs`. To accept an intended change,
+  either rename the pending file to `*.awexpect-snapshot.cs`, run the explicit test `AcceptApiChanges`
   (`dotnet test --project Tests/aweXpect.Testably.Api.Tests --treenode-filter "/*/*/ApiApprovalTests/AcceptApiChanges"`),
   or run the tests with `AWEXPECT_ACCEPT_SNAPSHOTS=all`. Commit the snapshots, never the pending files.
 - `AcceptApiChanges` is `[Explicit]`: TUnit runs it only when every test that the filter selects is explicit, so a
