@@ -22,8 +22,9 @@ namespace aweXpect.Testably.Tests;
 ///     scheduled with <see cref="CancelAt(TimeSpan, CancellationTokenSource)" />.
 ///     <para />
 ///     Waits and timeouts reach the provider as timers from <see cref="CreateTimer" />. A timer whose state is a
-///     <see cref="CancellationTokenSource" /> is a scheduled cancellation, every other timer is a wait. Only the due
-///     time of a timer is used, as no caller sets a period.
+///     <see cref="CancellationTokenSource" /> is a scheduled cancellation, every other timer is a wait. A wait created
+///     without a due time starts with its first <see cref="ITimer.Change(TimeSpan, TimeSpan)" />. Only the due time of
+///     a timer is used, as no caller sets a period.
 ///     <para />
 ///     A copy of the <c>VirtualTimeProvider</c> in the tests of aweXpect.Core, which is not shipped.
 /// </remarks>
@@ -85,8 +86,12 @@ internal sealed class VirtualTimeProvider : TimeProvider
 			return cancellation;
 		}
 
-		Wait wait = new(callback, state);
-		_ = Task.Run(() => RunWait(wait, dueTime));
+		Wait wait = new(this, callback, state);
+		if (dueTime != Timeout.InfiniteTimeSpan)
+		{
+			wait.Start(dueTime);
+		}
+
 		return wait;
 	}
 
@@ -257,16 +262,39 @@ internal sealed class VirtualTimeProvider : TimeProvider
 		}
 	}
 
-	private sealed class Wait(TimerCallback callback, object? state) : ITimer
+	private sealed class Wait(VirtualTimeProvider timeProvider, TimerCallback callback, object? state) : ITimer
 	{
 		private readonly CancellationTokenSource _disposed = new();
+		private int _isStarted;
 
 		public CancellationToken DisposedToken => _disposed.Token;
 
 		public bool IsDisposed => _disposed.IsCancellationRequested;
 
+		/// <summary>
+		///     Starts a wait that was created without a due time, as aweXpect creates the timer of a delay stopped and
+		///     starts it once a cancellation can release it.
+		/// </summary>
 		public bool Change(TimeSpan dueTime, TimeSpan period)
-			=> throw new NotSupportedException("The virtual clock does not reschedule a wait.");
+		{
+			if (IsDisposed)
+			{
+				throw new ObjectDisposedException(nameof(Wait));
+			}
+
+			Start(dueTime);
+			return true;
+		}
+
+		public void Start(TimeSpan dueTime)
+		{
+			if (Interlocked.Exchange(ref _isStarted, 1) == 1)
+			{
+				throw new NotSupportedException("The virtual clock does not reschedule a wait.");
+			}
+
+			_ = Task.Run(() => timeProvider.RunWait(this, dueTime));
+		}
 
 		public void Dispose() => _disposed.Cancel();
 

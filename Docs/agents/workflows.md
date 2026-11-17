@@ -48,6 +48,9 @@ dotnet test --project Tests/aweXpect.Testably.Api.Tests
   either rename the pending file to `*.awexpect-snapshot.cs`, run the explicit test `AcceptApiChanges`
   (`dotnet test --project Tests/aweXpect.Testably.Api.Tests --treenode-filter "/*/*/ApiApprovalTests/AcceptApiChanges"`),
   or run the tests with `AWEXPECT_ACCEPT_SNAPSHOTS=all`. Commit the snapshots, never the pending files.
+- Locally, a failing test also opens a diff tool through `aweXpect.Snapshots.DiffEngine` (e.g. Rider, Visual Studio or
+  VS Code) that compares the pending file with the snapshot, so the change can be taken over there. It never opens on a
+  build server; set `DiffEngine_Disabled=true` to turn it off locally.
 - `AcceptApiChanges` is `[Explicit]`: TUnit runs it only when every test that the filter selects is explicit, so a
   normal run and CI skip it.
 
