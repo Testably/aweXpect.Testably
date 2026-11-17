@@ -3,9 +3,10 @@
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageVersion Include="aweXpect" Version="4.0.0"/>
-		<PackageVersion Include="aweXpect.Core" Version="4.0.0"/>
-		<PackageVersion Include="aweXpect.Snapshots.PublicApi" Version="4.0.0"/>
+		<PackageVersion Include="aweXpect" Version="4.2.0"/>
+		<PackageVersion Include="aweXpect.Core" Version="4.2.0"/>
+		<PackageVersion Include="aweXpect.Snapshots.DiffEngine" Version="4.2.0"/>
+		<PackageVersion Include="aweXpect.Snapshots.PublicApi" Version="4.2.0"/>
 		<PackageVersion Include="Testably.Abstractions" Version="11.0.0"/>
 		<PackageVersion Include="Testably.Abstractions.Interface" Version="11.0.0"/>
 		<PackageVersion Include="Testably.Abstractions.Testing" Version="8.0.0"/>
